@@ -1,6 +1,6 @@
 -- https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#getting-started
 -- Outline:
---  OnPickup, move item to Lae'Zal (S_Player_Laezel_58a69333-40bf-8358-1d17-fff240d7fb12)
+--  ✅ OnPickup, move item to Lae'Zal (S_Player_Laezel_58a69333-40bf-8358-1d17-fff240d7fb12)
 --  OnPickup, don't move item if not in table
 --  OnPickup, move item to designated party member
 --  OnPickup, tag item as junk if designated
@@ -32,8 +32,7 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "before", function(root, item,
 	if (GetUUID(inventoryHolder) == Osi.GetHostCharacter()) then
 		_P("inventoryHolder is Character!")
 		local exactAmount, totalAmount = Osi.GetStackAmount(item)
-		_P("Moving " .. exactAmount .. " of item [" .. item .. "] to Lae'Zal!")
-		Osi.MoveItemTo(inventoryHolder, item, "58a69333-40bf-8358-1d17-fff240d7fb12", exactAmount, "")
-		_P("Moved item [" .. item .. "] to Lae'Zal!")
+		Osi.Pickup("S_Player_Laezel_58a69333-40bf-8358-1d17-fff240d7fb12", item, addType, 1)
+		BasicDebug("Moved " .. exactAmount .. " of item " .. item .. " to Lae'Zal")
 	end
 end)

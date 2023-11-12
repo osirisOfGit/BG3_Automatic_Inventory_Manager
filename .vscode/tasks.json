@@ -6,34 +6,38 @@
 		{
 			"label": "bg3Continue",
 			"type": "shell",
-			"command": "Start-Process",
-			"args": [
-				"-FilePath",
-				"D:\\GOG\\Baldurs Gate 3\\bin\\bg3.exe",
-				"-ArgumentList",
-				"-continueGame --skip-launcher",
-				"-WorkingDirectory",
-				"D:\\GOG\\Baldurs Gate 3\\bin"
-			],
-			"options": {
-				"shell": {
-					"executable": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
-				}
-			},
+			"windows": {
+				"command": "Start-Process",
+				"args": [
+					"-FilePath",
+					"D:\\GOG\\Baldurs Gate 3\\bin\\bg3.exe",
+					"-ArgumentList",
+					"-continueGame --skip-launcher", // Starts the last game you had loaded automagically
+					"-WorkingDirectory",
+					"D:\\GOG\\Baldurs Gate 3\\bin"
+				],
+				"options": {
+					"shell": {
+						"executable": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
+					}
+				},
+			}
 		},
 		{
 			"label": "bg3Kill",
 			"type": "shell",
-			"command": "taskkill",
-			"args": [
-				"/IM",
-				"bg3.exe"
-			],
-			"options": {
-				"shell": {
-					"executable": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
-				}
-			},
+			"windows": {
+				"command": "taskkill",
+				"args": [
+					"/IM",
+					"bg3.exe"
+				],
+				"options": {
+					"shell": {
+						"executable": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
+					}
+				},
+			}
 		}
 	]
 }

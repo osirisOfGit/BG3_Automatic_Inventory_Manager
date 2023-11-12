@@ -1,2 +1,3 @@
 Ext.Require("Server/main.lua")
-_P("CAAAAAAAAAAAAAAAAAAAAAAAAAAAM")
+Ext.Require("Server/_Globals.lua")
+Ext.Require("Server/_Utils.lua")
