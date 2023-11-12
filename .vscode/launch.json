@@ -5,15 +5,15 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
+			"name": "BG3 Script Extender Lua Debug",
 			"preLaunchTask": "bg3Continue",
 			"postDebugTask": "bg3Kill",
+			"internalConsoleOptions": "openOnSessionStart",
 			"type": "bg3lua",
 			"request": "launch",
-			"name": "BG3 Script Extender Lua Debug",
 			"program": "D:\\Mods\\BG3 Modder MultiTool\\BG3EDebugAdapter\\LuaDebugger.exe",
 			"backendHost": "127.0.0.1",
 			"backendPort": 9998,
-			"internalConsoleOptions": "openOnSessionStart",
 			"dbgOptions": {
 				"breakOnError": true,
 				"breakOnGenericError": false
