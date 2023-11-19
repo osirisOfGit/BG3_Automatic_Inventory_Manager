@@ -11,7 +11,7 @@
 --  ❎ Reason: There's no reliable way to have BG3 tag an item as junk - no idea have Osi.IsJunk works. Gonna just point people to AUTO_SELL_LOOT
 --			|-- Original item: OnPickup, tag item as junk if designated
 -- 			|-- New Item: Implement adding optional tags. No use-cases yet, re-evaluate if needed later
---  Clear my item tags on Script Extender reset
+--  ✅ Clear my item tags on Script Extender reset
 --  OnPickup, move item designated as "best fit" to party member round-robin (e.g. distribute potions evenly)
 --            Add weighted distribution
 --  OnContainerOpen, optionally execute distribution according to config
@@ -45,10 +45,7 @@ function GetItemDisplayName(item)
 	if not success then return "NO HANDLE" else return translatedName end
 end
 
--- Includes moving from container to other inventories etc...
-Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "before", function(root, item, inventoryHolder, addType)
-	_P("Processing item " .. item .. " with root " .. root .. " on character " .. inventoryHolder .. " with addType " .. addType)
-
+function ApplyOptionalTags(item)
 	if Osi.IsTagged(item, TAG_AIM_OPTIONALLY_TAGGED) == 0 then
 		_P("Adding optional tags")
 		Osi.SetTag(item, TAG_AIM_OPTIONALLY_TAGGED)
@@ -58,14 +55,21 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "before", function(root, item,
 		if opt_tags then
 			_P("Have tags to add ")
 			for _, tag in pairs(opt_tags) do
-				_P(Osi.IsTagged(item, tag))
-				if Osi.IsTagged(designatedTarget, tag) == 0 then
+				if Osi.IsTagged(item, tag) == 0 then
 					Osi.SetTag(item, tag)
 					_P("Set tag " .. tag .. " on " .. item)
 				end
 			end
 		end
 	end
+end
+
+-- Includes moving from container to other inventories etc...
+Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "before", function(root, item, inventoryHolder, addType)
+	_P("Processing item " ..
+		item .. " with root " .. root .. " on character " .. inventoryHolder .. " with addType " .. addType)
+
+	ApplyOptionalTags(item)
 
 	if Osi.IsTagged(item, TAG_AIM_SORTED) == 1 then
 		_P("Item was already sorted, skipping!")
@@ -87,4 +91,22 @@ end)
 
 Ext.Osiris.RegisterListener("DroppedBy", 2, "after", function(object, inventoryHolder)
 	Osi.ClearTag(object, TAG_AIM_SORTED)
+end)
+
+-- There's definitely a way to combine this and the iterator listener, but types were being difficult
+Ext.Events.ResetCompleted:Subscribe(function(_)
+	for _, player in pairs(Osi.DB_Players:Get(nil)) do
+		_D(player[1])
+		for _, optionalTag in pairs(TAGS_TO_CLEAR) do
+			Osi.IterateInventoryByTag(player[1], optionalTag, EVENT_CLEAR_CUSTOM_TAGS_START .. optionalTag, EVENT_CLEAR_CUSTOM_TAGS_END .. optionalTag)
+		end
+	end
+end)
+
+Ext.Osiris.RegisterListener("EntityEvent", 2, "after", function(guid, event)
+	if string.find(event, EVENT_CLEAR_CUSTOM_TAGS_START) then
+		_D(event)
+		_P("Cleared tag " .. string.sub(event, string.len(EVENT_CLEAR_CUSTOM_TAGS_START) + 1) .. " off item " .. guid)
+		Osi.ClearTag(guid, string.sub(event, string.len(EVENT_CLEAR_CUSTOM_TAGS_START) + 1))
+	end
 end)
