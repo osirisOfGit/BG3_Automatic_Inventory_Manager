@@ -1,0 +1,598 @@
+{
+	"AttributeFlags": {
+		"AttributeFlags": 0
+	},
+	"BoostsContainer": {
+		"Boosts": {},
+		"field_0": 126100793861344354
+	},
+	"CanBeDisarmed": {
+		"Flags": 65535
+	},
+	"CombatParticipant": {
+		"AiHint": "00000000-0000-0000-0000-000000000000",
+		"CombatGroupId": "",
+		"CombatHandle": null,
+		"Flags": [
+			"CanJoinCombat",
+			"IsInspector"
+		],
+		"field_C": -100
+	},
+	"Data": {
+		"StatsId": "WPN_Dagger",
+		"StepsType": 0,
+		"Weight": 450
+	},
+	"DisplayName": {
+		"Name": "",
+		"NameKey": {
+			"ArgumentString": {
+				"Handle": "ls::TranslatedStringRepository::s_HandleUnknown",
+				"Version": 0
+			},
+			"Handle": {
+				"Handle": "h3d7a0345g2af5g4bb9gb592gb72fb43588b8",
+				"Version": 1
+			}
+		},
+		"UnknownKey": {
+			"ArgumentString": {
+				"Handle": "ls::TranslatedStringRepository::s_HandleUnknown",
+				"Version": 0
+			},
+			"Handle": {
+				"Handle": "ls::TranslatedStringRepository::s_HandleUnknown",
+				"Version": 0
+			}
+		}
+	},
+	"Equipable": {
+		"Slot": "MeleeMainHand",
+		"field_18": "2d85d633-d496-44a1-a643-0e95ef879a6d"
+	},
+	"FTBParticipant": {
+		"field_18": "Entity (01c0000100000c62)"
+	},
+	"GameObjectVisual": {
+		"Icon": "Item_WPN_HUM_Dagger_A_0",
+		"RootTemplateId": "569b0f3d-abcd-4b01-aaf0-979091288163",
+		"RootTemplateType": 0,
+		"Scale": 1.0,
+		"Type": 0
+	},
+	"Icon": {
+		"Icon": "Item_WPN_HUM_Dagger_A_0"
+	},
+	"InventoryMember": {
+		"EquipmentSlot": 0,
+		"Inventory": "Entity (01c0000100000688)"
+	},
+	"IsGlobal": {},
+	"Net": {},
+	"ObjectSize": {
+		"Size": 0,
+		"field_1": 0
+	},
+	"PassiveContainer": {
+		"Passives": {}
+	},
+	"Physics": {},
+	"Savegame": {},
+	"ServerAnubisTag": {
+		"Tags": {}
+	},
+	"ServerBoostTag": {
+		"Tags": {}
+	},
+	"ServerDialogTag": {
+		"Tags": {}
+	},
+	"ServerDisplayNameList": {
+		"Names": {
+			"1": {
+				"Name": "",
+				"NameKey": {
+					"ArgumentString": {
+						"Handle": "ls::TranslatedStringRepository::s_HandleUnknown",
+						"Version": 0
+					},
+					"Handle": {
+						"Handle": "ResStr_1644843798",
+						"Version": 0
+					}
+				},
+				"field_10": 8
+			},
+			"2": {
+				"Name": "",
+				"NameKey": {
+					"ArgumentString": {
+						"Handle": "ls::TranslatedStringRepository::s_HandleUnknown",
+						"Version": 0
+					},
+					"Handle": {
+						"Handle": "h3d7a0345g2af5g4bb9gb592gb72fb43588b8",
+						"Version": 1
+					}
+				},
+				"field_10": 6
+			}
+		},
+		"TranslatedStrings": {}
+	},
+	"ServerIconList": {
+		"Icons": {
+			"1": {
+				"Icon": "Item_WPN_HUM_Dagger_A_0",
+				"field_4": 4
+			}
+		},
+		"field_30": 0
+	},
+	"ServerItem": {
+		"Item": {
+			"Activated": false,
+			"CanBeMoved": true,
+			"CanBePickedUp": true,
+			"CanOnlyBeUsedByOwner": false,
+			"CanShootThrough": false,
+			"CanUse": false,
+			"ClientSync1": true,
+			"Destroy": false,
+			"Destroyed": false,
+			"DisableInventoryView80": false,
+			"DisableSync": false,
+			"DisableUse": 0,
+			"DontAddToHotbar": false,
+			"Flags": [
+				"CanBePickedUp",
+				"ClientSync1",
+				"InPartyInventory",
+				"CanBeMoved"
+			],
+			"Flags2": [
+				"Global"
+			],
+			"Floating": false,
+			"ForceClientSync": false,
+			"ForceSync": false,
+			"ForceSynch": 0,
+			"FreezeGravity": false,
+			"Frozen": false,
+			"GMFolding": false,
+			"Global": true,
+			"HideHP": false,
+			"InAutomatedDialog": false,
+			"InPartyInventory": true,
+			"InUse": false,
+			"InheritedForceSynch": 0,
+			"InteractionDisabled": false,
+			"Invisible": false,
+			"Invisible2": false,
+			"Invulnerable": false,
+			"Invulnerable2": false,
+			"IsContainer": false,
+			"IsDoor": false,
+			"IsLadder": false,
+			"IsMoving": false,
+			"IsSecretDoor": false,
+			"IsSurfaceBlocker": false,
+			"IsSurfaceCloudBlocker": false,
+			"ItemType": "Common",
+			"Known": false,
+			"Level": "",
+			"LevelTransitionPending": false,
+			"LoadedTemplate": false,
+			"LuckyFind": false,
+			"MovingCount": 0,
+			"MyHandle": "Entity (01c0000100000c62)",
+			"NoCover": false,
+			"OffStage": false,
+			"OriginalTemplate": {
+				"ActivationGroupId": "",
+				"AllowCameraMovement": false,
+				"AllowReceiveDecalWhenAnimated": false,
+				"AllowSummonGenericUse": false,
+				"Amount": 1,
+				"AnubisConfigName": "",
+				"AttackableWhenClickThrough": false,
+				"BlockAoEDamage": false,
+				"BloodSurfaceType": 0,
+				"BloodType": "",
+				"BookType": 0,
+				"CameraOffset": [
+					0.0,
+					0.0,
+					0.0
+				],
+				"CanBeImprovisedWeapon": false,
+				"CanBeMoved": true,
+				"CanBePickedUp": true,
+				"CanBePickpocketed": true,
+				"CanClickThrough": false,
+				"CanClimbOn": false,
+				"CanShineThrough": false,
+				"CanShootThrough": true,
+				"CastShadow": true,
+				"CinematicArenaFlags": 0,
+				"CollideWithCamera": false,
+				"ColorPreset": "00000000-0000-0000-0000-000000000000",
+				"CombatComponent": {
+					"AiHint": "00000000-0000-0000-0000-000000000000",
+					"AiUseCombatHelper": "",
+					"Archetype": "base",
+					"CanFight": false,
+					"CanJoinCombat": true,
+					"CombatGroupID": "",
+					"CombatName": "",
+					"Faction": "376e33c4-dd15-4c46-a586-87d8b421a0c7",
+					"IsBoss": false,
+					"IsInspector": true,
+					"ProxyAttachment": "",
+					"ProxyOwner": "00000000-0000-0000-0000-000000000000",
+					"StartCombatRange": -1.0,
+					"StayInAiHints": false,
+					"SwarmGroup": "",
+					"Unknown": 0,
+					"Unknown2": 0
+				},
+				"ConstellationConfigName": "",
+				"ContainerAutoAddOnPickup": false,
+				"ContainerContentFilterCondition": "",
+				"CoverAmount": false,
+				"CriticalHitType": "",
+				"DefaultState": "",
+				"Description": {
+					"ArgumentString": {
+						"Handle": "ls::TranslatedStringRepository::s_HandleUnknown",
+						"Version": 0
+					},
+					"Handle": {
+						"Handle": "ha9748042g537dg4a9ag8264gdabb464dd84b",
+						"Version": 2
+					}
+				},
+				"DestroyWithStack": false,
+				"Destroyed": false,
+				"DisarmDifficultyClassID": "00000000-0000-0000-0000-000000000000",
+				"DisplayName": {
+					"ArgumentString": {
+						"Handle": "ls::TranslatedStringRepository::s_HandleUnknown",
+						"Version": 0
+					},
+					"Handle": {
+						"Handle": "h3d7a0345g2af5g4bb9gb592gb72fb43588b8",
+						"Version": 1
+					}
+				},
+				"DisplayNameAlchemy": {
+					"ArgumentString": {
+						"Handle": "ls::TranslatedStringRepository::s_HandleUnknown",
+						"Version": 0
+					},
+					"Handle": {
+						"Handle": "ls::TranslatedStringRepository::s_HandleUnknown",
+						"Version": 0
+					}
+				},
+				"DropSound": "f55dc72a-13b8-6e3d-7500-559a5d1f3031",
+				"EquipSound": "da469251-95cf-5387-6295-5b1d5ce5a41f",
+				"EquipmentTypeID": "2d85d633-d496-44a1-a643-0e95ef879a6d",
+				"ExamineRotation": [
+					0.0,
+					25.0,
+					0.0
+				],
+				"ExcludeInDifficulty": {},
+				"FadeChildren": {},
+				"FadeGroup": "",
+				"Fadeable": true,
+				"FileName": "D:/GOG/Baldurs Gate 3/Data/Public/Shared/RootTemplates/_merged.lsf",
+				"Flags": 0,
+				"ForceAffectedByAura": false,
+				"GravityType": 0,
+				"GroupID": 0,
+				"HLOD": "00000000-0000-0000-0000-000000000000",
+				"HasGameplayValue": false,
+				"HasParentModRelation": false,
+				"HierarchyOnlyFade": true,
+				"Hostile": false,
+				"Icon": "Item_WPN_HUM_Dagger_A_0",
+				"Id": "569b0f3d-abcd-4b01-aaf0-979091288163",
+				"IgnoreGenerics": false,
+				"ImpactSound": "f55dc72a-13b8-6e3d-7500-559a5d1f3031",
+				"InteractionFilterList": {},
+				"InteractionFilterRequirement": 0,
+				"InteractionFilterType": 0,
+				"InventoryList": {
+					"1": "Empty"
+				},
+				"InventoryMoveSound": "f55dc72a-13b8-6e3d-7500-559a5d1f3031",
+				"InventoryType": 0,
+				"IsBlocker": false,
+				"IsBlueprintDisabledByDefault": true,
+				"IsDecorative": false,
+				"IsDeleted": false,
+				"IsDroppedOnDeath": true,
+				"IsGlobal": false,
+				"IsInteractionDisabled": false,
+				"IsKey": false,
+				"IsPlatformOwner": false,
+				"IsPointerBlocker": false,
+				"IsPortal": false,
+				"IsPortalProhibitedToPlayers": false,
+				"IsPublicDomain": false,
+				"IsReflecting": false,
+				"IsShadowProxy": false,
+				"IsSourceContainer": false,
+				"IsSurfaceBlocker": false,
+				"IsSurfaceCloudBlocker": false,
+				"IsTradable": 0,
+				"IsTrap": false,
+				"Key": "",
+				"LevelName": "",
+				"LevelOverride": -1,
+				"LightChannel": 0,
+				"LockDifficultyClassID": "00000000-0000-0000-0000-000000000000",
+				"LoopSound": "",
+				"MapMarkerStyle": "",
+				"MaterialPreset": "00000000-0000-0000-0000-000000000000",
+				"MaxStackAmount": 1,
+				"Name": "WPN_HUM_Dagger_A_0",
+				"OnUseDescription": {
+					"ArgumentString": {
+						"Handle": "ls::TranslatedStringRepository::s_HandleUnknown",
+						"Version": 0
+					},
+					"Handle": {
+						"Handle": "ls::TranslatedStringRepository::s_HandleUnknown",
+						"Version": 0
+					}
+				},
+				"OnlyInDifficulty": {},
+				"Owner": "",
+				"ParentTemplateId": "97be1f14-e49a-45fe-89c7-99c04653599d",
+				"PermanentWarnings": "",
+				"PhysicsCollisionSound": "0c130d61-2b03-3abb-2d1d-3ea22eb35034",
+				"PhysicsFollowAnimation": false,
+				"PhysicsOpenTemplate": "",
+				"PhysicsTemplate": "56184af3-63ea-442e-b111-fe81bff2c2f4",
+				"PickupSound": "28ea7a9f-b66a-3410-7985-d7cd5cb896f0",
+				"ReceiveDecal": false,
+				"ReferencedInTimeline": false,
+				"RenderChannel": 4,
+				"SeeThrough": false,
+				"ShadowPhysicsProxy": "",
+				"ShootThroughType": 6,
+				"ShortDescription": {
+					"ArgumentString": {
+						"Handle": "ls::TranslatedStringRepository::s_HandleUnknown",
+						"Version": 0
+					},
+					"Handle": {
+						"Handle": "ls::TranslatedStringRepository::s_HandleUnknown",
+						"Version": 0
+					}
+				},
+				"ShortDescriptionParams": "",
+				"ShowAttachedSpellDescriptions": false,
+				"SoundAttenuation": -1,
+				"SoundInitEvent": "",
+				"SpeakerGroups": {},
+				"Stats": "WPN_Dagger",
+				"StatusList": {},
+				"StoryItem": false,
+				"TechnicalDescription": {
+					"ArgumentString": {
+						"Handle": "ls::TranslatedStringRepository::s_HandleUnknown",
+						"Version": 0
+					},
+					"Handle": {
+						"Handle": "ls::TranslatedStringRepository::s_HandleUnknown",
+						"Version": 0
+					}
+				},
+				"TechnicalDescriptionParams": "",
+				"TemplateName": "",
+				"TimelineCameraRigOverride": "00000000-0000-0000-0000-000000000000",
+				"Tooltip": 2,
+				"Transform": {
+					"Scale": [
+						1.0,
+						1.0,
+						1.0
+					],
+					"Translate": [
+						0.0,
+						0.0,
+						0.0
+					]
+				},
+				"TreasureLevel": -1,
+				"TreasureOnDestroy": false,
+				"UnequipSound": "503428af-9061-40a7-b9c4-64c8ec78fff3",
+				"Unimportant": false,
+				"UnknownDescription": {
+					"ArgumentString": {
+						"Handle": "ls::TranslatedStringRepository::s_HandleUnknown",
+						"Version": 0
+					},
+					"Handle": {
+						"Handle": "ls::TranslatedStringRepository::s_HandleUnknown",
+						"Version": 0
+					}
+				},
+				"UnknownDisplayName": {
+					"ArgumentString": {
+						"Handle": "ls::TranslatedStringRepository::s_HandleUnknown",
+						"Version": 0
+					},
+					"Handle": {
+						"Handle": "ls::TranslatedStringRepository::s_HandleUnknown",
+						"Version": 0
+					}
+				},
+				"UseOcclusion": true,
+				"UseOnDistance": false,
+				"UsePartyLevelForTreasureLevel": false,
+				"UseRemotely": false,
+				"UseSound": "",
+				"V4_0_0_26Flag": false,
+				"VisualTemplate": "564ac843-ea39-4fd9-b9ee-b37cee7e6734",
+				"Wadable": false,
+				"WadableSurfaceType": 13,
+				"WalkOn": false,
+				"WalkThrough": true,
+				"field_50": 12753
+			},
+			"PinnedContainer": false,
+			"PositionChanged": false,
+			"PreviousLevel": "WLD_Main_A",
+			"ReservedForDialog": false,
+			"SourceContainer": false,
+			"Stats": "WPN_Dagger",
+			"StatusManager": {
+				"Statuses": {}
+			},
+			"Sticky": false,
+			"StoryItem": false,
+			"Summon": false,
+			"TeleportOnUse": false,
+			"Template": "*RECURSION*",
+			"Totem": false,
+			"TransformChanged": false,
+			"TreasureGenerated": false,
+			"TreasureLevel": -1,
+			"UnEquipLocked": false,
+			"UnsoldGenerated": false,
+			"UseRemotely": false,
+			"WakePhysics": false,
+			"WalkOn": false,
+			"WalkThrough": false,
+			"field_10": "Entity (01c0000100000c62)",
+			"field_68": null,
+			"field_70": "564ac843-ea39-4fd9-b9ee-b37cee7e6734"
+		}
+	},
+	"ServerOsirisTag": {
+		"Tags": {}
+	},
+	"ServerTemplateTag": {
+		"Tags": {
+			"1": "b148cfca-53d8-4b73-b052-de08394a235e",
+			"2": "0006ca6f-28f9-48e9-9f34-3deb32ff0fef",
+			"3": "ef5d1184-dd1c-4988-bef9-ad19471aadba",
+			"4": "7490e5d0-d346-4b0e-80c6-04e977160863",
+			"5": "abadcad5-9229-4999-8c7a-cd557ff2c95c"
+		}
+	},
+	"ServerToggledPassives": {
+		"Passives": {}
+	},
+	"Speaker": {
+		"field_0": {
+			"1": "a4de84fe-9b07-3db9-5515-46ad835e72d2"
+		}
+	},
+	"SpellCastCanBeTargeted": {
+		"Dummy": 0
+	},
+	"StatusImmunities": {
+		"PersonalStatusImmunities": {
+			"BLEEDING": "00000000-0000-0000-0000-000000000000",
+			"BURNING": "00000000-0000-0000-0000-000000000000",
+			"SG_Condition": "00000000-0000-0000-0000-000000000000",
+			"SILENCED": "00000000-0000-0000-0000-000000000000"
+		}
+	},
+	"Tag": {
+		"Tags": {
+			"1": "b148cfca-53d8-4b73-b052-de08394a235e",
+			"2": "0006ca6f-28f9-48e9-9f34-3deb32ff0fef",
+			"3": "ef5d1184-dd1c-4988-bef9-ad19471aadba",
+			"4": "7490e5d0-d346-4b0e-80c6-04e977160863",
+			"5": "abadcad5-9229-4999-8c7a-cd557ff2c95c",
+			"6": "9360d001-0cef-49e0-a2e0-4d715d4976ea"
+		}
+	},
+	"Transform": {
+		"Transform": {
+			"Scale": [
+				1.0,
+				1.0,
+				1.0
+			],
+			"Translate": [
+				171.27702331542969,
+				12.0712890625,
+				288.90203857421875
+			]
+		}
+	},
+	"TurnBased": {
+		"ActedThisRoundInCombat": false,
+		"CanAct_M": false,
+		"Combat": "00000000-0000-0000-0000-000000000000",
+		"Entity": "Entity (01c0000100000c62)",
+		"HadTurnInCombat": false,
+		"IsInCombat_M": false,
+		"RequestedEndTurn": false,
+		"field_10": 0,
+		"field_18": 0,
+		"field_1C": 0,
+		"field_20": 0,
+		"field_24": 0,
+		"field_28": 0,
+		"field_8": 0,
+		"field_A": false,
+		"field_C": false
+	},
+	"Use": {
+		"Boosts": {},
+		"BoostsOnEquipMainHand": {
+			"1": {
+				"Boost": "UnlockSpell",
+				"Params": "Target_PiercingThrust",
+				"Params2": ""
+			}
+		},
+		"BoostsOnEquipOffHand": {},
+		"Charges": 0,
+		"ItemUseType": 1,
+		"MaxCharges": 0,
+		"Requirements": {},
+		"field_19": 0,
+		"field_1A": 0,
+		"field_1B": 0
+	},
+	"Uuid": {
+		"EntityUuid": "a4de84fe-9b07-3db9-5515-46ad835e72d2"
+	},
+	"Value": {
+		"Rarity": 0,
+		"Unique": false,
+		"Value": 16
+	},
+	"Weapon": {
+		"Ability": "Dexterity",
+		"DamageDice": "D4",
+		"DamageRange": 0.0,
+		"Rolls": {
+			"Dexterity": {
+				"1": {
+					"AmountOfDices": 1,
+					"DiceAdditionalValue": 0,
+					"DiceValue": "D4",
+					"field_8": 0
+				}
+			}
+		},
+		"Rolls2": {},
+		"VersatileDamageDice": "Default",
+		"WeaponGroup": 0,
+		"WeaponProperties": 12805,
+		"WeaponRange": 1.5,
+		"field_38": {}
+	}
+}

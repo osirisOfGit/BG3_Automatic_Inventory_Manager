@@ -1,10 +1,15 @@
-ITEM_MAP = {
-	['WPN_HUM_LightCrossbow_A_0_43b7fbf5-7f6e-4e9e-bce7-c679eea44593a'] = '',
-	['LOOT_Gold_A'] = '1c3c9c74-34a1-4685-989e-410dc080be6f',
+EQUIPTYPE_UUID_TO_NAME_MAP = {}
+for _, equipTypeUUID in pairs(Ext.StaticData.GetAll("EquipmentType")) do
+	EQUIPTYPE_UUID_TO_NAME_MAP[equipTypeUUID] = Ext.StaticData.Get(equipTypeUUID, "EquipmentType")["Name"]
+end
+_P("Finished initializing EQUIP_TYPE_TO_NAME_MAP")
+
+EQUIPMENT_TYPE_MAP = {
+    ['Dagger'] = 'S_Player_Gale_ad9af97d-75da-406a-ae13-7071c563f604'
 }
 
 -- Most of this was stolen from Auto_Sell_Loot. Cheers m8 ヾ(⌐■_■)ノ♪
-Config = {
+Config = { 
     initDone = false,
     config_tbl = { MOD_ENABLED = 1 },
     config_json_file_path = "config.json",
