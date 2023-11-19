@@ -1,4 +1,16 @@
 {
 	"Lua.diagnostics.globals": [
-	]
+		"Osi",
+		"Ext"
+	],
+	"search.exclude": {
+		"**/*.raw": true,
+		"**/Story/*.div": true,
+		"**/*.osi": true,
+		"**/*.dat": true
+	},
+	"Lua.diagnostics.libraryFiles": "Disable",
+	"Lua.diagnostics.workspaceRate": 25,
+	"Lua.diagnostics.workspaceDelay": 5000,
+	"Lua.workspace.preloadFileSize": 10000,
 }

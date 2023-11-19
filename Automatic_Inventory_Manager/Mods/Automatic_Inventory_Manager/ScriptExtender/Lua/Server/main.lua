@@ -4,6 +4,7 @@
 --  ✅ OnPickup, don't move item if not in table
 --  ✅ OnPickup, move item to designated party member (S_Player_Gale_ad9af97d-75da-406a-ae13-7071c563f604)
 --  Create Custom Tag to identify sorted items
+--  Remove Custom Tag on drop
 --  OnPickup, tag item as junk if designated
 --  OnPickup, move item designated as "best fit" to party member round-robin (e.g. distribute potions evenly)
 --            Add weighted distribution
@@ -40,14 +41,20 @@ end
 -- Includes moving from container to other inventories etc...
 Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "before", function(root, item, inventoryHolder, addType)
 	_P("Processing item " .. item .. " on character ".. inventoryHolder)
+	
+	if Osi.IsTagged(item, "add41a41-a1a8-4405-ae7f-ce12a0788a1a") == 1 then
+		_P("Item was already sorted, skipping!")
+		return
+	end
+
 	local targetCharacter
 	if Osi.IsEquipable(item) then
 		targetCharacter = EQUIPMENT_TYPE_MAP[EQUIPTYPE_UUID_TO_NAME_MAP[Ext.Entity.Get(item).ServerItem.Item.OriginalTemplate.EquipmentTypeID]]
 		_P("targetCharacter determined by EquipmentType, result: ".. targetCharacter)
 	end
-	_P("Did scoping work as expected? " .. targetCharacter)
 	if targetCharacter then
 		Osi.MagicPocketsMoveTo(inventoryHolder, item, targetCharacter, 1, 0)
+		Osi.SetTag(item, "add41a41-a1a8-4405-ae7f-ce12a0788a1a")
 		_P("Moved " .. Osi.GetStackAmount(item) .. " of item " .. item .. " to " .. targetCharacter)
 	end
 end)
