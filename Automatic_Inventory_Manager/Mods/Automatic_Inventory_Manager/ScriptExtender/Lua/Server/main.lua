@@ -1,11 +1,15 @@
 -- https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#getting-started
+-- https://github.com/LaughingLeader/BG3ModdingTools/wiki
+-- https://github.com/ShinyHobo/BG3-Modders-Multitool/wiki/
+
 -- Outline:
 --  ✅ OnPickup, move item to Lae'Zal (S_Player_Laezel_58a69333-40bf-8358-1d17-fff240d7fb12)
 --  ✅ OnPickup, don't move item if not in table
---  ✅ OnPickup, move item to designated party member (S_Player_Gale_ad9af97d-75da-406a-ae13-7071c563f604)
+--  ✅ OnPickup, move item to party member designated in table (S_Player_Gale_ad9af97d-75da-406a-ae13-7071c563f604)
 --  ✅ Create Custom Tag to identify sorted items
 --  ✅ Remove Custom Tag on drop
---  OnPickup, tag item as junk if designated
+--  ❌ Reason: There's no reliable way to have BG3 tag an item as junk - no idea have Osi.IsJunk works. Gonna just point people to AUTO_SELL_LOOT
+--		|-- Original item: OnPickup, tag item as junk if designated
 --  OnPickup, move item designated as "best fit" to party member round-robin (e.g. distribute potions evenly)
 --            Add weighted distribution
 --  OnContainerOpen, optionally execute distribution according to config
@@ -40,9 +44,27 @@ function GetItemDisplayName(item)
 end
 
 -- Includes moving from container to other inventories etc...
-Ext.Osiris.RegisterListener("AddedTo", 3, "before", function(item, inventoryHolder, addType)
-	_P("Processing item " .. item .. " on character ".. inventoryHolder .. " with addType " .. addType)
-	
+Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "before", function(root, item, inventoryHolder, addType)
+	_P("Processing item " .. item .. " with root " .. root .. " on character " .. inventoryHolder .. " with addType " .. addType)
+
+	if Osi.IsTagged(item, TAG_AIM_OPTIONALLY_TAGGED) == 0 then
+		_P("Adding optional tags")
+		Osi.SetTag(item, TAG_AIM_OPTIONALLY_TAGGED)
+
+		local opt_tags = OPTIONAL_TAGS[item]
+		if not opt_tags then opt_tags = OPTIONAL_TAGS[root] end
+		if opt_tags then
+			_P("Have tags to add ")
+			for _, tag in pairs(opt_tags) do
+				_P(Osi.IsTagged(item, tag))
+				if Osi.IsTagged(designatedTarget, tag) == 0 then
+					Osi.SetTag(item, tag)
+					_P("Set tag " .. tag .. " on " .. item)
+				end
+			end
+		end
+	end
+
 	if Osi.IsTagged(item, TAG_AIM_SORTED) == 1 then
 		_P("Item was already sorted, skipping!")
 		return
@@ -51,8 +73,9 @@ Ext.Osiris.RegisterListener("AddedTo", 3, "before", function(item, inventoryHold
 	local targetCharacter
 	if Osi.IsEquipable(item) then
 		targetCharacter = EQUIPMENT_TYPE_MAP[EQUIPTYPE_UUID_TO_NAME_MAP[Ext.Entity.Get(item).ServerItem.Item.OriginalTemplate.EquipmentTypeID]]
-		_P("targetCharacter determined by EquipmentType, result: ".. targetCharacter)
+		if targetCharacter then _P("targetCharacter determined by EquipmentType, result: " .. targetCharacter) end
 	end
+	
 	if targetCharacter then
 		Osi.MagicPocketsMoveTo(inventoryHolder, item, targetCharacter, 1, 0)
 		Osi.SetTag(item, TAG_AIM_SORTED)
@@ -61,5 +84,5 @@ Ext.Osiris.RegisterListener("AddedTo", 3, "before", function(item, inventoryHold
 end)
 
 Ext.Osiris.RegisterListener("DroppedBy", 2, "after", function(object, inventoryHolder)
-		Osi.ClearTag(object, TAG_AIM_SORTED)
+	Osi.ClearTag(object, TAG_AIM_SORTED)
 end)
