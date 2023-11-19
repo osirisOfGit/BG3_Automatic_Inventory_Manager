@@ -8,8 +8,10 @@
 --  ✅ OnPickup, move item to party member designated in table (S_Player_Gale_ad9af97d-75da-406a-ae13-7071c563f604)
 --  ✅ Create Custom Tag to identify sorted items
 --  ✅ Remove Custom Tag on drop
---  ❌ Reason: There's no reliable way to have BG3 tag an item as junk - no idea have Osi.IsJunk works. Gonna just point people to AUTO_SELL_LOOT
---		|-- Original item: OnPickup, tag item as junk if designated
+--  ❎ Reason: There's no reliable way to have BG3 tag an item as junk - no idea have Osi.IsJunk works. Gonna just point people to AUTO_SELL_LOOT
+--			|-- Original item: OnPickup, tag item as junk if designated
+-- 			|-- New Item: Implement adding optional tags. No use-cases yet, re-evaluate if needed later
+--  Clear my item tags on Script Extender reset
 --  OnPickup, move item designated as "best fit" to party member round-robin (e.g. distribute potions evenly)
 --            Add weighted distribution
 --  OnContainerOpen, optionally execute distribution according to config
@@ -75,7 +77,7 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "before", function(root, item,
 		targetCharacter = EQUIPMENT_TYPE_MAP[EQUIPTYPE_UUID_TO_NAME_MAP[Ext.Entity.Get(item).ServerItem.Item.OriginalTemplate.EquipmentTypeID]]
 		if targetCharacter then _P("targetCharacter determined by EquipmentType, result: " .. targetCharacter) end
 	end
-	
+
 	if targetCharacter then
 		Osi.MagicPocketsMoveTo(inventoryHolder, item, targetCharacter, 1, 0)
 		Osi.SetTag(item, TAG_AIM_SORTED)
