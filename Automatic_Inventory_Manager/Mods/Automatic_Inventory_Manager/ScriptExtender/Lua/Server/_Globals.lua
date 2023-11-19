@@ -16,3 +16,5 @@ Config = {
     logPath = "log.txt",
     -- CurrentVersion = Ext.Mod.GetMod(MOD_UUID).Info.ModVersion[1].."."..Ext.Mod.GetMod(MOD_UUID).Info.ModVersion[2].."."..Ext.Mod.GetMod(MOD_UUID).Info.ModVersion[3].."."..Ext.Mod.GetMod(MOD_UUID).Info.ModVersion[4],
 }
+
+TAG_AIM_SORTED = "add41a41-a1a8-4405-ae7f-ce12a0788a1a"

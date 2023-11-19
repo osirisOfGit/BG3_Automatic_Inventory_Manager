@@ -4,11 +4,12 @@
 --  ✅ OnPickup, don't move item if not in table
 --  ✅ OnPickup, move item to designated party member (S_Player_Gale_ad9af97d-75da-406a-ae13-7071c563f604)
 --  ✅ Create Custom Tag to identify sorted items
---  Remove Custom Tag on drop
+--  ✅ Remove Custom Tag on drop
 --  OnPickup, tag item as junk if designated
 --  OnPickup, move item designated as "best fit" to party member round-robin (e.g. distribute potions evenly)
 --            Add weighted distribution
 --  OnContainerOpen, optionally execute distribution according to config
+--  Add option to have party members move to the item for "realism" - intercept on RequestCanPickup
 --  SkillActivate - trigger distribution for all party members
 --					stretch: anti-annoying measure for online play
 --  OnPartyMemberSwap, redistribute from party member being left in camp
@@ -39,10 +40,10 @@ function GetItemDisplayName(item)
 end
 
 -- Includes moving from container to other inventories etc...
-Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "before", function(root, item, inventoryHolder, addType)
-	_P("Processing item " .. item .. " on character ".. inventoryHolder)
+Ext.Osiris.RegisterListener("AddedTo", 3, "before", function(item, inventoryHolder, addType)
+	_P("Processing item " .. item .. " on character ".. inventoryHolder .. " with addType " .. addType)
 	
-	if Osi.IsTagged(item, "add41a41-a1a8-4405-ae7f-ce12a0788a1a") == 1 then
+	if Osi.IsTagged(item, TAG_AIM_SORTED) == 1 then
 		_P("Item was already sorted, skipping!")
 		return
 	end
@@ -54,7 +55,11 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "before", function(root, item,
 	end
 	if targetCharacter then
 		Osi.MagicPocketsMoveTo(inventoryHolder, item, targetCharacter, 1, 0)
-		Osi.SetTag(item, "add41a41-a1a8-4405-ae7f-ce12a0788a1a")
+		Osi.SetTag(item, TAG_AIM_SORTED)
 		_P("Moved " .. Osi.GetStackAmount(item) .. " of item " .. item .. " to " .. targetCharacter)
 	end
+end)
+
+Ext.Osiris.RegisterListener("DroppedBy", 2, "after", function(object, inventoryHolder)
+		Osi.ClearTag(object, TAG_AIM_SORTED)
 end)
