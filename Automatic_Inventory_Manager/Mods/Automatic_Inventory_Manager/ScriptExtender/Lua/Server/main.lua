@@ -3,7 +3,7 @@
 --  ✅ OnPickup, move item to Lae'Zal (S_Player_Laezel_58a69333-40bf-8358-1d17-fff240d7fb12)
 --  ✅ OnPickup, don't move item if not in table
 --  ✅ OnPickup, move item to designated party member (S_Player_Gale_ad9af97d-75da-406a-ae13-7071c563f604)
---  Create Custom Tag to identify sorted items
+--  ✅ Create Custom Tag to identify sorted items
 --  Remove Custom Tag on drop
 --  OnPickup, tag item as junk if designated
 --  OnPickup, move item designated as "best fit" to party member round-robin (e.g. distribute potions evenly)
