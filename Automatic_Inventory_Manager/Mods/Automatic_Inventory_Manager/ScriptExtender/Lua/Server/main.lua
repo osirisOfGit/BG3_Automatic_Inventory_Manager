@@ -96,7 +96,6 @@ end)
 -- There's definitely a way to combine this and the iterator listener, but types were being difficult
 Ext.Events.ResetCompleted:Subscribe(function(_)
 	for _, player in pairs(Osi.DB_Players:Get(nil)) do
-		_D(player[1])
 		for _, optionalTag in pairs(TAGS_TO_CLEAR) do
 			Osi.IterateInventoryByTag(player[1], optionalTag, EVENT_CLEAR_CUSTOM_TAGS_START .. optionalTag, EVENT_CLEAR_CUSTOM_TAGS_END .. optionalTag)
 		end
@@ -105,7 +104,6 @@ end)
 
 Ext.Osiris.RegisterListener("EntityEvent", 2, "after", function(guid, event)
 	if string.find(event, EVENT_CLEAR_CUSTOM_TAGS_START) then
-		_D(event)
 		_P("Cleared tag " .. string.sub(event, string.len(EVENT_CLEAR_CUSTOM_TAGS_START) + 1) .. " off item " .. guid)
 		Osi.ClearTag(guid, string.sub(event, string.len(EVENT_CLEAR_CUSTOM_TAGS_START) + 1))
 	end
