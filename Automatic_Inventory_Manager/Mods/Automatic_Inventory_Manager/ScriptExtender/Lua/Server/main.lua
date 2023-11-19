@@ -45,20 +45,14 @@ function GetItemDisplayName(item)
 	if not success then return "NO HANDLE" else return translatedName end
 end
 
-function ApplyOptionalTags(item)
-	if Osi.IsTagged(item, TAG_AIM_OPTIONALLY_TAGGED) == 0 then
-		_P("Adding optional tags")
-		Osi.SetTag(item, TAG_AIM_OPTIONALLY_TAGGED)
-
-		local opt_tags = OPTIONAL_TAGS[item]
-		if not opt_tags then opt_tags = OPTIONAL_TAGS[root] end
-		if opt_tags then
-			_P("Have tags to add ")
-			for _, tag in pairs(opt_tags) do
-				if Osi.IsTagged(item, tag) == 0 then
-					Osi.SetTag(item, tag)
-					_P("Set tag " .. tag .. " on " .. item)
-				end
+function ApplyOptionalTags(root, item)
+	local opt_tags = OPTIONAL_TAGS[item]
+	if not opt_tags then opt_tags = OPTIONAL_TAGS[root] end
+	if opt_tags then
+		for _, tag in pairs(opt_tags) do
+			if Osi.IsTagged(item, tag) == 0 then
+				Osi.SetTag(item, tag)
+				_P("Set tag " .. tag .. " on " .. item)
 			end
 		end
 	end
@@ -69,12 +63,12 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "before", function(root, item,
 	_P("Processing item " ..
 		item .. " with root " .. root .. " on character " .. inventoryHolder .. " with addType " .. addType)
 
-	ApplyOptionalTags(item)
-
-	if Osi.IsTagged(item, TAG_AIM_SORTED) == 1 then
-		_P("Item was already sorted, skipping!")
+	if Osi.IsTagged(item, TAG_AIM_PROCESSED) == 1 then
+		_P("Item was already processed, skipping!")
 		return
 	end
+
+	ApplyOptionalTags(root, item)
 
 	local targetCharacter
 	if Osi.IsEquipable(item) then
@@ -84,20 +78,21 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "before", function(root, item,
 
 	if targetCharacter then
 		Osi.MagicPocketsMoveTo(inventoryHolder, item, targetCharacter, 1, 0)
-		Osi.SetTag(item, TAG_AIM_SORTED)
+		Osi.SetTag(item, TAG_AIM_PROCESSED)
 		_P("Moved " .. Osi.GetStackAmount(item) .. " of item " .. item .. " to " .. targetCharacter)
 	end
 end)
 
 Ext.Osiris.RegisterListener("DroppedBy", 2, "after", function(object, inventoryHolder)
-	Osi.ClearTag(object, TAG_AIM_SORTED)
+	Osi.ClearTag(object, TAG_AIM_PROCESSED)
 end)
 
 -- There's definitely a way to combine this and the iterator listener, but types were being difficult
 Ext.Events.ResetCompleted:Subscribe(function(_)
 	for _, player in pairs(Osi.DB_Players:Get(nil)) do
 		for _, optionalTag in pairs(TAGS_TO_CLEAR) do
-			Osi.IterateInventoryByTag(player[1], optionalTag, EVENT_CLEAR_CUSTOM_TAGS_START .. optionalTag, EVENT_CLEAR_CUSTOM_TAGS_END .. optionalTag)
+			Osi.IterateInventoryByTag(player[1], optionalTag, EVENT_CLEAR_CUSTOM_TAGS_START .. optionalTag,
+				EVENT_CLEAR_CUSTOM_TAGS_END .. optionalTag)
 		end
 	end
 end)

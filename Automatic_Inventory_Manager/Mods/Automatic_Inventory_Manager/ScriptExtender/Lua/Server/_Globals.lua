@@ -12,16 +12,14 @@ EQUIPMENT_TYPE_MAP = {
 -- Larians Tags(Public/shared/Tags/)
 
 -- Custom Tags (/Public/Automatic_Inventory_Manager/Tags)
-TAG_AIM_SORTED = "add41a41-a1a8-4405-ae7f-ce12a0788a1a"
-TAG_AIM_OPTIONALLY_TAGGED = "b7b1860b-c7e5-4d76-9140-1f45fa999821";
+TAG_AIM_PROCESSED = "add41a41-a1a8-4405-ae7f-ce12a0788a1a"
 
 -- Supports Item GUID (Name + MapKey) and Root GUID (parentTemplate name + MapKey). <br/>
 -- Returns an array of 1-many tags to add
 OPTIONAL_TAGS = {
-    ['WPN_HUM_Dagger_A_0_a4de84fe-9b07-3db9-5515-46ad835e72d2'] = { "1f0551f3-d769-47a9-b02b-5d3a8c51978c" }
 }
 
-TAGS_TO_CLEAR = { TAG_AIM_OPTIONALLY_TAGGED, TAG_AIM_SORTED }
+TAGS_TO_CLEAR = { TAG_AIM_PROCESSED }
 for _, tags in pairs(OPTIONAL_TAGS) do
     for _, tag in pairs(tags) do table.insert(TAGS_TO_CLEAR, tag) end
 end
