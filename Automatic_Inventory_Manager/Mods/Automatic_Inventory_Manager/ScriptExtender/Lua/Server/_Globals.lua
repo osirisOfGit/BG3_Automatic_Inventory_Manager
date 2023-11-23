@@ -2,10 +2,42 @@ EQUIPTYPE_UUID_TO_NAME_MAP = {}
 for _, equipTypeUUID in pairs(Ext.StaticData.GetAll("EquipmentType")) do
     EQUIPTYPE_UUID_TO_NAME_MAP[equipTypeUUID] = Ext.StaticData.Get(equipTypeUUID, "EquipmentType")["Name"]
 end
-_P("Finished initializing EQUIP_TYPE_TO_NAME_MAP")
 
-EQUIPMENT_TYPE_MAP = {
-    ['Dagger'] = 'S_Player_Gale_ad9af97d-75da-406a-ae13-7071c563f604'
+TAG_UUID_TO_NAME_MAP = {}
+for _, tagUUID in pairs(Ext.StaticData.GetAll("Tag")) do
+    TAG_UUID_TO_NAME_MAP[tagUUID] = Ext.StaticData.Get(tagUUID, "Tag")["Name"]
+end
+
+MODE = 'MODE'
+
+------------
+MODE_DIRECT = 'DIRECT'
+TARGET = 'TARGET'
+------------
+MODE_WEIGHT_BY = 'WEIGHT_BY'
+CRITERIA = 'CRITERIA'
+
+COMPARATOR = "COMPARATOR"
+COMPARATOR_LT = "LT"
+COMPARATOR_GT = "GT"
+
+STAT = "STAT"
+STAT_HEALTH_PERCENTAGE = "HEALTH %"
+STAT_STACK_AMOUNT = "STACK AMOUNT"
+------------
+
+ITEMS_TO_PROCESS_MAP = {
+    ['Dagger'] = {
+        [MODE] = MODE_DIRECT,
+        [TARGET] = 'S_Player_Gale_ad9af97d-75da-406a-ae13-7071c563f604'
+    },
+    ["HEALING_POTION"] = {
+        [MODE] = MODE_WEIGHT_BY,
+        [CRITERIA] = {
+            [1] = { [STAT] = STAT_HEALTH_PERCENTAGE, [COMPARATOR] = COMPARATOR_LT, },
+            [2] = { [STAT] = STAT_STACK_AMOUNT, [COMPARATOR] = COMPARATOR_LT }
+        }
+    }
 }
 
 
@@ -34,5 +66,6 @@ Config = {
 }
 
 -- CUSTOM EVENTS
-EVENT_CLEAR_CUSTOM_TAGS_START = "AIM_CLEAR_CUSTOM_TAGS_START_f98d4ce6-cff3-49f0-840c-7bd64674e8ad_"
-EVENT_CLEAR_CUSTOM_TAGS_END = "AIM_CLEAR_CUSTOM_TAGS_END_f98d4ce6-cff3-49f0-840c-7bd64674e8ad_"
+
+EVENT_CLEAR_CUSTOM_TAGS_START = "AIM_CLEAR_CUSTOM_TAGS_START"
+EVENT_CLEAR_CUSTOM_TAGS_END = "AIM_CLEAR_CUSTOM_TAGS_END"

@@ -13,7 +13,8 @@
 -- 			|-- New Item: Implement adding optional tags. No use-cases yet, re-evaluate if needed later
 --  ✅ Clear my item tags on Script Extender reset
 --  OnPickup, move item designated as "best fit" to party member round-robin (e.g. distribute potions evenly)
---            Add weighted distribution
+--            ✅  Add weighted distribution by health
+-- 	OnPickup, move item to designated class, with backup
 --  OnContainerOpen, optionally execute distribution according to config
 --  Add option to have party members move to the item for "realism" - intercept on RequestCanPickup
 --  SkillActivate - trigger distribution for all party members
@@ -61,7 +62,7 @@ end
 -- Includes moving from container to other inventories etc...
 Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "before", function(root, item, inventoryHolder, addType)
 	_P("Processing item " ..
-		item .. " with root " .. root .. " on character " .. inventoryHolder .. " with addType " .. addType)
+		item .. " with root " .. root .. " on character " .. inventoryHolder .. " with addType " .. addType .. " and amount " .. Osi.GetStackAmount(item))
 
 	if Osi.IsTagged(item, TAG_AIM_PROCESSED) == 1 then
 		_P("Item was already processed, skipping!")
@@ -70,16 +71,21 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "before", function(root, item,
 
 	ApplyOptionalTags(root, item)
 
-	local targetCharacter
+	local processingCommand
 	if Osi.IsEquipable(item) then
-		targetCharacter = EQUIPMENT_TYPE_MAP[EQUIPTYPE_UUID_TO_NAME_MAP[Ext.Entity.Get(item).ServerItem.Item.OriginalTemplate.EquipmentTypeID]]
-		if targetCharacter then _P("targetCharacter determined by EquipmentType, result: " .. targetCharacter) end
+		local equipmentTypeUUID = Ext.Entity.Get(item).ServerItem.Item.OriginalTemplate.EquipmentTypeID
+		processingCommand = ITEMS_TO_PROCESS_MAP[EQUIPTYPE_UUID_TO_NAME_MAP[equipmentTypeUUID]]
 	end
 
-	if targetCharacter then
-		Osi.MagicPocketsMoveTo(inventoryHolder, item, targetCharacter, 1, 0)
-		Osi.SetTag(item, TAG_AIM_PROCESSED)
-		_P("Moved " .. Osi.GetStackAmount(item) .. " of item " .. item .. " to " .. targetCharacter)
+	for _, tag in pairs(Ext.Entity.Get(item).Tag.Tags) do
+		local tagCommand = ITEMS_TO_PROCESS_MAP[TAG_UUID_TO_NAME_MAP[tag]]
+		if tagCommand then
+			processingCommand = tagCommand 
+		end
+	end
+
+	if processingCommand then
+		ProcessCommand(item, root, inventoryHolder, processingCommand)
 	end
 end)
 
@@ -99,7 +105,7 @@ end)
 
 Ext.Osiris.RegisterListener("EntityEvent", 2, "after", function(guid, event)
 	if string.find(event, EVENT_CLEAR_CUSTOM_TAGS_START) then
-		_P("Cleared tag " .. string.sub(event, string.len(EVENT_CLEAR_CUSTOM_TAGS_START) + 1) .. " off item " .. guid)
+		_P("Cleared tag " .. string.sub(event, string.len(EVENT_CLEAR_CUSTOM_TAGS_START) + 1) .. " off item " .. guid .. " on stack " .. Osi.GetStackAmount(guid))
 		Osi.ClearTag(guid, string.sub(event, string.len(EVENT_CLEAR_CUSTOM_TAGS_START) + 1))
 	end
 end)
