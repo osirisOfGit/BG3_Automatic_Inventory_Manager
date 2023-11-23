@@ -2,7 +2,7 @@
 -- https://github.com/LaughingLeader/BG3ModdingTools/wiki
 -- https://github.com/ShinyHobo/BG3-Modders-Multitool/wiki/
 
--- Outline:
+-- Development Outline:
 --  ✅ OnPickup, move item to Lae'Zal (S_Player_Laezel_58a69333-40bf-8358-1d17-fff240d7fb12)
 --  ✅ OnPickup, don't move item if not in table
 --  ✅ OnPickup, move item to party member designated in table (S_Player_Gale_ad9af97d-75da-406a-ae13-7071c563f604)
@@ -15,11 +15,13 @@
 --  OnPickup, move item designated as "best fit" to party member round-robin (e.g. distribute potions evenly)
 --            ✅  Add weighted distribution by health
 -- 	OnPickup, move item to designated class, with backup
+--  Execute sort on game start
 --  OnContainerOpen, optionally execute distribution according to config
 --  Add option to have party members move to the item for "realism" - intercept on RequestCanPickup
 --  SkillActivate - trigger distribution for all party members
 --					stretch: anti-annoying measure for online play
 --  OnPartyMemberSwap, redistribute from party member being left in camp
+--  Add confirmation box to choose second-best fit if best fit will be encumbered (and so on)
 
 -- Useful functions: MoveItemTo, GetItemByTagInInventory, GetStackAmount, ItemTagIsInInventory, UserTransferTaggedItems, SendToCampChest, IterateTagsCategory
 -- Useful events: TemplateAddedTo, CharacterJoinedParty, CharacterLeftParty

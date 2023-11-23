@@ -20,13 +20,28 @@ function ProcessCommand(item, root, inventoryHolder, command)
 		end
 	end
 
-	if target then
-		Osi.ToInventory(item, target, Osi.GetStackAmount(item), 1, 1)
-		Osi.SetTag(item, TAG_AIM_PROCESSED)
-		_P("Moved item " .. item .. " to " .. target)
-	else 
-		_P("Couldn't determine a target for item " .. item .. " on character " .. inventoryHolder .. " for command " .. command)
+	if not target then
+		_P("Couldn't determine a target for item " ..
+			item .. " on character " .. inventoryHolder .. " for command " .. Ext.Json.Stringify(command))
+		return
+	elseif target == inventoryHolder then
+		_P("Target was determined to be inventoryHolder for " ..
+			item .. " on character " .. inventoryHolder .. " for command " .. Ext.Json.Stringify(command))
+	else
+		if Osi.GetMaxStackAmount(item) > 1 then
+			local current, _ = Osi.GetStackAmount(item)
+			Osi.TemplateAddTo(root, target, current, 1)
+			Osi.TemplateRemoveFrom(root, inventoryHolder, current)
+			_P("'Moved' " .. current .. " " .. root .. " to " .. target .. " from " .. inventoryHolder)
+		else
+			Osi.MagicPocketsMoveTo(inventoryHolder, item, target, 1, 0)
+			-- Osi.SetTag(item, TAG_AIM_PROCESSED)
+			_P("'Moved' single " .. item .. " to " .. target)
+		end
 	end
+	_D(Osi.GetItemByTemplateInUserInventory(root, target))
+	Osi.SetTag(Osi.GetItemByTemplateInUserInventory(root, target), TAG_AIM_PROCESSED)
+	_P("Set Tag to Processed")
 end
 
 -- 0 if equal, 1 if base beats challenger, -1 if base loses to challenger
@@ -53,11 +68,13 @@ function GET_TARGET_BY_WEIGHTED_HEALTH_STAT(criteria)
 				table.insert(winners, player[1])
 			elseif result == -1 then
 				winners = { player[1] }
+				winningHealthPercent = challengerHealthPercent
 			end
 		else
 			winningHealthPercent = challengerHealthPercent
 			table.insert(winners, player[1])
 		end
+		_P("Current winners for health % are " .. Ext.Json.Stringify(winners))
 	end
 
 	return winners
