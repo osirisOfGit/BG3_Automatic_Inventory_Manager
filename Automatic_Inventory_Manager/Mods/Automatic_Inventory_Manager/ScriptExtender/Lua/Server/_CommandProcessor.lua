@@ -30,12 +30,13 @@ function ProcessCommand(item, root, inventoryHolder, command)
 	else
 		if Osi.GetMaxStackAmount(item) > 1 then
 			local current, _ = Osi.GetStackAmount(item)
+			-- Forces the game to generate new UUIDs for the items, since stacking is a very duct-tape-and-glue system
 			Osi.TemplateAddTo(root, target, current, 1)
-			Osi.TemplateRemoveFrom(root, inventoryHolder, current)
+			Osi.TemplateRemoveFromUser(root, inventoryHolder, current)
 			_P("'Moved' " .. current .. " " .. root .. " to " .. target .. " from " .. inventoryHolder)
 		else
+			-- To avoid any potential weirdness with unique item UUIDs
 			Osi.MagicPocketsMoveTo(inventoryHolder, item, target, 1, 0)
-			-- Osi.SetTag(item, TAG_AIM_PROCESSED)
 			_P("'Moved' single " .. item .. " to " .. target)
 		end
 	end
