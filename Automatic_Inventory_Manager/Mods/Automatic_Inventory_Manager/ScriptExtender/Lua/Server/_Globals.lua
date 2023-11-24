@@ -45,6 +45,7 @@ ITEMS_TO_PROCESS_MAP = {
 
 -- Custom Tags (/Public/Automatic_Inventory_Manager/Tags)
 TAG_AIM_PROCESSED = "add41a41-a1a8-4405-ae7f-ce12a0788a1a"
+TAG_AIM_MARK_FOR_DELETION = "4b640e87-509b-4c90-a4e7-144c224314b0"
 
 -- Supports Item GUID (Name + MapKey) and Root GUID (parentTemplate name + MapKey). <br/>
 -- Returns an array of 1-many tags to add
@@ -56,12 +57,15 @@ for _, tags in pairs(OPTIONAL_TAGS) do
     for _, tag in pairs(tags) do table.insert(TAGS_TO_CLEAR, tag) end
 end
 
+ITEMS_TO_DELETE = {}
+
 -- Most of this was stolen from Auto_Sell_Loot. Cheers m8 ヾ(⌐■_■)ノ♪
 Config = {
     initDone = false,
     config_tbl = { MOD_ENABLED = 1 },
     config_json_file_path = "config.json",
     logPath = "log.txt",
+    resetAllStacks = true
     -- CurrentVersion = Ext.Mod.GetMod(MOD_UUID).Info.ModVersion[1].."."..Ext.Mod.GetMod(MOD_UUID).Info.ModVersion[2].."."..Ext.Mod.GetMod(MOD_UUID).Info.ModVersion[3].."."..Ext.Mod.GetMod(MOD_UUID).Info.ModVersion[4],
 }
 
@@ -69,3 +73,6 @@ Config = {
 
 EVENT_CLEAR_CUSTOM_TAGS_START = "AIM_CLEAR_CUSTOM_TAGS_START"
 EVENT_CLEAR_CUSTOM_TAGS_END = "AIM_CLEAR_CUSTOM_TAGS_END"
+
+EVENT_ITERATE_ITEMS_TO_REBUILD_THEM_START = "AIM_REBUILD_ITEMS_START"
+EVENT_ITERATE_ITEMS_TO_REBUILD_THEM_END = "AIM_REBUILD_ITEMS_END"

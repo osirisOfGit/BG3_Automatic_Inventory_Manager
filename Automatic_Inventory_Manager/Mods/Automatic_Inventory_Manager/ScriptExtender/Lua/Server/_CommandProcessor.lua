@@ -27,12 +27,17 @@ function ProcessCommand(item, root, inventoryHolder, command)
 	elseif target == inventoryHolder then
 		_P("Target was determined to be inventoryHolder for " ..
 			item .. " on character " .. inventoryHolder .. " for command " .. Ext.Json.Stringify(command))
+		-- Generally happens when splitting stacks, this allows us to tag the stack without trying to "move"
+		-- which can cause infinite loops due to GetItemByTemplateInUserInventory not refreshing its value in time (TemplateRemoveFromUser kicks off an event maybe?)
+		Osi.SetTag(item, TAG_AIM_PROCESSED)
+		return
 	else
 		if Osi.GetMaxStackAmount(item) > 1 then
+			Osi.SetTag(item, TAG_AIM_PROCESSED)
 			local current, _ = Osi.GetStackAmount(item)
-			-- Forces the game to generate new UUIDs for the items, since stacking is a very duct-tape-and-glue system
-			Osi.TemplateAddTo(root, target, current, 1)
+			-- Forces the game to generate a new, complete stack of items with all one UUID, since stacking is a very duct-tape-and-glue system
 			Osi.TemplateRemoveFromUser(root, inventoryHolder, current)
+			Osi.TemplateAddTo(root, target, current, 1)
 			_P("'Moved' " .. current .. " " .. root .. " to " .. target .. " from " .. inventoryHolder)
 		else
 			-- To avoid any potential weirdness with unique item UUIDs
@@ -40,7 +45,6 @@ function ProcessCommand(item, root, inventoryHolder, command)
 			_P("'Moved' single " .. item .. " to " .. target)
 		end
 	end
-	_D(Osi.GetItemByTemplateInUserInventory(root, target))
 	Osi.SetTag(Osi.GetItemByTemplateInUserInventory(root, target), TAG_AIM_PROCESSED)
 	_P("Set Tag to Processed")
 end
@@ -75,7 +79,6 @@ function GET_TARGET_BY_WEIGHTED_HEALTH_STAT(criteria)
 			winningHealthPercent = challengerHealthPercent
 			table.insert(winners, player[1])
 		end
-		_P("Current winners for health % are " .. Ext.Json.Stringify(winners))
 	end
 
 	return winners
