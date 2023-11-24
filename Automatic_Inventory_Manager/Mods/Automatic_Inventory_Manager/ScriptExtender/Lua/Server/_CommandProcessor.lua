@@ -1,86 +1,62 @@
 function ProcessCommand(item, root, inventoryHolder, command)
-	local target
-	if command[MODE] == MODE_DIRECT then
-		target = command[TARGET]
-	elseif command[MODE] == MODE_WEIGHT_BY then
-		if command[CRITERIA] then
-			for i = 1, #command[CRITERIA] do
-				local currentWeightedCriteria = command[CRITERIA][i]
-				if currentWeightedCriteria[STAT] == STAT_HEALTH_PERCENTAGE then
-					local winners = GET_TARGET_BY_WEIGHTED_HEALTH_STAT(currentWeightedCriteria)
-					if #winners == 1 then
-						target = winners[1]
-						_P("Determined target " .. target .. " for item " .. item .. " by " .. STAT_HEALTH_PERCENTAGE)
-						break
-					end
-				elseif currentWeightedCriteria[STAT] == STAT_STACK_AMOUNT then
-					local winners = {}
-					local winningSize
-					for _, player in pairs(Osi.DB_Players:Get(nil)) do
-						local item = Osi.GetItemByTemplateInInventory(root, player[1])
-						if item then
-							local _, biggestStackTheoretical = Osi.GetStackAmount(item)
-							if not winningSize then
-								winningSize = biggestStackTheoretical
-								table.insert(winners, player[1])
-							else
-								local result = Compare(winningSize, biggestStackTheoretical,
-									currentWeightedCriteria[COMPARATOR])
-								if result == 0 then
-									table.insert(winners, player[1])
-								elseif result == -1 then
-									winners = { player[1] }
-									winningSize = biggestStackTheoretical
-								end
-							end
-							_P("Current winners with size " ..
-							winningSize .. " on item " .. item .. " are " .. Ext.Json.Stringify(winners))
-						end
-					end
+	local itemStackAmount, _ = Osi.GetStackAmount(item)
+	local targetChars = {}
+	for _, player in pairs(Osi.DB_Players:Get(nil)) do
+		targetChars[player[1]] = 0
+	end
+
+	for itemCounter = 1, itemStackAmount do
+		_P("Processing " .. itemCounter .. " out of " .. itemStackAmount)
+		local target
+		if command[MODE] == MODE_DIRECT then
+			target = command[TARGET]
+		elseif command[MODE] == MODE_WEIGHT_BY then
+			if command[CRITERIA] then
+				for i = 1, #command[CRITERIA] do
+					local currentWeightedCriteria = command[CRITERIA][i]
+					local winners = STAT_TO_FUNCTION_MAP[currentWeightedCriteria[STAT]](targetChars, inventoryHolder,
+						item, root,
+						currentWeightedCriteria)
 
 					if #winners == 1 or i == #command[CRITERIA] then
 						if #winners == 1 then
 							target = winners[1]
-							_P("Determined specific target " ..
-							target .. " for item " .. item .. " by " .. STAT_STACK_AMOUNT)
 						else
 							target = winners[Osi.Random(#winners) + 1]
-							_P("Determined random target " ..
-							target .. " for item " .. item .. " by " .. STAT_STACK_AMOUNT)
 						end
+						targetChars[target] = targetChars[target] + 1
+						break
 					end
 				end
 			end
 		end
 	end
-
-	if not target then
-		_P("Couldn't determine a target for item " ..
-			item .. " on character " .. inventoryHolder .. " for command " .. Ext.Json.Stringify(command))
-		return
-	elseif target == inventoryHolder then
-		_P("Target was determined to be inventoryHolder for " ..
-			item .. " on character " .. inventoryHolder .. " for command " .. Ext.Json.Stringify(command))
-		-- Generally happens when splitting stacks, this allows us to tag the stack without trying to "move"
-		-- which can cause infinite loops due to GetItemByTemplateInUserInventory not refreshing its value in time (TemplateRemoveFromUser kicks off an event maybe?)
-		Osi.SetTag(item, TAG_AIM_PROCESSED)
-		return
-	else
-		if Osi.GetMaxStackAmount(item) > 1 then
-			Osi.SetTag(item, TAG_AIM_PROCESSED)
-			local _, totalStack = Osi.GetStackAmount(item)
-			-- Forces the game to generate a new, complete stack of items with all one UUID, since stacking is a very duct-tape-and-glue system
-			Osi.TemplateRemoveFromUser(root, inventoryHolder, totalStack)
-			Osi.TemplateAddTo(root, target, totalStack, 1)
-			_P("'Moved' " .. totalStack .. " " .. root .. " to " .. target .. " from " .. inventoryHolder)
-		else
-			-- To avoid any potential weirdness with unique item UUIDs
-			Osi.MagicPocketsMoveTo(inventoryHolder, item, target, 1, 0)
-			_P("'Moved' single " .. item .. " to " .. target)
+	_P("Final Results: " .. Ext.Json.Stringify(targetChars))
+	for target, amount in pairs(targetChars) do
+		if amount > 0 then
+			-- if not target then
+			-- 	_P("Couldn't determine a target for item " ..
+			-- 		item .. " on character " .. inventoryHolder .. " for command " .. Ext.Json.Stringify(command))
+			-- end
+			if target == inventoryHolder then
+				_P("Target was determined to be inventoryHolder for " ..
+					item .. " on character " .. inventoryHolder)
+				-- Generally happens when splitting stacks, this allows us to tag the stack without trying to "move"
+				-- which can cause infinite loops due to GetItemByTemplateInUserInventory not refreshing its value in time (TemplateRemoveFromUser kicks off an event maybe?)
+			else
+				if Osi.GetMaxStackAmount(item) > 1 then
+					-- Forces the game to generate a new, complete stack of items with all one UUID, since stacking is a very duct-tape-and-glue system
+					Osi.SetTag(item, TAG_AIM_MARK_FOR_DELETION)
+					_P("'Moved' " .. Osi.UserTransferTaggedItems(inventoryHolder, target, TAG_AIM_MARK_FOR_DELETION, amount) .. " of " .. root .. " to " .. target .. " from " .. inventoryHolder)
+				else
+					-- To avoid any potential weirdness with unique item UUIDs
+					Osi.MagicPocketsMoveTo(inventoryHolder, item, target, 1, 0)
+					_P("'Moved' single " .. item .. " to " .. target)
+				end
+			end
 		end
 	end
-	Osi.SetTag(Osi.GetItemByTemplateInUserInventory(root, target), TAG_AIM_PROCESSED)
-	_P("Set Tag to Processed")
+	Osi.ClearTag(item, TAG_AIM_MARK_FOR_DELETION)
 end
 
 -- 0 if equal, 1 if base beats challenger, -1 if base loses to challenger
@@ -94,26 +70,59 @@ function Compare(baseValue, challengerValue, comparator)
 	end
 end
 
-function GET_TARGET_BY_WEIGHTED_HEALTH_STAT(criteria)
+function GetTargetByHealthPercent(targetCharacters, _, _, _, criteria)
 	local winningHealthPercent
 	local winners = {}
-	for _, player in pairs(Osi.DB_Players:Get(nil)) do
-		local health = Ext.Entity.Get(player[1]).Health
+	for targetChar, _ in pairs(targetCharacters) do
+		local health = Ext.Entity.Get(targetChar).Health
 		local challengerHealthPercent = (health.Hp / health.MaxHp) * 100
 		if winningHealthPercent then
 			local result = Compare(winningHealthPercent, challengerHealthPercent,
 				criteria[COMPARATOR])
 			if result == 0 then
-				table.insert(winners, player[1])
+				table.insert(winners, targetChar)
 			elseif result == -1 then
-				winners = { player[1] }
+				winners = { targetChar }
 				winningHealthPercent = challengerHealthPercent
 			end
 		else
 			winningHealthPercent = challengerHealthPercent
-			table.insert(winners, player[1])
+			table.insert(winners, targetChar)
 		end
 	end
 
 	return winners
 end
+
+function GetTargetByStackAmount(targetCharacters, inventoryHolder, _, root, criteria)
+	local winners = {}
+	local winningVal
+	for targetChar, amountOfItemReserved in pairs(targetCharacters) do
+		local item = Osi.GetItemByTemplateInInventory(root, targetChar)
+		local _, biggestStackTheoretical = item and Osi.GetStackAmount(item) or 0, 0
+		if targetChar == inventoryHolder then
+			biggestStackTheoretical = amountOfItemReserved
+		else 
+			biggestStackTheoretical = biggestStackTheoretical + amountOfItemReserved
+		end
+		if not winningVal then
+			winningVal = biggestStackTheoretical
+			table.insert(winners, targetChar)
+		else
+			local result = Compare(winningVal, biggestStackTheoretical,
+				criteria[COMPARATOR])
+			if result == 0 then
+				table.insert(winners, targetChar)
+			elseif result == -1 then
+				winners = { targetChar }
+				winningVal = biggestStackTheoretical
+			end
+		end
+	end
+	return winners
+end
+
+STAT_TO_FUNCTION_MAP = {
+	[STAT_STACK_AMOUNT] = GetTargetByStackAmount,
+	[STAT_HEALTH_PERCENTAGE] = GetTargetByHealthPercent
+}

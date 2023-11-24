@@ -62,8 +62,8 @@ function ApplyOptionalTags(root, item)
 end
 
 -- Includes moving from container to other inventories etc...
-Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "before", function(root, item, inventoryHolder, addType)
-	_P("Processing item " ..
+Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(root, item, inventoryHolder, addType)
+	_P("STARTED Processing item " ..
 		item ..
 		" with root " ..
 		root ..
@@ -90,10 +90,17 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "before", function(root, item,
 	end
 
 	if processingCommand then
+		Osi.SetTag(item, TAG_AIM_PROCESSED)
 		ProcessCommand(item, root, inventoryHolder, processingCommand)
 	else
 		Ext.Utils.PrintWarning("No command could be found for " .. item .. " with root " .. root .. " on " .. inventoryHolder)
 	end
+
+	_P("FINISHED Processing item " ..
+	item ..
+	" with root " ..
+	root ..
+	" on character " .. inventoryHolder .. " with addType " .. addType .. " and amount " .. Osi.GetStackAmount(item))
 end)
 
 Ext.Osiris.RegisterListener("DroppedBy", 2, "after", function(object, inventoryHolder)
@@ -132,7 +139,6 @@ Ext.Osiris.RegisterListener("EntityEvent", 2, "before", function(guid, event)
 		Osi.ClearTag(guid, string.sub(event, string.len(EVENT_CLEAR_CUSTOM_TAGS_START) + 1))
 	elseif string.find(event, EVENT_ITERATE_ITEMS_TO_REBUILD_THEM_START) then
 		if Osi.GetMaxStackAmount(guid) > 1 then
-			_P("Processing " .. event)
 			local itemTemplate = Osi.GetTemplate(guid)
 			local currentStackSize, _ = Osi.GetStackAmount(guid)
 			local character = string.sub(event, string.len(EVENT_ITERATE_ITEMS_TO_REBUILD_THEM_START) + 1)
@@ -147,10 +153,8 @@ Ext.Osiris.RegisterListener("EntityEvent", 2, "before", function(guid, event)
 			end
 		end
 	elseif string.find(event, EVENT_ITERATE_ITEMS_TO_REBUILD_THEM_END) then
-		_P("Processing " .. event .. " on " .. guid)
 		local character = string.sub(event, string.len(EVENT_ITERATE_ITEMS_TO_REBUILD_THEM_END) + 1)
-		Osi.MagicPocketsDestroyLocalItemsByTag(character, TAG_AIM_MARK_FOR_DELETION, 99)
-		_P("DELETION: Removed from " .. character)
+		Osi.UserRemoveTaggedItems(character, TAG_AIM_MARK_FOR_DELETION, Osi.TaggedItemsGetCountInMagicPockets(TAG_AIM_MARK_FOR_DELETION, character))
 		
 		if ITEMS_TO_DELETE[character] then
 			for itemTemplate, amount in pairs(ITEMS_TO_DELETE[character]) do
