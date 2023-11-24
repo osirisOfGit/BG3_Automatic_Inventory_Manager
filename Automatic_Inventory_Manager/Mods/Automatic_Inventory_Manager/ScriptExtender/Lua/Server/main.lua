@@ -12,7 +12,7 @@
 --			|-- Original item: OnPickup, tag item as junk if designated
 -- 			|-- New Item: Implement adding optional tags. No use-cases yet, re-evaluate if needed later
 --  ✅ Clear my item tags on Script Extender reset
---  OnPickup, move item designated as "best fit" to party member round-robin (e.g. distribute potions evenly)
+--  ✅ OnPickup, move item designated as "best fit" to party member round-robin (e.g. distribute potions evenly)
 --            ✅  Add weighted distribution by health
 -- 	OnPickup, move item to designated class, with backup
 --  ✅ Execute sort on game start
