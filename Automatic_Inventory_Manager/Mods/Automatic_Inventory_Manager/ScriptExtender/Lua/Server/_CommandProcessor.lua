@@ -1,12 +1,16 @@
 function ProcessCommand(item, root, inventoryHolder, command)
 	local itemStackAmount, _ = Osi.GetStackAmount(item)
-	local targetChars = {}
+	local targetCharsAndReservedAmount = {}
 	for _, player in pairs(Osi.DB_Players:Get(nil)) do
-		targetChars[player[1]] = 0
+		targetCharsAndReservedAmount[player[1]] = 0
 	end
 
 	for itemCounter = 1, itemStackAmount do
-		_P("Processing " .. itemCounter .. " out of " .. itemStackAmount)
+		_P("Processing " ..
+			itemCounter ..
+			" out of " ..
+			itemStackAmount ..
+			" with winners: " .. Ext.Json.Stringify(targetCharsAndReservedAmount, { Beautify = false }))
 		local target
 		if command[MODE] == MODE_DIRECT then
 			target = command[TARGET]
@@ -14,7 +18,8 @@ function ProcessCommand(item, root, inventoryHolder, command)
 			if command[CRITERIA] then
 				for i = 1, #command[CRITERIA] do
 					local currentWeightedCriteria = command[CRITERIA][i]
-					local winners = STAT_TO_FUNCTION_MAP[currentWeightedCriteria[STAT]](targetChars, inventoryHolder,
+					local winners = STAT_TO_FUNCTION_MAP[currentWeightedCriteria[STAT]](targetCharsAndReservedAmount,
+						inventoryHolder,
 						item, root,
 						currentWeightedCriteria)
 
@@ -24,15 +29,16 @@ function ProcessCommand(item, root, inventoryHolder, command)
 						else
 							target = winners[Osi.Random(#winners) + 1]
 						end
-						targetChars[target] = targetChars[target] + 1
+						targetCharsAndReservedAmount[target] = targetCharsAndReservedAmount[target] + 1
 						break
 					end
 				end
 			end
 		end
 	end
-	_P("Final Results: " .. Ext.Json.Stringify(targetChars))
-	for target, amount in pairs(targetChars) do
+	_P("Final Results: " .. Ext.Json.Stringify(targetCharsAndReservedAmount))
+	Osi.SetTag(item, TAG_AIM_MARK_FOR_DELETION)
+	for target, amount in pairs(targetCharsAndReservedAmount) do
 		if amount > 0 then
 			-- if not target then
 			-- 	_P("Couldn't determine a target for item " ..
@@ -46,8 +52,9 @@ function ProcessCommand(item, root, inventoryHolder, command)
 			else
 				if Osi.GetMaxStackAmount(item) > 1 then
 					-- Forces the game to generate a new, complete stack of items with all one UUID, since stacking is a very duct-tape-and-glue system
-					Osi.SetTag(item, TAG_AIM_MARK_FOR_DELETION)
-					_P("'Moved' " .. Osi.UserTransferTaggedItems(inventoryHolder, target, TAG_AIM_MARK_FOR_DELETION, amount) .. " of " .. root .. " to " .. target .. " from " .. inventoryHolder)
+					_P("'Moved' " ..
+						Osi.UserTransferTaggedItems(inventoryHolder, target, TAG_AIM_MARK_FOR_DELETION, amount) ..
+						" of " .. root .. " to " .. target .. " from " .. inventoryHolder)
 				else
 					-- To avoid any potential weirdness with unique item UUIDs
 					Osi.MagicPocketsMoveTo(inventoryHolder, item, target, 1, 0)
@@ -97,25 +104,31 @@ end
 function GetTargetByStackAmount(targetCharacters, inventoryHolder, _, root, criteria)
 	local winners = {}
 	local winningVal
+
 	for targetChar, amountOfItemReserved in pairs(targetCharacters) do
-		local item = Osi.GetItemByTemplateInInventory(root, targetChar)
-		local _, biggestStackTheoretical = item and Osi.GetStackAmount(item) or 0, 0
+		local itemCount = Osi.TemplateIsInInventory(root, targetChar)
+		itemCount = itemCount + amountOfItemReserved
 		if targetChar == inventoryHolder then
-			biggestStackTheoretical = amountOfItemReserved
-		else 
-			biggestStackTheoretical = biggestStackTheoretical + amountOfItemReserved
+			for char, amountReserved in pairs(targetCharacters) do
+				if not (char == inventoryHolder) then
+					itemCount = itemCount - amountReserved
+					-- _P("Brought down inventoryHolder's amount by  " .. amountReserved)
+				end
+			end
 		end
+		-- _P("Found " .. itemCount .. " on " .. targetChar)
+
 		if not winningVal then
-			winningVal = biggestStackTheoretical
+			winningVal = itemCount
 			table.insert(winners, targetChar)
 		else
-			local result = Compare(winningVal, biggestStackTheoretical,
+			local result = Compare(winningVal, itemCount,
 				criteria[COMPARATOR])
 			if result == 0 then
 				table.insert(winners, targetChar)
 			elseif result == -1 then
 				winners = { targetChar }
-				winningVal = biggestStackTheoretical
+				winningVal = itemCount
 			end
 		end
 	end

@@ -63,14 +63,19 @@ end
 
 -- Includes moving from container to other inventories etc...
 Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(root, item, inventoryHolder, addType)
+	Osi.ClearTag(item, TAG_AIM_MARK_FOR_DELETION)
+
 	_P("STARTED Processing item " ..
 		item ..
 		" with root " ..
 		root ..
 		" on character " .. inventoryHolder .. " with addType " .. addType .. " and amount " .. Osi.GetStackAmount(item))
 
+	_P("----------------------------------------------------------")
+
 	if Osi.IsTagged(item, TAG_AIM_PROCESSED) == 1 then
-		_P("Item was already processed, skipping!")
+		_P("----------------------------------------------------------")
+		_P("Item was already processed, skipping!\n")
 		return
 	end
 
@@ -90,43 +95,43 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(root, item, 
 	end
 
 	if processingCommand then
-		Osi.SetTag(item, TAG_AIM_PROCESSED)
 		ProcessCommand(item, root, inventoryHolder, processingCommand)
 	else
-		Ext.Utils.PrintWarning("No command could be found for " .. item .. " with root " .. root .. " on " .. inventoryHolder)
+		Ext.Utils.Print("No command could be found for " ..
+		item .. " with root " .. root .. " on " .. inventoryHolder)
 	end
-
+	
+	Osi.SetTag(item, TAG_AIM_PROCESSED)
+	_P("----------------------------------------------------------")
 	_P("FINISHED Processing item " ..
-	item ..
-	" with root " ..
-	root ..
-	" on character " .. inventoryHolder .. " with addType " .. addType .. " and amount " .. Osi.GetStackAmount(item))
+		item ..
+		" with root " ..
+		root ..
+		" on character " .. inventoryHolder .. " with addType " .. addType .. " and amount " .. Osi.GetStackAmount(item) .. "\n")
 end)
 
 Ext.Osiris.RegisterListener("DroppedBy", 2, "after", function(object, inventoryHolder)
 	Osi.ClearTag(object, TAG_AIM_PROCESSED)
 end)
 
--- There's definitely a way to combine this and the iterator listener, but types were being difficult
-Ext.Events.ResetCompleted:Subscribe(function(_)
+function ResetItemStacks()
 	for _, player in pairs(Osi.DB_Players:Get(nil)) do
-		for _, optionalTag in pairs(TAGS_TO_CLEAR) do
-			Osi.IterateInventoryByTag(player[1], optionalTag, EVENT_CLEAR_CUSTOM_TAGS_START .. optionalTag,
-				EVENT_CLEAR_CUSTOM_TAGS_END .. optionalTag)
-		end
+		_P("Cleaning up item stacks on " .. player[1])
+		Osi.IterateInventory(player[1],
+			EVENT_ITERATE_ITEMS_TO_REBUILD_THEM_START .. player[1],
+			EVENT_ITERATE_ITEMS_TO_REBUILD_THEM_END .. player[1])
+		ITEMS_TO_DELETE[player[1]] = {}
 	end
+end
+
+Ext.Events.ResetCompleted:Subscribe(function(_)
+	ResetItemStacks()
 end)
 
 Ext.Osiris.RegisterListener("LevelGameplayStarted", 2, "after", function(level, _)
 	if level == "SYS_CC_I" then return end
 	if Config.resetAllStacks then
-		for _, player in pairs(Osi.DB_Players:Get(nil)) do
-			_P("Cleaning up item stacks on " .. player[1])
-			Osi.IterateInventory(player[1],
-				EVENT_ITERATE_ITEMS_TO_REBUILD_THEM_START .. player[1],
-				EVENT_ITERATE_ITEMS_TO_REBUILD_THEM_END .. player[1])
-			ITEMS_TO_DELETE[player[1]] = {}
-		end
+		ResetItemStacks()
 		Config.resetAllStacks = false
 	end
 end)
@@ -144,18 +149,19 @@ Ext.Osiris.RegisterListener("EntityEvent", 2, "before", function(guid, event)
 			local character = string.sub(event, string.len(EVENT_ITERATE_ITEMS_TO_REBUILD_THEM_START) + 1)
 			-- The alternative, TemplateRemoveFrom, can delete members of other stacks if they have different UUIDs (e.g. were split)
 			Osi.SetTag(guid, TAG_AIM_MARK_FOR_DELETION)
-			
+
 			local itemsToDelete = ITEMS_TO_DELETE[character]
 			if not itemsToDelete[itemTemplate] then
 				itemsToDelete[itemTemplate] = currentStackSize;
-			else 
+			else
 				itemsToDelete[itemTemplate] = itemsToDelete[itemTemplate] + currentStackSize
 			end
 		end
 	elseif string.find(event, EVENT_ITERATE_ITEMS_TO_REBUILD_THEM_END) then
 		local character = string.sub(event, string.len(EVENT_ITERATE_ITEMS_TO_REBUILD_THEM_END) + 1)
-		Osi.UserRemoveTaggedItems(character, TAG_AIM_MARK_FOR_DELETION, Osi.TaggedItemsGetCountInMagicPockets(TAG_AIM_MARK_FOR_DELETION, character))
-		
+		Osi.PartyRemoveTaggedItems(character, TAG_AIM_MARK_FOR_DELETION,
+			Osi.TaggedItemsGetCountInMagicPockets(TAG_AIM_MARK_FOR_DELETION, character))
+
 		if ITEMS_TO_DELETE[character] then
 			for itemTemplate, amount in pairs(ITEMS_TO_DELETE[character]) do
 				Osi.TemplateAddTo(itemTemplate, character, amount)
