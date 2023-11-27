@@ -40,10 +40,13 @@ ITEMS_TO_PROCESS_MAP = {
     }
 }
 
+TEMPLATES_BEING_TRANSFERRED = {}
+
 
 -- Larians Tags(Public/shared/Tags/)
 
 -- Custom Tags (/Public/Automatic_Inventory_Manager/Tags)
+TAG_AIM_PROCESSING = "aecae31d-cbb3-40bb-89d2-c2cbf50383e4"
 TAG_AIM_PROCESSED = "add41a41-a1a8-4405-ae7f-ce12a0788a1a"
 TAG_AIM_MARK_FOR_DELETION = "4b640e87-509b-4c90-a4e7-144c224314b0"
 

@@ -63,15 +63,23 @@ end
 
 -- Includes moving from container to other inventories etc...
 Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(root, item, inventoryHolder, addType)
-	Osi.ClearTag(item, TAG_AIM_MARK_FOR_DELETION)
-
-	_P("STARTED Processing item " ..
-		item ..
-		" with root " ..
-		root ..
-		" on character " .. inventoryHolder .. " with addType " .. addType .. " and amount " .. Osi.GetStackAmount(item))
+	_P("STARTED Processing item " .. item ..
+		" with root " .. root ..
+		" on character " .. inventoryHolder ..
+		" with addType " .. addType .. 
+		" and amount " .. Osi.GetStackAmount(item) ..
+		 " from owner [\n\t" .. Osi.GetOriginalOwner(item) .. "\n\t" .. Osi.GetDirectInventoryOwner(item) .. "\n\t" .. Osi.GetOwner(item) .. "]")
 
 	_P("----------------------------------------------------------")
+
+	if not Osi.GetOriginalOwner(item) == Osi.GetUUID(inventoryHolder) and Osi.DB_Players:Get(Osi.GetOriginalOwner(item)) then
+		_P("Original owner was " .. Osi.GetOriginalOwner(item))
+		Osi.SetTag(item, TAG_AIM_PROCESSED)
+		Osi.SetOriginalOwner(Osi.GetUUID(inventoryHolder))
+		if TEMPLATES_BEING_TRANSFERRED[root] and TEMPLATES_BEING_TRANSFERRED[root][inventoryHolder] then
+			TEMPLATES_BEING_TRANSFERRED[root][inventoryHolder] = TEMPLATES_BEING_TRANSFERRED[root][inventoryHolder] - Osi.GetStackAmount(item) 
+		end
+	end
 
 	if Osi.IsTagged(item, TAG_AIM_PROCESSED) == 1 then
 		_P("----------------------------------------------------------")
@@ -98,16 +106,17 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(root, item, 
 		ProcessCommand(item, root, inventoryHolder, processingCommand)
 	else
 		Ext.Utils.Print("No command could be found for " ..
-		item .. " with root " .. root .. " on " .. inventoryHolder)
+			item .. " with root " .. root .. " on " .. inventoryHolder)
 	end
-	
+
 	Osi.SetTag(item, TAG_AIM_PROCESSED)
 	_P("----------------------------------------------------------")
 	_P("FINISHED Processing item " ..
 		item ..
 		" with root " ..
 		root ..
-		" on character " .. inventoryHolder .. " with addType " .. addType .. " and amount " .. Osi.GetStackAmount(item) .. "\n")
+		" on character " ..
+		inventoryHolder .. " with addType " .. addType .. " and amount " .. Osi.GetStackAmount(item) .. "\n")
 end)
 
 Ext.Osiris.RegisterListener("DroppedBy", 2, "after", function(object, inventoryHolder)
@@ -143,13 +152,13 @@ Ext.Osiris.RegisterListener("EntityEvent", 2, "before", function(guid, event)
 			" off item " .. guid .. " on stack " .. Osi.GetStackAmount(guid))
 		Osi.ClearTag(guid, string.sub(event, string.len(EVENT_CLEAR_CUSTOM_TAGS_START) + 1))
 	elseif string.find(event, EVENT_ITERATE_ITEMS_TO_REBUILD_THEM_START) then
-		if Osi.GetMaxStackAmount(guid) > 1 then
+		local character = string.sub(event, string.len(EVENT_ITERATE_ITEMS_TO_REBUILD_THEM_START) + 1)
+		if Osi.GetMaxStackAmount(guid) > 1 and Osi.IsStoryItem(guid) == 0 then
 			local itemTemplate = Osi.GetTemplate(guid)
 			local currentStackSize, _ = Osi.GetStackAmount(guid)
-			local character = string.sub(event, string.len(EVENT_ITERATE_ITEMS_TO_REBUILD_THEM_START) + 1)
 			-- The alternative, TemplateRemoveFrom, can delete members of other stacks if they have different UUIDs (e.g. were split)
 			Osi.SetTag(guid, TAG_AIM_MARK_FOR_DELETION)
-
+			
 			local itemsToDelete = ITEMS_TO_DELETE[character]
 			if not itemsToDelete[itemTemplate] then
 				itemsToDelete[itemTemplate] = currentStackSize;

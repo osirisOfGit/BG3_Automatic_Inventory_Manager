@@ -6,14 +6,15 @@ function ProcessCommand(item, root, inventoryHolder, command)
 	end
 
 	for itemCounter = 1, itemStackAmount do
-		_P("Processing " ..
-			itemCounter ..
-			" out of " ..
-			itemStackAmount ..
-			" with winners: " .. Ext.Json.Stringify(targetCharsAndReservedAmount, { Beautify = false }))
+		-- _P("Processing " ..
+		-- 	itemCounter ..
+		-- 	" out of " ..
+		-- 	itemStackAmount ..
+		-- 	" with winners: " .. Ext.Json.Stringify(targetCharsAndReservedAmount, { Beautify = false }))
 		local target
 		if command[MODE] == MODE_DIRECT then
 			target = command[TARGET]
+			targetCharsAndReservedAmount[target] = targetCharsAndReservedAmount[target] + 1
 		elseif command[MODE] == MODE_WEIGHT_BY then
 			if command[CRITERIA] then
 				for i = 1, #command[CRITERIA] do
@@ -37,7 +38,6 @@ function ProcessCommand(item, root, inventoryHolder, command)
 		end
 	end
 	_P("Final Results: " .. Ext.Json.Stringify(targetCharsAndReservedAmount))
-	Osi.SetTag(item, TAG_AIM_MARK_FOR_DELETION)
 	for target, amount in pairs(targetCharsAndReservedAmount) do
 		if amount > 0 then
 			-- if not target then
@@ -50,20 +50,22 @@ function ProcessCommand(item, root, inventoryHolder, command)
 				-- Generally happens when splitting stacks, this allows us to tag the stack without trying to "move"
 				-- which can cause infinite loops due to GetItemByTemplateInUserInventory not refreshing its value in time (TemplateRemoveFromUser kicks off an event maybe?)
 			else
-				if Osi.GetMaxStackAmount(item) > 1 then
-					-- Forces the game to generate a new, complete stack of items with all one UUID, since stacking is a very duct-tape-and-glue system
-					_P("'Moved' " ..
-						Osi.UserTransferTaggedItems(inventoryHolder, target, TAG_AIM_MARK_FOR_DELETION, amount) ..
-						" of " .. root .. " to " .. target .. " from " .. inventoryHolder)
+				-- Forces the game to generate a new, complete stack of items with all one UUID, since stacking is a very duct-tape-and-glue system
+				Osi.ToInventory(item, target, amount, 0, 0)
+				if not TEMPLATES_BEING_TRANSFERRED[root] then
+					TEMPLATES_BEING_TRANSFERRED[root] = { [target] = amount }
+				elseif not TEMPLATES_BEING_TRANSFERRED[root][target] then
+					TEMPLATES_BEING_TRANSFERRED[root][target] = amount
 				else
-					-- To avoid any potential weirdness with unique item UUIDs
-					Osi.MagicPocketsMoveTo(inventoryHolder, item, target, 1, 0)
-					_P("'Moved' single " .. item .. " to " .. target)
+					TEMPLATES_BEING_TRANSFERRED[root][target] = TEMPLATES_BEING_TRANSFERRED[root][target] + amount
 				end
+
+				_P("'Moved' " ..
+					amount ..
+					" of " .. root .. " to " .. target .. " from " .. inventoryHolder)
 			end
 		end
 	end
-	Osi.ClearTag(item, TAG_AIM_MARK_FOR_DELETION)
 end
 
 -- 0 if equal, 1 if base beats challenger, -1 if base loses to challenger
@@ -106,29 +108,39 @@ function GetTargetByStackAmount(targetCharacters, inventoryHolder, _, root, crit
 	local winningVal
 
 	for targetChar, amountOfItemReserved in pairs(targetCharacters) do
-		local itemCount = Osi.TemplateIsInInventory(root, targetChar)
-		itemCount = itemCount + amountOfItemReserved
+		local item = Osi.GetItemByTemplateInInventory(root, targetChar)
+		local _, totalFutureStackSize
+		if item then
+			_, totalFutureStackSize = Osi.GetStackAmount(item)
+		else
+			totalFutureStackSize = 0
+		end
+		totalFutureStackSize = totalFutureStackSize + amountOfItemReserved
+		if TEMPLATES_BEING_TRANSFERRED[root] and TEMPLATES_BEING_TRANSFERRED[root][targetChar] then
+			totalFutureStackSize = totalFutureStackSize + TEMPLATES_BEING_TRANSFERRED[root][targetChar]
+			-- _P("Added " .. TEMPLATES_BEING_TRANSFERRED[root][targetChar] .. " to the stack size")
+		end
 		if targetChar == inventoryHolder then
 			for char, amountReserved in pairs(targetCharacters) do
 				if not (char == inventoryHolder) then
-					itemCount = itemCount - amountReserved
+					totalFutureStackSize = totalFutureStackSize - amountReserved
 					-- _P("Brought down inventoryHolder's amount by  " .. amountReserved)
 				end
 			end
 		end
-		-- _P("Found " .. itemCount .. " on " .. targetChar)
+		-- _P("Found " .. totalFutureStackSize .. " on " .. targetChar)
 
 		if not winningVal then
-			winningVal = itemCount
+			winningVal = totalFutureStackSize
 			table.insert(winners, targetChar)
 		else
-			local result = Compare(winningVal, itemCount,
+			local result = Compare(winningVal, totalFutureStackSize,
 				criteria[COMPARATOR])
 			if result == 0 then
 				table.insert(winners, targetChar)
 			elseif result == -1 then
 				winners = { targetChar }
-				winningVal = itemCount
+				winningVal = totalFutureStackSize
 			end
 		end
 	end
