@@ -1,10 +1,10 @@
 function ProcessCommand(item, root, inventoryHolder, command)
 	local itemStackAmount, _ = Osi.GetStackAmount(item)
 	local targetCharsAndReservedAmount = {}
-	local playersList = {}
+	local partyList = {}
 	for _, player in pairs(Osi.DB_Players:Get(nil)) do
 		targetCharsAndReservedAmount[player[1]] = 0
-		table.insert(playersList, player[1])
+		table.insert(partyList, player[1])
 	end
 
 	for _ = 1, itemStackAmount do
@@ -19,13 +19,31 @@ function ProcessCommand(item, root, inventoryHolder, command)
 			targetCharsAndReservedAmount[target] = targetCharsAndReservedAmount[target] + 1
 		elseif command[MODE] == MODE_WEIGHT_BY then
 			if command[CRITERIA] then
-				local survivors = { table.unpack(playersList) }
+				local survivors
+				local stackLimit = command[STACK_LIMIT]
+				if stackLimit then
+					survivors = {}
+					for partyMember, _ in pairs(targetCharsAndReservedAmount) do
+						local totalFutureStackSize = CalculateTemplateCurrentAndReservedStackSize(targetCharsAndReservedAmount, partyMember, inventoryHolder, root)
+						if totalFutureStackSize < stackLimit then
+							-- _P("Reserved amount of " .. reservedAmount .. " is less than limit of " .. stackLimit .. " on " .. partyMember)
+							table.insert(survivors, partyMember)
+						end
+					end
+				end
+				if not stackLimit or #survivors == 0 then
+					-- _P("Setting survivors to full partyList")
+					survivors = { table.unpack(partyList) }
+				end
+				-- _P("Initial survivors: " .. Ext.Json.Stringify(survivors))
+
 				for i = 1, #command[CRITERIA] do
 					local currentWeightedCriteria = command[CRITERIA][i]
 					survivors = STAT_TO_FUNCTION_MAP[currentWeightedCriteria[STAT]](targetCharsAndReservedAmount,
 						survivors,
 						inventoryHolder,
-						item, root,
+						item,
+						root,
 						currentWeightedCriteria)
 
 					if #survivors == 1 or i == #command[CRITERIA] then
@@ -51,10 +69,8 @@ function ProcessCommand(item, root, inventoryHolder, command)
 			if target == inventoryHolder then
 				_P("Target was determined to be inventoryHolder for " ..
 					item .. " on character " .. inventoryHolder)
-				-- Generally happens when splitting stacks, this allows us to tag the stack without trying to "move"
-				-- which can cause infinite loops due to GetItemByTemplateInUserInventory not refreshing its value in time (TemplateRemoveFromUser kicks off an event maybe?)
 			else
-				-- Forces the game to generate a new, complete stack of items with all one UUID, since stacking is a very duct-tape-and-glue system
+				-- This method generates a new uuid for the item upon moving it without forcing us to destroy it and generate a new one from the template
 				Osi.ToInventory(item, target, amount, 0, 0)
 				if not TEMPLATES_BEING_TRANSFERRED[root] then
 					TEMPLATES_BEING_TRANSFERRED[root] = { [target] = amount }
@@ -112,32 +128,8 @@ function GetTargetByStackAmount(targetCharacters, survivors, inventoryHolder, _,
 	local winningVal
 
 	for _, targetChar in pairs(survivors) do
-		local item = Osi.GetItemByTemplateInInventory(root, targetChar)
-		local _, totalFutureStackSize
-		if item then
-			_, totalFutureStackSize = Osi.GetStackAmount(item)
-		else
-			totalFutureStackSize = 0
-		end
-		totalFutureStackSize = totalFutureStackSize + targetCharacters[targetChar]
-		if TEMPLATES_BEING_TRANSFERRED[root] and TEMPLATES_BEING_TRANSFERRED[root][targetChar] then
-			totalFutureStackSize = totalFutureStackSize + TEMPLATES_BEING_TRANSFERRED[root][targetChar]
-			-- _P("Added " .. TEMPLATES_BEING_TRANSFERRED[root][targetChar] .. " to the stack size")
-		end
-		if targetChar == inventoryHolder then
-			local amountToRemove = 0
-			for char, amountReserved in pairs(targetCharacters) do
-				if not (char == inventoryHolder) then
-					amountToRemove = amountToRemove + amountReserved
-					-- _P("Brought down inventoryHolder's amount by  " .. amountReserved)
-				end
-			end
-			if amountToRemove > totalFutureStackSize then
-				amountToRemove = totalFutureStackSize
-			end
-			totalFutureStackSize = totalFutureStackSize - totalFutureStackSize
-		end
-		_P("Found " .. totalFutureStackSize .. " on " .. targetChar)
+		local totalFutureStackSize = CalculateTemplateCurrentAndReservedStackSize(targetCharacters, targetChar, inventoryHolder, root)
+		-- _P("Found " .. totalFutureStackSize .. " on " .. targetChar)
 
 		if not winningVal then
 			winningVal = totalFutureStackSize
@@ -154,6 +146,36 @@ function GetTargetByStackAmount(targetCharacters, survivors, inventoryHolder, _,
 		end
 	end
 	return winners
+end
+
+function CalculateTemplateCurrentAndReservedStackSize(targetCharacters, targetChar, inventoryHolder, root)
+	local itemByTemplate = Osi.GetItemByTemplateInInventory(root, targetChar)
+	local _, totalFutureStackSize
+	if itemByTemplate then
+		_, totalFutureStackSize = Osi.GetStackAmount(itemByTemplate)
+	else
+		totalFutureStackSize = 0
+	end
+	totalFutureStackSize = totalFutureStackSize + targetCharacters[targetChar]
+	if TEMPLATES_BEING_TRANSFERRED[root] and TEMPLATES_BEING_TRANSFERRED[root][targetChar] then
+		totalFutureStackSize = totalFutureStackSize + TEMPLATES_BEING_TRANSFERRED[root][targetChar]
+		-- _P("Added " .. TEMPLATES_BEING_TRANSFERRED[root][targetChar] .. " to the stack size")
+	end
+	if targetChar == inventoryHolder then
+		local amountToRemove = 0
+		for char, amountReserved in pairs(targetCharacters) do
+			if not (char == inventoryHolder) then
+				amountToRemove = amountToRemove + amountReserved
+				-- _P("Brought down inventoryHolder's amount by  " .. amountReserved)
+			end
+		end
+		if amountToRemove > totalFutureStackSize then
+			amountToRemove = totalFutureStackSize
+		end
+		totalFutureStackSize = totalFutureStackSize - totalFutureStackSize
+	end
+
+	return totalFutureStackSize
 end
 
 STAT_TO_FUNCTION_MAP = {

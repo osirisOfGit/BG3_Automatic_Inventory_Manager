@@ -16,6 +16,7 @@ TARGET = 'TARGET'
 ------------
 MODE_WEIGHT_BY = 'WEIGHT_BY'
 CRITERIA = 'CRITERIA'
+STACK_LIMIT = 'STACK_LIMIT'
 ------------
 COMPARATOR = "COMPARATOR"
 HAS_LESS = "HAS_LESS"
@@ -40,7 +41,8 @@ ITEMS_TO_PROCESS_MAP = {
         [CRITERIA] = {
             [1] = { [STAT] = STAT_HEALTH_PERCENTAGE, [COMPARATOR] = HAS_LESS, },
             [2] = { [STAT] = STAT_STACK_AMOUNT, [COMPARATOR] = HAS_LESS }
-        }
+        },
+        [STACK_LIMIT] = 2
     }
 }
 
