@@ -22,7 +22,7 @@ function ProcessCommand(item, root, inventoryHolder, command)
 				local survivors = { table.unpack(partyList) }
 
 				for i = 1, #command[CRITERIA] do
-					-- If there's a stack limit, remove any members that exceed it
+					-- If there's a stack limit, remove any members that exceed it, unless all of them do
 					local stackLimit = command[STACK_LIMIT]
 					if stackLimit then
 						local filteredSurvivors = {}
