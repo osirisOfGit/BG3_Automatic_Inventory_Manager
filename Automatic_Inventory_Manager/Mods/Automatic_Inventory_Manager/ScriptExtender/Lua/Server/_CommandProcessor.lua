@@ -1,11 +1,13 @@
 function ProcessCommand(item, root, inventoryHolder, command)
 	local itemStackAmount, _ = Osi.GetStackAmount(item)
 	local targetCharsAndReservedAmount = {}
+	local playersList = {}
 	for _, player in pairs(Osi.DB_Players:Get(nil)) do
 		targetCharsAndReservedAmount[player[1]] = 0
+		table.insert(playersList, player[1])
 	end
 
-	for itemCounter = 1, itemStackAmount do
+	for _ = 1, itemStackAmount do
 		-- _P("Processing " ..
 		-- 	itemCounter ..
 		-- 	" out of " ..
@@ -17,18 +19,20 @@ function ProcessCommand(item, root, inventoryHolder, command)
 			targetCharsAndReservedAmount[target] = targetCharsAndReservedAmount[target] + 1
 		elseif command[MODE] == MODE_WEIGHT_BY then
 			if command[CRITERIA] then
+				local survivors = { table.unpack(playersList) }
 				for i = 1, #command[CRITERIA] do
 					local currentWeightedCriteria = command[CRITERIA][i]
-					local winners = STAT_TO_FUNCTION_MAP[currentWeightedCriteria[STAT]](targetCharsAndReservedAmount,
+					survivors = STAT_TO_FUNCTION_MAP[currentWeightedCriteria[STAT]](targetCharsAndReservedAmount,
+						survivors,
 						inventoryHolder,
 						item, root,
 						currentWeightedCriteria)
 
-					if #winners == 1 or i == #command[CRITERIA] then
-						if #winners == 1 then
-							target = winners[1]
+					if #survivors == 1 or i == #command[CRITERIA] then
+						if #survivors == 1 then
+							target = survivors[1]
 						else
-							target = winners[Osi.Random(#winners) + 1]
+							target = survivors[Osi.Random(#survivors) + 1]
 						end
 						targetCharsAndReservedAmount[target] = targetCharsAndReservedAmount[target] + 1
 						break
@@ -72,17 +76,17 @@ end
 function Compare(baseValue, challengerValue, comparator)
 	if baseValue == challengerValue then
 		return 0
-	elseif comparator == COMPARATOR_GT then
+	elseif comparator == HAS_MORE then
 		return baseValue > challengerValue and 1 or -1
-	elseif comparator == COMPARATOR_LT then
+	elseif comparator == HAS_LESS then
 		return baseValue < challengerValue and 1 or -1
 	end
 end
 
-function GetTargetByHealthPercent(targetCharacters, _, _, _, criteria)
+function GetTargetByHealthPercent(_, survivors, _, _, _, criteria)
 	local winningHealthPercent
 	local winners = {}
-	for targetChar, _ in pairs(targetCharacters) do
+	for _, targetChar in pairs(survivors) do
 		local health = Ext.Entity.Get(targetChar).Health
 		local challengerHealthPercent = (health.Hp / health.MaxHp) * 100
 		if winningHealthPercent then
@@ -103,32 +107,37 @@ function GetTargetByHealthPercent(targetCharacters, _, _, _, criteria)
 	return winners
 end
 
-function GetTargetByStackAmount(targetCharacters, inventoryHolder, _, root, criteria)
+function GetTargetByStackAmount(targetCharacters, survivors, inventoryHolder, _, root, criteria)
 	local winners = {}
 	local winningVal
 
-	for targetChar, amountOfItemReserved in pairs(targetCharacters) do
+	for _, targetChar in pairs(survivors) do
 		local item = Osi.GetItemByTemplateInInventory(root, targetChar)
-		local _, totalFutureStackSize
+		local currentStackSize, totalFutureStackSize
 		if item then
-			_, totalFutureStackSize = Osi.GetStackAmount(item)
+			currentStackSize, totalFutureStackSize = Osi.GetStackAmount(item)
 		else
-			totalFutureStackSize = 0
+			currentStackSize, totalFutureStackSize = 0, 0
 		end
-		totalFutureStackSize = totalFutureStackSize + amountOfItemReserved
+		totalFutureStackSize = totalFutureStackSize + targetCharacters[targetChar]
 		if TEMPLATES_BEING_TRANSFERRED[root] and TEMPLATES_BEING_TRANSFERRED[root][targetChar] then
 			totalFutureStackSize = totalFutureStackSize + TEMPLATES_BEING_TRANSFERRED[root][targetChar]
 			-- _P("Added " .. TEMPLATES_BEING_TRANSFERRED[root][targetChar] .. " to the stack size")
 		end
 		if targetChar == inventoryHolder then
+			local amountToRemove = 0
 			for char, amountReserved in pairs(targetCharacters) do
 				if not (char == inventoryHolder) then
-					totalFutureStackSize = totalFutureStackSize - amountReserved
+					amountToRemove = amountToRemove + amountReserved
 					-- _P("Brought down inventoryHolder's amount by  " .. amountReserved)
 				end
 			end
+			if amountToRemove > currentStackSize then
+				amountToRemove = currentStackSize
+			end
+			totalFutureStackSize = totalFutureStackSize - currentStackSize
 		end
-		-- _P("Found " .. totalFutureStackSize .. " on " .. targetChar)
+		_P("Found " .. totalFutureStackSize .. " on " .. targetChar)
 
 		if not winningVal then
 			winningVal = totalFutureStackSize

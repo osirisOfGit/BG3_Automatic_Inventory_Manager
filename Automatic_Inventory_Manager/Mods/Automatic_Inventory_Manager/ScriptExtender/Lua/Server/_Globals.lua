@@ -16,30 +16,37 @@ TARGET = 'TARGET'
 ------------
 MODE_WEIGHT_BY = 'WEIGHT_BY'
 CRITERIA = 'CRITERIA'
-
+------------
 COMPARATOR = "COMPARATOR"
-COMPARATOR_LT = "LT"
-COMPARATOR_GT = "GT"
-
+HAS_LESS = "HAS_LESS"
+HAS_MORE = "HAS_MORE"
+------------
 STAT = "STAT"
 STAT_HEALTH_PERCENTAGE = "HEALTH %"
 STAT_STACK_AMOUNT = "STACK AMOUNT"
+STAT_PROFICIENCY = "PROFICIENCY"
 ------------
+
 
 ITEMS_TO_PROCESS_MAP = {
     ['Dagger'] = {
-        [MODE] = MODE_DIRECT,
-        [TARGET] = 'S_Player_Gale_ad9af97d-75da-406a-ae13-7071c563f604'
+        [MODE] = MODE_WEIGHT_BY,
+        [CRITERIA] = {
+            [1] = { [STAT] = STAT_PROFICIENCY }
+        }
     },
     ["HEALING_POTION"] = {
         [MODE] = MODE_WEIGHT_BY,
         [CRITERIA] = {
-            [1] = { [STAT] = STAT_HEALTH_PERCENTAGE, [COMPARATOR] = COMPARATOR_LT, },
-            [2] = { [STAT] = STAT_STACK_AMOUNT, [COMPARATOR] = COMPARATOR_LT }
+            [1] = { [STAT] = STAT_HEALTH_PERCENTAGE, [COMPARATOR] = HAS_LESS, },
+            [2] = { [STAT] = STAT_STACK_AMOUNT, [COMPARATOR] = HAS_LESS }
         }
     }
 }
 
+-- Since moving/creating items in a way that ensures a new item UUID is created is an event, not just a DB update, you can't just move an item and immediately tag it as processed <br/>
+-- You need to move it, then wait for the *AddedTo event to fire. So, this global map serves as a tracker for what templates
+-- were added to which characters, so that when that event fires, _hopefully_ we can match it and not process it again
 TEMPLATES_BEING_TRANSFERRED = {}
 
 
@@ -56,12 +63,13 @@ OPTIONAL_TAGS = {
 
 TAGS_TO_CLEAR = { TAG_AIM_PROCESSED }
 for _, tags in pairs(OPTIONAL_TAGS) do
-    for _, tag in pairs(tags) do table.insert(TAGS_TO_CLEAR, tag) end
+    for _, tag in pairs(tags) do
+        table.insert(TAGS_TO_CLEAR, tag)
+    end
 end
 
 ITEMS_TO_DELETE = {}
 
--- Most of this was stolen from Auto_Sell_Loot. Cheers m8 ヾ(⌐■_■)ノ♪
 Config = {
     initDone = false,
     config_tbl = { MOD_ENABLED = 1 },

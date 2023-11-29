@@ -156,7 +156,6 @@ Ext.Osiris.RegisterListener("EntityEvent", 2, "before", function(guid, event)
 		if Osi.GetMaxStackAmount(guid) > 1 and Osi.IsStoryItem(guid) == 0 then
 			local itemTemplate = Osi.GetTemplate(guid)
 			local currentStackSize, _ = Osi.GetStackAmount(guid)
-			-- The alternative, TemplateRemoveFrom, can delete members of other stacks if they have different UUIDs (e.g. were split)
 			Osi.SetTag(guid, TAG_AIM_MARK_FOR_DELETION)
 			
 			local itemsToDelete = ITEMS_TO_DELETE[character]
