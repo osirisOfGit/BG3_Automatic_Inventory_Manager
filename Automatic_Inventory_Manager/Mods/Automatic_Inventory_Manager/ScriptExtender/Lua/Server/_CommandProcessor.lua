@@ -19,25 +19,29 @@ function ProcessCommand(item, root, inventoryHolder, command)
 			targetCharsAndReservedAmount[target] = targetCharsAndReservedAmount[target] + 1
 		elseif command[MODE] == MODE_WEIGHT_BY then
 			if command[CRITERIA] then
-				local survivors
-				local stackLimit = command[STACK_LIMIT]
-				if stackLimit then
-					survivors = {}
-					for partyMember, _ in pairs(targetCharsAndReservedAmount) do
-						local totalFutureStackSize = CalculateTemplateCurrentAndReservedStackSize(targetCharsAndReservedAmount, partyMember, inventoryHolder, root)
-						if totalFutureStackSize < stackLimit then
-							-- _P("Reserved amount of " .. reservedAmount .. " is less than limit of " .. stackLimit .. " on " .. partyMember)
-							table.insert(survivors, partyMember)
-						end
-					end
-				end
-				if not stackLimit or #survivors == 0 then
-					-- _P("Setting survivors to full partyList")
-					survivors = { table.unpack(partyList) }
-				end
-				-- _P("Initial survivors: " .. Ext.Json.Stringify(survivors))
+				local survivors = { table.unpack(partyList) }
 
 				for i = 1, #command[CRITERIA] do
+					-- If there's a stack limit, remove any members that exceed it
+					local stackLimit = command[STACK_LIMIT]
+					if stackLimit then
+						local filteredSurvivors = {}
+						for _, partyMember in pairs(survivors) do
+							local totalFutureStackSize = CalculateTemplateCurrentAndReservedStackSize(
+								targetCharsAndReservedAmount, partyMember, inventoryHolder, root)
+
+							if totalFutureStackSize <= stackLimit then
+								-- _P("Reserved amount of " .. totalFutureStackSize .. " is less than limit of " .. stackLimit .. " on " .. partyMember)
+								table.insert(filteredSurvivors, partyMember)
+							end
+						end
+
+						if #filteredSurvivors > 0 then
+							survivors = filteredSurvivors
+						end
+					end
+
+					-- Begin actual processing of the command
 					local currentWeightedCriteria = command[CRITERIA][i]
 					survivors = STAT_TO_FUNCTION_MAP[currentWeightedCriteria[STAT]](targetCharsAndReservedAmount,
 						survivors,
@@ -46,6 +50,7 @@ function ProcessCommand(item, root, inventoryHolder, command)
 						root,
 						currentWeightedCriteria)
 
+				
 					if #survivors == 1 or i == #command[CRITERIA] then
 						if #survivors == 1 then
 							target = survivors[1]
@@ -128,7 +133,8 @@ function GetTargetByStackAmount(targetCharacters, survivors, inventoryHolder, _,
 	local winningVal
 
 	for _, targetChar in pairs(survivors) do
-		local totalFutureStackSize = CalculateTemplateCurrentAndReservedStackSize(targetCharacters, targetChar, inventoryHolder, root)
+		local totalFutureStackSize = CalculateTemplateCurrentAndReservedStackSize(targetCharacters, targetChar,
+			inventoryHolder, root)
 		-- _P("Found " .. totalFutureStackSize .. " on " .. targetChar)
 
 		if not winningVal then
@@ -166,13 +172,13 @@ function CalculateTemplateCurrentAndReservedStackSize(targetCharacters, targetCh
 		for char, amountReserved in pairs(targetCharacters) do
 			if not (char == inventoryHolder) then
 				amountToRemove = amountToRemove + amountReserved
-				-- _P("Brought down inventoryHolder's amount by  " .. amountReserved)
 			end
 		end
 		if amountToRemove > totalFutureStackSize then
 			amountToRemove = totalFutureStackSize
 		end
-		totalFutureStackSize = totalFutureStackSize - totalFutureStackSize
+		_P("Brought down inventoryHolder's amount by  " .. amountToRemove)
+		totalFutureStackSize = totalFutureStackSize - amountToRemove
 	end
 
 	return totalFutureStackSize
