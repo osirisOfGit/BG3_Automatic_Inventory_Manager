@@ -113,11 +113,11 @@ function GetTargetByStackAmount(targetCharacters, survivors, inventoryHolder, _,
 
 	for _, targetChar in pairs(survivors) do
 		local item = Osi.GetItemByTemplateInInventory(root, targetChar)
-		local currentStackSize, totalFutureStackSize
+		local _, totalFutureStackSize
 		if item then
-			currentStackSize, totalFutureStackSize = Osi.GetStackAmount(item)
+			_, totalFutureStackSize = Osi.GetStackAmount(item)
 		else
-			currentStackSize, totalFutureStackSize = 0, 0
+			totalFutureStackSize = 0
 		end
 		totalFutureStackSize = totalFutureStackSize + targetCharacters[targetChar]
 		if TEMPLATES_BEING_TRANSFERRED[root] and TEMPLATES_BEING_TRANSFERRED[root][targetChar] then
@@ -132,10 +132,10 @@ function GetTargetByStackAmount(targetCharacters, survivors, inventoryHolder, _,
 					-- _P("Brought down inventoryHolder's amount by  " .. amountReserved)
 				end
 			end
-			if amountToRemove > currentStackSize then
-				amountToRemove = currentStackSize
+			if amountToRemove > totalFutureStackSize then
+				amountToRemove = totalFutureStackSize
 			end
-			totalFutureStackSize = totalFutureStackSize - currentStackSize
+			totalFutureStackSize = totalFutureStackSize - totalFutureStackSize
 		end
 		_P("Found " .. totalFutureStackSize .. " on " .. targetChar)
 
