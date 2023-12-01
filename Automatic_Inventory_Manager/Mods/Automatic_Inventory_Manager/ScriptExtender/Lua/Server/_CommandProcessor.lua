@@ -21,26 +21,25 @@ function ProcessCommand(item, root, inventoryHolder, command)
 			if command[CRITERIA] then
 				local survivors = { table.unpack(partyList) }
 
-				for i = 1, #command[CRITERIA] do
-					-- If there's a stack limit, remove any members that exceed it, unless all of them do
-					local stackLimit = command[STACK_LIMIT]
-					if stackLimit then
-						local filteredSurvivors = {}
-						for _, partyMember in pairs(survivors) do
-							local totalFutureStackSize = CalculateTemplateCurrentAndReservedStackSize(
-								targetCharsAndReservedAmount, partyMember, inventoryHolder, root)
+				-- If there's a stack limit, remove any members that exceed it, unless all of them do
+				local stackLimit = command[STACK_LIMIT]
+				if stackLimit then
+					local filteredSurvivors = {}
+					for _, partyMember in pairs(survivors) do
+						local totalFutureStackSize = CalculateTemplateCurrentAndReservedStackSize(
+							targetCharsAndReservedAmount, partyMember, inventoryHolder, root)
 
-							if totalFutureStackSize <= stackLimit then
-								-- _P("Reserved amount of " .. totalFutureStackSize .. " is less than limit of " .. stackLimit .. " on " .. partyMember)
-								table.insert(filteredSurvivors, partyMember)
-							end
-						end
-
-						if #filteredSurvivors > 0 then
-							survivors = filteredSurvivors
+						if totalFutureStackSize <= stackLimit then
+							-- _P("Reserved amount of " .. totalFutureStackSize .. " is less than limit of " .. stackLimit .. " on " .. partyMember)
+							table.insert(filteredSurvivors, partyMember)
 						end
 					end
 
+					if #filteredSurvivors > 0 then
+						survivors = filteredSurvivors
+					end
+				end
+				for i = 1, #command[CRITERIA] do
 					-- Begin actual processing of the command
 					local currentWeightedCriteria = command[CRITERIA][i]
 					survivors = STAT_TO_FUNCTION_MAP[currentWeightedCriteria[STAT]](targetCharsAndReservedAmount,
