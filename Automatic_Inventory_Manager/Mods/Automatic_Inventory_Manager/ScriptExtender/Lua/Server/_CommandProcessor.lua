@@ -7,57 +7,59 @@ function ProcessCommand(item, root, inventoryHolder, command)
 		table.insert(partyList, player[1])
 	end
 
-	for _ = 1, itemStackAmount do
-		-- _P("Processing " ..
-		-- 	itemCounter ..
-		-- 	" out of " ..
-		-- 	itemStackAmount ..
-		-- 	" with winners: " .. Ext.Json.Stringify(targetCharsAndReservedAmount, { Beautify = false }))
-		local target
-		if command[MODE] == MODE_DIRECT then
-			target = command[TARGET]
-			targetCharsAndReservedAmount[target] = targetCharsAndReservedAmount[target] + 1
-		elseif command[MODE] == MODE_WEIGHT_BY then
-			if command[CRITERIA] then
-				local survivors = { table.unpack(partyList) }
+	if command[MODE] == MODE_DIRECT then
+		local target = command[TARGET]
+		targetCharsAndReservedAmount[target] = targetCharsAndReservedAmount[target] + 1
+	else
+		for _ = 1, itemStackAmount do
+			-- _P("Processing " ..
+			-- 	itemCounter ..
+			-- 	" out of " ..
+			-- 	itemStackAmount ..
+			-- 	" with winners: " .. Ext.Json.Stringify(targetCharsAndReservedAmount, { Beautify = false }))
+			if command[MODE] == MODE_WEIGHT_BY then
+				if command[CRITERIA] then
+					local survivors = { table.unpack(partyList) }
 
-				-- If there's a stack limit, remove any members that exceed it, unless all of them do
-				local stackLimit = command[STACK_LIMIT]
-				if stackLimit then
-					local filteredSurvivors = {}
-					for _, partyMember in pairs(survivors) do
-						local totalFutureStackSize = CalculateTemplateCurrentAndReservedStackSize(
-							targetCharsAndReservedAmount, partyMember, inventoryHolder, root)
+					-- If there's a stack limit, remove any members that exceed it, unless all of them do
+					local stackLimit = command[STACK_LIMIT]
+					if stackLimit then
+						local filteredSurvivors = {}
+						for _, partyMember in pairs(survivors) do
+							local totalFutureStackSize = CalculateTemplateCurrentAndReservedStackSize(
+								targetCharsAndReservedAmount, partyMember, inventoryHolder, root)
 
-						if totalFutureStackSize <= stackLimit then
-							-- _P("Reserved amount of " .. totalFutureStackSize .. " is less than limit of " .. stackLimit .. " on " .. partyMember)
-							table.insert(filteredSurvivors, partyMember)
+							if totalFutureStackSize <= stackLimit then
+								-- _P("Reserved amount of " .. totalFutureStackSize .. " is less than limit of " .. stackLimit .. " on " .. partyMember)
+								table.insert(filteredSurvivors, partyMember)
+							end
+						end
+
+						if #filteredSurvivors > 0 then
+							survivors = filteredSurvivors
 						end
 					end
+					
+					for i = 1, #command[CRITERIA] do
+						-- Begin actual processing of the command
+						local currentWeightedCriteria = command[CRITERIA][i]
+						survivors = STAT_TO_FUNCTION_MAP[currentWeightedCriteria[STAT]](targetCharsAndReservedAmount,
+							survivors,
+							inventoryHolder,
+							item,
+							root,
+							currentWeightedCriteria)
 
-					if #filteredSurvivors > 0 then
-						survivors = filteredSurvivors
-					end
-				end
-				for i = 1, #command[CRITERIA] do
-					-- Begin actual processing of the command
-					local currentWeightedCriteria = command[CRITERIA][i]
-					survivors = STAT_TO_FUNCTION_MAP[currentWeightedCriteria[STAT]](targetCharsAndReservedAmount,
-						survivors,
-						inventoryHolder,
-						item,
-						root,
-						currentWeightedCriteria)
-
-				
-					if #survivors == 1 or i == #command[CRITERIA] then
-						if #survivors == 1 then
-							target = survivors[1]
-						else
-							target = survivors[Osi.Random(#survivors) + 1]
+						if #survivors == 1 or i == #command[CRITERIA] then
+							local target
+							if #survivors == 1 then
+								target = survivors[1]
+							else
+								target = survivors[Osi.Random(#survivors) + 1]
+							end
+							targetCharsAndReservedAmount[target] = targetCharsAndReservedAmount[target] + 1
+							break
 						end
-						targetCharsAndReservedAmount[target] = targetCharsAndReservedAmount[target] + 1
-						break
 					end
 				end
 			end
