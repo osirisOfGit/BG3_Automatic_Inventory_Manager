@@ -14,8 +14,9 @@
 --  ✅ Clear my item tags on Script Extender reset
 --  ✅ OnPickup, move item designated as "best fit" to party member round-robin (e.g. distribute potions evenly)
 --            ✅  Add weighted distribution by health
--- 	OnPickup, move item to designated class, with backup
+-- 	✅ OnPickup, move item to designated class, with backup
 --  ✅ Execute sort on game start
+--  Add whole bunch of criteria for different use-cases that i can think of
 --  OnContainerOpen, optionally execute distribution according to config
 --  Add option to have party members move to the item for "realism" - intercept on RequestCanPickup
 --  SkillActivate - trigger distribution for all party members

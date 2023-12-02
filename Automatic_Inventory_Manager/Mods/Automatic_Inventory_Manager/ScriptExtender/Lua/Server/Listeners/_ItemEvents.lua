@@ -9,7 +9,8 @@ for _, tagUUID in pairs(Ext.StaticData.GetAll("Tag")) do
 end
 
 function SetAsProcessed_IfItemWasAddedByAIM(root, item, inventoryHolder)
-	if not Osi.GetOriginalOwner(item) == Osi.GetUUID(inventoryHolder) and Osi.DB_Players:Get(Osi.GetOriginalOwner(item)) then
+	local originalOwner = Osi.GetOriginalOwner(item)
+	if not originalOwner == Osi.GetUUID(inventoryHolder) and Osi.DB_Players:Get(originalOwner) then
 		_P("|OriginalOwner| = " .. Osi.GetOriginalOwner(item)
 			.. "\n\t|DirectInventoryOwner| = " .. Osi.GetDirectInventoryOwner(item)
 			.. "\n\t|Owner| = " .. Osi.GetOwner(item))
