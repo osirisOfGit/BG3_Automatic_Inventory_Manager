@@ -47,8 +47,3 @@ TAGS_MAP = {
 		}
 	}
 }
-
--- Since moving/creating items in a way that ensures a new item UUID is created is an event, not just a DB update, you can't just move an item and immediately tag it as processed <br/>
--- You need to move it, then wait for the *AddedTo event to fire. So, this global map serves as a tracker for what templates
--- were added to which characters, so that when that event fires, _hopefully_ we can match it and not process it again
-TEMPLATES_BEING_TRANSFERRED = {}
