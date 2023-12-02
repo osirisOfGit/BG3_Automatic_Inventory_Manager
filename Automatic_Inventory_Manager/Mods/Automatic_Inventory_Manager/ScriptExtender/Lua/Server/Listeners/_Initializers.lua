@@ -26,7 +26,7 @@ Ext.Osiris.RegisterListener("EntityEvent", 2, "before", function(guid, event)
 	if string.find(event, EVENT_ITERATE_ITEMS_TO_REBUILD_THEM_START) then
 		local character = string.sub(event, string.len(EVENT_ITERATE_ITEMS_TO_REBUILD_THEM_START) + 1)
 		Osi.ClearTag(guid, TAG_AIM_PROCESSED)
-		if Osi.IsEquipped(guid) == 0 and (Osi.GetMaxStackAmount(guid) > 1 or Osi.IsStoryItem(guid) == 0) then
+		if Osi.IsEquipped(guid) == 0 and (Osi.IsStoryItem(guid) == 0 or Osi.GetMaxStackAmount(guid) > 1) then
 			local itemTemplate = Osi.GetTemplate(guid)
 			local currentStackSize, _ = Osi.GetStackAmount(guid)
 			Osi.SetTag(guid, TAG_AIM_MARK_FOR_DELETION)
