@@ -25,6 +25,14 @@ function SetAsProcessed_IfItemWasAddedByAIM(root, item, inventoryHolder)
 			Osi.SetOriginalOwner(Osi.GetUUID(inventoryHolder))
 			TEMPLATES_BEING_TRANSFERRED[root][inventoryHolder] = TEMPLATES_BEING_TRANSFERRED[root][inventoryHolder] -
 				Osi.GetStackAmount(item)
+
+			if TEMPLATES_BEING_TRANSFERRED[root][inventoryHolder] == 0 then
+				TEMPLATES_BEING_TRANSFERRED[root][inventoryHolder] = nil
+			end
+
+			if #TEMPLATES_BEING_TRANSFERRED[root] == 0 then
+				TEMPLATES_BEING_TRANSFERRED[root] = nil
+			end
 		end
 	end
 end
@@ -55,6 +63,11 @@ end
 
 -- Includes moving from container to other inventories etc...
 Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(root, item, inventoryHolder, addType)
+	if Osi.Exists(item) == 0 then
+		_P("Item doesn't exist!")
+		return
+	end
+
 	SetAsProcessed_IfItemWasAddedByAIM(root, item, inventoryHolder)
 
 	if Osi.IsTagged(item, TAG_AIM_PROCESSED) == 1 then

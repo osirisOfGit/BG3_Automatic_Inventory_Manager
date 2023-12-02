@@ -1,24 +1,12 @@
 Ext.Require("Server/CriteriaProcessor/_ProcessorUtils.lua")
 
 function ByHealthPercent(_, survivors, _, _, _, criteria)
-	local winningHealthPercent
+	local winningVal
 	local winners = {}
-	for _, targetChar in pairs(survivors) do
-		local health = Ext.Entity.Get(targetChar).Health
+	for _, survivor in pairs(survivors) do
+		local health = Ext.Entity.Get(survivor).Health
 		local challengerHealthPercent = (health.Hp / health.MaxHp) * 100
-		if winningHealthPercent then
-			local result = Compare(winningHealthPercent, challengerHealthPercent,
-				criteria[COMPARATOR])
-			if result == 0 then
-				table.insert(winners, targetChar)
-			elseif result == -1 then
-				winners = { targetChar }
-				winningHealthPercent = challengerHealthPercent
-			end
-		else
-			winningHealthPercent = challengerHealthPercent
-			table.insert(winners, targetChar)
-		end
+		winningVal = SetWinningVal_ByCompareResult(winningVal, challengerHealthPercent, criteria[COMPARATOR], winners, survivor)
 	end
 
 	return winners
@@ -28,25 +16,25 @@ function ByStackAmount(partyMembersWithAmountWon, survivors, inventoryHolder, _,
 	local winners = {}
 	local winningVal
 
-	for _, targetChar in pairs(survivors) do
-		local totalFutureStackSize = CalculateTemplateCurrentAndReservedStackSize(partyMembersWithAmountWon, targetChar,
+	for _, survivor in pairs(survivors) do
+		local totalFutureStackSize = CalculateTemplateCurrentAndReservedStackSize(partyMembersWithAmountWon, survivor,
 			inventoryHolder, root)
-		-- _P("Found " .. totalFutureStackSize .. " on " .. targetChar)
+		-- _P("Found " .. totalFutureStackSize .. " on " .. partyMember)
 
-		if not winningVal then
-			winningVal = totalFutureStackSize
-			table.insert(winners, targetChar)
-		else
-			local result = Compare(winningVal, totalFutureStackSize,
-				criteria[COMPARATOR])
-			if result == 0 then
-				table.insert(winners, targetChar)
-			elseif result == -1 then
-				winners = { targetChar }
-				winningVal = totalFutureStackSize
-			end
-		end
+		winningVal = SetWinningVal_ByCompareResult(winningVal, totalFutureStackSize, criteria[COMPARATOR], winners, survivor)
 	end
+	return winners
+end
+
+function BySkillAmount(_, survivors, _, _, _, criteria)
+	local winners = {}
+	local winningVal
+
+	for _, survivor in pairs(survivors) do
+		local skillScore = Osi.CalculatePassiveSkill(survivor, criteria[STAT_SKILL])
+		winningVal = SetWinningVal_ByCompareResult(winningVal, skillScore, criteria[COMPARATOR], winners, survivor)
+	end
+
 	return winners
 end
 
@@ -65,5 +53,6 @@ end
 STAT_TO_FUNCTION_MAP = {
 	[STAT_STACK_AMOUNT] = ByStackAmount,
 	[STAT_HEALTH_PERCENTAGE] = ByHealthPercent,
-	[STAT_PROFICIENCY] = ByProficiency
+	[STAT_PROFICIENCY] = ByProficiency,
+	[STAT_SKILL] = BySkillAmount,
 }

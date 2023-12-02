@@ -17,6 +17,7 @@
 -- 	✅ OnPickup, move item to designated class, with backup
 --  ✅ Execute sort on game start
 --  Add whole bunch of criteria for different use-cases that i can think of
+--    UsableItem Proficiency, EquipableItem by Character Stat (e.g. Dex for knife), Supply to camp, 
 --  OnContainerOpen, optionally execute distribution according to config
 --  Add option to have party members move to the item for "realism" - intercept on RequestCanPickup
 --  SkillActivate - trigger distribution for all party members

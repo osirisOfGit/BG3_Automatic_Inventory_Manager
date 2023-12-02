@@ -9,6 +9,27 @@ function Compare(baseValue, challengerValue, comparator)
 	end
 end
 
+function SetWinningVal_ByCompareResult(baseValue, challengerValue, comparator, winnersTable, targetPartyMember)
+	if not baseValue then
+		table.insert(winnersTable, targetPartyMember)
+		return challengerValue
+	else
+		local result = Compare(baseValue, challengerValue, comparator)
+		if result == 0 then
+			table.insert(winnersTable, targetPartyMember)
+			return baseValue
+		elseif result == -1 then
+			for i = 1, #winnersTable do
+				winnersTable[i] = nil
+			end
+			table.insert(winnersTable, targetPartyMember)
+			return challengerValue
+		end
+	end
+
+	return baseValue
+end
+
 -- Uses the following on the targetChar
 -- + Osi.GetStackAmount (via Osi.GetItemByTemplateInInventory)
 -- + the calculated amount won for this item stack thusfar
@@ -28,7 +49,7 @@ function CalculateTemplateCurrentAndReservedStackSize(partyMembersWithAmountWon,
 	end
 
 	if targetChar == inventoryHolder then
-		local amountToRemove = 0
+		local amountToRemove = Osi.GetStackAmount(itemByTemplate)
 		for char, amountReserved in pairs(partyMembersWithAmountWon) do
 			if not (char == inventoryHolder) then
 				amountToRemove = amountToRemove + amountReserved
