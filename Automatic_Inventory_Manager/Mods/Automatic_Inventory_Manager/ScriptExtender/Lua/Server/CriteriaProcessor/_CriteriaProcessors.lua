@@ -60,7 +60,7 @@ function ByWeaponAbility(_, survivors, _, item, _, criteria)
 
 	for _, survivor in pairs(survivors) do
 		local weaponAbility = tostring(Ext.Enums.AbilityId[Ext.Entity.Get(item).Weapon.Ability])
-		local survivorAbility = Osi.GetAbility(survivor, tostring(weaponAbility))
+		local survivorAbility = Osi.GetAbility(survivor, weaponAbility)
 		-- _P(string.format("Weapon uses %s, %s has a score of %s", weaponAbility, survivor, survivorAbility))
 		winningVal = SetWinningVal_ByCompareResult(winningVal, survivorAbility, criteria[COMPARATOR], winners, survivor)
 	end
