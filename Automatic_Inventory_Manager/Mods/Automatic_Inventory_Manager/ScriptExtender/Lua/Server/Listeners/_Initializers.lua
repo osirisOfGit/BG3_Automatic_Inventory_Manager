@@ -32,11 +32,7 @@ Ext.Osiris.RegisterListener("EntityEvent", 2, "before", function(guid, event)
 			Osi.SetTag(guid, TAG_AIM_MARK_FOR_DELETION)
 
 			local itemsToDelete = ITEMS_TO_DELETE[character]
-			if not itemsToDelete[itemTemplate] then
-				itemsToDelete[itemTemplate] = currentStackSize;
-			else
-				itemsToDelete[itemTemplate] = itemsToDelete[itemTemplate] + currentStackSize
-			end
+			AddItemToTable_AddingToExistingAmount(itemsToDelete, itemTemplate, currentStackSize)
 		end
 	elseif string.find(event, EVENT_ITERATE_ITEMS_TO_REBUILD_THEM_END) then
 		local character = string.sub(event, string.len(EVENT_ITERATE_ITEMS_TO_REBUILD_THEM_END) + 1)

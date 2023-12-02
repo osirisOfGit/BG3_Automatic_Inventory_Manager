@@ -35,10 +35,8 @@ function ProcessWinners(partyMembersWithAmountWon, item, root, inventoryHolder)
 				Osi.ToInventory(item, target, amount, 0, 0)
 				if not TEMPLATES_BEING_TRANSFERRED[root] then
 					TEMPLATES_BEING_TRANSFERRED[root] = { [target] = amount }
-				elseif not TEMPLATES_BEING_TRANSFERRED[root][target] then
-					TEMPLATES_BEING_TRANSFERRED[root][target] = amount
 				else
-					TEMPLATES_BEING_TRANSFERRED[root][target] = TEMPLATES_BEING_TRANSFERRED[root][target] + amount
+					AddItemToTable_AddingToExistingAmount(TEMPLATES_BEING_TRANSFERRED[root], target, amount)
 				end
 
 				_P(string.format("'Moved' %s of %s to %s from %s"
@@ -65,37 +63,37 @@ function FilterInitialTargets_ByStackLimit(command, partyMembersWithAmountWon, r
 			end
 		end
 
-		if #filteredSurvivors > 0 then
-			return filteredSurvivors
-		end
+		return #filteredSurvivors > 0 and filteredSurvivors or nil
 	end
 end
 
 function ProcessCommand(item, root, inventoryHolder, commands)
 	local partyMembersWithAmountWon = {}
 	local currentItemStackSize = Osi.GetStackAmount(item)
+	local eligiblePartyMembers = {}
+	for _, player in pairs(Osi.DB_Players:Get(nil)) do
+		partyMembersWithAmountWon[player[1]] = 0
+		table.insert(eligiblePartyMembers, player[1])
+	end
 
 	for c = 1, #commands do
 		local commandToProcess = commands[c]
 		if commandToProcess[MODE] == MODE_DIRECT then
 			local target = commandToProcess[TARGET]
 			if target and Osi.DB_IsPlayer:Get(target) then
-				partyMembersWithAmountWon[target] = currentItemStackSize
+				AddItemToTable_AddingToExistingAmount(partyMembersWithAmountWon, target, currentItemStackSize)
 			else
 				Ext.Utils.PrintError(string.format(
-					"The target %s for %s was specified for item %s but they are not a party member!"
+					"The target %s for mode %s was specified for item %s but they are not a party member!"
 					, target
 					, MODE_DIRECT
 					, item))
 			end
 		else
-			local eligiblePartyMembers = {}
-			for _, player in pairs(Osi.DB_Players:Get(nil)) do
-				partyMembersWithAmountWon[player[1]] = 0
-				table.insert(eligiblePartyMembers, player[1])
-			end
 			for _ = 1, currentItemStackSize do
-				eligiblePartyMembers = FilterInitialTargets_ByStackLimit(commandToProcess, partyMembersWithAmountWon, root,
+				eligiblePartyMembers = FilterInitialTargets_ByStackLimit(commandToProcess,
+						partyMembersWithAmountWon,
+						root,
 						inventoryHolder)
 					or eligiblePartyMembers
 				-- _P("Processing " ..
