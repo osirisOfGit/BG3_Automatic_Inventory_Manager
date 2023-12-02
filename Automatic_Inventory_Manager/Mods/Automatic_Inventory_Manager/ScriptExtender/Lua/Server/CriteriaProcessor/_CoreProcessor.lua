@@ -5,7 +5,6 @@ function ProcessWeightByMode(command, eligiblePartyMembers, partyMembersWithAmou
 	local survivors = eligiblePartyMembers
 	if command[CRITERIA] and numberOfCriteriaToProcess > 0 then
 		for i = 1, numberOfCriteriaToProcess do
-			-- Begin actual processing of the command
 			local currentWeightedCriteria = command[CRITERIA][i]
 			survivors = STAT_TO_FUNCTION_MAP[currentWeightedCriteria[STAT]](partyMembersWithAmountWon,
 				survivors,
@@ -27,10 +26,6 @@ function ProcessWinners(partyMembersWithAmountWon, item, root, inventoryHolder)
 	_P("Final Results: " .. Ext.Json.Stringify(partyMembersWithAmountWon))
 	for target, amount in pairs(partyMembersWithAmountWon) do
 		if amount > 0 then
-			-- if not target then
-			-- 	_P("Couldn't determine a target for item " ..
-			-- 		item .. " on character " .. inventoryHolder .. " for command " .. Ext.Json.Stringify(command))
-			-- end
 			if target == inventoryHolder then
 				_P("Target was determined to be inventoryHolder for " ..
 					item .. " on character " .. inventoryHolder)
@@ -82,21 +77,21 @@ function ProcessCommand(item, root, inventoryHolder, command)
 		local target = command[TARGET]
 		partyMembersWithAmountWon[target] = currentItemStackSize
 	else
-		local partyList = {}
+		local eligiblePartyMembers = {}
 		for _, player in pairs(Osi.DB_Players:Get(nil)) do
 			partyMembersWithAmountWon[player[1]] = 0
-			table.insert(partyList, player[1])
+			table.insert(eligiblePartyMembers, player[1])
 		end
 		for _ = 1, currentItemStackSize do
-			partyList = FilterInitialTargets_ByStackLimit(command, partyMembersWithAmountWon, root, inventoryHolder)
-				or partyList
+			eligiblePartyMembers = FilterInitialTargets_ByStackLimit(command, partyMembersWithAmountWon, root, inventoryHolder)
+				or eligiblePartyMembers
 			-- _P("Processing " ..
 			-- 	itemCounter ..
 			-- 	" out of " ..
 			-- 	itemStackAmount ..
 			-- 	" with winners: " .. Ext.Json.Stringify(partyMembersWithAmountWon, { Beautify = false }))
 			if command[MODE] == MODE_WEIGHT_BY then
-				ProcessWeightByMode(command, partyList, partyMembersWithAmountWon, item, root, inventoryHolder)
+				ProcessWeightByMode(command, eligiblePartyMembers, partyMembersWithAmountWon, item, root, inventoryHolder)
 			end
 		end
 	end

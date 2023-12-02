@@ -1,6 +1,6 @@
 Ext.Require("Server/CriteriaProcessor/_ProcessorUtils.lua")
 
-function GetTargetByHealthPercent(_, survivors, _, _, _, criteria)
+function ByHealthPercent(_, survivors, _, _, _, criteria)
 	local winningHealthPercent
 	local winners = {}
 	for _, targetChar in pairs(survivors) do
@@ -24,7 +24,7 @@ function GetTargetByHealthPercent(_, survivors, _, _, _, criteria)
 	return winners
 end
 
-function GetTargetByStackAmount(partyMembersWithAmountWon, survivors, inventoryHolder, _, root, criteria)
+function ByStackAmount(partyMembersWithAmountWon, survivors, inventoryHolder, _, root, criteria)
 	local winners = {}
 	local winningVal
 
@@ -50,7 +50,20 @@ function GetTargetByStackAmount(partyMembersWithAmountWon, survivors, inventoryH
 	return winners
 end
 
+function ByProficiency(_, survivors, _, item, _, _)
+	local winners = {}
+
+	for _, partyMember in pairs(survivors) do
+		if Osi.IsProficientWith(partyMember, item) then
+			table.insert(winners, partyMember)
+		end
+	end
+
+	return winners
+end
+
 STAT_TO_FUNCTION_MAP = {
-	[STAT_STACK_AMOUNT] = GetTargetByStackAmount,
-	[STAT_HEALTH_PERCENTAGE] = GetTargetByHealthPercent
+	[STAT_STACK_AMOUNT] = ByStackAmount,
+	[STAT_HEALTH_PERCENTAGE] = ByHealthPercent,
+	[STAT_PROFICIENCY] = ByProficiency
 }

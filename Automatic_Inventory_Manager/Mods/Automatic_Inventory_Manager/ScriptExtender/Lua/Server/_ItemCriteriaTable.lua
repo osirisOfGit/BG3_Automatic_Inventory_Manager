@@ -26,7 +26,7 @@ ITEMS_TO_PROCESS_MAP = {
         }
     },
     ["HEALING_POTION"] = {
-        [MODE] = MODE_WEIGHT_BY,
+	[MODE] = MODE_WEIGHT_BY,
         [CRITERIA] = {
             [1] = { [STAT] = STAT_HEALTH_PERCENTAGE, [COMPARATOR] = LESS_THAN, },
             [2] = { [STAT] = STAT_STACK_AMOUNT, [COMPARATOR] = LESS_THAN }
