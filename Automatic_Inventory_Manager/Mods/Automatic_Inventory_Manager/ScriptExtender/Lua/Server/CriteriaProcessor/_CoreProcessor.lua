@@ -16,7 +16,8 @@ function ProcessWeightByMode(command, eligiblePartyMembers, partyMembersWithAmou
 			if #survivors == 1 or i == numberOfCriteriaToProcess then
 				local target = #survivors == 1 and survivors[1] or survivors[Osi.Random(#survivors) + 1]
 				partyMembersWithAmountWon[target] = partyMembersWithAmountWon[target] + 1
-				break
+
+				return 1
 			end
 		end
 	end
@@ -41,7 +42,7 @@ function ProcessWinners(partyMembersWithAmountWon, item, root, inventoryHolder)
 
 				_P(string.format("'Moved' %s of %s to %s from %s"
 				, amount
-				, root
+				, item
 				, target
 				, inventoryHolder))
 			end
@@ -76,12 +77,18 @@ function ProcessCommand(item, root, inventoryHolder, commands)
 		table.insert(eligiblePartyMembers, player[1])
 	end
 
+	local exitCode
 	for c = 1, #commands do
+		if exitCode == 1 then
+			break
+		end
+		
 		local commandToProcess = commands[c]
 		if commandToProcess[MODE] == MODE_DIRECT then
 			local target = commandToProcess[TARGET]
 			if target and Osi.DB_IsPlayer:Get(target) then
 				AddItemToTable_AddingToExistingAmount(partyMembersWithAmountWon, target, currentItemStackSize)
+				break
 			else
 				Ext.Utils.PrintError(string.format(
 					"The target %s for mode %s was specified for item %s but they are not a party member!"
@@ -102,7 +109,8 @@ function ProcessCommand(item, root, inventoryHolder, commands)
 				-- 	itemStackAmount ..
 				-- 	" with winners: " .. Ext.Json.Stringify(partyMembersWithAmountWon, { Beautify = false }))
 				if commandToProcess[MODE] == MODE_WEIGHT_BY then
-					ProcessWeightByMode(commandToProcess, eligiblePartyMembers, partyMembersWithAmountWon, item, root,
+					exitCode = ProcessWeightByMode(commandToProcess, eligiblePartyMembers, partyMembersWithAmountWon,
+						item, root,
 						inventoryHolder)
 				end
 			end

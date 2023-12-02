@@ -45,13 +45,20 @@ end
 
 function SearchForManagementCommand(item)
 	local applicableCommands = {}
+
+	
 	if Osi.IsEquipable(item) == 1 then
 		local equipmentTypeUUID = Ext.Entity.Get(item).ServerItem.Item.OriginalTemplate.EquipmentTypeID
-		AppendCommandToTable(applicableCommands, EQUIPMENT_MAP[EQUIPTYPE_UUID_TO_NAME_MAP[equipmentTypeUUID]])
+		
+		if Osi.IsWeapon(item) == 1 then
+			AppendCommandToTable(applicableCommands, WEAPON_MAP[EQUIPTYPE_UUID_TO_NAME_MAP[equipmentTypeUUID]])
 
-		if EQUIPMENT_MAP[ALL_ITEMS_MATCHING_MAP_CATEGORY] then
-			AppendCommandToTable(applicableCommands, EQUIPMENT_MAP[ALL_ITEMS_MATCHING_MAP_CATEGORY])
+			AppendCommandToTable(applicableCommands, WEAPON_MAP[ALL_ITEMS_MATCHING_MAP_CATEGORY])
 		end
+		
+		AppendCommandToTable(applicableCommands, EQUIPMENT_MAP[EQUIPTYPE_UUID_TO_NAME_MAP[equipmentTypeUUID]])
+		
+		AppendCommandToTable(applicableCommands, EQUIPMENT_MAP[ALL_ITEMS_MATCHING_MAP_CATEGORY])
 	end
 
 	for _, tag in pairs(Ext.Entity.Get(item).Tag.Tags) do

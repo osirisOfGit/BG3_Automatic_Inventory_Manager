@@ -31,8 +31,38 @@ function BySkillAmount(_, survivors, _, _, _, criteria)
 	local winningVal
 
 	for _, survivor in pairs(survivors) do
-		local skillScore = Osi.CalculatePassiveSkill(survivor, criteria[STAT_SKILL])
+		local skillScore = Osi.CalculatePassiveSkill(survivor, tostring(Ext.Enums.SkillId[criteria[STAT_SKILL]]))
 		winningVal = SetWinningVal_ByCompareResult(winningVal, skillScore, criteria[COMPARATOR], winners, survivor)
+	end
+
+	return winners
+end
+
+function ByWeaponScore(_, survivors, _, item, _, criteria)
+	if Osi.IsWeapon(item) == 0 then
+		return survivors
+	end
+
+	local winners = {}
+	local winningVal
+
+	for _, survivor in pairs(survivors) do
+		local weaponScore = Osi.GetWeaponScoreForCharacter(item, survivor)
+		winningVal = SetWinningVal_ByCompareResult(winningVal, weaponScore, criteria[COMPARATOR], winners, survivor)
+	end
+
+	return winners
+end
+
+function ByWeaponAbility(_, survivors, _, item, _, criteria)
+	local winners = {}
+	local winningVal
+
+	for _, survivor in pairs(survivors) do
+		local weaponAbility = tostring(Ext.Enums.AbilityId[Ext.Entity.Get(item).Weapon.Ability])
+		local survivorAbility = Osi.GetAbility(survivor, tostring(weaponAbility))
+		-- _P(string.format("Weapon uses %s, %s has a score of %s", weaponAbility, survivor, survivorAbility))
+		winningVal = SetWinningVal_ByCompareResult(winningVal, survivorAbility, criteria[COMPARATOR], winners, survivor)
 	end
 
 	return winners
@@ -55,4 +85,6 @@ STAT_TO_FUNCTION_MAP = {
 	[STAT_HEALTH_PERCENTAGE] = ByHealthPercent,
 	[STAT_PROFICIENCY] = ByProficiency,
 	[STAT_SKILL] = BySkillAmount,
+	[STAT_WEAPON_SCORE] = ByWeaponScore,
+	[STAT_WEAPON_ABILITY] = ByWeaponAbility,
 }

@@ -2,9 +2,9 @@
 function Compare(baseValue, challengerValue, comparator)
 	if baseValue == challengerValue then
 		return 0
-	elseif comparator == GREATER_THAN then
+	elseif comparator == HIGHER then
 		return baseValue > challengerValue and 1 or -1
-	elseif comparator == LESS_THAN then
+	elseif comparator == LOWER then
 		return baseValue < challengerValue and 1 or -1
 	end
 end
