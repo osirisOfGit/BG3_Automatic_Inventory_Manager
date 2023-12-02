@@ -54,7 +54,7 @@ function ByProficiency(_, survivors, _, item, _, _)
 	local winners = {}
 
 	for _, partyMember in pairs(survivors) do
-		if Osi.IsProficientWith(partyMember, item) then
+		if Osi.IsProficientWith(partyMember, item) == 1 then
 			table.insert(winners, partyMember)
 		end
 	end

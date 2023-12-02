@@ -71,38 +71,42 @@ function FilterInitialTargets_ByStackLimit(command, partyMembersWithAmountWon, r
 	end
 end
 
-function ProcessCommand(item, root, inventoryHolder, command)
+function ProcessCommand(item, root, inventoryHolder, commands)
 	local partyMembersWithAmountWon = {}
 	local currentItemStackSize = Osi.GetStackAmount(item)
 
-	if command[MODE] == MODE_DIRECT then
-		local target = command[TARGET]
-		if target and Osi.DB_IsPlayer:Get(target) then
-			partyMembersWithAmountWon[target] = currentItemStackSize
+	for c = 1, #commands do
+		local commandToProcess = commands[c]
+		if commandToProcess[MODE] == MODE_DIRECT then
+			local target = commandToProcess[TARGET]
+			if target and Osi.DB_IsPlayer:Get(target) then
+				partyMembersWithAmountWon[target] = currentItemStackSize
+			else
+				Ext.Utils.PrintError(string.format(
+					"The target %s for %s was specified for item %s but they are not a party member!"
+					, target
+					, MODE_DIRECT
+					, item))
+			end
 		else
-			Ext.Utils.PrintError(string.format(
-				"The target %s for %s was specified for item %s but they are not a party member!"
-				, target
-				, MODE_DIRECT
-				, item))
-		end
-	else
-		local eligiblePartyMembers = {}
-		for _, player in pairs(Osi.DB_Players:Get(nil)) do
-			partyMembersWithAmountWon[player[1]] = 0
-			table.insert(eligiblePartyMembers, player[1])
-		end
-		for _ = 1, currentItemStackSize do
-			eligiblePartyMembers = FilterInitialTargets_ByStackLimit(command, partyMembersWithAmountWon, root,
-					inventoryHolder)
-				or eligiblePartyMembers
-			-- _P("Processing " ..
-			-- 	itemCounter ..
-			-- 	" out of " ..
-			-- 	itemStackAmount ..
-			-- 	" with winners: " .. Ext.Json.Stringify(partyMembersWithAmountWon, { Beautify = false }))
-			if command[MODE] == MODE_WEIGHT_BY then
-				ProcessWeightByMode(command, eligiblePartyMembers, partyMembersWithAmountWon, item, root, inventoryHolder)
+			local eligiblePartyMembers = {}
+			for _, player in pairs(Osi.DB_Players:Get(nil)) do
+				partyMembersWithAmountWon[player[1]] = 0
+				table.insert(eligiblePartyMembers, player[1])
+			end
+			for _ = 1, currentItemStackSize do
+				eligiblePartyMembers = FilterInitialTargets_ByStackLimit(commandToProcess, partyMembersWithAmountWon, root,
+						inventoryHolder)
+					or eligiblePartyMembers
+				-- _P("Processing " ..
+				-- 	itemCounter ..
+				-- 	" out of " ..
+				-- 	itemStackAmount ..
+				-- 	" with winners: " .. Ext.Json.Stringify(partyMembersWithAmountWon, { Beautify = false }))
+				if commandToProcess[MODE] == MODE_WEIGHT_BY then
+					ProcessWeightByMode(commandToProcess, eligiblePartyMembers, partyMembersWithAmountWon, item, root,
+						inventoryHolder)
+				end
 			end
 		end
 	end
