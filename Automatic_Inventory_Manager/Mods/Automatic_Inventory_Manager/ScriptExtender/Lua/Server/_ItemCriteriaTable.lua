@@ -1,8 +1,9 @@
 MODE = 'MODE'
-
 ------------
 MODE_DIRECT = 'DIRECT'
 TARGET = 'TARGET'
+------------
+ALL_ITEMS_MATCHING_MAP_CATEGORY = "*"
 ------------
 MODE_WEIGHT_BY = 'WEIGHT_BY'
 CRITERIA = 'CRITERIA'
@@ -18,21 +19,24 @@ STAT_STACK_AMOUNT = "STACK AMOUNT"
 STAT_PROFICIENCY = "PROFICIENCY"
 ------------
 
-ITEMS_TO_PROCESS_MAP = {
-    ['Dagger'] = {
-        [MODE] = MODE_WEIGHT_BY,
-        [CRITERIA] = {
-            [1] = { [STAT] = STAT_PROFICIENCY }
-        }
-    },
-    ["HEALING_POTION"] = {
-	[MODE] = MODE_WEIGHT_BY,
-        [CRITERIA] = {
-            [1] = { [STAT] = STAT_HEALTH_PERCENTAGE, [COMPARATOR] = LESS_THAN, },
-            [2] = { [STAT] = STAT_STACK_AMOUNT, [COMPARATOR] = LESS_THAN }
-        },
-        [STACK_LIMIT] = 2
-    }
+EQUIPMENT_MAP = {
+	[ALL_ITEMS_MATCHING_MAP_CATEGORY] = {
+		[MODE] = MODE_WEIGHT_BY,
+		[CRITERIA] = {
+			[1] = { [STAT] = STAT_PROFICIENCY }
+		}
+	}
+}
+
+TAGS_MAP = {
+	["HEALING_POTION"] = {
+		[MODE] = MODE_WEIGHT_BY,
+		[CRITERIA] = {
+			[1] = { [STAT] = STAT_HEALTH_PERCENTAGE, [COMPARATOR] = LESS_THAN, },
+			[2] = { [STAT] = STAT_STACK_AMOUNT, [COMPARATOR] = LESS_THAN }
+		},
+		[STACK_LIMIT] = 2
+	}
 }
 
 -- Since moving/creating items in a way that ensures a new item UUID is created is an event, not just a DB update, you can't just move an item and immediately tag it as processed <br/>

@@ -27,8 +27,9 @@ function ProcessWinners(partyMembersWithAmountWon, item, root, inventoryHolder)
 	for target, amount in pairs(partyMembersWithAmountWon) do
 		if amount > 0 then
 			if target == inventoryHolder then
-				_P("Target was determined to be inventoryHolder for " ..
-					item .. " on character " .. inventoryHolder)
+				_P(string.format("Target was determined to be inventoryHolder for %s on character %s"
+				, item
+				, inventoryHolder))
 			else
 				-- This method generates a new uuid for the item upon moving it without forcing us to destroy it and generate a new one from the template
 				Osi.ToInventory(item, target, amount, 0, 0)
@@ -40,24 +41,25 @@ function ProcessWinners(partyMembersWithAmountWon, item, root, inventoryHolder)
 					TEMPLATES_BEING_TRANSFERRED[root][target] = TEMPLATES_BEING_TRANSFERRED[root][target] + amount
 				end
 
-				_P("'Moved' " ..
-					amount ..
-					" of " .. root .. " to " .. target .. " from " .. inventoryHolder)
+				_P(string.format("'Moved' %s of %s to %s from %s"
+				, amount
+				, root
+				, target
+				, inventoryHolder))
 			end
 		end
 	end
 end
 
+-- If there's a stack limit, returns all the party members that are <=, or nil if no members are
 function FilterInitialTargets_ByStackLimit(command, partyMembersWithAmountWon, root, inventoryHolder)
-	-- If there's a stack limit, remove any members that exceed it, unless all of them do
-	local stackLimit = command[STACK_LIMIT]
-	if stackLimit then
+	if command[STACK_LIMIT] then
 		local filteredSurvivors = {}
 		for partyMember, _ in pairs(partyMembersWithAmountWon) do
 			local totalFutureStackSize = CalculateTemplateCurrentAndReservedStackSize(
 				partyMembersWithAmountWon, partyMember, inventoryHolder, root)
 
-			if totalFutureStackSize <= stackLimit then
+			if totalFutureStackSize <= command[STACK_LIMIT] then
 				-- _P("Reserved amount of " .. totalFutureStackSize .. " is less than limit of " .. stackLimit .. " on " .. partyMember)
 				table.insert(filteredSurvivors, partyMember)
 			end
@@ -75,7 +77,15 @@ function ProcessCommand(item, root, inventoryHolder, command)
 
 	if command[MODE] == MODE_DIRECT then
 		local target = command[TARGET]
-		partyMembersWithAmountWon[target] = currentItemStackSize
+		if target and Osi.DB_IsPlayer:Get(target) then
+			partyMembersWithAmountWon[target] = currentItemStackSize
+		else
+			Ext.Utils.PrintError(string.format(
+				"The target %s for %s was specified for item %s but they are not a party member!"
+				, target
+				, MODE_DIRECT
+				, item))
+		end
 	else
 		local eligiblePartyMembers = {}
 		for _, player in pairs(Osi.DB_Players:Get(nil)) do
@@ -83,7 +93,8 @@ function ProcessCommand(item, root, inventoryHolder, command)
 			table.insert(eligiblePartyMembers, player[1])
 		end
 		for _ = 1, currentItemStackSize do
-			eligiblePartyMembers = FilterInitialTargets_ByStackLimit(command, partyMembersWithAmountWon, root, inventoryHolder)
+			eligiblePartyMembers = FilterInitialTargets_ByStackLimit(command, partyMembersWithAmountWon, root,
+					inventoryHolder)
 				or eligiblePartyMembers
 			-- _P("Processing " ..
 			-- 	itemCounter ..

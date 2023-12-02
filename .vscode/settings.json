@@ -1,6 +1,7 @@
 {
 	"Lua.diagnostics.globals": [
 		"Osi",
+		"Osiris",
 		"Ext"
 	],
 	"search.exclude": {

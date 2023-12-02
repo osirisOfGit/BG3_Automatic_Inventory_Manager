@@ -15,9 +15,10 @@ function SetAsProcessed_IfItemWasAddedByAIM(root, item, inventoryHolder)
 			.. "\n\t|Owner| = " .. Osi.GetOwner(item))
 
 		if TEMPLATES_BEING_TRANSFERRED[root] and TEMPLATES_BEING_TRANSFERRED[root][inventoryHolder] then
-			_P("Found " ..
-				TEMPLATES_BEING_TRANSFERRED[root][inventoryHolder] ..
-				" of " .. item .. " being transferred to " .. inventoryHolder .. " - tagging as processed!")
+			_P(string.format("Found %s of %s being transferred to %s - tagging as processed!"
+			, TEMPLATES_BEING_TRANSFERRED[root][inventoryHolder]
+			, item
+			, inventoryHolder))
 
 			Osi.SetTag(item, TAG_AIM_PROCESSED)
 			Osi.SetOriginalOwner(Osi.GetUUID(inventoryHolder))
@@ -27,21 +28,28 @@ function SetAsProcessed_IfItemWasAddedByAIM(root, item, inventoryHolder)
 	end
 end
 
-function SearchForManagementCommand(item)
-	local applicableCommand
-	if Osi.IsEquipable(item) then
-		local equipmentTypeUUID = Ext.Entity.Get(item).ServerItem.Item.OriginalTemplate.EquipmentTypeID
-		applicableCommand = ITEMS_TO_PROCESS_MAP[EQUIPTYPE_UUID_TO_NAME_MAP[equipmentTypeUUID]]
+function AppendCommandToTable(applicableCommands, command)
+	if command then
+		applicableCommands[#applicableCommands + 1] = command
 	end
+end
 
-	for _, tag in pairs(Ext.Entity.Get(item).Tag.Tags) do
-		local tagCommand = ITEMS_TO_PROCESS_MAP[TAG_UUID_TO_NAME_MAP[tag]]
-		if tagCommand then
-			applicableCommand = tagCommand
+function SearchForManagementCommand(item)
+	local applicableCommands = {}
+	if Osi.IsEquipable(item) == 1 then
+		local equipmentTypeUUID = Ext.Entity.Get(item).ServerItem.Item.OriginalTemplate.EquipmentTypeID
+		AppendCommandToTable(applicableCommands, EQUIPMENT_MAP[EQUIPTYPE_UUID_TO_NAME_MAP[equipmentTypeUUID]])
+
+		if EQUIPMENT_MAP[ALL_ITEMS_MATCHING_MAP_CATEGORY] then
+			AppendCommandToTable(applicableCommands, EQUIPMENT_MAP[ALL_ITEMS_MATCHING_MAP_CATEGORY])
 		end
 	end
 
-	return applicableCommand
+	for _, tag in pairs(Ext.Entity.Get(item).Tag.Tags) do
+		AppendCommandToTable(applicableCommands, TAGS_MAP[TAG_UUID_TO_NAME_MAP[tag]])
+	end
+
+	return #applicableCommands > 0 and applicableCommands or nil
 end
 
 -- Includes moving from container to other inventories etc...
@@ -57,7 +65,6 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(root, item, 
 	if applicableCommand then
 		Ext.Utils.PrintWarning(
 			"----------------------------------------------------------\n\t\t\tSTARTED\n----------------------------------------------------------")
-		_P(Ext.Json.Stringify(applicableCommand))
 
 		local itemStack, templateStack = Osi.GetStackAmount(item)
 		_P("|item| = " .. item
@@ -66,6 +73,8 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(root, item, 
 			.. "\n\t|addType| = " .. addType
 			.. "\n\t|itemStackSize| = " .. itemStack
 			.. "\n\t|templateStackSize| = " .. templateStack)
+
+		_P(Ext.Json.Stringify(applicableCommand))
 
 		ProcessCommand(item, root, inventoryHolder, applicableCommand)
 
