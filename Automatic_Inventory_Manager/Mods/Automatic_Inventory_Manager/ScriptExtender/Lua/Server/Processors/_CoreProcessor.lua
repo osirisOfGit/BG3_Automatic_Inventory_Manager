@@ -1,22 +1,36 @@
-Ext.Require("Server/CriteriaProcessor/_CriteriaProcessors.lua")
+Ext.Require("Server/Processors/_FilterProcessors.lua")
 
-local function ProcessWeightByMode(command, eligiblePartyMembers, partyMembersWithAmountWon, item, root, inventoryHolder)
-	local numberOfCriteriaToProcess = #command[CRITERIA]
-	local survivors = eligiblePartyMembers
+--- Executes the given filter according to weighted stat distribution
+--- @param itemFilter ItemFilter
+--- @param eligiblePartyMembers CHARACTER[]
+--- @param partyMembersWithAmountWon table<CHARACTER, number>
+--- @param item GUIDSTRING
+--- @param root GUIDSTRING
+--- @param inventoryHolder CHARACTER
+--- @return integer|nil 1 if a winner was found so that the parent method can stop searching, nil otherwise
+local function ProcessWeightByMode(itemFilter,
+								   eligiblePartyMembers,
+								   partyMembersWithAmountWon,
+								   item,
+								   root,
+								   inventoryHolder)
+	local numberOfFiltersToProcess = #itemFilter.Filters
 
-	if command[CRITERIA] and numberOfCriteriaToProcess > 0 then
-		for i = 1, numberOfCriteriaToProcess do
-			--- @type Criteria
-			local currentWeightedCriteria = command[CRITERIA][i]
-			survivors = CriteriaProcessors.ExecuteCriteria(currentWeightedCriteria,
+	if itemFilter.Filters then
+		for i = 1, numberOfFiltersToProcess do
+			local filter = itemFilter.Filters[i]
+			--- @cast filter WeightedFilter
+			eligiblePartyMembers = FilterProcessors:ExecuteFilterAgainstEligiblePartyMembers(filter,
+				eligiblePartyMembers,
 				partyMembersWithAmountWon,
-				survivors,
 				inventoryHolder,
 				item,
 				root)
 
-			if #survivors == 1 or i == numberOfCriteriaToProcess then
-				local target = #survivors == 1 and survivors[1] or survivors[Osi.Random(#survivors) + 1]
+			if #eligiblePartyMembers == 1 or i == numberOfFiltersToProcess then
+				local target = #eligiblePartyMembers == 1 and eligiblePartyMembers[1] or
+					eligiblePartyMembers[Osi.Random(#eligiblePartyMembers) + 1]
+
 				partyMembersWithAmountWon[target] = partyMembersWithAmountWon[target] + 1
 
 				return 1
@@ -25,8 +39,14 @@ local function ProcessWeightByMode(command, eligiblePartyMembers, partyMembersWi
 	end
 end
 
+--- Distributes the item stack according to the winners of the processed filters
+--- @param partyMembersWithAmountWon table<CHARACTER, number>
+--- @param item GUIDSTRING
+--- @param root GUIDSTRING
+--- @param inventoryHolder CHARACTER
 local function ProcessWinners(partyMembersWithAmountWon, item, root, inventoryHolder)
 	_P("Final Results: " .. Ext.Json.Stringify(partyMembersWithAmountWon))
+
 	for target, amount in pairs(partyMembersWithAmountWon) do
 		if amount > 0 then
 			if target == inventoryHolder then
@@ -53,15 +73,25 @@ local function ProcessWinners(partyMembersWithAmountWon, item, root, inventoryHo
 end
 
 -- If there's a stack limit, returns all the party members that are <=, or nil if no members are
-local function FilterInitialTargets_ByStackLimit(command, eligiblePartyMembers, partyMembersWithAmountWon, root,
+--- comment
+--- @param itemFilter ItemFilter
+--- @param eligiblePartyMembers CHARACTER[]
+--- @param partyMembersWithAmountWon table<CHARACTER, number>
+--- @param root GUIDSTRING
+--- @param inventoryHolder CHARACTER
+---@return table|nil # All party members that have fewer than the stack limit, or nil if no members do
+local function FilterInitialTargets_ByStackLimit(itemFilter,
+												 eligiblePartyMembers,
+												 partyMembersWithAmountWon,
+												 root,
 												 inventoryHolder)
-	if command[STACK_LIMIT] then
+	if itemFilter.Modifiers and itemFilter[ItemFilters.ItemFields.FilterModifiers.STACK_LIMIT] then
 		local filteredSurvivors = {}
 		for _, partyMember in pairs(eligiblePartyMembers) do
-			local totalFutureStackSize = ProcessorUtils.CalculateTotalItemCount(
+			local totalFutureStackSize = ProcessorUtils:CalculateTotalItemCount(
 				partyMembersWithAmountWon, partyMember, inventoryHolder, root)
 
-			if totalFutureStackSize <= command[STACK_LIMIT] then
+			if totalFutureStackSize <= itemFilter[ItemFilters.ItemFields.FilterModifiers.STACK_LIMIT] then
 				-- _P("Reserved amount of " .. totalFutureStackSize .. " is less than limit of " .. stackLimit .. " on " .. partyMember)
 				table.insert(filteredSurvivors, partyMember)
 			end
@@ -72,7 +102,12 @@ local function FilterInitialTargets_ByStackLimit(command, eligiblePartyMembers, 
 end
 
 Processor = {}
-function Processor.ProcessCommand(item, root, inventoryHolder, commands)
+--- Processes the filters on the given params
+---@param item GUIDSTRING
+---@param root GUIDSTRING
+---@param inventoryHolder CHARACTER
+---@param itemFilters ItemFilter[]
+function Processor:ProcessFiltersForItemAgainstParty(item, root, inventoryHolder, itemFilters)
 	local partyMembersWithAmountWon = {}
 	local currentItemStackSize = Osi.GetStackAmount(item)
 	local eligiblePartyMembers = {}
@@ -82,39 +117,40 @@ function Processor.ProcessCommand(item, root, inventoryHolder, commands)
 	end
 
 	local exitCode
-	for c = 1, #commands do
+	for c = 1, #itemFilters do
 		if exitCode == 1 then
 			break
 		end
 
-		local commandToProcess = commands[c]
-		if commandToProcess[MODE] == MODE_DIRECT then
-			local target = commandToProcess[TARGET]
+		local filter = itemFilters[c]
+		if filter.Mode == ItemFilters.ItemFields.SelectionModes.TARGET then
+			local target = filter.Filters[1].Target
+
 			if target and Osi.DB_IsPlayer:Get(target) then
 				AddItemToTable_AddingToExistingAmount(partyMembersWithAmountWon, target, currentItemStackSize)
 				break
 			else
 				Ext.Utils.PrintError(string.format(
-					"The target %s for mode %s was specified for item %s but they are not a party member!"
+					"The target %s was specified for item %s but they are not a party member!"
 					, target
-					, MODE_DIRECT
 					, item))
 			end
 		else
 			for _ = 1, currentItemStackSize do
-				eligiblePartyMembers = FilterInitialTargets_ByStackLimit(commandToProcess,
+				eligiblePartyMembers = FilterInitialTargets_ByStackLimit(filter,
 						eligiblePartyMembers,
 						partyMembersWithAmountWon,
 						root,
 						inventoryHolder)
 					or eligiblePartyMembers
+
 				-- _P("Processing " ..
 				-- 	itemCounter ..
 				-- 	" out of " ..
 				-- 	itemStackAmount ..
 				-- 	" with winners: " .. Ext.Json.Stringify(partyMembersWithAmountWon, { Beautify = false }))
-				if commandToProcess[MODE] == MODE_WEIGHT_BY then
-					exitCode = ProcessWeightByMode(commandToProcess,
+				if filter.Mode == ItemFilters.ItemFields.SelectionModes.WEIGHT_BY then
+					exitCode = ProcessWeightByMode(filter,
 						eligiblePartyMembers,
 						partyMembersWithAmountWon,
 						item,
