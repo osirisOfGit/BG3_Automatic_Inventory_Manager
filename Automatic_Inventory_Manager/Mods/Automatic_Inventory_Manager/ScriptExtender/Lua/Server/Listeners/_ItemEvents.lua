@@ -1,14 +1,4 @@
-EQUIPTYPE_UUID_TO_NAME_MAP = {}
-for _, equipTypeUUID in pairs(Ext.StaticData.GetAll("EquipmentType")) do
-	EQUIPTYPE_UUID_TO_NAME_MAP[equipTypeUUID] = Ext.StaticData.Get(equipTypeUUID, "EquipmentType")["Name"]
-end
-
-TAG_UUID_TO_NAME_MAP = {}
-for _, tagUUID in pairs(Ext.StaticData.GetAll("Tag")) do
-	TAG_UUID_TO_NAME_MAP[tagUUID] = Ext.StaticData.Get(tagUUID, "Tag")["Name"]
-end
-
-function SetAsProcessed_IfItemWasAddedByAIM(root, item, inventoryHolder)
+local function SetAsProcessed_IfItemWasAddedByAIM(root, item, inventoryHolder)
 	local originalOwner = Osi.GetOriginalOwner(item)
 	if not originalOwner == Osi.GetUUID(inventoryHolder) and Osi.DB_Players:Get(originalOwner) then
 		_P("|OriginalOwner| = " .. Osi.GetOriginalOwner(item)
@@ -37,27 +27,31 @@ function SetAsProcessed_IfItemWasAddedByAIM(root, item, inventoryHolder)
 	end
 end
 
-function AppendCommandToTable(applicableCommands, command)
+local function AppendCommandToTable(applicableCommands, command)
 	if command then
+		for _, existingCommand in pairs(applicableCommands) do
+			if existingCommand[MODE] == command[MODE] then
+				table.insert(existingCommand[CRITERIA], table.unpack(command[CRITERIA]))
+				return
+			end
+		end
+
 		applicableCommands[#applicableCommands + 1] = command
 	end
 end
 
-function SearchForManagementCommand(item)
+local function SearchForManagementCommand(item)
 	local applicableCommands = {}
 
-	
 	if Osi.IsEquipable(item) == 1 then
-		local equipmentTypeUUID = Ext.Entity.Get(item).ServerItem.Item.OriginalTemplate.EquipmentTypeID
-		
 		if Osi.IsWeapon(item) == 1 then
-			AppendCommandToTable(applicableCommands, WEAPON_MAP[EQUIPTYPE_UUID_TO_NAME_MAP[equipmentTypeUUID]])
+			AppendCommandToTable(applicableCommands, WEAPON_MAP[GetEquipmentType(item)])
 
 			AppendCommandToTable(applicableCommands, WEAPON_MAP[ALL_ITEMS_MATCHING_MAP_CATEGORY])
 		end
-		
-		AppendCommandToTable(applicableCommands, EQUIPMENT_MAP[EQUIPTYPE_UUID_TO_NAME_MAP[equipmentTypeUUID]])
-		
+
+		AppendCommandToTable(applicableCommands, EQUIPMENT_MAP[GetEquipmentType(item)])
+
 		AppendCommandToTable(applicableCommands, EQUIPMENT_MAP[ALL_ITEMS_MATCHING_MAP_CATEGORY])
 	end
 
@@ -97,7 +91,7 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(root, item, 
 
 		_P(Ext.Json.Stringify(applicableCommand))
 
-		ProcessCommand(item, root, inventoryHolder, applicableCommand)
+		Processor.ProcessCommand(item, root, inventoryHolder, applicableCommand)
 
 		Ext.Utils.PrintWarning(
 			"----------------------------------------------------------\n\t\t\tFINISHED\n----------------------------------------------------------")

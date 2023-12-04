@@ -1,17 +1,19 @@
 Ext.Require("Server/CriteriaProcessor/_CriteriaProcessors.lua")
 
-function ProcessWeightByMode(command, eligiblePartyMembers, partyMembersWithAmountWon, item, root, inventoryHolder)
+local function ProcessWeightByMode(command, eligiblePartyMembers, partyMembersWithAmountWon, item, root, inventoryHolder)
 	local numberOfCriteriaToProcess = #command[CRITERIA]
 	local survivors = eligiblePartyMembers
+
 	if command[CRITERIA] and numberOfCriteriaToProcess > 0 then
 		for i = 1, numberOfCriteriaToProcess do
+			--- @type Criteria
 			local currentWeightedCriteria = command[CRITERIA][i]
-			survivors = STAT_TO_FUNCTION_MAP[currentWeightedCriteria[STAT]](partyMembersWithAmountWon,
+			survivors = CriteriaProcessors.ExecuteCriteria(currentWeightedCriteria,
+				partyMembersWithAmountWon,
 				survivors,
 				inventoryHolder,
 				item,
-				root,
-				currentWeightedCriteria)
+				root)
 
 			if #survivors == 1 or i == numberOfCriteriaToProcess then
 				local target = #survivors == 1 and survivors[1] or survivors[Osi.Random(#survivors) + 1]
@@ -23,7 +25,7 @@ function ProcessWeightByMode(command, eligiblePartyMembers, partyMembersWithAmou
 	end
 end
 
-function ProcessWinners(partyMembersWithAmountWon, item, root, inventoryHolder)
+local function ProcessWinners(partyMembersWithAmountWon, item, root, inventoryHolder)
 	_P("Final Results: " .. Ext.Json.Stringify(partyMembersWithAmountWon))
 	for target, amount in pairs(partyMembersWithAmountWon) do
 		if amount > 0 then
@@ -51,11 +53,12 @@ function ProcessWinners(partyMembersWithAmountWon, item, root, inventoryHolder)
 end
 
 -- If there's a stack limit, returns all the party members that are <=, or nil if no members are
-function FilterInitialTargets_ByStackLimit(command, partyMembersWithAmountWon, root, inventoryHolder)
+local function FilterInitialTargets_ByStackLimit(command, eligiblePartyMembers, partyMembersWithAmountWon, root,
+												 inventoryHolder)
 	if command[STACK_LIMIT] then
 		local filteredSurvivors = {}
-		for partyMember, _ in pairs(partyMembersWithAmountWon) do
-			local totalFutureStackSize = CalculateTemplateCurrentAndReservedStackSize(
+		for _, partyMember in pairs(eligiblePartyMembers) do
+			local totalFutureStackSize = ProcessorUtils.CalculateTotalItemCount(
 				partyMembersWithAmountWon, partyMember, inventoryHolder, root)
 
 			if totalFutureStackSize <= command[STACK_LIMIT] then
@@ -68,7 +71,8 @@ function FilterInitialTargets_ByStackLimit(command, partyMembersWithAmountWon, r
 	end
 end
 
-function ProcessCommand(item, root, inventoryHolder, commands)
+Processor = {}
+function Processor.ProcessCommand(item, root, inventoryHolder, commands)
 	local partyMembersWithAmountWon = {}
 	local currentItemStackSize = Osi.GetStackAmount(item)
 	local eligiblePartyMembers = {}
@@ -82,7 +86,7 @@ function ProcessCommand(item, root, inventoryHolder, commands)
 		if exitCode == 1 then
 			break
 		end
-		
+
 		local commandToProcess = commands[c]
 		if commandToProcess[MODE] == MODE_DIRECT then
 			local target = commandToProcess[TARGET]
@@ -99,6 +103,7 @@ function ProcessCommand(item, root, inventoryHolder, commands)
 		else
 			for _ = 1, currentItemStackSize do
 				eligiblePartyMembers = FilterInitialTargets_ByStackLimit(commandToProcess,
+						eligiblePartyMembers,
 						partyMembersWithAmountWon,
 						root,
 						inventoryHolder)
@@ -109,8 +114,11 @@ function ProcessCommand(item, root, inventoryHolder, commands)
 				-- 	itemStackAmount ..
 				-- 	" with winners: " .. Ext.Json.Stringify(partyMembersWithAmountWon, { Beautify = false }))
 				if commandToProcess[MODE] == MODE_WEIGHT_BY then
-					exitCode = ProcessWeightByMode(commandToProcess, eligiblePartyMembers, partyMembersWithAmountWon,
-						item, root,
+					exitCode = ProcessWeightByMode(commandToProcess,
+						eligiblePartyMembers,
+						partyMembersWithAmountWon,
+						item,
+						root,
 						inventoryHolder)
 				end
 			end

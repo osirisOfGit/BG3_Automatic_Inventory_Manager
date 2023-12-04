@@ -1,5 +1,5 @@
 {
-    "RequiredVersion": 10,
+    "RequiredVersion": 11,
     "ModTable": "Automatic_Inventory_Manager",
     "FeatureFlags": ["Lua"]
 }

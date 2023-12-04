@@ -1,90 +1,129 @@
 Ext.Require("Server/CriteriaProcessor/_ProcessorUtils.lua")
 
-function ByHealthPercent(_, survivors, _, _, _, criteria)
-	local winningVal
-	local winners = {}
-	for _, survivor in pairs(survivors) do
-		local health = Ext.Entity.Get(survivor).Health
-		local challengerHealthPercent = (health.Hp / health.MaxHp) * 100
-		winningVal = SetWinningVal_ByCompareResult(winningVal, challengerHealthPercent, criteria[COMPARATOR], winners, survivor)
-	end
+local StatFunctions = {}
 
-	return winners
+local paramMap = {}
+StatFunctions[STAT_HEALTH_PERCENTAGE] = function(partyMember)
+	local health = Ext.Entity.Get(partyMember).Health
+	local challengerHealthPercent = (health.Hp / health.MaxHp) * 100
+	return ProcessorUtils.SetWinningVal_ByCompareResult(paramMap.winningVal,
+		challengerHealthPercent,
+		paramMap.currentWeightedCriteria[COMPARATOR],
+		paramMap.winners,
+		partyMember)
 end
 
-function ByStackAmount(partyMembersWithAmountWon, survivors, inventoryHolder, _, root, criteria)
-	local winners = {}
-	local winningVal
+StatFunctions[STAT_STACK_AMOUNT] = function(partyMember)
+	local totalFutureStackSize = ProcessorUtils.CalculateTotalItemCount(paramMap.partyMembersWithAmountWon,
+		partyMember,
+		paramMap.inventoryHolder,
+		paramMap.root)
+	-- _P("Found " .. totalFutureStackSize .. " on " .. partyMember)
 
-	for _, survivor in pairs(survivors) do
-		local totalFutureStackSize = CalculateTemplateCurrentAndReservedStackSize(partyMembersWithAmountWon, survivor,
-			inventoryHolder, root)
-		-- _P("Found " .. totalFutureStackSize .. " on " .. partyMember)
-
-		winningVal = SetWinningVal_ByCompareResult(winningVal, totalFutureStackSize, criteria[COMPARATOR], winners, survivor)
-	end
-	return winners
+	return ProcessorUtils.SetWinningVal_ByCompareResult(paramMap.winningVal,
+		totalFutureStackSize,
+		paramMap.currentWeightedCriteria[COMPARATOR],
+		paramMap.winners,
+		partyMember)
 end
 
-function BySkillAmount(_, survivors, _, _, _, criteria)
-	local winners = {}
-	local winningVal
+StatFunctions[STAT_SKILL] = function(partyMember)
+	local skillScore = Osi.CalculatePassiveSkill(partyMember,
+		tostring(Ext.Enums.SkillId[paramMap.currentWeightedCriteria[STAT_SKILL]]))
 
-	for _, survivor in pairs(survivors) do
-		local skillScore = Osi.CalculatePassiveSkill(survivor, tostring(Ext.Enums.SkillId[criteria[STAT_SKILL]]))
-		winningVal = SetWinningVal_ByCompareResult(winningVal, skillScore, criteria[COMPARATOR], winners, survivor)
-	end
-
-	return winners
+	return ProcessorUtils.SetWinningVal_ByCompareResult(paramMap.winningVal,
+		skillScore,
+		paramMap.currentWeightedCriteria[COMPARATOR],
+		paramMap.winners,
+		partyMember)
 end
 
-function ByWeaponScore(_, survivors, _, item, _, criteria)
-	if Osi.IsWeapon(item) == 0 then
-		return survivors
+StatFunctions[STAT_WEAPON_SCORE] = function(partyMember)
+	if Osi.IsWeapon(paramMap.item) == 0 then
+		return paramMap.winners
 	end
 
-	local winners = {}
-	local winningVal
-
-	for _, survivor in pairs(survivors) do
-		local weaponScore = Osi.GetWeaponScoreForCharacter(item, survivor)
-		winningVal = SetWinningVal_ByCompareResult(winningVal, weaponScore, criteria[COMPARATOR], winners, survivor)
-	end
-
-	return winners
+	local weaponScore = Osi.GetWeaponScoreForCharacter(paramMap.item, partyMember)
+	return ProcessorUtils.SetWinningVal_ByCompareResult(paramMap.winningVal,
+		weaponScore,
+		paramMap.currentWeightedCriteria[COMPARATOR],
+		paramMap.winners,
+		partyMember)
 end
 
-function ByWeaponAbility(_, survivors, _, item, _, criteria)
-	local winners = {}
-	local winningVal
-
-	for _, survivor in pairs(survivors) do
-		local weaponAbility = tostring(Ext.Enums.AbilityId[Ext.Entity.Get(item).Weapon.Ability])
-		local survivorAbility = Osi.GetAbility(survivor, weaponAbility)
-		-- _P(string.format("Weapon uses %s, %s has a score of %s", weaponAbility, survivor, survivorAbility))
-		winningVal = SetWinningVal_ByCompareResult(winningVal, survivorAbility, criteria[COMPARATOR], winners, survivor)
-	end
-
-	return winners
+StatFunctions[STAT_WEAPON_ABILITY] = function(partyMember)
+	local weaponAbility = tostring(Ext.Enums.AbilityId[Ext.Entity.Get(paramMap.item).Weapon.Ability])
+	local survivorAbility = Osi.GetAbility(partyMember, weaponAbility)
+	-- _P(string.format("Weapon uses %s, %s has a score of %s", weaponAbility, survivor, survivorAbility))
+	return ProcessorUtils.SetWinningVal_ByCompareResult(paramMap.winningVal,
+		survivorAbility,
+		paramMap.currentWeightedCriteria[COMPARATOR],
+		paramMap.winners,
+		partyMember)
 end
 
-function ByProficiency(_, survivors, _, item, _, _)
-	local winners = {}
+StatFunctions[STAT_PROFICIENCY] = function(partyMember)
+	if Osi.IsProficientWith(partyMember, paramMap.item) == 1 then
+		table.insert(paramMap.winners, partyMember)
+	end
+
+	return paramMap.winners
+end
+
+StatFunctions[STAT_HAS_TYPE_EQUIPPED] = function(partyMember)
+	local targetItemType = GetEquipmentType(paramMap.item)
+	local itemSlot = tostring(Ext.Entity.Get(paramMap.item).Equipable.Slot)
+
+	-- Getting this aligned with Osi.EQUIPMENTSLOTNAME, because, what the fuck Larian
+	if itemSlot == Ext.Enums.StatsItemSlot[Ext.Enums.StatsItemSlot.MeleeMainHand] then
+		itemSlot = "Melee Main Weapon"
+	elseif itemSlot == Ext.Enums.StatsItemSlot[Ext.Enums.StatsItemSlot.MeleeOffHand] then
+		itemSlot = "Melee Offhand Weapon"
+	elseif itemSlot == Ext.Enums.StatsItemSlot[Ext.Enums.StatsItemSlot.RangedMainHand] then
+		itemSlot = "Ranged Main Weapon"
+	elseif itemSlot == Ext.Enums.StatsItemSlot[Ext.Enums.StatsItemSlot.RangedOffHand] then
+		itemSlot = "Ranged Offhand Weapon"
+	end
+
+	local currentEquippedItem = Osi.GetEquippedItem(partyMember, itemSlot)
+	if not currentEquippedItem then
+		return paramMap.winners
+	end
+	local equippedItemType = GetEquipmentType(currentEquippedItem)
+
+	if targetItemType == equippedItemType then
+		table.insert(paramMap.winners, partyMember)
+	end
+
+	return paramMap.winners
+end
+
+CriteriaProcessors = {}
+
+---Executes the current Criteria against the provided params.
+---@param currentWeightedCriteria Criteria
+---@param partyMembersWithAmountWon any
+---@param survivors any
+---@param inventoryHolder any
+---@param item any
+---@param root any
+---@return table winners The survivors that were eligible to receive the item, or the original survivors table if none were eligible
+function CriteriaProcessors.ExecuteCriteria(currentWeightedCriteria,
+											partyMembersWithAmountWon,
+											survivors,
+											inventoryHolder,
+											item,
+											root)
+	paramMap.winners = {}
+	paramMap.currentWeightedCriteria = currentWeightedCriteria
+	paramMap.partyMembersWithAmountWon = partyMembersWithAmountWon
+	paramMap.inventoryHolder = inventoryHolder
+	paramMap.item = item
+	paramMap.root = root
 
 	for _, partyMember in pairs(survivors) do
-		if Osi.IsProficientWith(partyMember, item) == 1 then
-			table.insert(winners, partyMember)
-		end
+		paramMap.winners, paramMap.winningVal = StatFunctions[currentWeightedCriteria[STAT]](partyMember)
 	end
 
-	return winners
+	return #paramMap.winners > 0 and paramMap.winners or survivors
 end
-
-STAT_TO_FUNCTION_MAP = {
-	[STAT_STACK_AMOUNT] = ByStackAmount,
-	[STAT_HEALTH_PERCENTAGE] = ByHealthPercent,
-	[STAT_PROFICIENCY] = ByProficiency,
-	[STAT_SKILL] = BySkillAmount,
-	[STAT_WEAPON_SCORE] = ByWeaponScore,
-	[STAT_WEAPON_ABILITY] = ByWeaponAbility,
-}
