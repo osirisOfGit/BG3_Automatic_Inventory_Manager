@@ -30,15 +30,26 @@ end
 
 ---
 ---@param applicableCommands ItemFilter[] the table of existing commands to append to
----@param ... ItemFilter the filters to add to the table
-local function AddFiltersToTable(applicableCommands, ...)
-	local filters = { ... }
-	for i = 1, #filters do
-		local command = filters[i]
+---@param newCommands ItemFilter[] the filters to add to the table
+local function AddFiltersToTable(applicableCommands, newCommands)
+	for i = 1, #newCommands do
+		local command = newCommands[i]
+
 		for _, existingCommand in pairs(applicableCommands) do
 			if existingCommand.Mode == command.Mode then
-				table.move(command.Filters, 1, #command.Filters, #existingCommand.Filters + 1, existingCommand.Filters)
-
+				-- Consolidate filters by Mode, moving the new filters over as long as we don't already have identical ones
+				for _, newFilter in pairs(command.Filters) do
+					local foundIdenticalFilter = false
+					for _, existingFilter in pairs(existingCommand.Filters) do
+						if ItemFilters:CompareFilter(newFilter, existingFilter) then
+							foundIdenticalFilter = true
+						end
+					end
+					if not foundIdenticalFilter then 
+						table.insert(existingCommand.Filters, newFilter)
+					end
+				end
+					
 				if command.Modifiers then
 					for modifier, newModifier in pairs(command.Modifiers) do
 						local existingModifier = existingCommand.Modifiers[modifier]
@@ -57,8 +68,11 @@ local function AddFiltersToTable(applicableCommands, ...)
 			end
 		end
 
+		-- If we don't have a Command with the same Mode already, add to this table
 		applicableCommands[#applicableCommands + 1] = command
 		::continue::
+		Ext.Utils.PrintError(tostring(#applicableCommands))
+		Ext.Utils.PrintError(Ext.Json.Stringify(applicableCommands))
 	end
 end
 
@@ -75,7 +89,7 @@ local function SearchForItemFilters(item)
 
 	AddFiltersToTable(applicableCommands, ItemFilters:GetFilterByTag(item))
 
-	return #applicableCommands > 0 and applicableCommands or nil
+	return applicableCommands
 end
 
 -- Includes moving from container to other inventories etc...
@@ -92,8 +106,8 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(root, item, 
 		return
 	end
 
-	local applicableCommand = SearchForItemFilters(item)
-	if applicableCommand then
+	local applicableCommands = SearchForItemFilters(item)
+	if #applicableCommands > 0 then
 		Ext.Utils.PrintWarning(
 			"----------------------------------------------------------\n\t\t\tSTARTED\n----------------------------------------------------------")
 
@@ -105,9 +119,9 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(root, item, 
 			.. "\n\t|itemStackSize| = " .. itemStack
 			.. "\n\t|templateStackSize| = " .. templateStack)
 
-		_P(Ext.Json.Stringify(applicableCommand))
+		_P(Ext.Json.Stringify(applicableCommands))
 
-		Processor:ProcessFiltersForItemAgainstParty(item, root, inventoryHolder, applicableCommand)
+		Processor:ProcessFiltersForItemAgainstParty(item, root, inventoryHolder, applicableCommands)
 
 		Ext.Utils.PrintWarning(
 			"----------------------------------------------------------\n\t\t\tFINISHED\n----------------------------------------------------------")

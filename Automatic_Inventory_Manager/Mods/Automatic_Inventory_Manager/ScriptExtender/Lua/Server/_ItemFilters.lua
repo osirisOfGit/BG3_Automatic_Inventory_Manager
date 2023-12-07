@@ -46,13 +46,25 @@ ItemFilters.ItemKeys = {
 
 --- @alias Filters table<number, WeightedFilter|TargetFilter>
 
+---Compare two Filters tables
+---@param first WeightedFilter|TargetFilter
+---@param second WeightedFilter|TargetFilter
+---@return boolean true if the tables are equal
+function ItemFilters:CompareFilter(first, second)
+	if first.Target == second.Target
+		and first.TargetStat == second.TargetStat
+		and first.TargetSubStat == second.TargetSubStat
+		and first.CompareStategy == second.CompareStategy then
+		return true
+	end
+
+	return false
+end
+
 --- @class ItemFilter
 --- @field Mode SelectionModes
 --- @field Filters Filters
 --- @field Modifiers table<FilterModifiers, any>|nil
-
-local filterFields = ItemFilters.FilterFields
-local itemFields = ItemFilters.ItemFields
 
 --- @alias ItemFilterMap table<string, ItemFilter>
 
@@ -61,6 +73,9 @@ local itemFields = ItemFilters.ItemFields
 --- @field Equipment ItemFilterMap
 --- @field Tags ItemFilterMap
 ItemFilters.ItemMaps = {}
+
+local itemFields = ItemFilters.ItemFields
+local filterFields = ItemFilters.FilterFields
 
 ItemFilters.ItemMaps.Weapons = {
 	[ItemFilters.ItemKeys.WILDCARD] = {
@@ -116,7 +131,7 @@ end
 --- Queries all ItemFilters.ItemMaps related to Equipment and returns all found filters, including wildcards.
 --- The Equipment Map is queried last
 ---@param item GUIDSTRING
----@return ItemFilter ...
+---@return ItemFilter[]
 function ItemFilters:GetFiltersByEquipmentType(item)
 	local filters = {}
 
@@ -127,11 +142,11 @@ function ItemFilters:GetFiltersByEquipmentType(item)
 	local equipTypeUUID = Ext.Entity.Get(item).ServerItem.Item.OriginalTemplate.EquipmentTypeID
 	GetFiltersFromMap(ItemFilters.ItemMaps.Equipment, Ext.StaticData.Get(equipTypeUUID, "EquipmentType")["Name"], filters)
 
-	return table.unpack(filters)
+	return filters
 end
 
 --- @param item GUIDSTRING
---- @return ItemFilter ... List of filters that were identified by the tags
+--- @return ItemFilter[] List of filters that were identified by the tags
 function ItemFilters:GetFilterByTag(item)
 	local filters = {}
 	for _, tagUUID in pairs(Ext.Entity.Get(item).Tag.Tags) do
@@ -141,5 +156,5 @@ function ItemFilters:GetFilterByTag(item)
 		end
 	end
 
-	return table.unpack(filters)
+	return filters
 end

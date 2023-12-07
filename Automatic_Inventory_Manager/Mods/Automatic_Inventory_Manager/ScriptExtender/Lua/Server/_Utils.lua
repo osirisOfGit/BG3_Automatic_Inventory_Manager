@@ -5,3 +5,4 @@ function AddItemToTable_AddingToExistingAmount(tarTable, key, amount)
 		tarTable[key] = tarTable[key] + amount
 	end
 end
+
