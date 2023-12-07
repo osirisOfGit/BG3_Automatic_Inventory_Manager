@@ -74,7 +74,7 @@ end
 StatFunctions[targetStats.HAS_TYPE_EQUIPPED] = function(partyMember)
 	local itemSlot = tostring(Ext.Entity.Get(paramMap.item).Equipable.Slot)
 	
-	-- Getting this aligned with Osi.EQUIPMENTSLOTNAME, because, what the fuck Larian (╯°□°）╯︵ ┻━┻
+	-- Getting this aligned with Osi.EQUIPMENTSLOTNAME, because, what the heck Larian (╯°□°）╯︵ ┻━┻
 	if itemSlot == Ext.Enums.StatsItemSlot[Ext.Enums.StatsItemSlot.MeleeMainHand] then
 		itemSlot = "Melee Main Weapon"
 	elseif itemSlot == Ext.Enums.StatsItemSlot[Ext.Enums.StatsItemSlot.MeleeOffHand] then
