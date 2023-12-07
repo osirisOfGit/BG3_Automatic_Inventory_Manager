@@ -71,8 +71,6 @@ local function AddFiltersToTable(applicableCommands, newCommands)
 		-- If we don't have a Command with the same Mode already, add to this table
 		applicableCommands[#applicableCommands + 1] = command
 		::continue::
-		Ext.Utils.PrintError(tostring(#applicableCommands))
-		Ext.Utils.PrintError(Ext.Json.Stringify(applicableCommands))
 	end
 end
 
