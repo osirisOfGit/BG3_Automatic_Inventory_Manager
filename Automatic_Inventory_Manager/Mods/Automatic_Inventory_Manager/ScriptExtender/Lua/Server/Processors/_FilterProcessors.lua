@@ -73,7 +73,7 @@ end
 
 StatFunctions[targetStats.HAS_TYPE_EQUIPPED] = function(partyMember)
 	local itemSlot = tostring(Ext.Entity.Get(paramMap.item).Equipable.Slot)
-	
+
 	-- Getting this aligned with Osi.EQUIPMENTSLOTNAME, because, what the heck Larian (╯°□°）╯︵ ┻━┻
 	if itemSlot == Ext.Enums.StatsItemSlot[Ext.Enums.StatsItemSlot.MeleeMainHand] then
 		itemSlot = "Melee Main Weapon"
@@ -84,7 +84,7 @@ StatFunctions[targetStats.HAS_TYPE_EQUIPPED] = function(partyMember)
 	elseif itemSlot == Ext.Enums.StatsItemSlot[Ext.Enums.StatsItemSlot.RangedOffHand] then
 		itemSlot = "Ranged Offhand Weapon"
 	end
-	
+
 	local currentEquippedItem = Osi.GetEquippedItem(partyMember, itemSlot)
 	if not currentEquippedItem then
 		return paramMap.winners
@@ -92,7 +92,7 @@ StatFunctions[targetStats.HAS_TYPE_EQUIPPED] = function(partyMember)
 	--- @cast currentEquippedItem -number # dont know why the heck would it be?
 	local currentEquipTypeUUID = Ext.Entity.Get(currentEquippedItem).ServerItem.Item.OriginalTemplate.EquipmentTypeID
 	local paramItemTypeUUID = Ext.Entity.Get(paramMap.item).ServerItem.Item.OriginalTemplate.EquipmentTypeID
-	
+
 	local paramItemType = Ext.StaticData.Get(currentEquipTypeUUID, "EquipmentType")["Name"]
 	local equippedItemType = Ext.StaticData.Get(paramItemTypeUUID, "EquipmentType")["Name"]
 	if paramItemType == equippedItemType then

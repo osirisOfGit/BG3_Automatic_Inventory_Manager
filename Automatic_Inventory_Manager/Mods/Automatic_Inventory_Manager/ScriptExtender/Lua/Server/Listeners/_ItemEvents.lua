@@ -45,11 +45,11 @@ local function AddFiltersToTable(applicableCommands, newCommands)
 							foundIdenticalFilter = true
 						end
 					end
-					if not foundIdenticalFilter then 
+					if not foundIdenticalFilter then
 						table.insert(existingCommand.Filters, newFilter)
 					end
 				end
-					
+
 				if command.Modifiers then
 					for modifier, newModifier in pairs(command.Modifiers) do
 						local existingModifier = existingCommand.Modifiers[modifier]

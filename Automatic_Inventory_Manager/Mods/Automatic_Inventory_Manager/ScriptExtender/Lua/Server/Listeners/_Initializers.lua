@@ -3,10 +3,10 @@ ITEMS_TO_DELETE = {}
 function ResetItemStacks()
 	for _, player in pairs(Osi.DB_Players:Get(nil)) do
 		_P("Cleaning up item stacks on " .. player[1])
+		ITEMS_TO_DELETE[player[1]] = {}
 		Osi.IterateInventory(player[1],
 			EVENT_ITERATE_ITEMS_TO_REBUILD_THEM_START .. player[1],
 			EVENT_ITERATE_ITEMS_TO_REBUILD_THEM_END .. player[1])
-		ITEMS_TO_DELETE[player[1]] = {}
 	end
 end
 

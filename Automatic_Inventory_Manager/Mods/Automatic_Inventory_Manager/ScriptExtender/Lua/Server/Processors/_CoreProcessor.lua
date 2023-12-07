@@ -32,7 +32,7 @@ local function ProcessWeightByMode(itemFilter,
 					eligiblePartyMembers[Osi.Random(#eligiblePartyMembers) + 1]
 
 				partyMembersWithAmountWon[target] = partyMembersWithAmountWon[target] + 1
-
+				_P("Winning command: " .. Ext.Json.Stringify(filter))
 				return 1
 			end
 		end

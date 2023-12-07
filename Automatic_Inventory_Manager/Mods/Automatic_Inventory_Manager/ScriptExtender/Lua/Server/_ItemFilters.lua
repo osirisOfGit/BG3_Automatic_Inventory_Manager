@@ -112,14 +112,27 @@ ItemFilters.ItemMaps.Tags = {
 			[1] = { TargetStat = filterFields.TargetStat.BY_SKILL_TYPE, TargetSubStat = "SleightOfHand", CompareStategy = filterFields.CompareStategy.HIGHER, },
 			[2] = { TargetStat = filterFields.TargetStat.STACK_AMOUNT, CompareStategy = filterFields.CompareStategy.HIGHER }
 		},
-	}
+	},
+	["TOOL"] = {
+		Mode = itemFields.SelectionModes.WEIGHT_BY,
+		Filters = {
+			[1] = { TargetStat = filterFields.TargetStat.BY_SKILL_TYPE, TargetSubStat = "SleightOfHand", CompareStategy = filterFields.CompareStategy.HIGHER, },
+			[2] = { TargetStat = filterFields.TargetStat.STACK_AMOUNT, CompareStategy = filterFields.CompareStategy.HIGHER }
+		},
+	},
+}
+
+ItemFilters.ItemMaps.Aliases = {
+
 }
 
 ---@param itemMap ItemMap
 ---@param key string
 ---@param filtersTable ItemFilter[]
 local function GetFiltersFromMap(itemMap, key, filtersTable)
+	key = string.upper(key)
 	if itemMap[key] then
+		_P(key)
 		table.insert(filtersTable, itemMap[key])
 	end
 
@@ -140,7 +153,10 @@ function ItemFilters:GetFiltersByEquipmentType(item)
 	end
 
 	local equipTypeUUID = Ext.Entity.Get(item).ServerItem.Item.OriginalTemplate.EquipmentTypeID
-	GetFiltersFromMap(ItemFilters.ItemMaps.Equipment, Ext.StaticData.Get(equipTypeUUID, "EquipmentType")["Name"], filters)
+	local equipType = Ext.StaticData.Get(equipTypeUUID, "EquipmentType")
+	if equipType then
+		GetFiltersFromMap(ItemFilters.ItemMaps.Equipment, equipType["Name"], filters)
+	end
 
 	return filters
 end
@@ -150,9 +166,12 @@ end
 function ItemFilters:GetFilterByTag(item)
 	local filters = {}
 	for _, tagUUID in pairs(Ext.Entity.Get(item).Tag.Tags) do
-		local tagFilter = ItemFilters.ItemMaps.Tags[Ext.StaticData.Get(tagUUID, "Tag")["Name"]]
-		if tagFilter then
-			table.insert(filters, tagFilter)
+		local tagTable = Ext.StaticData.Get(tagUUID, "Tag")
+		if tagTable then
+			local tagFilter = ItemFilters.ItemMaps.Tags[tagTable["Name"]]
+			if tagFilter then
+				table.insert(filters, tagFilter)
+			end
 		end
 	end
 
