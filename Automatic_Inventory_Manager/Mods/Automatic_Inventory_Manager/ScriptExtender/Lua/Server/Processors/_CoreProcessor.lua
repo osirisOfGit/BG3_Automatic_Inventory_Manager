@@ -1,5 +1,13 @@
 Ext.Require("Server/Processors/_FilterProcessors.lua")
 
+local function AddItemToProcessingTable(root, target, amount)
+	if not TEMPLATES_BEING_TRANSFERRED[root] then
+		TEMPLATES_BEING_TRANSFERRED[root] = { [target] = amount }
+	else
+		AddItemToTable_AddingToExistingAmount(TEMPLATES_BEING_TRANSFERRED[root], target, amount)
+	end
+end
+
 --- Executes the given filter according to weighted stat distribution
 --- @param itemFilter ItemFilter
 --- @param eligiblePartyMembers CHARACTER[]
@@ -56,11 +64,7 @@ local function ProcessWinners(partyMembersWithAmountWon, item, root, inventoryHo
 			else
 				-- This method generates a new uuid for the item upon moving it without forcing us to destroy it and generate a new one from the template
 				Osi.ToInventory(item, target, amount, 0, 0)
-				if not TEMPLATES_BEING_TRANSFERRED[root] then
-					TEMPLATES_BEING_TRANSFERRED[root] = { [target] = amount }
-				else
-					AddItemToTable_AddingToExistingAmount(TEMPLATES_BEING_TRANSFERRED[root], target, amount)
-				end
+				AddItemToProcessingTable(root, target, amount)
 
 				_P(string.format("'Moved' %s of %s to %s from %s"
 				, amount
@@ -126,14 +130,24 @@ function Processor:ProcessFiltersForItemAgainstParty(item, root, inventoryHolder
 		if filter.Mode == ItemFilters.ItemFields.SelectionModes.TARGET then
 			local target = filter.Filters[1].Target
 
-			if target and Osi.DB_IsPlayer:Get(target) then
-				AddItemToTable_AddingToExistingAmount(partyMembersWithAmountWon, target, currentItemStackSize)
-				break
+			if target then
+				if string.lower(target) == "camp" then
+					Osi.SendToCampChest(item, inventoryHolder)
+					AddItemToProcessingTable(root, item, currentItemStackSize)
+					_P("Sent item to camp!")
+					return
+				elseif Osi.IsPlayer(target) == 1 then
+					AddItemToTable_AddingToExistingAmount(partyMembersWithAmountWon, target, currentItemStackSize)
+					_P("Sent item to " .. target)
+					break
+				else
+					Ext.Utils.PrintError(string.format(
+						"The target %s was specified for item %s but they are not a party member!"
+						, target
+						, item))
+				end
 			else
-				Ext.Utils.PrintError(string.format(
-					"The target %s was specified for item %s but they are not a party member!"
-					, target
-					, item))
+				Ext.Utils.PrintError("A Target was not provided despite using TargetFilter for item " .. item)
 			end
 		else
 			for _ = 1, currentItemStackSize do

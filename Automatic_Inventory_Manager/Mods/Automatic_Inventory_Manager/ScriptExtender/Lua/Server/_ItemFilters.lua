@@ -37,7 +37,7 @@ ItemFilters.ItemKeys = {
 }
 
 --- @class TargetFilter
---- @field Target CHARACTER
+--- @field Target string
 
 --- @class WeightedFilter
 --- @field CompareStategy CompareStrategy|nil
@@ -120,10 +120,12 @@ ItemFilters.ItemMaps.Tags = {
 			[2] = { TargetStat = filterFields.TargetStat.STACK_AMOUNT, CompareStategy = filterFields.CompareStategy.HIGHER }
 		},
 	},
-}
-
-ItemFilters.ItemMaps.Aliases = {
-
+	["CAMPSUPPLIES"] = {
+		Mode = itemFields.SelectionModes.TARGET,
+		Filters = {
+			[1] = { Target = "camp" }
+		}
+	}
 }
 
 ---@param itemMap ItemMap
@@ -132,7 +134,6 @@ ItemFilters.ItemMaps.Aliases = {
 local function GetFiltersFromMap(itemMap, key, filtersTable)
 	key = string.upper(key)
 	if itemMap[key] then
-		_P(key)
 		table.insert(filtersTable, itemMap[key])
 	end
 

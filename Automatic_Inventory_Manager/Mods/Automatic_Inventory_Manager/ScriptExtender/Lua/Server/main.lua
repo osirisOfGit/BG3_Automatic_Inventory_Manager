@@ -18,8 +18,12 @@ Development Outline:
 	✅ OnPickup, move item to designated class, with backup
  ✅ Execute sort on game start
  Add whole bunch of criteria for different use-cases that i can think of
-   UsableItem Proficiency, EquipableItem by Character Stat (e.g. Dex for knife), Supply to camp,
-   Poisons to chars using no staves, Barkskin elixirs to lowest total health, scrolls to characters with high int/wis/charisma,
+   ✅ UsableItem Proficiency, 
+   ✅ EquipableItem by Character Stat (e.g. Dex for knife), 
+   ✅ Supply to camp,
+   Poisons to chars using no staves, 
+   Barkskin elixirs to lowest total health, 
+   scrolls to characters with high int/wis/charisma,
    potion of animal speaking to host character 
  Fallback distribution if exceeds weight limit
  Use PersistantVars to store onReset check

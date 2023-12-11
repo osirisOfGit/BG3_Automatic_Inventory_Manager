@@ -92,7 +92,11 @@ end
 
 -- Includes moving from container to other inventories etc...
 Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(root, item, inventoryHolder, addType)
-	if Osi.Exists(item) == 0 then
+	-- Will be null if inventoryHolder isn't a character
+	if not (Osi.IsPlayer(inventoryHolder) == 1) then
+		_P(string.format("inventoryHolder %s is not a player", inventoryHolder))
+		return
+	elseif not (Osi.Exists(item) == 1) then
 		_P("Item doesn't exist!")
 		return
 	end
