@@ -76,7 +76,6 @@ function ProcessorUtils:CalculateTotalItemCount(partyMembersWithAmountWon,
 												root)
 	local itemByTemplate = Osi.GetItemByTemplateInInventory(root, targetChar)
 	local totalFutureStackSize = itemByTemplate and Osi.GetStackAmount(itemByTemplate) or 0
-	---@cast itemByTemplate -nil
 
 	totalFutureStackSize = totalFutureStackSize + partyMembersWithAmountWon[targetChar]
 
@@ -86,7 +85,7 @@ function ProcessorUtils:CalculateTotalItemCount(partyMembersWithAmountWon,
 	end
 
 	if targetChar == inventoryHolder then
-		local amountToRemove = Osi.GetStackAmount(itemByTemplate)
+		local amountToRemove = itemByTemplate and Osi.GetStackAmount(itemByTemplate) or 0
 		for char, amountReserved in pairs(partyMembersWithAmountWon) do
 			if not (char == inventoryHolder) then
 				amountToRemove = amountToRemove + amountReserved

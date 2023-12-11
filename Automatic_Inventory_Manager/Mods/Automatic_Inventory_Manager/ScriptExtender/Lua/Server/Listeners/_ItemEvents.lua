@@ -1,6 +1,6 @@
 local function SetAsProcessed_IfItemWasAddedByAIM(root, item, inventoryHolder)
 	local originalOwner = Osi.GetOriginalOwner(item)
-	if not originalOwner == Osi.GetUUID(inventoryHolder) and Osi.DB_Players:Get(originalOwner) then
+	if originalOwner and not (originalOwner == Osi.GetUUID(inventoryHolder)) and Osi.IsPlayer(inventoryHolder) == 1 then
 		_P("|OriginalOwner| = " .. Osi.GetOriginalOwner(item)
 			.. "\n\t|DirectInventoryOwner| = " .. Osi.GetDirectInventoryOwner(item)
 			.. "\n\t|Owner| = " .. Osi.GetOwner(item))
@@ -100,7 +100,7 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(root, item, 
 		_P("Item doesn't exist!")
 		return
 	end
-
+	
 	SetAsProcessed_IfItemWasAddedByAIM(root, item, inventoryHolder)
 
 	if Osi.IsTagged(item, TAG_AIM_PROCESSED) == 1 then

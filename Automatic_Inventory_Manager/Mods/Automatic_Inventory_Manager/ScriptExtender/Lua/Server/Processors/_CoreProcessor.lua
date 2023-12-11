@@ -63,6 +63,7 @@ local function ProcessWinners(partyMembersWithAmountWon, item, root, inventoryHo
 				, inventoryHolder))
 			else
 				-- This method generates a new uuid for the item upon moving it without forcing us to destroy it and generate a new one from the template
+				Osi.SetOriginalOwner(item, inventoryHolder)
 				Osi.ToInventory(item, target, amount, 0, 0)
 				AddItemToProcessingTable(root, target, amount)
 
@@ -133,12 +134,10 @@ function Processor:ProcessFiltersForItemAgainstParty(item, root, inventoryHolder
 			if target then
 				if string.lower(target) == "camp" then
 					Osi.SendToCampChest(item, inventoryHolder)
-					AddItemToProcessingTable(root, item, currentItemStackSize)
 					_P("Sent item to camp!")
 					return
 				elseif Osi.IsPlayer(target) == 1 then
 					AddItemToTable_AddingToExistingAmount(partyMembersWithAmountWon, target, currentItemStackSize)
-					_P("Sent item to " .. target)
 					break
 				else
 					Ext.Utils.PrintError(string.format(

@@ -28,7 +28,8 @@ ItemFilters.FilterFields.TargetStat = {
 	WEAPON_SCORE = "WEAPON_SCORE",
 	WEAPON_ABILITY = "WEAPON_ABILITY",
 	HAS_TYPE_EQUIPPED = "HAS_TYPE_EQUIPPED",
-	BY_SKILL_TYPE = "BY_SKILL_TYPE",
+	SKILL_TYPE = "SKILL_TYPE",
+	ABILITY_STAT = "ABILITY_STAT",
 }
 
 --- @enum ItemKeys
@@ -42,7 +43,7 @@ ItemFilters.ItemKeys = {
 --- @class WeightedFilter
 --- @field CompareStategy CompareStrategy|nil
 --- @field TargetStat TargetStat
---- @field TargetSubStat SkillId|nil
+--- @field TargetSubStat SkillId|AbilityId|nil
 
 --- @alias Filters table<number, WeightedFilter|TargetFilter>
 
@@ -77,6 +78,12 @@ ItemFilters.ItemMaps = {}
 local itemFields = ItemFilters.ItemFields
 local filterFields = ItemFilters.FilterFields
 
+ItemFilters.FilterFields.Shortcuts = {}
+ItemFilters.FilterFields.Shortcuts.ByLargerStack = {
+	TargetStat = filterFields.TargetStat.STACK_AMOUNT,
+	CompareStategy = filterFields.CompareStategy.HIGHER
+}
+
 ItemFilters.ItemMaps.Weapons = {
 	[ItemFilters.ItemKeys.WILDCARD] = {
 		Mode = itemFields.SelectionModes.WEIGHT_BY,
@@ -93,6 +100,7 @@ ItemFilters.ItemMaps.Equipment = {
 		Mode = itemFields.SelectionModes.WEIGHT_BY,
 		Filters = {
 			[1] = { TargetStat = filterFields.TargetStat.PROFICIENCY },
+			[2] = filterFields.Shortcuts.ByLargerStack
 		}
 	}
 }
@@ -100,7 +108,7 @@ ItemFilters.ItemMaps.Equipment = {
 ItemFilters.ItemMaps.Tags = {
 	["HEALING_POTION"] = {
 		Mode = itemFields.SelectionModes.WEIGHT_BY,
-		Modifier = { [itemFields.FilterModifiers.STACK_LIMIT] = 2 },
+		Modifiers = { [itemFields.FilterModifiers.STACK_LIMIT] = 2 },
 		Filters = {
 			[1] = { TargetStat = filterFields.TargetStat.HEALTH_PERCENTAGE, CompareStategy = filterFields.CompareStategy.LOWER, },
 			[2] = { TargetStat = filterFields.TargetStat.STACK_AMOUNT, CompareStategy = filterFields.CompareStategy.LOWER }
@@ -109,16 +117,23 @@ ItemFilters.ItemMaps.Tags = {
 	["LOCKPICKS"] = {
 		Mode = itemFields.SelectionModes.WEIGHT_BY,
 		Filters = {
-			[1] = { TargetStat = filterFields.TargetStat.BY_SKILL_TYPE, TargetSubStat = "SleightOfHand", CompareStategy = filterFields.CompareStategy.HIGHER, },
-			[2] = { TargetStat = filterFields.TargetStat.STACK_AMOUNT, CompareStategy = filterFields.CompareStategy.HIGHER }
+			[1] = { TargetStat = filterFields.TargetStat.SKILL_TYPE, TargetSubStat = "SleightOfHand", CompareStategy = filterFields.CompareStategy.HIGHER, },
+			[2] = filterFields.Shortcuts.ByLargerStack
 		},
 	},
 	["TOOL"] = {
 		Mode = itemFields.SelectionModes.WEIGHT_BY,
 		Filters = {
-			[1] = { TargetStat = filterFields.TargetStat.BY_SKILL_TYPE, TargetSubStat = "SleightOfHand", CompareStategy = filterFields.CompareStategy.HIGHER, },
-			[2] = { TargetStat = filterFields.TargetStat.STACK_AMOUNT, CompareStategy = filterFields.CompareStategy.HIGHER }
+			[1] = { TargetStat = filterFields.TargetStat.SKILL_TYPE, TargetSubStat = "SleightOfHand", CompareStategy = filterFields.CompareStategy.HIGHER, },
+			[2] = filterFields.Shortcuts.ByLargerStack
 		},
+	},
+	["COATING"] = {
+		Mode = itemFields.SelectionModes.WEIGHT_BY,
+		Filters = {
+			[1] = filterFields.Shortcuts.ByLargerStack,
+			[2] = { TargetStat = filterFields.TargetStat.ABILITY_STAT, TargetSubStat = "Dexterity", CompareStategy = filterFields.CompareStategy.HIGHER }
+		}
 	},
 	["CAMPSUPPLIES"] = {
 		Mode = itemFields.SelectionModes.TARGET,

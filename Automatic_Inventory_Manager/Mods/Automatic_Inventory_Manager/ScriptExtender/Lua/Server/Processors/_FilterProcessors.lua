@@ -5,10 +5,8 @@ local StatFunctions = {}
 
 local paramMap = {}
 StatFunctions[targetStats.HEALTH_PERCENTAGE] = function(partyMember)
-	local health = Ext.Entity.Get(partyMember).Health
-	local challengerHealthPercent = (health.Hp / health.MaxHp) * 100
 	return ProcessorUtils:SetWinningVal_ByCompareResult(paramMap.winningVal,
-		challengerHealthPercent,
+		Osi.GetHitpointsPercentage(partyMember),
 		paramMap.weightedFilter.CompareStategy,
 		paramMap.winners,
 		partyMember)
@@ -28,12 +26,20 @@ StatFunctions[targetStats.STACK_AMOUNT] = function(partyMember)
 		partyMember)
 end
 
-StatFunctions[targetStats.BY_SKILL_TYPE] = function(partyMember)
+StatFunctions[targetStats.SKILL_TYPE] = function(partyMember)
 	local skillName = tostring(Ext.Enums.SkillId[paramMap.weightedFilter.TargetSubStat])
 	local skillScore = Osi.CalculatePassiveSkill(partyMember, skillName)
 
 	return ProcessorUtils:SetWinningVal_ByCompareResult(paramMap.winningVal,
 		skillScore,
+		paramMap.weightedFilter.CompareStategy,
+		paramMap.winners,
+		partyMember)
+end
+
+StatFunctions[targetStats.ABILITY_STAT] = function(partyMember)
+	return ProcessorUtils:SetWinningVal_ByCompareResult(paramMap.winningVal,
+		Osi.GetAbility(partyMember, paramMap.weightedFilter.TargetSubStat),
 		paramMap.weightedFilter.CompareStategy,
 		paramMap.winners,
 		partyMember)
