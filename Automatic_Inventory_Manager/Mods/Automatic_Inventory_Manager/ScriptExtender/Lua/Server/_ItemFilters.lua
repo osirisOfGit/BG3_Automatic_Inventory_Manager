@@ -30,6 +30,7 @@ ItemFilters.FilterFields.TargetStat = {
 	HAS_TYPE_EQUIPPED = "HAS_TYPE_EQUIPPED",
 	SKILL_TYPE = "SKILL_TYPE",
 	ABILITY_STAT = "ABILITY_STAT",
+	ARMOR_CLASS = "ARMOR_CLASS"
 }
 
 --- @enum ItemKeys
@@ -105,6 +106,16 @@ ItemFilters.ItemMaps.Equipment = {
 	}
 }
 
+ItemFilters.ItemMaps.Roots = {
+	["ALCH_Soultion_Elixir_Barkskin_cc1a8802-675a-426b-a791-ec1d5a5b6328"] = {
+		Mode = itemFields.SelectionModes.WEIGHT_BY,
+		Modifiers = { [itemFields.FilterModifiers.STACK_LIMIT] = 1 },
+		Filters = {
+			[1] = { TargetStat = filterFields.TargetStat.ARMOR_CLASS, CompareStategy = filterFields.CompareStategy.LOWER }
+		}
+	}
+}
+
 ItemFilters.ItemMaps.Tags = {
 	["HEALING_POTION"] = {
 		Mode = itemFields.SelectionModes.WEIGHT_BY,
@@ -147,7 +158,6 @@ ItemFilters.ItemMaps.Tags = {
 ---@param key string
 ---@param filtersTable ItemFilter[]
 local function GetFiltersFromMap(itemMap, key, filtersTable)
-	key = string.upper(key)
 	if itemMap[key] then
 		table.insert(filtersTable, itemMap[key])
 	end
@@ -155,6 +165,17 @@ local function GetFiltersFromMap(itemMap, key, filtersTable)
 	if itemMap[ItemFilters.ItemKeys.WILDCARD] then
 		table.insert(filtersTable, itemMap[ItemFilters.ItemKeys.WILDCARD])
 	end
+end
+
+---
+---@param root GUIDSTRING root template UUID of the item
+---@return ItemFilter[]
+function ItemFilters:GetFiltersByRoot(root)
+	local filters = {}
+
+	GetFiltersFromMap(ItemFilters.ItemMaps.Roots, root, filters)
+
+	return filters
 end
 
 --- Queries all ItemFilters.ItemMaps related to Equipment and returns all found filters, including wildcards.

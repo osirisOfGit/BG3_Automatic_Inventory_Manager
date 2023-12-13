@@ -51,9 +51,13 @@ function ProcessorUtils:SetWinningVal_ByCompareResult(baseValue,
 			winningValue = challengerValue
 		else
 			winningValue = baseValue
+			for _, winner in pairs(winnersTable) do
+				if winner == targetPartyMember then goto continue end
+			end
 		end
 	end
-
+	
+	::continue::
 	return winnersTable, winningValue
 end
 

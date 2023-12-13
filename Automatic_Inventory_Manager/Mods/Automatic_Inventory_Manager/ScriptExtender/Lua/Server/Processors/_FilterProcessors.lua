@@ -12,6 +12,14 @@ StatFunctions[targetStats.HEALTH_PERCENTAGE] = function(partyMember)
 		partyMember)
 end
 
+StatFunctions[targetStats.ARMOR_CLASS] = function(partyMember)
+	return ProcessorUtils:SetWinningVal_ByCompareResult(paramMap.winningVal,
+		Ext.Entity.Get(partyMember).Health.AC,
+		paramMap.weightedFilter.CompareStategy,
+		paramMap.winners,
+		partyMember)
+end
+
 StatFunctions[targetStats.STACK_AMOUNT] = function(partyMember)
 	local totalFutureStackSize = ProcessorUtils:CalculateTotalItemCount(paramMap.partyMembersWithAmountWon,
 		partyMember,
@@ -95,7 +103,7 @@ StatFunctions[targetStats.HAS_TYPE_EQUIPPED] = function(partyMember)
 	if not currentEquippedItem then
 		return paramMap.winners
 	end
-	--- @cast currentEquippedItem -number # dont know why the heck would it be?
+	--- @cast currentEquippedItem -number # dont know why the heck it would be?
 	local currentEquipTypeUUID = Ext.Entity.Get(currentEquippedItem).ServerItem.Item.OriginalTemplate.EquipmentTypeID
 	local paramItemTypeUUID = Ext.Entity.Get(paramMap.item).ServerItem.Item.OriginalTemplate.EquipmentTypeID
 
@@ -125,6 +133,7 @@ function FilterProcessors:ExecuteFilterAgainstEligiblePartyMembers(weightedFilte
 																   item,
 																   root)
 	paramMap.winners = {}
+	paramMap.winningVal = nil
 	paramMap.weightedFilter = weightedFilter
 	paramMap.partyMembersWithAmountWon = partyMembersWithAmountWon
 	paramMap.inventoryHolder = inventoryHolder

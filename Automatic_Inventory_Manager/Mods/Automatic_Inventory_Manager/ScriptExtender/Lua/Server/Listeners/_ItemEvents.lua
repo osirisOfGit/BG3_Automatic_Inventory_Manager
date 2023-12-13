@@ -1,9 +1,9 @@
 local function SetAsProcessed_IfItemWasAddedByAIM(root, item, inventoryHolder)
 	local originalOwner = Osi.GetOriginalOwner(item)
 	if originalOwner and not (originalOwner == Osi.GetUUID(inventoryHolder)) and Osi.IsPlayer(inventoryHolder) == 1 then
-		_P("|OriginalOwner| = " .. Osi.GetOriginalOwner(item)
-			.. "\n\t|DirectInventoryOwner| = " .. Osi.GetDirectInventoryOwner(item)
-			.. "\n\t|Owner| = " .. Osi.GetOwner(item))
+		-- _P("|OriginalOwner| = " .. Osi.GetOriginalOwner(item)
+		-- 	.. "\n\t|DirectInventoryOwner| = " .. Osi.GetDirectInventoryOwner(item)
+		-- 	.. "\n\t|Owner| = " .. Osi.GetOwner(item))
 
 		if TEMPLATES_BEING_TRANSFERRED[root] and TEMPLATES_BEING_TRANSFERRED[root][inventoryHolder] then
 			_P(string.format("Found %s of %s being transferred to %s - tagging as processed!"
@@ -75,9 +75,10 @@ local function AddFiltersToTable(applicableCommands, newCommands)
 end
 
 --- Finds all Filters for the given item
----@param item any
+---@param item GUIDSTRING
+---@param root GUIDSTRING
 ---@return ItemFilter[]|nil
-local function SearchForItemFilters(item)
+local function SearchForItemFilters(item, root)
 	--- @type ItemFilter[]
 	local applicableCommands = {}
 
@@ -86,6 +87,8 @@ local function SearchForItemFilters(item)
 	end
 
 	AddFiltersToTable(applicableCommands, ItemFilters:GetFilterByTag(item))
+
+	AddFiltersToTable(applicableCommands, ItemFilters:GetFiltersByRoot(root))
 
 	return applicableCommands
 end
@@ -108,7 +111,7 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(root, item, 
 		return
 	end
 
-	local applicableCommands = SearchForItemFilters(item)
+	local applicableCommands = SearchForItemFilters(item, root)
 	if #applicableCommands > 0 then
 		Ext.Utils.PrintWarning(
 			"----------------------------------------------------------\n\t\t\tSTARTED\n----------------------------------------------------------")

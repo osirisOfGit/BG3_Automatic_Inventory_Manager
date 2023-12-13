@@ -21,6 +21,7 @@ Development Outline:
    ✅ UsableItem Proficiency, 
    ✅ EquipableItem by Character Stat (e.g. Dex for knife), 
    ✅ Supply to camp,
+   Sending gold to player character
    Poisons to chars using no staves, 
    Barkskin elixirs to lowest total health, 
    scrolls to characters with high int/wis/charisma,
