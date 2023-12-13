@@ -23,7 +23,7 @@ Development Outline:
    ✅ Supply to camp,
    Sending gold to player character
    Poisons to chars using no staves, 
-   Barkskin elixirs to lowest total health, 
+   ✅ Barkskin elixirs to lowest total A/C, 
    scrolls to characters with high int/wis/charisma,
    potion of animal speaking to host character 
  Fallback distribution if exceeds weight limit

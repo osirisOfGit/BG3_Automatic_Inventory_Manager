@@ -107,6 +107,7 @@ ItemFilters.ItemMaps.Equipment = {
 }
 
 ItemFilters.ItemMaps.Roots = {
+	-- not a typo :D
 	["ALCH_Soultion_Elixir_Barkskin_cc1a8802-675a-426b-a791-ec1d5a5b6328"] = {
 		Mode = itemFields.SelectionModes.WEIGHT_BY,
 		Modifiers = { [itemFields.FilterModifiers.STACK_LIMIT] = 1 },

@@ -62,9 +62,11 @@ local function ProcessWinners(partyMembersWithAmountWon, item, root, inventoryHo
 				, item
 				, inventoryHolder))
 			else
-				-- This method generates a new uuid for the item upon moving it without forcing us to destroy it and generate a new one from the template
 				Osi.SetOriginalOwner(item, inventoryHolder)
+				
+				-- This method generates a new uuid for the item upon moving it without forcing us to destroy it and generate a new one from the template
 				Osi.ToInventory(item, target, amount, 0, 0)
+				
 				AddItemToProcessingTable(root, target, amount)
 
 				_P(string.format("'Moved' %s of %s to %s from %s"
