@@ -127,10 +127,10 @@ local function FilterInitialTargets_ByEncumbranceRisk(item, eligiblePartyMembers
 			local unencumberedLimit = tonumber(partyMemberEntity.EncumbranceStats["field_0"])
 			local inventoryWeight = tonumber(partyMemberEntity.InventoryWeight["Weight"])
 			if (inventoryWeight + itemWeight) <= unencumberedLimit then
-				_P(string.format("Item weight %d will not encumber %s, with %d more room!",
-					itemWeight,
-					partyMember,
-					unencumberedLimit - (inventoryWeight + itemWeight)))
+				-- _P(string.format("Item weight %d will not encumber %s, with %d more room!",
+				-- 	itemWeight,
+				-- 	partyMember,
+				-- 	unencumberedLimit - (inventoryWeight + itemWeight)))
 				table.insert(filteredSurvivors, partyMember)
 			end
 		end
