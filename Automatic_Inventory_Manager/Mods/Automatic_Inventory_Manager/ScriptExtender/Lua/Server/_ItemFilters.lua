@@ -114,6 +114,12 @@ ItemFilters.ItemMaps.Roots = {
 		Filters = {
 			[1] = { TargetStat = filterFields.TargetStat.ARMOR_CLASS, CompareStategy = filterFields.CompareStategy.LOWER }
 		}
+	},
+	["LOOT_Gold_A_1c3c9c74-34a1-4685-989e-410dc080be6f"] = {
+		Mode = itemFields.SelectionModes.WEIGHT_BY,
+		Filters = {
+			[1] = filterFields.Shortcuts.ByLargerStack
+		}
 	}
 }
 
