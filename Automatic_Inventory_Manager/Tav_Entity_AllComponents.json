@@ -11,7 +11,7 @@
 					"ResourceId" : 0,
 					"ResourceUUID" : "420c8df5-45c2-4253-93c2-7ec44e127930",
 					"SubAmounts" : null,
-					"field_28" : 140698393886210,
+					"field_28" : 140697399770882,
 					"field_30" : 0
 				}
 			],
@@ -23,7 +23,7 @@
 					"ResourceId" : 0,
 					"ResourceUUID" : "45ff0f48-b210-4024-972f-b64a44dc6985",
 					"SubAmounts" : null,
-					"field_28" : 140698393886210,
+					"field_28" : 140697399770882,
 					"field_30" : 0
 				}
 			],
@@ -35,7 +35,7 @@
 					"ResourceId" : 0,
 					"ResourceUUID" : "46886ba5-6505-4875-a747-ac14118e1e08",
 					"SubAmounts" : null,
-					"field_28" : 140698393886216,
+					"field_28" : 140697399770888,
 					"field_30" : 0
 				}
 			],
@@ -47,7 +47,7 @@
 					"ResourceId" : 0,
 					"ResourceUUID" : "734cbcfb-8922-4b6d-8330-b2a7e4c14b6a",
 					"SubAmounts" : null,
-					"field_28" : 140698393886210,
+					"field_28" : 140697399770882,
 					"field_30" : 0
 				}
 			],
@@ -59,7 +59,7 @@
 					"ResourceId" : 1,
 					"ResourceUUID" : "d136c5d9-0ff0-43da-acce-a74a07f8d6bf",
 					"SubAmounts" : null,
-					"field_28" : 140698393886216,
+					"field_28" : 140697399770888,
 					"field_30" : 0
 				},
 				{
@@ -68,7 +68,7 @@
 					"ResourceId" : 2,
 					"ResourceUUID" : "d136c5d9-0ff0-43da-acce-a74a07f8d6bf",
 					"SubAmounts" : null,
-					"field_28" : 140698393886216,
+					"field_28" : 140697399770888,
 					"field_30" : 0
 				},
 				{
@@ -77,7 +77,7 @@
 					"ResourceId" : 3,
 					"ResourceUUID" : "d136c5d9-0ff0-43da-acce-a74a07f8d6bf",
 					"SubAmounts" : null,
-					"field_28" : 140698393886216,
+					"field_28" : 140697399770888,
 					"field_30" : 0
 				},
 				{
@@ -86,7 +86,7 @@
 					"ResourceId" : 4,
 					"ResourceUUID" : "d136c5d9-0ff0-43da-acce-a74a07f8d6bf",
 					"SubAmounts" : null,
-					"field_28" : 140698393886216,
+					"field_28" : 140697399770888,
 					"field_30" : 0
 				},
 				{
@@ -95,7 +95,7 @@
 					"ResourceId" : 5,
 					"ResourceUUID" : "d136c5d9-0ff0-43da-acce-a74a07f8d6bf",
 					"SubAmounts" : null,
-					"field_28" : 140698393886216,
+					"field_28" : 140697399770888,
 					"field_30" : 0
 				}
 			],
@@ -107,7 +107,7 @@
 					"ResourceId" : 0,
 					"ResourceUUID" : "d1b02f9c-9d6e-4eac-905d-ccd9e7876c7c",
 					"SubAmounts" : null,
-					"field_28" : 140698393886216,
+					"field_28" : 140697399770888,
 					"field_30" : 0
 				}
 			],
@@ -119,7 +119,7 @@
 					"ResourceId" : 0,
 					"ResourceUUID" : "d6b2369d-84f0-4ca4-a3a7-62d2d192a185",
 					"SubAmounts" : null,
-					"field_28" : 140698393886210,
+					"field_28" : 140697399770882,
 					"field_30" : 0
 				}
 			]
@@ -260,6 +260,10 @@
 			}
 		]
 	},
+	"ArmorSetState" : 
+	{
+		"State" : 0
+	},
 	"AttitudesToPlayers" : 
 	{
 		"Attitudes" : {}
@@ -272,6 +276,7 @@
 	{
 		"Level" : 9
 	},
+	"Avatar" : {},
 	"Background" : 
 	{
 		"Background" : "76925f0b-3ec8-4f42-86a9-cd4f745af2ac"
@@ -281,8 +286,8 @@
 		"field_18" : 
 		[
 			{
-				"Passive" : 611,
-				"field_0" : 2909766832
+				"Passive" : 606,
+				"field_0" : 3678163664
 			}
 		]
 	},
@@ -322,152 +327,221 @@
 		{
 			"AC" : 
 			[
-				"Entity (01c000020000a0a4)",
-				"Entity (01c0000200013b78)"
+				"Entity (01c0000100000e6a)",
+				"Entity (01c0000100012988)"
 			],
 			"ACOverrideFormula" : 
 			[
-				"Entity (01c0000200013b79)"
+				"Entity (01c0000100012989)"
 			],
 			"Ability" : 
 			[
-				"Entity (01c000020000a2bc)",
-				"Entity (01c000020000a2bf)",
-				"Entity (01c000020000a2c2)",
-				"Entity (01c000020000a2c5)",
-				"Entity (01c000020000a2c8)",
-				"Entity (01c000020000a2cb)",
-				"Entity (01c00001000193bf)",
-				"Entity (01c00001000193c0)",
-				"Entity (01c0000100019cdb)"
+				"Entity (01c0000100000da5)",
+				"Entity (01c0000100000da6)",
+				"Entity (01c0000100000da7)",
+				"Entity (01c0000100000da8)",
+				"Entity (01c0000100000da9)",
+				"Entity (01c0000100000daa)",
+				"Entity (01c0000100002699)",
+				"Entity (01c000010000269a)",
+				"Entity (01c0000100002fa5)"
 			],
 			"ActionResource" : 
 			[
-				"Entity (01c00001000193cf)",
-				"Entity (01c00001000193d0)",
-				"Entity (01c00001000193d1)",
-				"Entity (01c00001000193d2)",
-				"Entity (01c00001000193d3)",
-				"Entity (01c00001000193d4)",
-				"Entity (01c00001000193d5)",
-				"Entity (01c00001000193b6)",
-				"Entity (01c00001000193c1)",
-				"Entity (01c00001000193c3)",
-				"Entity (01c00001000193c4)",
-				"Entity (01c00001000193c6)",
-				"Entity (01c00001000193c7)",
-				"Entity (01c00001000193c8)",
-				"Entity (01c00001000193c9)",
-				"Entity (01c00001000193ca)",
-				"Entity (01c00001000193cb)",
-				"Entity (01c00001000193cc)",
-				"Entity (01c00001000193cd)",
-				"Entity (01c00001000193ce)",
-				"Entity (01c0000200013bc2)"
+				"Entity (01c00001000026a8)",
+				"Entity (01c00001000026a9)",
+				"Entity (01c00001000026aa)",
+				"Entity (01c00001000026ab)",
+				"Entity (01c00001000026ac)",
+				"Entity (01c00001000026ad)",
+				"Entity (01c00001000026ae)",
+				"Entity (01c00001000026af)",
+				"Entity (01c0000100002690)",
+				"Entity (01c000010000269b)",
+				"Entity (01c000010000269d)",
+				"Entity (01c000010000269e)",
+				"Entity (01c00001000026a0)",
+				"Entity (01c00001000026a1)",
+				"Entity (01c00001000026a2)",
+				"Entity (01c00001000026a3)",
+				"Entity (01c00001000026a4)",
+				"Entity (01c00001000026a5)",
+				"Entity (01c00001000026a6)",
+				"Entity (01c00001000026a7)",
+				"Entity (01c0000100012e01)"
 			],
 			"ActiveCharacterLight" : 
 			[
-				"Entity (01c0000100019cd6)"
+				"Entity (01c0000100002fa0)"
 			],
 			"Advantage" : 
 			[
-				"Entity (01c000020000a358)"
+				"Entity (01c0000100000def)"
 			],
 			"BlockRegainHP" : 
 			[
-				"Entity (01c0000100018031)"
+				"Entity (01c0000100001578)"
 			],
 			"DamageBonus" : 
 			[
-				"Entity (01c0000200013cee)",
-				"Entity (01c000010001970d)"
+				"Entity (01c0000100012e28)",
+				"Entity (01c00001000029d6)"
 			],
 			"DarkvisionRangeMin" : 
 			[
-				"Entity (01c0000100019cd5)"
+				"Entity (01c0000100002f9f)"
 			],
 			"DownedStatus" : 
 			[
-				"Entity (01c0000100019c93)"
+				"Entity (01c0000100002f55)"
 			],
 			"IncreaseMaxHP" : 
 			[
-				"Entity (01c0000200009350)",
-				"Entity (01c00001000193be)"
+				"Entity (01c0000100001459)",
+				"Entity (01c0000100002698)"
 			],
 			"Initiative" : 
 			[
-				"Entity (01c0000100019731)"
+				"Entity (01c00001000029fe)"
 			],
 			"Proficiency" : 
 			[
-				"Entity (01c00001000193b9)",
-				"Entity (01c00001000193ba)",
-				"Entity (01c00001000193bb)",
-				"Entity (01c0000100019cd2)",
-				"Entity (01c0000100019cd3)",
-				"Entity (01c0000100019cd4)"
+				"Entity (01c0000100002693)",
+				"Entity (01c0000100002694)",
+				"Entity (01c0000100002695)",
+				"Entity (01c0000100002f9c)",
+				"Entity (01c0000100002f9d)",
+				"Entity (01c0000100002f9e)"
 			],
 			"ProficiencyBonus" : 
 			[
-				"Entity (01c00002000094a1)",
-				"Entity (01c00002000094a5)",
-				"Entity (01c00001000193b7)",
-				"Entity (01c00001000193b8)",
-				"Entity (01c00001000193bc)",
-				"Entity (01c00001000193bd)",
-				"Entity (01c00001000193c2)",
-				"Entity (01c0000100019c95)",
-				"Entity (01c0000100019c94)",
-				"Entity (01c0000100019cdc)"
+				"Entity (01c0000100001456)",
+				"Entity (01c0000100001457)",
+				"Entity (01c0000100002691)",
+				"Entity (01c0000100002692)",
+				"Entity (01c0000100002696)",
+				"Entity (01c0000100002697)",
+				"Entity (01c000010000269c)",
+				"Entity (01c0000100002f57)",
+				"Entity (01c0000100002f56)",
+				"Entity (01c0000100002fa6)"
 			],
 			"RollBonus" : 
 			[
-				"Entity (01c000020000a361)",
-				"Entity (01c000020000a0a7)",
-				"Entity (01c0000100019c9a)",
-				"Entity (01c0000100019c99)",
-				"Entity (01c0000200013bc5)",
-				"Entity (01c0000200013bc6)",
-				"Entity (01c0000200013bc7)"
+				"Entity (01c0000100000df2)",
+				"Entity (01c0000100000e6b)",
+				"Entity (01c0000100002f5f)",
+				"Entity (01c0000100002f5e)",
+				"Entity (01c0000100012e04)",
+				"Entity (01c0000100012e05)",
+				"Entity (01c0000100012e06)"
 			],
 			"SpellSaveDC" : 
 			[
-				"Entity (01c0000100019730)"
+				"Entity (01c00001000029fd)"
 			],
 			"StatusImmunity" : 
 			[
-				"Entity (01c0000100019cd7)",
-				"Entity (01c0000100019cd8)"
+				"Entity (01c0000100002fa1)",
+				"Entity (01c0000100002fa2)"
 			],
 			"Tag" : 
 			[
-				"Entity (01c000020000934e)",
-				"Entity (01c00001000193c5)",
-				"Entity (01c0000100019cd9)"
+				"Entity (01c0000100001458)",
+				"Entity (01c000010000269f)",
+				"Entity (01c0000100002fa3)"
 			],
 			"UnlockInterrupt" : 
 			[
-				"Entity (01c000010001a00f)",
-				"Entity (01c0000100019cda)",
-				"Entity (01c0000200013bc1)",
-				"Entity (01c0000200013bc3)",
-				"Entity (01c0000200013bc4)"
+				"Entity (01c00001000032c3)",
+				"Entity (01c0000100002fa4)",
+				"Entity (01c0000100012e00)",
+				"Entity (01c0000100012e02)",
+				"Entity (01c0000100012e03)"
 			],
 			"UnlockSpell" : 
 			[
-				"Entity (01c000020000a08f)",
-				"Entity (01c000020000a092)",
-				"Entity (01c000020000a095)",
-				"Entity (01c000020000a0aa)",
-				"Entity (01c000020000a349)",
-				"Entity (01c000020000a34c)",
-				"Entity (01c000020000a35b)",
-				"Entity (01c000020000a35e)",
-				"Entity (01c000020000949f)",
-				"Entity (01c0000100019cd1)"
+				"Entity (01c0000100000e63)",
+				"Entity (01c0000100000e64)",
+				"Entity (01c0000100000e65)",
+				"Entity (01c0000100000e6c)",
+				"Entity (01c0000100000dce)",
+				"Entity (01c0000100000dcf)",
+				"Entity (01c0000100000df0)",
+				"Entity (01c0000100000df1)",
+				"Entity (01c0000100001455)",
+				"Entity (01c0000100002f9b)"
+			]
+		}
+	},
+	"Bound" : 
+	{
+		"Bound" : 
+		{
+			"AIBounds" : 
+			{
+				"24832" : 
+				{
+					"AiType" : 2,
+					"Height" : 2.0,
+					"Max" : 
+					[
+						0.40751001238822937,
+						1.9335399866104126,
+						0.063008502125740051
+					],
+					"Min" : 
+					[
+						-0.40751001238822937,
+						-0.0013587500434368849,
+						-0.10585849732160568
+					],
+					"Radius" : 0.24899999797344208,
+					"Radius2" : 0.24899999797344208,
+					"Type" : 1073741824,
+					"field_28" : 0,
+					"field_2A" : 0
+				}
+			},
+			"Entity" : "Entity (01c00001000000a4)",
+			"Flags" : 96,
+			"Flags2" : 34,
+			"RotationQuat" : 
+			[
+				0.0,
+				-0.70923501253128052,
+				0.0,
+				0.70497214794158936
 			],
-			"UnlockSpellVariant" : []
+			"Scale" : 1.0526316165924072,
+			"SomeRefCount" : 0,
+			"Translate" : 
+			[
+				-46.293529510498047,
+				66.3994140625,
+				-135.74421691894531
+			],
+			"TranslateOverride" : 
+			[
+				0.0,
+				0.0,
+				0.0
+			],
+			"field_28" : 
+			[
+				3014669,
+				874973591,
+				2949132,
+				874973591,
+				3014668,
+				874973591,
+				3080204,
+				874973591,
+				2949133
+			],
+			"field_78" : 11502,
+			"field_89" : 115,
+			"field_8C" : ""
 		}
 	},
 	"CCPrepareSpell" : 
@@ -488,6 +562,7 @@
 	{
 		"Flags" : 0
 	},
+	"CanBeWielded" : {},
 	"CanDeflectProjectiles" : 
 	{
 		"Flags" : 0
@@ -506,6 +581,10 @@
 		"RestErrorFlags1" : [],
 		"RestErrorFlags2" : []
 	},
+	"CanEnterChasm" : 
+	{
+		"CanEnter" : true
+	},
 	"CanInteract" : 
 	{
 		"Flags" : 65535
@@ -518,6 +597,7 @@
 	{
 		"Flags" : 65535
 	},
+	"CanSeeThrough" : {},
 	"CanSense" : 
 	{
 		"Flags" : 65527
@@ -531,8 +611,8 @@
 		"ErrorFlags" : [],
 		"Flags" : 
 		[
-			"BlockFastTravel",
-			"BlockCampTravel"
+			"BlockCampTravel",
+			"BlockFastTravel"
 		],
 		"field_2" : 0
 	},
@@ -692,7 +772,7 @@
 			"Prototype" : "",
 			"SourceType" : "Unknown17"
 		},
-		"field_0" : "Entity (01c000020000cb79)",
+		"field_0" : "Entity (01c00001000000a4)",
 		"field_8" : []
 	},
 	"CustomIcon" : {},
@@ -712,10 +792,18 @@
 		"StepsType" : 0,
 		"Weight" : 75000
 	},
+	"DialogState" : 
+	{
+		"field_0" : 0,
+		"field_1" : 0,
+		"field_2" : 0,
+		"field_4" : 0,
+		"field_8" : 0
+	},
 	"DifficultyCheck" : 
 	{
-		"SpellDC" : -956887280,
-		"field_4" : 611,
+		"SpellDC" : -191045744,
+		"field_4" : 606,
 		"field_8" : 11
 	},
 	"DisplayName" : 
@@ -758,9 +846,23 @@
 		"field_1A" : 0,
 		"field_1D" : 0
 	},
+	"EncumbranceState" : 
+	{
+		"State" : 0
+	},
+	"EncumbranceStats" : 
+	{
+		"field_0" : 96000,
+		"field_4" : 112000,
+		"field_8" : 120000
+	},
 	"EocLevel" : 
 	{
 		"Level" : 9
+	},
+	"EquipmentVisual" : 
+	{
+		"State" : 2
 	},
 	"Experience" : 
 	{
@@ -768,7 +870,7 @@
 		"NextLevelExperience" : 47994,
 		"SomeExperience" : 0,
 		"TotalExperience" : 47994,
-		"field_28" : 255
+		"field_28" : 0
 	},
 	"Expertise" : 
 	{
@@ -777,6 +879,14 @@
 	"FTBParticipant" : 
 	{
 		"field_18" : null
+	},
+	"FTBRespect" : {},
+	"Faction" : 
+	{
+		"field_0" : "Entity (01c00001000000a4)",
+		"field_18" : "6545a015-1b3d-66a4-6a0e-6ec62065cdb7",
+		"field_28" : null,
+		"field_8" : "6545a015-1b3d-66a4-6a0e-6ec62065cdb7"
 	},
 	"FleeCapability" : 
 	{
@@ -800,6 +910,11 @@
 	{
 		"God" : "00000000-0000-0000-0000-000000000000"
 	},
+	"GodTag" : 
+	{
+		"Tags" : []
+	},
+	"HalfIllithid" : {},
 	"HealBlock" : {},
 	"Health" : 
 	{
@@ -875,9 +990,7 @@
 	},
 	"Hearing" : 
 	{
-		"FOV" : 4.6836103040575518e-39,
-		"Hearing" : 1.2359452455344887e-42,
-		"Sight" : 18.0
+		"Hearing" : 18.0
 	},
 	"HotbarContainer" : 
 	{
@@ -935,7 +1048,7 @@
 					[
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c0000100000584)",
 							"Passive" : "",
 							"Slot" : 35,
 							"SpellId" : 
@@ -1842,7 +1955,7 @@
 					[
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c000020000c7a0)",
+							"Item" : "Entity (01c0000100012751)",
 							"Passive" : "",
 							"Slot" : 0,
 							"SpellId" : 
@@ -1855,7 +1968,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c000020000c79d)",
+							"Item" : "Entity (01c0000100012735)",
 							"Passive" : "",
 							"Slot" : 1,
 							"SpellId" : 
@@ -1868,7 +1981,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c000020000c79a)",
+							"Item" : "Entity (01c0000100012759)",
 							"Passive" : "",
 							"Slot" : 2,
 							"SpellId" : 
@@ -1881,7 +1994,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c000020000c740)",
+							"Item" : "Entity (01c0000100012762)",
 							"Passive" : "",
 							"Slot" : 3,
 							"SpellId" : 
@@ -1894,7 +2007,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c000020000c743)",
+							"Item" : "Entity (01c000010000076b)",
 							"Passive" : "",
 							"Slot" : 4,
 							"SpellId" : 
@@ -1907,7 +2020,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c000020000c352)",
+							"Item" : "Entity (01c0000100000768)",
 							"Passive" : "",
 							"Slot" : 5,
 							"SpellId" : 
@@ -1920,7 +2033,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c000020000c755)",
+							"Item" : "Entity (01c0000100000769)",
 							"Passive" : "",
 							"Slot" : 6,
 							"SpellId" : 
@@ -1933,7 +2046,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c000020000c74c)",
+							"Item" : "Entity (01c000010000076a)",
 							"Passive" : "",
 							"Slot" : 7,
 							"SpellId" : 
@@ -1946,7 +2059,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c000020000c749)",
+							"Item" : "Entity (01c00001000007c0)",
 							"Passive" : "",
 							"Slot" : 8,
 							"SpellId" : 
@@ -1959,7 +2072,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c000020000c7a3)",
+							"Item" : "Entity (01c0000100013570)",
 							"Passive" : "",
 							"Slot" : 9,
 							"SpellId" : 
@@ -1972,7 +2085,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c000020000c74f)",
+							"Item" : "Entity (01c0000100013571)",
 							"Passive" : "",
 							"Slot" : 10,
 							"SpellId" : 
@@ -1985,7 +2098,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c000020000c73d)",
+							"Item" : "Entity (01c0000100013572)",
 							"Passive" : "",
 							"Slot" : 11,
 							"SpellId" : 
@@ -1998,7 +2111,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200004df7)",
+							"Item" : "Entity (01c0000100013577)",
 							"Passive" : "",
 							"Slot" : 12,
 							"SpellId" : 
@@ -2011,7 +2124,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200004df8)",
+							"Item" : "Entity (01c000010001357a)",
 							"Passive" : "",
 							"Slot" : 13,
 							"SpellId" : 
@@ -2024,7 +2137,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200004dfb)",
+							"Item" : "Entity (01c000010001357c)",
 							"Passive" : "",
 							"Slot" : 14,
 							"SpellId" : 
@@ -2037,7 +2150,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200004e0a)",
+							"Item" : "Entity (01c000010001357f)",
 							"Passive" : "",
 							"Slot" : 15,
 							"SpellId" : 
@@ -2050,7 +2163,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200004e8c)",
+							"Item" : "Entity (01c0000100013586)",
 							"Passive" : "",
 							"Slot" : 16,
 							"SpellId" : 
@@ -2063,7 +2176,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200004df9)",
+							"Item" : "Entity (01c000010001358a)",
 							"Passive" : "",
 							"Slot" : 17,
 							"SpellId" : 
@@ -2076,7 +2189,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c00002000050ec)",
+							"Item" : "Entity (01c000010001358d)",
 							"Passive" : "",
 							"Slot" : 18,
 							"SpellId" : 
@@ -2089,7 +2202,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200015d21)",
+							"Item" : "Entity (01c0000100013593)",
 							"Passive" : "",
 							"Slot" : 19,
 							"SpellId" : 
@@ -2102,7 +2215,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200015d22)",
+							"Item" : "Entity (01c000010001359c)",
 							"Passive" : "",
 							"Slot" : 20,
 							"SpellId" : 
@@ -2115,7 +2228,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200015d25)",
+							"Item" : "Entity (01c00001000135a3)",
 							"Passive" : "",
 							"Slot" : 21,
 							"SpellId" : 
@@ -2128,7 +2241,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200015d2c)",
+							"Item" : "Entity (01c00001000135a5)",
 							"Passive" : "",
 							"Slot" : 22,
 							"SpellId" : 
@@ -2141,7 +2254,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200015d2d)",
+							"Item" : "Entity (01c00001000135a7)",
 							"Passive" : "",
 							"Slot" : 23,
 							"SpellId" : 
@@ -2154,7 +2267,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200015d35)",
+							"Item" : "Entity (01c00001000135ac)",
 							"Passive" : "",
 							"Slot" : 24,
 							"SpellId" : 
@@ -2167,7 +2280,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200015d40)",
+							"Item" : "Entity (01c00001000135ad)",
 							"Passive" : "",
 							"Slot" : 25,
 							"SpellId" : 
@@ -2180,7 +2293,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200015d41)",
+							"Item" : "Entity (01c00001000135af)",
 							"Passive" : "",
 							"Slot" : 26,
 							"SpellId" : 
@@ -2193,7 +2306,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200005062)",
+							"Item" : "Entity (01c00001000135b8)",
 							"Passive" : "",
 							"Slot" : 27,
 							"SpellId" : 
@@ -2206,7 +2319,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200004dfe)",
+							"Item" : "Entity (01c00001000135bd)",
 							"Passive" : "",
 							"Slot" : 28,
 							"SpellId" : 
@@ -2219,7 +2332,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200015d1d)",
+							"Item" : "Entity (01c00001000135c1)",
 							"Passive" : "",
 							"Slot" : 29,
 							"SpellId" : 
@@ -2232,7 +2345,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200004dfc)",
+							"Item" : "Entity (01c00001000135c6)",
 							"Passive" : "",
 							"Slot" : 30,
 							"SpellId" : 
@@ -2245,7 +2358,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200004dfd)",
+							"Item" : "Entity (01c00001000135c9)",
 							"Passive" : "",
 							"Slot" : 31,
 							"SpellId" : 
@@ -2258,7 +2371,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200004e0b)",
+							"Item" : "Entity (01c00001000135cd)",
 							"Passive" : "",
 							"Slot" : 32,
 							"SpellId" : 
@@ -2271,7 +2384,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200004e1e)",
+							"Item" : "Entity (01c00001000135ce)",
 							"Passive" : "",
 							"Slot" : 33,
 							"SpellId" : 
@@ -2284,7 +2397,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200004e22)",
+							"Item" : "Entity (01c00001000135d0)",
 							"Passive" : "",
 							"Slot" : 34,
 							"SpellId" : 
@@ -2297,7 +2410,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c000020000bb13)",
+							"Item" : "Entity (01c0000100000584)",
 							"Passive" : "",
 							"Slot" : 35,
 							"SpellId" : 
@@ -2310,7 +2423,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200004e25)",
+							"Item" : "Entity (01c00001000135d4)",
 							"Passive" : "",
 							"Slot" : 36,
 							"SpellId" : 
@@ -2323,7 +2436,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200004e36)",
+							"Item" : "Entity (01c000010001357d)",
 							"Passive" : "",
 							"Slot" : 37,
 							"SpellId" : 
@@ -2336,7 +2449,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200004ecd)",
+							"Item" : "Entity (01c0000100013581)",
 							"Passive" : "",
 							"Slot" : 38,
 							"SpellId" : 
@@ -2349,7 +2462,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200004ece)",
+							"Item" : "Entity (01c0000100013583)",
 							"Passive" : "",
 							"Slot" : 39,
 							"SpellId" : 
@@ -2362,7 +2475,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200004f55)",
+							"Item" : "Entity (01c0000100013587)",
 							"Passive" : "",
 							"Slot" : 40,
 							"SpellId" : 
@@ -2375,7 +2488,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200004f8a)",
+							"Item" : "Entity (01c00001000135cf)",
 							"Passive" : "",
 							"Slot" : 41,
 							"SpellId" : 
@@ -2388,7 +2501,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c000020000508a)",
+							"Item" : "Entity (01c00001000135a1)",
 							"Passive" : "",
 							"Slot" : 42,
 							"SpellId" : 
@@ -2401,7 +2514,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200015d1c)",
+							"Item" : "Entity (01c00001000135a4)",
 							"Passive" : "",
 							"Slot" : 43,
 							"SpellId" : 
@@ -2414,7 +2527,20 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c00002000068c6)",
+							"Item" : "Entity (01c00001000135a6)",
+							"Passive" : "",
+							"Slot" : 44,
+							"SpellId" : 
+							{
+								"OriginatorPrototype" : "",
+								"ProgressionSource" : "00000000-0000-0000-0000-000000000000",
+								"Prototype" : "",
+								"SourceType" : "Unknown17"
+							}
+						},
+						{
+							"IsNew" : false,
+							"Item" : "Entity (01c00001000135ae)",
 							"Passive" : "",
 							"Slot" : 45,
 							"SpellId" : 
@@ -2427,7 +2553,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c00002000068c7)",
+							"Item" : "Entity (01c00001000135b3)",
 							"Passive" : "",
 							"Slot" : 46,
 							"SpellId" : 
@@ -2440,7 +2566,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200006942)",
+							"Item" : "Entity (01c00001000135c2)",
 							"Passive" : "",
 							"Slot" : 47,
 							"SpellId" : 
@@ -2453,7 +2579,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200006943)",
+							"Item" : "Entity (01c00001000135c4)",
 							"Passive" : "",
 							"Slot" : 48,
 							"SpellId" : 
@@ -2466,7 +2592,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200006944)",
+							"Item" : "Entity (01c00001000135c7)",
 							"Passive" : "",
 							"Slot" : 49,
 							"SpellId" : 
@@ -2479,7 +2605,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200015d20)",
+							"Item" : "Entity (01c00001000135d1)",
 							"Passive" : "",
 							"Slot" : 50,
 							"SpellId" : 
@@ -2492,7 +2618,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200015d31)",
+							"Item" : "Entity (01c00001000135d3)",
 							"Passive" : "",
 							"Slot" : 51,
 							"SpellId" : 
@@ -2505,7 +2631,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200015d32)",
+							"Item" : "Entity (01c00001000135d5)",
 							"Passive" : "",
 							"Slot" : 52,
 							"SpellId" : 
@@ -2518,7 +2644,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200015d3e)",
+							"Item" : "Entity (01c0000100013580)",
 							"Passive" : "",
 							"Slot" : 53,
 							"SpellId" : 
@@ -2531,7 +2657,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200004e1c)",
+							"Item" : "Entity (01c00001000135b7)",
 							"Passive" : "",
 							"Slot" : 54,
 							"SpellId" : 
@@ -2544,7 +2670,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200004e05)",
+							"Item" : "Entity (01c0000100013573)",
 							"Passive" : "",
 							"Slot" : 55,
 							"SpellId" : 
@@ -2557,7 +2683,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200004e4b)",
+							"Item" : "Entity (01c0000100013575)",
 							"Passive" : "",
 							"Slot" : 56,
 							"SpellId" : 
@@ -2570,7 +2696,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c000020000621b)",
+							"Item" : "Entity (01c0000100013578)",
 							"Passive" : "",
 							"Slot" : 57,
 							"SpellId" : 
@@ -2583,7 +2709,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200015d1f)",
+							"Item" : "Entity (01c0000100013582)",
 							"Passive" : "",
 							"Slot" : 58,
 							"SpellId" : 
@@ -2596,7 +2722,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200015d23)",
+							"Item" : "Entity (01c0000100013585)",
 							"Passive" : "",
 							"Slot" : 59,
 							"SpellId" : 
@@ -2609,7 +2735,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200015d3b)",
+							"Item" : "Entity (01c0000100013588)",
 							"Passive" : "",
 							"Slot" : 60,
 							"SpellId" : 
@@ -2622,7 +2748,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200015d3d)",
+							"Item" : "Entity (01c0000100013589)",
 							"Passive" : "",
 							"Slot" : 61,
 							"SpellId" : 
@@ -2635,7 +2761,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200004e49)",
+							"Item" : "Entity (01c000010001358c)",
 							"Passive" : "",
 							"Slot" : 62,
 							"SpellId" : 
@@ -2648,7 +2774,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200004e8d)",
+							"Item" : "Entity (01c000010001358e)",
 							"Passive" : "",
 							"Slot" : 63,
 							"SpellId" : 
@@ -2661,7 +2787,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200004f5b)",
+							"Item" : "Entity (01c0000100013590)",
 							"Passive" : "",
 							"Slot" : 64,
 							"SpellId" : 
@@ -2674,7 +2800,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200004f83)",
+							"Item" : "Entity (01c0000100013597)",
 							"Passive" : "",
 							"Slot" : 65,
 							"SpellId" : 
@@ -2687,7 +2813,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200004fdc)",
+							"Item" : "Entity (01c00001000135ba)",
 							"Passive" : "",
 							"Slot" : 66,
 							"SpellId" : 
@@ -2700,7 +2826,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200004fdd)",
+							"Item" : "Entity (01c00001000135bc)",
 							"Passive" : "",
 							"Slot" : 67,
 							"SpellId" : 
@@ -2713,7 +2839,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200015d1b)",
+							"Item" : "Entity (01c00001000135be)",
 							"Passive" : "",
 							"Slot" : 68,
 							"SpellId" : 
@@ -2726,7 +2852,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200015d1e)",
+							"Item" : "Entity (01c00001000135bf)",
 							"Passive" : "",
 							"Slot" : 69,
 							"SpellId" : 
@@ -2739,7 +2865,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200015d24)",
+							"Item" : "Entity (01c000010001357b)",
 							"Passive" : "",
 							"Slot" : 70,
 							"SpellId" : 
@@ -2752,7 +2878,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200015d26)",
+							"Item" : "Entity (01c0000100013584)",
 							"Passive" : "",
 							"Slot" : 71,
 							"SpellId" : 
@@ -2765,7 +2891,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200015d2e)",
+							"Item" : "Entity (01c000010001358f)",
 							"Passive" : "",
 							"Slot" : 72,
 							"SpellId" : 
@@ -2778,7 +2904,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200015d30)",
+							"Item" : "Entity (01c0000100013594)",
 							"Passive" : "",
 							"Slot" : 73,
 							"SpellId" : 
@@ -2791,7 +2917,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200015d38)",
+							"Item" : "Entity (01c00001000135b9)",
 							"Passive" : "",
 							"Slot" : 74,
 							"SpellId" : 
@@ -2804,7 +2930,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200015d39)",
+							"Item" : "Entity (01c00001000135c5)",
 							"Passive" : "",
 							"Slot" : 75,
 							"SpellId" : 
@@ -2817,9 +2943,9 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c0000200004f5c)",
+							"Item" : "Entity (01c00001000135b5)",
 							"Passive" : "",
-							"Slot" : 76,
+							"Slot" : 77,
 							"SpellId" : 
 							{
 								"OriginatorPrototype" : "",
@@ -3670,7 +3796,7 @@
 					[
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c0000100012751)",
 							"Passive" : "",
 							"Slot" : 0,
 							"SpellId" : 
@@ -3683,7 +3809,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c0000100012735)",
 							"Passive" : "",
 							"Slot" : 1,
 							"SpellId" : 
@@ -3696,7 +3822,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c0000100012759)",
 							"Passive" : "",
 							"Slot" : 2,
 							"SpellId" : 
@@ -3709,7 +3835,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c0000100012762)",
 							"Passive" : "",
 							"Slot" : 3,
 							"SpellId" : 
@@ -3722,7 +3848,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c000010000076b)",
 							"Passive" : "",
 							"Slot" : 4,
 							"SpellId" : 
@@ -3735,7 +3861,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c0000100000768)",
 							"Passive" : "",
 							"Slot" : 5,
 							"SpellId" : 
@@ -3748,7 +3874,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c0000100000769)",
 							"Passive" : "",
 							"Slot" : 6,
 							"SpellId" : 
@@ -3761,7 +3887,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c000010000076a)",
 							"Passive" : "",
 							"Slot" : 7,
 							"SpellId" : 
@@ -3774,7 +3900,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c00001000007c0)",
 							"Passive" : "",
 							"Slot" : 8,
 							"SpellId" : 
@@ -3787,7 +3913,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c0000100013570)",
 							"Passive" : "",
 							"Slot" : 9,
 							"SpellId" : 
@@ -3800,7 +3926,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c0000100013571)",
 							"Passive" : "",
 							"Slot" : 10,
 							"SpellId" : 
@@ -3813,7 +3939,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c0000100013572)",
 							"Passive" : "",
 							"Slot" : 11,
 							"SpellId" : 
@@ -3826,7 +3952,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c0000100013577)",
 							"Passive" : "",
 							"Slot" : 12,
 							"SpellId" : 
@@ -3839,7 +3965,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c000010001357a)",
 							"Passive" : "",
 							"Slot" : 13,
 							"SpellId" : 
@@ -3852,7 +3978,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c000010001357c)",
 							"Passive" : "",
 							"Slot" : 14,
 							"SpellId" : 
@@ -3865,7 +3991,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c000010001357f)",
 							"Passive" : "",
 							"Slot" : 15,
 							"SpellId" : 
@@ -3878,7 +4004,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c0000100013586)",
 							"Passive" : "",
 							"Slot" : 16,
 							"SpellId" : 
@@ -3891,7 +4017,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c000010001358a)",
 							"Passive" : "",
 							"Slot" : 17,
 							"SpellId" : 
@@ -3904,7 +4030,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c000010001358d)",
 							"Passive" : "",
 							"Slot" : 18,
 							"SpellId" : 
@@ -3917,7 +4043,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c0000100013593)",
 							"Passive" : "",
 							"Slot" : 19,
 							"SpellId" : 
@@ -3930,7 +4056,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c000010001359c)",
 							"Passive" : "",
 							"Slot" : 20,
 							"SpellId" : 
@@ -3943,7 +4069,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c00001000135a3)",
 							"Passive" : "",
 							"Slot" : 21,
 							"SpellId" : 
@@ -3956,7 +4082,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c00001000135a5)",
 							"Passive" : "",
 							"Slot" : 22,
 							"SpellId" : 
@@ -3969,7 +4095,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c00001000135a7)",
 							"Passive" : "",
 							"Slot" : 23,
 							"SpellId" : 
@@ -3982,7 +4108,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c00001000135ac)",
 							"Passive" : "",
 							"Slot" : 24,
 							"SpellId" : 
@@ -3995,7 +4121,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c00001000135ad)",
 							"Passive" : "",
 							"Slot" : 25,
 							"SpellId" : 
@@ -4008,7 +4134,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c00001000135af)",
 							"Passive" : "",
 							"Slot" : 26,
 							"SpellId" : 
@@ -4021,7 +4147,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c00001000135b8)",
 							"Passive" : "",
 							"Slot" : 27,
 							"SpellId" : 
@@ -4034,7 +4160,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c00001000135bd)",
 							"Passive" : "",
 							"Slot" : 28,
 							"SpellId" : 
@@ -4047,7 +4173,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c00001000135c1)",
 							"Passive" : "",
 							"Slot" : 29,
 							"SpellId" : 
@@ -4060,7 +4186,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c00001000135c6)",
 							"Passive" : "",
 							"Slot" : 30,
 							"SpellId" : 
@@ -4073,7 +4199,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c00001000135c9)",
 							"Passive" : "",
 							"Slot" : 31,
 							"SpellId" : 
@@ -4086,7 +4212,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c00001000135cd)",
 							"Passive" : "",
 							"Slot" : 32,
 							"SpellId" : 
@@ -4099,7 +4225,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c00001000135ce)",
 							"Passive" : "",
 							"Slot" : 33,
 							"SpellId" : 
@@ -4112,7 +4238,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c00001000135d0)",
 							"Passive" : "",
 							"Slot" : 34,
 							"SpellId" : 
@@ -4125,7 +4251,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c00001000135d4)",
 							"Passive" : "",
 							"Slot" : 35,
 							"SpellId" : 
@@ -4138,7 +4264,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c000010001357d)",
 							"Passive" : "",
 							"Slot" : 36,
 							"SpellId" : 
@@ -4151,7 +4277,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c0000100013581)",
 							"Passive" : "",
 							"Slot" : 37,
 							"SpellId" : 
@@ -4164,7 +4290,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c0000100013583)",
 							"Passive" : "",
 							"Slot" : 38,
 							"SpellId" : 
@@ -4177,7 +4303,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c0000100013587)",
 							"Passive" : "",
 							"Slot" : 39,
 							"SpellId" : 
@@ -4190,7 +4316,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c00001000135cf)",
 							"Passive" : "",
 							"Slot" : 40,
 							"SpellId" : 
@@ -4203,7 +4329,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c00001000135a1)",
 							"Passive" : "",
 							"Slot" : 41,
 							"SpellId" : 
@@ -4216,7 +4342,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c00001000135a4)",
 							"Passive" : "",
 							"Slot" : 42,
 							"SpellId" : 
@@ -4229,7 +4355,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "Entity (01c000020000c87b)",
+							"Item" : "Entity (01c000010000072d)",
 							"Passive" : "",
 							"Slot" : 43,
 							"SpellId" : 
@@ -4242,7 +4368,20 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c00001000135a6)",
+							"Passive" : "",
+							"Slot" : 44,
+							"SpellId" : 
+							{
+								"OriginatorPrototype" : "",
+								"ProgressionSource" : "00000000-0000-0000-0000-000000000000",
+								"Prototype" : "",
+								"SourceType" : "Unknown17"
+							}
+						},
+						{
+							"IsNew" : false,
+							"Item" : "Entity (01c0000100000584)",
 							"Passive" : "",
 							"Slot" : 45,
 							"SpellId" : 
@@ -4255,7 +4394,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c00001000135ae)",
 							"Passive" : "",
 							"Slot" : 46,
 							"SpellId" : 
@@ -4268,7 +4407,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c00001000135b3)",
 							"Passive" : "",
 							"Slot" : 47,
 							"SpellId" : 
@@ -4281,7 +4420,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c00001000135c2)",
 							"Passive" : "",
 							"Slot" : 48,
 							"SpellId" : 
@@ -4294,7 +4433,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c00001000135c4)",
 							"Passive" : "",
 							"Slot" : 49,
 							"SpellId" : 
@@ -4307,7 +4446,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c00001000135c7)",
 							"Passive" : "",
 							"Slot" : 50,
 							"SpellId" : 
@@ -4320,7 +4459,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c00001000135d1)",
 							"Passive" : "",
 							"Slot" : 51,
 							"SpellId" : 
@@ -4333,7 +4472,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c00001000135d3)",
 							"Passive" : "",
 							"Slot" : 52,
 							"SpellId" : 
@@ -4346,7 +4485,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c00001000135d5)",
 							"Passive" : "",
 							"Slot" : 53,
 							"SpellId" : 
@@ -4359,7 +4498,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c0000100013580)",
 							"Passive" : "",
 							"Slot" : 54,
 							"SpellId" : 
@@ -4372,7 +4511,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c00001000135b7)",
 							"Passive" : "",
 							"Slot" : 55,
 							"SpellId" : 
@@ -4385,7 +4524,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c0000100013573)",
 							"Passive" : "",
 							"Slot" : 56,
 							"SpellId" : 
@@ -4398,7 +4537,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c0000100013575)",
 							"Passive" : "",
 							"Slot" : 57,
 							"SpellId" : 
@@ -4411,7 +4550,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c0000100013578)",
 							"Passive" : "",
 							"Slot" : 58,
 							"SpellId" : 
@@ -4424,7 +4563,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c0000100013582)",
 							"Passive" : "",
 							"Slot" : 59,
 							"SpellId" : 
@@ -4437,7 +4576,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c0000100013585)",
 							"Passive" : "",
 							"Slot" : 60,
 							"SpellId" : 
@@ -4450,7 +4589,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c0000100013588)",
 							"Passive" : "",
 							"Slot" : 61,
 							"SpellId" : 
@@ -4463,7 +4602,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c0000100013589)",
 							"Passive" : "",
 							"Slot" : 62,
 							"SpellId" : 
@@ -4476,7 +4615,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c000010001358c)",
 							"Passive" : "",
 							"Slot" : 63,
 							"SpellId" : 
@@ -4489,7 +4628,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c000010001358e)",
 							"Passive" : "",
 							"Slot" : 64,
 							"SpellId" : 
@@ -4502,7 +4641,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c0000100013590)",
 							"Passive" : "",
 							"Slot" : 65,
 							"SpellId" : 
@@ -4515,7 +4654,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c0000100013597)",
 							"Passive" : "",
 							"Slot" : 66,
 							"SpellId" : 
@@ -4528,7 +4667,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c00001000135ba)",
 							"Passive" : "",
 							"Slot" : 67,
 							"SpellId" : 
@@ -4541,7 +4680,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c00001000135bc)",
 							"Passive" : "",
 							"Slot" : 68,
 							"SpellId" : 
@@ -4554,7 +4693,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c00001000135be)",
 							"Passive" : "",
 							"Slot" : 69,
 							"SpellId" : 
@@ -4567,7 +4706,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c00001000135bf)",
 							"Passive" : "",
 							"Slot" : 70,
 							"SpellId" : 
@@ -4580,7 +4719,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c000010001357b)",
 							"Passive" : "",
 							"Slot" : 71,
 							"SpellId" : 
@@ -4593,7 +4732,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c0000100013584)",
 							"Passive" : "",
 							"Slot" : 72,
 							"SpellId" : 
@@ -4606,7 +4745,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c000010001358f)",
 							"Passive" : "",
 							"Slot" : 73,
 							"SpellId" : 
@@ -4619,7 +4758,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c0000100013594)",
 							"Passive" : "",
 							"Slot" : 74,
 							"SpellId" : 
@@ -4632,7 +4771,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c00001000135b9)",
 							"Passive" : "",
 							"Slot" : 75,
 							"SpellId" : 
@@ -4645,7 +4784,7 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c00001000135c5)",
 							"Passive" : "",
 							"Slot" : 76,
 							"SpellId" : 
@@ -4658,9 +4797,9 @@
 						},
 						{
 							"IsNew" : false,
-							"Item" : "*RECURSION*",
+							"Item" : "Entity (01c00001000135b5)",
 							"Passive" : "",
-							"Slot" : 77,
+							"Slot" : 78,
 							"SpellId" : 
 							{
 								"OriginatorPrototype" : "",
@@ -4719,22 +4858,38 @@
 			]
 		}
 	},
+	"HotbarDecks" : 
+	{
+		"Decks" : 
+		{
+			"1bfcc6e2-73e8-4c31-87a9-b03716d0b6d4" : -1,
+			"DefaultBarContainer" : -1
+		}
+	},
 	"Icon" : 
 	{
 		"Icon" : "CustomIconSet"
+	},
+	"Identity" : 
+	{
+		"field_0" : 1
+	},
+	"IdentityState" : 
+	{
+		"field_0" : 0
 	},
 	"InterruptContainer" : 
 	{
 		"Interrupts" : 
 		[
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*"
+			"Entity (01c0000100000d8f)",
+			"Entity (01c0000100000d90)",
+			"Entity (01c0000100000d91)",
+			"Entity (01c0000100003383)",
+			"Entity (01c0000100003384)",
+			"Entity (01c0000100012f59)",
+			"Entity (01c0000100012f5a)",
+			"Entity (01c0000100012f5b)"
 		]
 	},
 	"InterruptPreferences" : 
@@ -4755,11 +4910,16 @@
 	{
 		"Inventories" : 
 		[
-			"*RECURSION*",
-			"*RECURSION*"
+			"Entity (01c0000100000a51)",
+			"Entity (01c0000100000ac9)"
 		],
-		"PrimaryInventory" : "*RECURSION*"
+		"PrimaryInventory" : "Entity (01c0000100000a51)"
 	},
+	"InventoryWeight" : 
+	{
+		"Weight" : 55531
+	},
+	"IsCharacter" : {},
 	"IsGlobal" : {},
 	"LearnedSpells" : 
 	{
@@ -4769,7 +4929,7 @@
 	"Level" : 
 	{
 		"LevelName" : "BGO_Main_A",
-		"field_0" : "Entity (01c000010001a2e6)"
+		"field_0" : "Entity (01c0000100003494)"
 	},
 	"LevelUp" : 
 	{
@@ -5435,14 +5595,16 @@
 		"Acceleration" : 12.0,
 		"Direction" : 
 		[
-			0.0023292249534279108,
-			0.067745432257652283,
-			-0.99769991636276245
+			0.99878287315368652,
+			0.04895232617855072,
+			0.0060352180153131485
 		],
 		"Speed" : 0.0,
 		"Speed2" : 0.0
 	},
 	"Net" : {},
+	"NewItemsInside" : {},
+	"NonTradable" : {},
 	"ObjectInteraction" : 
 	{
 		"Interactions" : []
@@ -5457,13 +5619,20 @@
 		"Origin" : "Generic",
 		"field_18" : "a4b56492-d5ac-4a84-8e45-5437cd9da7f3"
 	},
+	"OriginAppearanceTag" : 
+	{
+		"Tags" : 
+		[
+			"730e82f3-c067-44a4-985b-0dfe079d4fea"
+		]
+	},
 	"OriginPassives" : 
 	{
 		"field_18" : 
 		[
 			{
-				"Passive" : 611,
-				"field_0" : 3121568240
+				"Passive" : 606,
+				"field_0" : 3879225680
 			}
 		]
 	},
@@ -5474,50 +5643,88 @@
 			"264a6880-9a51-429c-a9fc-97f8952baf90"
 		]
 	},
+	"OriginalIdentity" : 
+	{
+		"field_0" : 1
+	},
+	"OriginalTemplate" : 
+	{
+		"OriginalTemplate" : null
+	},
+	"PartyMember" : 
+	{
+		"Party" : "Entity (01c0000100000855)",
+		"UserID" : 65537,
+		"field_20" : "5df0c87d-a37e-b67f-86fa-c2635b5cdbce",
+		"field_30" : 1,
+		"field_8" : "0103b6c9-bca4-8370-b61c-21d2bf3a9fb2"
+	},
 	"PassiveContainer" : 
 	{
 		"Passives" : 
 		[
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*"
+			"Entity (01c0000100001052)",
+			"Entity (01c0000100001053)",
+			"Entity (01c000010000105e)",
+			"Entity (01c000010000107a)",
+			"Entity (01c000010000107b)",
+			"Entity (01c000010000107d)",
+			"Entity (01c0000100001080)",
+			"Entity (01c000010000146a)",
+			"Entity (01c000010000146f)",
+			"Entity (01c0000100001470)",
+			"Entity (01c0000100002a5e)",
+			"Entity (01c0000100002a5f)",
+			"Entity (01c0000100002a60)",
+			"Entity (01c0000100002a61)",
+			"Entity (01c0000100002a62)",
+			"Entity (01c0000100002a63)",
+			"Entity (01c0000100002a64)",
+			"Entity (01c0000100002a65)",
+			"Entity (01c0000100002a66)",
+			"Entity (01c0000100002a67)",
+			"Entity (01c0000100002a68)",
+			"Entity (01c0000100002a69)",
+			"Entity (01c0000100002a6a)",
+			"Entity (01c0000100002a6b)",
+			"Entity (01c0000100002a6c)",
+			"Entity (01c0000100002c13)",
+			"Entity (01c0000100002c14)",
+			"Entity (01c0000100002c15)",
+			"Entity (01c0000100002c16)",
+			"Entity (01c0000100002c17)",
+			"Entity (01c0000100002c18)",
+			"Entity (01c0000100002c19)",
+			"Entity (01c00001000126fb)",
+			"Entity (01c000010001291c)",
+			"Entity (01c000010001291d)",
+			"Entity (01c000010001291e)",
+			"Entity (01c000010001291f)",
+			"Entity (01c0000100012920)",
+			"Entity (01c0000100012921)"
 		]
+	},
+	"PassiveUsageCount" : 
+	{
+		"Passives" : 
+		{
+			"MAG_ChargedLightning_Charge_OnSpellDamage_Passive" : 
+			{
+				"field_0" : 0,
+				"field_2" : 0,
+				"field_4" : 0,
+				"field_6" : 0,
+				"field_8" : 0
+			},
+			"MAG_Frost_GenerateSurfaceOnColdDamage_Ring_Passive" : 
+			{
+				"field_0" : 0,
+				"field_2" : 0,
+				"field_4" : 0,
+				"field_6" : 0,
+				"field_8" : 0
+			}
+		}
 	},
 	"Pathing" : 
 	{
@@ -5531,8 +5738,8 @@
 			{
 				"Values1" : 
 				[
-					0,
-					-2147483648
+					-2147483648,
+					0
 				],
 				"Values2" : 
 				[
@@ -5542,14 +5749,14 @@
 				"Values3" : 
 				[
 					[
-						-49.138568878173828,
-						66.660804748535156,
-						-139.53959655761719
+						-45.293548583984375,
+						66.34893798828125,
+						-135.73817443847656
 					],
 					[
-						-49.143238067626953,
-						66.725173950195312,
-						-137.53959655761719
+						-47.25,
+						66.512565612792969,
+						-135.75
 					]
 				],
 				"field_30" : 1
@@ -5561,32 +5768,40 @@
 			"LookAt" : 
 			[
 				4.0,
-				-49.131561279296875,
-				66.564254760742188,
-				-142.53958129882812
+				-42.293601989746094,
+				66.098037719726562,
+				-135.72003173828125
 			],
 			"Steering" : 
 			[
 				0.25,
-				-49.14031982421875,
-				66.684944152832031,
-				-138.78959655761719
+				-46.043533325195312,
+				66.411666870117188,
+				-135.74270629882812
 			],
 			"TiltTo" : 
 			[
 				2.0,
-				-49.136234283447266,
-				66.628623962402344,
-				-140.53959655761719
+				-44.293567657470703,
+				66.265304565429688,
+				-135.73213195800781
 			]
 		},
 		"field_20" : 0,
 		"field_28" : 0,
-		"field_30" : 4583934466176392852,
-		"field_38" : 1067391004,
-		"field_48" : 1053609514
+		"field_30" : 4572521849012666095,
+		"field_38" : 1064623205,
+		"field_48" : 1053609432
 	},
-	"Physics" : {},
+	"Physics" : 
+	{
+		"field_10" : 0,
+		"field_14" : 0,
+		"field_15" : 1,
+		"field_16" : 0,
+		"field_8" : 8389120,
+		"field_C" : 0
+	},
 	"PickingState" : {},
 	"Player" : {},
 	"PlayerPrepareSpell" : 
@@ -5594,46 +5809,50 @@
 		"Spells" : [],
 		"field_30" : 0
 	},
+	"Proficiency" : 
+	{
+		"field_0" : 2348876804
+	},
 	"ProgressionContainer" : 
 	{
 		"Progressions" : 
 		[
 			[
-				"*RECURSION*",
-				"*RECURSION*",
-				"*RECURSION*",
-				"*RECURSION*"
+				"Entity (01c000010000117f)",
+				"Entity (01c000010000117e)",
+				"Entity (01c0000100001180)",
+				"Entity (01c0000100001181)"
 			],
 			[
-				"*RECURSION*",
-				"*RECURSION*",
-				"*RECURSION*"
+				"Entity (01c0000100001182)",
+				"Entity (01c0000100001184)",
+				"Entity (01c0000100001183)"
 			],
 			[
-				"*RECURSION*",
-				"*RECURSION*",
-				"*RECURSION*"
+				"Entity (01c0000100001187)",
+				"Entity (01c0000100001185)",
+				"Entity (01c0000100001186)"
 			],
 			[
-				"*RECURSION*",
-				"*RECURSION*"
+				"Entity (01c0000100001189)",
+				"Entity (01c0000100001188)"
 			],
 			[
-				"*RECURSION*",
-				"*RECURSION*"
+				"Entity (01c000010000118a)",
+				"Entity (01c000010000118b)"
 			],
 			[
-				"*RECURSION*",
-				"*RECURSION*"
+				"Entity (01c000010000118d)",
+				"Entity (01c000010000118c)"
 			],
 			[
-				"*RECURSION*"
+				"Entity (01c000010000118e)"
 			],
 			[
-				"*RECURSION*"
+				"Entity (01c000010000118f)"
 			],
 			[
-				"*RECURSION*"
+				"Entity (01c0000100001190)"
 			]
 		]
 	},
@@ -5641,11 +5860,20 @@
 	{
 		"Race" : "c5f8ebdd-f4a5-4d2d-9eab-4a8d1b1dd724"
 	},
+	"Recruiter" : 
+	{
+		"Recruiters" : 
+		[
+			"Entity (01c00001000000a3)",
+			"Entity (01c00001000000a5)",
+			"Entity (01c00001000000a2)"
+		]
+	},
 	"Savegame" : {},
 	"ServerAnubisExecutor" : 
 	{
-		"field_18" : 2627556615616,
-		"field_20" : 7886365897479159808,
+		"field_18" : 2606884494176,
+		"field_20" : 844424930131968,
 		"field_28" : 248,
 		"field_29" : 36
 	},
@@ -5666,9 +5894,9 @@
 	{
 		"field_118" : 
 		[
-			-49.140872955322266,
-			66.6669921875,
-			-138.55278015136719
+			-46.293529510498047,
+			66.3994140625,
+			-135.74421691894531
 		],
 		"field_18" : 
 		[
@@ -5689,19 +5917,19 @@
 				]
 			},
 			{
-				"field_0" : 0,
+				"field_0" : 2,
 				"field_14" : 
 				[
-					3.4028234663852886e+38,
-					3.4028234663852886e+38,
-					3.4028234663852886e+38
+					-45.957710266113281,
+					66.146484375,
+					-134.72006225585938
 				],
-				"field_4" : 0,
+				"field_4" : 2,
 				"field_8" : 
 				[
-					3.4028234663852886e+38,
-					3.4028234663852886e+38,
-					3.4028234663852886e+38
+					-45.957710266113281,
+					66.146484375,
+					-134.72006225585938
 				]
 			},
 			{
@@ -5845,10 +6073,10 @@
 			"Flags" : 
 			[
 				"SpotSneakers",
-				"CharacterControl",
 				"Activated",
 				"IsPlayer",
-				"Multiplayer"
+				"Multiplayer",
+				"CharacterControl"
 			],
 			"Flags2" : 
 			[
@@ -5865,8 +6093,8 @@
 			"ForceNonzeroSpeed" : false,
 			"ForceSynch" : 0,
 			"GMReroll" : false,
-			"GetStatus" : "function: 00007FFF4BB60BF0",
-			"GetStatusByType" : "function: 00007FFF4BB60CD0",
+			"GetStatus" : "function: 00007FFCF9BC7620",
+			"GetStatusByType" : "function: 00007FFCF9BC7700",
 			"Global" : true,
 			"HasOsirisDialog" : 2,
 			"HasOwner" : false,
@@ -5888,7 +6116,7 @@
 			"LevelTransitionPending" : false,
 			"Loaded" : false,
 			"Multiplayer" : true,
-			"MyHandle" : "*RECURSION*",
+			"MyHandle" : "Entity (01c00001000000a4)",
 			"NeedsMakePlayerUpdate" : false,
 			"NeedsPlacementSnapping" : false,
 			"NeedsUpdate" : 0,
@@ -5908,8 +6136,8 @@
 				},
 				"HelmetOption" : 2,
 				"IsInDangerZone" : false,
-				"PlayerHandle" : "*RECURSION*",
-				"PreviousPositionId" : 15,
+				"PlayerHandle" : "Entity (01c00001000000a4)",
+				"PreviousPositionId" : 16,
 				"PreviousPositions" : 
 				[
 					[
@@ -5988,14 +6216,14 @@
 						-134.08747863769531
 					],
 					[
-						-49.134414672851562,
-						66.7216796875,
-						-137.28804016113281
+						-48.910717010498047,
+						66.703125,
+						-137.6260986328125
 					],
 					[
-						3.4028234663852886e+38,
-						3.4028234663852886e+38,
-						3.4028234663852886e+38
+						-46.306514739990234,
+						65.9443359375,
+						-133.37893676757812
 					],
 					[
 						3.4028234663852886e+38,
@@ -6041,7 +6269,7 @@
 				"QuestSelected" : "",
 				"Region" : "",
 				"Renown" : 0,
-				"field_4C" : 0,
+				"field_4C" : 17,
 				"field_68" : null,
 				"field_94" : false
 			},
@@ -6058,7 +6286,7 @@
 				[
 					{
 						"BringIntoCombat" : false,
-						"Cause" : "*RECURSION*",
+						"Cause" : "Entity (01c00001000000a4)",
 						"CauseGUID" : "fd44711b-0694-46ad-d7d4-8a23f711d729",
 						"CauseType" : 4,
 						"Channeled" : false,
@@ -6072,18 +6300,14 @@
 						"Flags" : 
 						[
 							"Started",
-							"Loaded",
-							"RequestClientSync2"
+							"RequestClientSync2",
+							"Loaded"
 						],
 						"Flags2" : 
 						[
 							"InitiateCombat"
 						],
-						"Flags3" : 
-						[
-							"StatusFlags3_0x10",
-							"StatusFlags3_0x40"
-						],
+						"Flags3" : [],
 						"Flags4" : 
 						[
 							"StatusFlags4_0x04",
@@ -6114,7 +6338,7 @@
 							"PassiveId" : "TAD_PeaceBreaker",
 							"StatusId" : ""
 						},
-						"Owner" : "*RECURSION*",
+						"Owner" : "Entity (01c00001000000a4)",
 						"RemoveEvents" : 0,
 						"RequestClientSync" : false,
 						"RequestClientSync2" : true,
@@ -6136,27 +6360,27 @@
 						"StartTimer" : 0.0,
 						"Started" : true,
 						"StatusFlags3_0x08" : false,
-						"StatusFlags3_0x10" : true,
+						"StatusFlags3_0x10" : false,
 						"StatusFlags3_0x20" : false,
-						"StatusFlags3_0x40" : true,
+						"StatusFlags3_0x40" : false,
 						"StatusFlags3_0x80" : false,
 						"StatusFlags4_0x04" : true,
 						"StatusFlags4_0x20" : false,
 						"StatusFlags4_0x40" : false,
 						"StatusFlags4_0x80" : false,
-						"StatusHandle" : "userdata: 0F40000200000401",
+						"StatusHandle" : "userdata: 0F40000100000041",
 						"StatusId" : "TAD_PEACE_BREAKER",
 						"StatusOwner" : [],
-						"StatusSource" : "*RECURSION*",
+						"StatusSource" : "Entity (01c00001000000a4)",
 						"StoryActionID" : 15171,
 						"Strength" : 0.0,
-						"SyncEntity" : "*RECURSION*",
+						"SyncEntity" : "Entity (01c0000100001016)",
 						"TickType" : 0,
-						"TurnTimer" : 3.1610889434814453,
+						"TurnTimer" : 1.3219233751296997,
 						"field_104" : 3,
 						"field_105" : 0,
 						"field_150" : "00000000-0000-0000-0000-000000000000",
-						"field_18" : 562949953422844,
+						"field_18" : 281474976710723,
 						"field_48" : 0.0,
 						"field_8" : "00000000-0000-0000-0000-000000000000",
 						"field_E0" : null,
@@ -6164,7 +6388,7 @@
 					},
 					{
 						"BringIntoCombat" : false,
-						"Cause" : "*RECURSION*",
+						"Cause" : "Entity (01c00001000000a4)",
 						"CauseGUID" : "fd44711b-0694-46ad-d7d4-8a23f711d729",
 						"CauseType" : 4,
 						"Channeled" : false,
@@ -6178,19 +6402,14 @@
 						"Flags" : 
 						[
 							"Started",
-							"Loaded",
-							"RequestClientSync2"
+							"RequestClientSync2",
+							"Loaded"
 						],
 						"Flags2" : 
 						[
 							"InitiateCombat"
 						],
-						"Flags3" : 
-						[
-							"StatusFlags3_0x20",
-							"StatusFlags3_0x08",
-							"StatusFlags3_0x40"
-						],
+						"Flags3" : [],
 						"Flags4" : 
 						[
 							"StatusFlags4_0x04",
@@ -6221,7 +6440,7 @@
 							"PassiveId" : "",
 							"StatusId" : "TCP_BOOST_DRANKPOTION_APPLY"
 						},
-						"Owner" : "*RECURSION*",
+						"Owner" : "Entity (01c00001000000a4)",
 						"RemoveEvents" : 0,
 						"RequestClientSync" : false,
 						"RequestClientSync2" : true,
@@ -6242,28 +6461,28 @@
 						"StackPriority" : 0,
 						"StartTimer" : 0.0,
 						"Started" : true,
-						"StatusFlags3_0x08" : true,
+						"StatusFlags3_0x08" : false,
 						"StatusFlags3_0x10" : false,
-						"StatusFlags3_0x20" : true,
-						"StatusFlags3_0x40" : true,
+						"StatusFlags3_0x20" : false,
+						"StatusFlags3_0x40" : false,
 						"StatusFlags3_0x80" : false,
 						"StatusFlags4_0x04" : true,
 						"StatusFlags4_0x20" : false,
 						"StatusFlags4_0x40" : false,
 						"StatusFlags4_0x80" : false,
-						"StatusHandle" : "userdata: 0F40000200000402",
+						"StatusHandle" : "userdata: 0F40000100000040",
 						"StatusId" : "TCP_BOOST_DRANKPOTION",
 						"StatusOwner" : [],
-						"StatusSource" : "*RECURSION*",
+						"StatusSource" : "Entity (01c00001000000a4)",
 						"StoryActionID" : 31945,
 						"Strength" : 0.0,
-						"SyncEntity" : "*RECURSION*",
+						"SyncEntity" : "Entity (01c0000100001017)",
 						"TickType" : 0,
-						"TurnTimer" : 1.0172863006591797,
+						"TurnTimer" : 5.1780872344970703,
 						"field_104" : 3,
 						"field_105" : 0,
 						"field_150" : "00000000-0000-0000-0000-000000000000",
-						"field_18" : 562949953422845,
+						"field_18" : 281474976710722,
 						"field_48" : 0.0,
 						"field_8" : "00000000-0000-0000-0000-000000000000",
 						"field_E0" : null,
@@ -6285,19 +6504,14 @@
 						"Flags" : 
 						[
 							"Started",
-							"Loaded",
-							"RequestClientSync2"
+							"RequestClientSync2",
+							"Loaded"
 						],
 						"Flags2" : 
 						[
 							"InitiateCombat"
 						],
-						"Flags3" : 
-						[
-							"StatusFlags3_0x20",
-							"StatusFlags3_0x10",
-							"StatusFlags3_0x40"
-						],
+						"Flags3" : [],
 						"Flags4" : 
 						[
 							"StatusFlags4_0x04",
@@ -6328,13 +6542,13 @@
 							"PassiveId" : "",
 							"StatusId" : ""
 						},
-						"Owner" : "*RECURSION*",
+						"Owner" : "Entity (01c00001000000a4)",
 						"RemoveEvents" : 0,
 						"RequestClientSync" : false,
 						"RequestClientSync2" : true,
 						"RequestDelete" : false,
 						"RequestDeleteAtTurnEnd" : false,
-						"SourceEquippedItem" : "*RECURSION*",
+						"SourceEquippedItem" : "Entity (01c00001000003c0)",
 						"SourceSpell" : 
 						{
 							"OriginatorPrototype" : "",
@@ -6350,27 +6564,27 @@
 						"StartTimer" : 0.0,
 						"Started" : true,
 						"StatusFlags3_0x08" : false,
-						"StatusFlags3_0x10" : true,
-						"StatusFlags3_0x20" : true,
-						"StatusFlags3_0x40" : true,
+						"StatusFlags3_0x10" : false,
+						"StatusFlags3_0x20" : false,
+						"StatusFlags3_0x40" : false,
 						"StatusFlags3_0x80" : false,
 						"StatusFlags4_0x04" : true,
 						"StatusFlags4_0x20" : false,
 						"StatusFlags4_0x40" : false,
 						"StatusFlags4_0x80" : false,
-						"StatusHandle" : "userdata: 0F40000200000403",
+						"StatusHandle" : "userdata: 0F4000010000003F",
 						"StatusId" : "MAG_SELUNITE_ARMOR_MAGE_ARMOR_TECHNICAL",
 						"StatusOwner" : [],
 						"StatusSource" : null,
 						"StoryActionID" : 0,
 						"Strength" : 0.0,
-						"SyncEntity" : "*RECURSION*",
+						"SyncEntity" : "Entity (01c0000100001018)",
 						"TickType" : 0,
-						"TurnTimer" : 3.4950911998748779,
+						"TurnTimer" : 1.6559324264526367,
 						"field_104" : 3,
 						"field_105" : 0,
 						"field_150" : "00000000-0000-0000-0000-000000000000",
-						"field_18" : 562949953422338,
+						"field_18" : 281474976710721,
 						"field_48" : 0.0,
 						"field_8" : "00000000-0000-0000-0000-000000000000",
 						"field_E0" : null,
@@ -6378,7 +6592,7 @@
 					},
 					{
 						"BringIntoCombat" : false,
-						"Cause" : "*RECURSION*",
+						"Cause" : "Entity (01c00001000000a4)",
 						"CauseGUID" : "fd44711b-0694-46ad-d7d4-8a23f711d729",
 						"CauseType" : 0,
 						"Channeled" : false,
@@ -6393,18 +6607,14 @@
 						[
 							"ForceStatus",
 							"Started",
-							"Loaded",
-							"RequestClientSync2"
+							"RequestClientSync2",
+							"Loaded"
 						],
 						"Flags2" : 
 						[
 							"InitiateCombat"
 						],
-						"Flags3" : 
-						[
-							"StatusFlags3_0x20",
-							"StatusFlags3_0x40"
-						],
+						"Flags3" : [],
 						"Flags4" : 
 						[
 							"StatusFlags4_0x04",
@@ -6435,7 +6645,7 @@
 							"PassiveId" : "",
 							"StatusId" : ""
 						},
-						"Owner" : "*RECURSION*",
+						"Owner" : "Entity (01c00001000000a4)",
 						"RemoveEvents" : 0,
 						"RequestClientSync" : false,
 						"RequestClientSync2" : true,
@@ -6458,26 +6668,26 @@
 						"Started" : true,
 						"StatusFlags3_0x08" : false,
 						"StatusFlags3_0x10" : false,
-						"StatusFlags3_0x20" : true,
-						"StatusFlags3_0x40" : true,
+						"StatusFlags3_0x20" : false,
+						"StatusFlags3_0x40" : false,
 						"StatusFlags3_0x80" : false,
 						"StatusFlags4_0x04" : true,
 						"StatusFlags4_0x20" : false,
 						"StatusFlags4_0x40" : false,
 						"StatusFlags4_0x80" : false,
-						"StatusHandle" : "userdata: 0F40000200000404",
+						"StatusHandle" : "userdata: 0F4000010000003E",
 						"StatusId" : "TAD_PARTIAL_CEREMORPH",
 						"StatusOwner" : [],
-						"StatusSource" : "*RECURSION*",
+						"StatusSource" : "Entity (01c00001000000a4)",
 						"StoryActionID" : -1,
 						"Strength" : 0.0,
-						"SyncEntity" : "*RECURSION*",
+						"SyncEntity" : "Entity (01c0000100001019)",
 						"TickType" : 0,
-						"TurnTimer" : 3.94284987449646,
+						"TurnTimer" : 2.1036887168884277,
 						"field_104" : 3,
 						"field_105" : 0,
 						"field_150" : "00000000-0000-0000-0000-000000000000",
-						"field_18" : 562949953422339,
+						"field_18" : 281474976710720,
 						"field_48" : 0.0,
 						"field_8" : "00000000-0000-0000-0000-000000000000",
 						"field_E0" : null,
@@ -6485,7 +6695,7 @@
 					},
 					{
 						"BringIntoCombat" : false,
-						"Cause" : "*RECURSION*",
+						"Cause" : "Entity (01c00001000006db)",
 						"CauseGUID" : "a841d36c-9a00-4a26-943e-c0af6895bb16",
 						"CauseType" : 11,
 						"Channeled" : false,
@@ -6499,18 +6709,14 @@
 						"Flags" : 
 						[
 							"Started",
-							"Loaded",
-							"RequestClientSync2"
+							"RequestClientSync2",
+							"Loaded"
 						],
 						"Flags2" : 
 						[
 							"InitiateCombat"
 						],
-						"Flags3" : 
-						[
-							"StatusFlags3_0x08",
-							"StatusFlags3_0x40"
-						],
+						"Flags3" : [],
 						"Flags4" : 
 						[
 							"StatusFlags4_0x04",
@@ -6541,7 +6747,7 @@
 							"PassiveId" : "",
 							"StatusId" : ""
 						},
-						"Owner" : "*RECURSION*",
+						"Owner" : "Entity (01c00001000000a4)",
 						"RemoveEvents" : 0,
 						"RequestClientSync" : false,
 						"RequestClientSync2" : true,
@@ -6555,35 +6761,35 @@
 							"Prototype" : "",
 							"SourceType" : "Unknown17"
 						},
-						"SourceUsedItem" : "Entity (01c000020000c812)",
+						"SourceUsedItem" : "Entity (01c00001000006db)",
 						"SpellCastSourceUuid" : "00000000-0000-0000-0000-000000000000",
 						"SpellCastingAbility" : 6,
 						"StackId" : "DEN_SILVANUS_BLESSING",
 						"StackPriority" : 0,
 						"StartTimer" : 0.0,
 						"Started" : true,
-						"StatusFlags3_0x08" : true,
+						"StatusFlags3_0x08" : false,
 						"StatusFlags3_0x10" : false,
 						"StatusFlags3_0x20" : false,
-						"StatusFlags3_0x40" : true,
+						"StatusFlags3_0x40" : false,
 						"StatusFlags3_0x80" : false,
 						"StatusFlags4_0x04" : true,
 						"StatusFlags4_0x20" : false,
 						"StatusFlags4_0x40" : false,
 						"StatusFlags4_0x80" : false,
-						"StatusHandle" : "userdata: 0F40000200000825",
+						"StatusHandle" : "userdata: 0F4000010000003D",
 						"StatusId" : "DEN_SILVANUS_BLESSING",
 						"StatusOwner" : [],
-						"StatusSource" : "*RECURSION*",
+						"StatusSource" : "Entity (01c00001000006db)",
 						"StoryActionID" : -1,
 						"Strength" : 0.0,
-						"SyncEntity" : "*RECURSION*",
+						"SyncEntity" : "Entity (01c000010000101a)",
 						"TickType" : 0,
-						"TurnTimer" : 3.611377477645874,
+						"TurnTimer" : 1.7722102403640747,
 						"field_104" : 3,
 						"field_105" : 0,
 						"field_150" : "00000000-0000-0000-0000-000000000000",
-						"field_18" : 562949953422340,
+						"field_18" : 281474976710719,
 						"field_48" : 0.0,
 						"field_8" : "00000000-0000-0000-0000-000000000000",
 						"field_E0" : null,
@@ -6591,7 +6797,7 @@
 					},
 					{
 						"BringIntoCombat" : false,
-						"Cause" : "*RECURSION*",
+						"Cause" : "Entity (01c00001000000a4)",
 						"CauseGUID" : "fd44711b-0694-46ad-d7d4-8a23f711d729",
 						"CauseType" : 4,
 						"Channeled" : false,
@@ -6605,18 +6811,14 @@
 						"Flags" : 
 						[
 							"Started",
-							"Loaded",
-							"RequestClientSync2"
+							"RequestClientSync2",
+							"Loaded"
 						],
 						"Flags2" : 
 						[
 							"InitiateCombat"
 						],
-						"Flags3" : 
-						[
-							"StatusFlags3_0x08",
-							"StatusFlags3_0x40"
-						],
+						"Flags3" : [],
 						"Flags4" : 
 						[
 							"StatusFlags4_0x04",
@@ -6647,7 +6849,7 @@
 							"PassiveId" : "",
 							"StatusId" : ""
 						},
-						"Owner" : "*RECURSION*",
+						"Owner" : "Entity (01c00001000000a4)",
 						"RemoveEvents" : 0,
 						"RequestClientSync" : false,
 						"RequestClientSync2" : true,
@@ -6668,28 +6870,28 @@
 						"StackPriority" : 0,
 						"StartTimer" : 0.0,
 						"Started" : true,
-						"StatusFlags3_0x08" : true,
+						"StatusFlags3_0x08" : false,
 						"StatusFlags3_0x10" : false,
 						"StatusFlags3_0x20" : false,
-						"StatusFlags3_0x40" : true,
+						"StatusFlags3_0x40" : false,
 						"StatusFlags3_0x80" : false,
 						"StatusFlags4_0x04" : true,
 						"StatusFlags4_0x20" : false,
 						"StatusFlags4_0x40" : false,
 						"StatusFlags4_0x80" : false,
-						"StatusHandle" : "userdata: 0F40000200000716",
+						"StatusHandle" : "userdata: 0F4000010000003C",
 						"StatusId" : "PETPAL",
 						"StatusOwner" : [],
-						"StatusSource" : "*RECURSION*",
+						"StatusSource" : "Entity (01c00001000000a4)",
 						"StoryActionID" : 37992,
 						"Strength" : 0.0,
-						"SyncEntity" : "*RECURSION*",
+						"SyncEntity" : "Entity (01c000010000101b)",
 						"TickType" : 0,
-						"TurnTimer" : 5.6217780113220215,
+						"TurnTimer" : 3.7825977802276611,
 						"field_104" : 3,
 						"field_105" : 0,
 						"field_150" : "00000000-0000-0000-0000-000000000000",
-						"field_18" : 562949953423398,
+						"field_18" : 281474976710718,
 						"field_48" : 0.0,
 						"field_8" : "00000000-0000-0000-0000-000000000000",
 						"field_E0" : null,
@@ -6697,7 +6899,7 @@
 					},
 					{
 						"BringIntoCombat" : false,
-						"Cause" : "*RECURSION*",
+						"Cause" : "Entity (01c00001000000a4)",
 						"CauseGUID" : "fd44711b-0694-46ad-d7d4-8a23f711d729",
 						"CauseType" : 4,
 						"Channeled" : false,
@@ -6711,19 +6913,14 @@
 						"Flags" : 
 						[
 							"Started",
-							"Loaded",
-							"RequestClientSync2"
+							"RequestClientSync2",
+							"Loaded"
 						],
 						"Flags2" : 
 						[
 							"InitiateCombat"
 						],
-						"Flags3" : 
-						[
-							"StatusFlags3_0x20",
-							"StatusFlags3_0x10",
-							"StatusFlags3_0x40"
-						],
+						"Flags3" : [],
 						"Flags4" : 
 						[
 							"StatusFlags4_0x04",
@@ -6754,7 +6951,7 @@
 							"PassiveId" : "",
 							"StatusId" : ""
 						},
-						"Owner" : "*RECURSION*",
+						"Owner" : "Entity (01c00001000000a4)",
 						"RemoveEvents" : 0,
 						"RequestClientSync" : false,
 						"RequestClientSync2" : true,
@@ -6776,27 +6973,27 @@
 						"StartTimer" : 0.0,
 						"Started" : true,
 						"StatusFlags3_0x08" : false,
-						"StatusFlags3_0x10" : true,
-						"StatusFlags3_0x20" : true,
-						"StatusFlags3_0x40" : true,
+						"StatusFlags3_0x10" : false,
+						"StatusFlags3_0x20" : false,
+						"StatusFlags3_0x40" : false,
 						"StatusFlags3_0x80" : false,
 						"StatusFlags4_0x04" : true,
 						"StatusFlags4_0x20" : false,
 						"StatusFlags4_0x40" : false,
 						"StatusFlags4_0x80" : false,
-						"StatusHandle" : "userdata: 0F4000020000071E",
+						"StatusHandle" : "userdata: 0F4000010000003B",
 						"StatusId" : "SEE_INVISIBILITY",
 						"StatusOwner" : [],
-						"StatusSource" : "*RECURSION*",
+						"StatusSource" : "Entity (01c00001000000a4)",
 						"StoryActionID" : 37993,
 						"Strength" : 0.0,
-						"SyncEntity" : "*RECURSION*",
+						"SyncEntity" : "Entity (01c000010000101c)",
 						"TickType" : 0,
-						"TurnTimer" : 0.64025712013244629,
+						"TurnTimer" : 4.8010730743408203,
 						"field_104" : 3,
 						"field_105" : 0,
 						"field_150" : "00000000-0000-0000-0000-000000000000",
-						"field_18" : 562949953423126,
+						"field_18" : 281474976710717,
 						"field_48" : 0.0,
 						"field_8" : "00000000-0000-0000-0000-000000000000",
 						"field_E0" : null,
@@ -6804,7 +7001,7 @@
 					},
 					{
 						"BringIntoCombat" : false,
-						"Cause" : "*RECURSION*",
+						"Cause" : "Entity (01c00001000000a3)",
 						"CauseGUID" : "3ed74f06-3c60-42dc-83f6-f034cb47c679",
 						"CauseType" : 4,
 						"Channeled" : false,
@@ -6818,19 +7015,14 @@
 						"Flags" : 
 						[
 							"Started",
-							"Loaded",
-							"RequestClientSync2"
+							"RequestClientSync2",
+							"Loaded"
 						],
 						"Flags2" : 
 						[
 							"InitiateCombat"
 						],
-						"Flags3" : 
-						[
-							"StatusFlags3_0x20",
-							"StatusFlags3_0x10",
-							"StatusFlags3_0x40"
-						],
+						"Flags3" : [],
 						"Flags4" : 
 						[
 							"StatusFlags4_0x04",
@@ -6861,7 +7053,7 @@
 							"PassiveId" : "",
 							"StatusId" : ""
 						},
-						"Owner" : "*RECURSION*",
+						"Owner" : "Entity (01c00001000000a4)",
 						"RemoveEvents" : 0,
 						"RequestClientSync" : false,
 						"RequestClientSync2" : true,
@@ -6883,27 +7075,27 @@
 						"StartTimer" : 0.0,
 						"Started" : true,
 						"StatusFlags3_0x08" : false,
-						"StatusFlags3_0x10" : true,
-						"StatusFlags3_0x20" : true,
-						"StatusFlags3_0x40" : true,
+						"StatusFlags3_0x10" : false,
+						"StatusFlags3_0x20" : false,
+						"StatusFlags3_0x40" : false,
 						"StatusFlags3_0x80" : false,
 						"StatusFlags4_0x04" : true,
 						"StatusFlags4_0x20" : false,
 						"StatusFlags4_0x40" : false,
 						"StatusFlags4_0x80" : false,
-						"StatusHandle" : "userdata: 0F4000020000071F",
+						"StatusHandle" : "userdata: 0F4000010000003A",
 						"StatusId" : "AID_4",
 						"StatusOwner" : [],
-						"StatusSource" : "*RECURSION*",
+						"StatusSource" : "Entity (01c00001000000a3)",
 						"StoryActionID" : 37995,
 						"Strength" : 0.0,
-						"SyncEntity" : "*RECURSION*",
+						"SyncEntity" : "Entity (01c000010000101d)",
 						"TickType" : 0,
-						"TurnTimer" : 0.73722487688064575,
+						"TurnTimer" : 4.8980345726013184,
 						"field_104" : 3,
 						"field_105" : 0,
 						"field_150" : "00000000-0000-0000-0000-000000000000",
-						"field_18" : 562949953423127,
+						"field_18" : 281474976710716,
 						"field_48" : 0.0,
 						"field_8" : "00000000-0000-0000-0000-000000000000",
 						"field_E0" : null,
@@ -6931,11 +7123,7 @@
 						[
 							"InitiateCombat"
 						],
-						"Flags3" : 
-						[
-							"StatusFlags3_0x20",
-							"StatusFlags3_0x40"
-						],
+						"Flags3" : [],
 						"Flags4" : 
 						[
 							"StatusFlags4_0x04",
@@ -6966,7 +7154,7 @@
 							"PassiveId" : "ElementalAffinity_Damage",
 							"StatusId" : ""
 						},
-						"Owner" : "*RECURSION*",
+						"Owner" : "Entity (01c00001000000a4)",
 						"RemoveEvents" : 0,
 						"RequestClientSync" : false,
 						"RequestClientSync2" : true,
@@ -6989,27 +7177,27 @@
 						"Started" : true,
 						"StatusFlags3_0x08" : false,
 						"StatusFlags3_0x10" : false,
-						"StatusFlags3_0x20" : true,
-						"StatusFlags3_0x40" : true,
+						"StatusFlags3_0x20" : false,
+						"StatusFlags3_0x40" : false,
 						"StatusFlags3_0x80" : false,
 						"StatusFlags4_0x04" : true,
 						"StatusFlags4_0x20" : false,
 						"StatusFlags4_0x40" : false,
 						"StatusFlags4_0x80" : false,
-						"StatusHandle" : "userdata: 0F40000300000729",
+						"StatusHandle" : "userdata: 0F40000200000748",
 						"StatusId" : "ELEMENTALAFFINITY_ACID_EXTRA_DAMAGE_TECHNICAL",
 						"StatusOwner" : [],
 						"StatusSource" : null,
 						"StoryActionID" : 0,
 						"Strength" : 0.0,
-						"SyncEntity" : "*RECURSION*",
+						"SyncEntity" : "Entity (01c0000100012e1b)",
 						"TickType" : 0,
-						"TurnTimer" : 5.1377949714660645,
+						"TurnTimer" : 0.53093606233596802,
 						"field_104" : 3,
 						"field_105" : 0,
 						"field_150" : "00000000-0000-0000-0000-000000000000",
-						"field_18" : 562949953423153,
-						"field_48" : 139.31218538677786,
+						"field_18" : 281474976712513,
+						"field_48" : 74.08445793390274,
 						"field_8" : "00000000-0000-0000-0000-000000000000",
 						"field_E0" : null,
 						"field_E8" : "00000000-0000-0000-0000-000000000000"
@@ -7036,10 +7224,7 @@
 						[
 							"InitiateCombat"
 						],
-						"Flags3" : 
-						[
-							"StatusFlags3_0x80"
-						],
+						"Flags3" : [],
 						"Flags4" : 
 						[
 							"StatusFlags4_0x04",
@@ -7064,13 +7249,13 @@
 						"OriginCauseType" : 0,
 						"Originator" : 
 						{
-							"ActionGuid" : "fc009a34-2faa-7e8c-38b6-2c813cbf4810",
+							"ActionGuid" : "11769553-5ac3-ddf1-2f25-eac1dca2cecb",
 							"CanApplyConcentration" : true,
 							"InterruptId" : "",
 							"PassiveId" : "",
 							"StatusId" : ""
 						},
-						"Owner" : "*RECURSION*",
+						"Owner" : "Entity (01c00001000000a4)",
 						"RemoveEvents" : 0,
 						"RequestClientSync" : false,
 						"RequestClientSync2" : true,
@@ -7095,25 +7280,25 @@
 						"StatusFlags3_0x10" : false,
 						"StatusFlags3_0x20" : false,
 						"StatusFlags3_0x40" : false,
-						"StatusFlags3_0x80" : true,
+						"StatusFlags3_0x80" : false,
 						"StatusFlags4_0x04" : true,
 						"StatusFlags4_0x20" : false,
 						"StatusFlags4_0x40" : false,
 						"StatusFlags4_0x80" : false,
-						"StatusHandle" : "userdata: 0F40000300000715",
+						"StatusHandle" : "userdata: 0F40000300000038",
 						"StatusId" : "HAS_SHOVEL",
 						"StatusOwner" : [],
 						"StatusSource" : null,
 						"StoryActionID" : -1,
 						"Strength" : 0.0,
-						"SyncEntity" : "*RECURSION*",
+						"SyncEntity" : "Entity (01c0000100013ddf)",
 						"TickType" : 0,
-						"TurnTimer" : 4.8053841590881348,
+						"TurnTimer" : 2.9954118728637695,
 						"field_104" : 3,
 						"field_105" : 0,
 						"field_150" : "00000000-0000-0000-0000-000000000000",
-						"field_18" : 844424930133801,
-						"field_48" : 140.84591998031829,
+						"field_18" : 562949953423175,
+						"field_48" : 207.009030721616,
 						"field_8" : "00000000-0000-0000-0000-000000000000",
 						"field_E0" : null,
 						"field_E8" : "00000000-0000-0000-0000-000000000000"
@@ -7125,6 +7310,72 @@
 			"Summon" : false,
 			"Template" : 
 			{
+				"AIBounds" : 
+				[
+					{
+						"AiType" : 2,
+						"Height" : 2.0,
+						"Max" : 
+						[
+							0.40751001238822937,
+							1.9335399866104126,
+							0.063008502125740051
+						],
+						"Min" : 
+						[
+							-0.40751001238822937,
+							-0.0013587500434368849,
+							-0.10585849732160568
+						],
+						"Radius" : 0.24899999797344208,
+						"Radius2" : 0.0,
+						"Type" : 0,
+						"field_28" : 0,
+						"field_2A" : 0
+					},
+					{
+						"AiType" : 2,
+						"Height" : 2.0,
+						"Max" : 
+						[
+							0.81502002477645874,
+							1.9335399866104126,
+							0.1260170042514801
+						],
+						"Min" : 
+						[
+							-0.81502002477645874,
+							-0.0013587500434368849,
+							-0.21171699464321136
+						],
+						"Radius" : 0.20000000298023224,
+						"Radius2" : 0.0,
+						"Type" : 0,
+						"field_28" : 1,
+						"field_2A" : 0
+					},
+					{
+						"AiType" : 2,
+						"Height" : 2.0,
+						"Max" : 
+						[
+							0.81502002477645874,
+							1.9335399866104126,
+							0.1260170042514801
+						],
+						"Min" : 
+						[
+							-0.81502002477645874,
+							-0.0013587500434368849,
+							-0.21171699464321136
+						],
+						"Radius" : 0.49900001287460327,
+						"Radius2" : 0.0,
+						"Type" : 0,
+						"field_28" : 2,
+						"field_2A" : 0
+					}
+				],
 				"ActivationGroupId" : "",
 				"ActiveCharacterLightID" : "e278f6a0-26d7-49be-b11a-9b84bc313c3c",
 				"AliveInventoryType" : 11,
@@ -7422,7 +7673,7 @@
 				"WorldClimbingHeight" : 2.0999999046325684,
 				"WorldClimbingRadius" : -1.0,
 				"WorldClimbingSpeed" : 6.0,
-				"field_50" : 4142
+				"field_50" : 4149
 			},
 			"TemplateUsedForSpells" : "*RECURSION*",
 			"Temporary" : false,
@@ -7506,11 +7757,11 @@
 		[
 			{
 				"Icon" : "187188d8-929a-d800-d5c3-33453a8cc25a-_(Icon_Drow_Female)",
-				"field_4" : 516
+				"field_4" : 1008981764
 			},
 			{
 				"Icon" : "CustomIconSet",
-				"field_4" : 47618
+				"field_4" : 2
 			}
 		],
 		"field_30" : 1
@@ -7519,8 +7770,8 @@
 	{
 		"Followers_M" : 
 		[
-			"Entity (01c000020000cb6a)",
-			"Entity (01c000020000cb67)"
+			"Entity (01c000010000009e)",
+			"Entity (01c00001000000a3)"
 		]
 	},
 	"ServerOsirisTag" : 
@@ -7573,171 +7824,171 @@
 	{
 		"Dependents" : 
 		[
-			"*RECURSION*",
-			"Entity (01c0000200009e26)",
-			"*RECURSION*",
-			"Entity (01c0000200009e28)",
-			"Entity (01c0000200009e29)",
-			"Entity (01c0000200009e2a)",
-			"Entity (01c0000200013e2a)",
-			"Entity (01c0000200009e2c)",
-			"Entity (01c0000200009e2d)",
-			"Entity (01c0000200009e2e)",
-			"Entity (01c000020000abc8)",
-			"Entity (01c000020000ad60)",
-			"Entity (01c0000200009dec)",
-			"Entity (01c0000200009ded)",
-			"Entity (01c0000200009dee)",
-			"Entity (01c0000200009d91)",
-			"Entity (01c0000200009d92)",
-			"Entity (01c0000200009d94)",
-			"Entity (01c0000200009d97)",
-			"Entity (01c000020000a40c)",
-			"Entity (01c000020000a40f)",
-			"Entity (01c000020000a412)",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"Entity (01c0000200009bee)",
-			"Entity (01c0000200009bf7)",
-			"Entity (01c0000200009bfd)",
-			"Entity (01c0000200009c06)",
-			"Entity (01c0000200009c0c)",
-			"Entity (01c0000200009c18)",
-			"Entity (01c0000200009beb)",
-			"Entity (01c0000200009c00)",
-			"Entity (01c0000200009c0f)",
-			"Entity (01c0000200009c12)",
-			"Entity (01c0000200009c15)",
-			"Entity (01c0000200009c1b)",
-			"Entity (01c0000200009c21)",
-			"Entity (01c0000200009bf1)",
-			"Entity (01c0000200009c09)",
-			"*RECURSION*",
-			"Entity (01c0000200009bfa)",
-			"Entity (01c0000200009c03)",
-			"Entity (01c0000200009c1e)",
-			"Entity (01c000020000936a)",
-			"Entity (01c0000200009374)",
-			"Entity (01c0000200009378)",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"Entity (01c0000200013df2)",
-			"*RECURSION*",
-			"*RECURSION*",
-			"Entity (01c0000100019783)",
-			"Entity (01c0000100019784)",
-			"Entity (01c0000100019785)",
-			"Entity (01c0000100019786)",
-			"Entity (01c0000100019787)",
-			"Entity (01c0000100019788)",
-			"Entity (01c0000100019789)",
-			"Entity (01c000010001978a)",
-			"Entity (01c000010001978b)",
-			"Entity (01c000010001978c)",
-			"Entity (01c000010001978d)",
-			"Entity (01c000010001978e)",
-			"Entity (01c000010001978f)",
-			"Entity (01c0000100019790)",
-			"Entity (01c0000100019791)",
-			"Entity (01c000010001993a)",
-			"Entity (01c000010001993b)",
-			"Entity (01c000010001993c)",
-			"Entity (01c000010001993d)",
-			"Entity (01c000010001993e)",
-			"Entity (01c000010001993f)",
-			"Entity (01c0000100019940)",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"Entity (01c000010001a0e6)",
-			"Entity (01c000010001a0e7)",
-			"Entity (01c0000200004de7)",
-			"*RECURSION*",
-			"Entity (01c0000200015f3c)",
-			"Entity (01c0000200015f3d)",
-			"Entity (01c0000200015f3e)",
-			"Entity (01c0000200015f3f)",
-			"Entity (01c0000200015f40)",
-			"Entity (01c0000200015f41)",
-			"*RECURSION*",
-			"Entity (01c0000200013bda)",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"*RECURSION*",
-			"Entity (01c0000200013df3)",
-			"*RECURSION*",
-			"*RECURSION*",
-			"Entity (01c0000200013df1)"
+			"Entity (01c0000100001016)",
+			"Entity (01c0000100001017)",
+			"Entity (01c0000100001018)",
+			"Entity (01c0000100001019)",
+			"Entity (01c000010000101a)",
+			"Entity (01c000010000101b)",
+			"Entity (01c000010000101c)",
+			"Entity (01c000010000101d)",
+			"Entity (01c0000100012e02)",
+			"Entity (01c0000100012e00)",
+			"Entity (01c0000100000ac9)",
+			"Entity (01c0000100000a51)",
+			"Entity (01c0000100001052)",
+			"Entity (01c0000100001053)",
+			"Entity (01c000010000105e)",
+			"Entity (01c000010000107a)",
+			"Entity (01c000010000107b)",
+			"Entity (01c000010000107d)",
+			"Entity (01c0000100001080)",
+			"Entity (01c0000100000d8f)",
+			"Entity (01c0000100000d90)",
+			"Entity (01c0000100000d91)",
+			"Entity (01c0000100000da5)",
+			"Entity (01c0000100000da6)",
+			"Entity (01c0000100000da7)",
+			"Entity (01c0000100000da8)",
+			"Entity (01c0000100000da9)",
+			"Entity (01c0000100000daa)",
+			"Entity (01c0000100000e63)",
+			"Entity (01c0000100000e64)",
+			"Entity (01c0000100000e65)",
+			"Entity (01c0000100000e6c)",
+			"Entity (01c0000100000dce)",
+			"Entity (01c0000100000dcf)",
+			"Entity (01c0000100000df0)",
+			"Entity (01c0000100000df1)",
+			"Entity (01c0000100000df2)",
+			"Entity (01c0000100000e6b)",
+			"Entity (01c0000100000def)",
+			"Entity (01c0000100000e6a)",
+			"Entity (01c000010000117f)",
+			"Entity (01c0000100001182)",
+			"Entity (01c0000100001184)",
+			"Entity (01c0000100001187)",
+			"Entity (01c0000100001189)",
+			"Entity (01c000010000118d)",
+			"Entity (01c000010000117e)",
+			"Entity (01c0000100001185)",
+			"Entity (01c000010000118a)",
+			"Entity (01c000010000118b)",
+			"Entity (01c000010000118c)",
+			"Entity (01c000010000118e)",
+			"Entity (01c0000100001190)",
+			"Entity (01c0000100001180)",
+			"Entity (01c0000100001188)",
+			"Entity (01c0000100001181)",
+			"Entity (01c0000100001183)",
+			"Entity (01c0000100001186)",
+			"Entity (01c000010000118f)",
+			"Entity (01c000010000146a)",
+			"Entity (01c000010000146f)",
+			"Entity (01c0000100001470)",
+			"Entity (01c0000100001455)",
+			"Entity (01c0000100001458)",
+			"Entity (01c0000100001459)",
+			"Entity (01c0000100012f5b)",
+			"Entity (01c0000100001456)",
+			"Entity (01c0000100001457)",
+			"Entity (01c0000100002a5e)",
+			"Entity (01c0000100002a5f)",
+			"Entity (01c0000100002a60)",
+			"Entity (01c0000100002a61)",
+			"Entity (01c0000100002a62)",
+			"Entity (01c0000100002a63)",
+			"Entity (01c0000100002a64)",
+			"Entity (01c0000100002a65)",
+			"Entity (01c0000100002a66)",
+			"Entity (01c0000100002a67)",
+			"Entity (01c0000100002a68)",
+			"Entity (01c0000100002a69)",
+			"Entity (01c0000100002a6a)",
+			"Entity (01c0000100002a6b)",
+			"Entity (01c0000100002a6c)",
+			"Entity (01c0000100002c13)",
+			"Entity (01c0000100002c14)",
+			"Entity (01c0000100002c15)",
+			"Entity (01c0000100002c16)",
+			"Entity (01c0000100002c17)",
+			"Entity (01c0000100002c18)",
+			"Entity (01c0000100002c19)",
+			"Entity (01c0000100002699)",
+			"Entity (01c000010000269a)",
+			"Entity (01c000010000269f)",
+			"Entity (01c00001000029d6)",
+			"Entity (01c0000100002691)",
+			"Entity (01c0000100002692)",
+			"Entity (01c0000100002696)",
+			"Entity (01c0000100002697)",
+			"Entity (01c000010000269c)",
+			"Entity (01c00001000026a8)",
+			"Entity (01c00001000026a9)",
+			"Entity (01c00001000026aa)",
+			"Entity (01c00001000026ab)",
+			"Entity (01c00001000026ac)",
+			"Entity (01c00001000026ad)",
+			"Entity (01c00001000026ae)",
+			"Entity (01c00001000026af)",
+			"Entity (01c0000100002690)",
+			"Entity (01c000010000269b)",
+			"Entity (01c000010000269d)",
+			"Entity (01c000010000269e)",
+			"Entity (01c00001000026a0)",
+			"Entity (01c00001000026a1)",
+			"Entity (01c00001000026a2)",
+			"Entity (01c00001000026a3)",
+			"Entity (01c00001000026a4)",
+			"Entity (01c00001000026a5)",
+			"Entity (01c00001000026a6)",
+			"Entity (01c00001000026a7)",
+			"Entity (01c0000100002698)",
+			"Entity (01c0000100001578)",
+			"Entity (01c0000100002693)",
+			"Entity (01c0000100002694)",
+			"Entity (01c0000100002695)",
+			"Entity (01c00001000029fe)",
+			"Entity (01c00001000029fd)",
+			"Entity (01c0000100002f55)",
+			"Entity (01c0000100002f5f)",
+			"Entity (01c0000100002f5e)",
+			"Entity (01c0000100002f57)",
+			"Entity (01c0000100002f56)",
+			"Entity (01c0000100002fa6)",
+			"Entity (01c0000100002fa5)",
+			"Entity (01c0000100002f9b)",
+			"Entity (01c0000100002fa1)",
+			"Entity (01c0000100002fa2)",
+			"Entity (01c0000100002fa3)",
+			"Entity (01c00001000032c3)",
+			"Entity (01c0000100002fa4)",
+			"Entity (01c0000100002f9c)",
+			"Entity (01c0000100002f9d)",
+			"Entity (01c0000100002f9e)",
+			"Entity (01c0000100002f9f)",
+			"Entity (01c0000100002fa0)",
+			"Entity (01c0000100003383)",
+			"Entity (01c0000100003384)",
+			"Entity (01c00001000126fb)",
+			"Entity (01c0000100012e03)",
+			"Entity (01c000010001291c)",
+			"Entity (01c000010001291d)",
+			"Entity (01c000010001291e)",
+			"Entity (01c000010001291f)",
+			"Entity (01c0000100012920)",
+			"Entity (01c0000100012921)",
+			"Entity (01c0000100012e28)",
+			"Entity (01c0000100012e1b)",
+			"Entity (01c0000100012988)",
+			"Entity (01c0000100012989)",
+			"Entity (01c0000100012e04)",
+			"Entity (01c0000100012e05)",
+			"Entity (01c0000100012e06)",
+			"Entity (01c0000100012e01)",
+			"Entity (01c0000100012f59)",
+			"Entity (01c0000100012f5a)",
+			"Entity (01c0000100013ddf)"
 		]
 	},
 	"ServerSafePosition" : 
@@ -7770,6 +8021,39 @@
 			"NonLethal" : false,
 			"TAD_CullTheWeak" : false
 		}
+	},
+	"ShootThroughType" : 
+	{
+		"Type" : 6
+	},
+	"Sight" : 
+	{
+		"field_0" : 1100218368,
+		"field_4" : 1073741824,
+		"field_8" : 1119092736,
+		"field_C" : 1119092736
+	},
+	"SightData" : 
+	{
+		"field_0" : "8ff14f15-cc9e-ffcc-b2fc-e47dc3f961f4",
+		"field_10" : 1103101952,
+		"field_14" : 1119092736,
+		"field_18" : 1119092736,
+		"field_1C" : 1100218368,
+		"field_20" : 0,
+		"field_24" : 0
+	},
+	"SightEntityViewshed" : 
+	{
+		"field_0" : 
+		[
+			"8136bb11-7300-3fa0-dc3e-0dcbfe8fe2b1",
+			"43b43d0b-08fd-67d7-2fc3-a060773aec3a",
+			"888bcaf8-afef-6e17-8daf-837a4f0b257d",
+			"c8d3aaa0-3069-d06f-a929-e17bcb84a19e",
+			"04196069-3410-d254-5fb2-cd08fddc7d44",
+			"984f18af-ad60-656b-bdb5-c6381298026f"
+		]
 	},
 	"Speaker" : 
 	{
@@ -11600,7 +11884,7 @@
 				"field_42" : 0
 			}
 		],
-		"field_0" : 126100798156360569
+		"field_0" : 126100793861341348
 	},
 	"SpellBookCooldowns" : 
 	{
@@ -12680,7 +12964,7 @@
 			{
 				"ContainerSpell" : "",
 				"CooldownType" : "UntilPerRestPerItem",
-				"ItemHandle" : "Entity (01c000020000bcf2)",
+				"ItemHandle" : "Entity (01c00001000004b4)",
 				"SelectionType" : "Singular",
 				"SpellCastingAbility" : "Charisma",
 				"SpellId" : 
@@ -12696,7 +12980,7 @@
 			{
 				"ContainerSpell" : "",
 				"CooldownType" : "UntilPerRestPerItem",
-				"ItemHandle" : "*RECURSION*",
+				"ItemHandle" : "Entity (01c00001000004b4)",
 				"SelectionType" : "Singular",
 				"SpellCastingAbility" : "Charisma",
 				"SpellId" : 
@@ -12712,7 +12996,7 @@
 			{
 				"ContainerSpell" : "",
 				"CooldownType" : "UntilPerRestPerItem",
-				"ItemHandle" : "Entity (01c000020000bcf8)",
+				"ItemHandle" : "Entity (01c00001000004b6)",
 				"SelectionType" : "Singular",
 				"SpellCastingAbility" : "Charisma",
 				"SpellId" : 
@@ -12728,7 +13012,7 @@
 			{
 				"ContainerSpell" : "",
 				"CooldownType" : "OncePerShortRestPerItem",
-				"ItemHandle" : "Entity (01c000020000bd25)",
+				"ItemHandle" : "Entity (01c00001000004c5)",
 				"SelectionType" : "Singular",
 				"SpellCastingAbility" : "Charisma",
 				"SpellId" : 
@@ -12744,7 +13028,7 @@
 			{
 				"ContainerSpell" : "",
 				"CooldownType" : "Default",
-				"ItemHandle" : "Entity (01c000020000c78e)",
+				"ItemHandle" : "Entity (01c00001000001aa)",
 				"SelectionType" : "Singular",
 				"SpellCastingAbility" : "Charisma",
 				"SpellId" : 
@@ -12760,7 +13044,7 @@
 			{
 				"ContainerSpell" : "",
 				"CooldownType" : "UntilShortRest",
-				"ItemHandle" : "*RECURSION*",
+				"ItemHandle" : "Entity (01c00001000001aa)",
 				"SelectionType" : "Singular",
 				"SpellCastingAbility" : "Charisma",
 				"SpellId" : 
@@ -12776,7 +13060,7 @@
 			{
 				"ContainerSpell" : "",
 				"CooldownType" : "Default",
-				"ItemHandle" : "Entity (01c000020000c669)",
+				"ItemHandle" : "Entity (01c00001000003c0)",
 				"SelectionType" : "Singular",
 				"SpellCastingAbility" : "Charisma",
 				"SpellId" : 
@@ -12792,7 +13076,7 @@
 			{
 				"ContainerSpell" : "",
 				"CooldownType" : "UntilPerRestPerItem",
-				"ItemHandle" : "*RECURSION*",
+				"ItemHandle" : "Entity (01c00001000003c0)",
 				"SelectionType" : "Singular",
 				"SpellCastingAbility" : "Charisma",
 				"SpellId" : 
@@ -12808,7 +13092,7 @@
 			{
 				"ContainerSpell" : "",
 				"CooldownType" : "Default",
-				"ItemHandle" : "Entity (01c0000200009e27)",
+				"ItemHandle" : "Entity (01c0000100001017)",
 				"SelectionType" : "Singular",
 				"SpellCastingAbility" : "Charisma",
 				"SpellId" : 
@@ -12824,7 +13108,7 @@
 			{
 				"ContainerSpell" : "",
 				"CooldownType" : "Default",
-				"ItemHandle" : "Entity (01c0000200009bf4)",
+				"ItemHandle" : "Entity (01c0000100001181)",
 				"SelectionType" : "AddChildren",
 				"SpellCastingAbility" : "Charisma",
 				"SpellId" : 
@@ -13080,7 +13364,7 @@
 			{
 				"ContainerSpell" : "Target_MAG_Myrkulites_CommandUndead",
 				"CooldownType" : "UntilPerRestPerItem",
-				"ItemHandle" : "*RECURSION*",
+				"ItemHandle" : "Entity (01c00001000004b4)",
 				"SelectionType" : "Singular",
 				"SpellCastingAbility" : "Charisma",
 				"SpellId" : 
@@ -13096,7 +13380,7 @@
 			{
 				"ContainerSpell" : "Target_MAG_Myrkulites_CommandUndead",
 				"CooldownType" : "UntilPerRestPerItem",
-				"ItemHandle" : "*RECURSION*",
+				"ItemHandle" : "Entity (01c00001000004b4)",
 				"SelectionType" : "Singular",
 				"SpellCastingAbility" : "Charisma",
 				"SpellId" : 
@@ -13112,7 +13396,7 @@
 			{
 				"ContainerSpell" : "Target_MAG_Myrkulites_CommandUndead",
 				"CooldownType" : "UntilPerRestPerItem",
-				"ItemHandle" : "*RECURSION*",
+				"ItemHandle" : "Entity (01c00001000004b4)",
 				"SelectionType" : "Singular",
 				"SpellCastingAbility" : "Charisma",
 				"SpellId" : 
@@ -13128,7 +13412,7 @@
 			{
 				"ContainerSpell" : "Target_MAG_Myrkulites_CommandUndead",
 				"CooldownType" : "UntilPerRestPerItem",
-				"ItemHandle" : "*RECURSION*",
+				"ItemHandle" : "Entity (01c00001000004b4)",
 				"SelectionType" : "Singular",
 				"SpellCastingAbility" : "Charisma",
 				"SpellId" : 
@@ -13144,7 +13428,7 @@
 			{
 				"ContainerSpell" : "Target_MAG_Myrkulites_CommandUndead",
 				"CooldownType" : "UntilPerRestPerItem",
-				"ItemHandle" : "*RECURSION*",
+				"ItemHandle" : "Entity (01c00001000004b4)",
 				"SelectionType" : "Singular",
 				"SpellCastingAbility" : "Charisma",
 				"SpellId" : 
@@ -13212,6 +13496,22 @@
 		"field_8C" : 0,
 		"field_90" : 0
 	},
+	"StatusContainer" : 
+	{
+		"Statuses" : 
+		{
+			"Entity (01c0000100001016)" : "TAD_PEACE_BREAKER",
+			"Entity (01c0000100001017)" : "TCP_BOOST_DRANKPOTION",
+			"Entity (01c0000100001018)" : "MAG_SELUNITE_ARMOR_MAGE_ARMOR_TECHNICAL",
+			"Entity (01c0000100001019)" : "TAD_PARTIAL_CEREMORPH",
+			"Entity (01c000010000101a)" : "DEN_SILVANUS_BLESSING",
+			"Entity (01c000010000101b)" : "PETPAL",
+			"Entity (01c000010000101c)" : "SEE_INVISIBILITY",
+			"Entity (01c000010000101d)" : "AID_4",
+			"Entity (01c0000100012e1b)" : "ELEMENTALAFFINITY_ACID_EXTRA_DAMAGE_TECHNICAL",
+			"Entity (01c0000100013ddf)" : "HAS_SHOVEL"
+		}
+	},
 	"StatusImmunities" : 
 	{
 		"PersonalStatusImmunities" : 
@@ -13228,24 +13528,24 @@
 			0.0,
 			0.0
 		],
-		"field_10" : 1.5707963705062866,
+		"field_10" : 1.5707964897155762,
 		"field_14" : 0,
 		"field_18" : 1.0,
 		"field_1C" : 0,
-		"field_C" : 0.15502910315990448
+		"field_C" : 4.7210512161254883
 	},
 	"SummonContainer" : 
 	{
 		"Characters" : [],
 		"Items" : 
 		[
-			"*RECURSION*"
+			"Entity (01c000010000009e)"
 		],
 		"field_18" : 
 		{
 			"'FindFamiliarStack'" : 
 			[
-				"*RECURSION*"
+				"Entity (01c000010000009e)"
 			]
 		}
 	},
@@ -13420,6 +13720,29 @@
 			}
 		]
 	},
+	"TadpolePowers" : 
+	{
+		"Powers" : 
+		[
+			"TAD_IllithidPersuasion",
+			"TAD_PeaceBreaker",
+			"TAD_Charm",
+			"Target_TAD_ConcentratedBlast",
+			"TAD_CullTheWeak",
+			"TAD_PsionicBacklash",
+			"Shout_TAD_PsionicOverload",
+			"Rush_ForceTunnel",
+			"Target_TAD_TransfuseHealth",
+			"Projectile_TAD_Levitate",
+			"TAD_PsionicDominance",
+			"Zone_TAD_MindBlast"
+		]
+	},
+	"TadpoleTreeState" : 
+	{
+		"State" : 2
+	},
+	"Tadpoled" : {},
 	"Tag" : 
 	{
 		"Tags" : 
@@ -13480,9 +13803,9 @@
 			],
 			"Translate" : 
 			[
-				-49.140872955322266,
-				66.6669921875,
-				-138.55278015136719
+				-46.293529510498047,
+				66.3994140625,
+				-135.74421691894531
 			]
 		}
 	},
@@ -13504,6 +13827,26 @@
 		"field_A" : false,
 		"field_C" : false
 	},
+	"Unsheath" : 
+	{
+		"field_0" : null,
+		"field_10" : 1,
+		"field_14" : 3,
+		"field_18" : 0,
+		"field_19" : 0,
+		"field_1A" : 0,
+		"field_8" : null
+	},
+	"UserAvatar" : 
+	{
+		"UserID" : 65537,
+		"field_4" : "0103b6c9-bca4-8370-b61c-21d2bf3a9fb2",
+		"field_8" : 0
+	},
+	"UserReservedFor" : 
+	{
+		"UserID" : 65537
+	},
 	"Uuid" : 
 	{
 		"EntityUuid" : "fd44711b-0694-46ad-d7d4-8a23f711d729"
@@ -13514,4 +13857,3 @@
 	},
 	"WeaponSet" : {}
 }
-nil

@@ -22,7 +22,7 @@ Development Outline:
    ✅ EquipableItem by Character Stat (e.g. Dex for knife), 
    ✅ Supply to camp,
    ✅ Gold by stack
-   Poisons to chars using no staves, 
+   ✅ Poisons to chars by stack, then dex
    ✅ Barkskin elixirs to lowest total A/C, 
    scrolls to characters with high int/wis/charisma,
    potion of animal speaking to host character 
@@ -34,6 +34,7 @@ Development Outline:
 					stretch: anti-annoying measure for online play
  OnPartyMemberSwap, redistribute from party member being left in camp
  Add confirmation box to choose second-best fit if best fit will be encumbered (and so on)
+ 
 Useful functions: MoveItemTo, GetItemByTagInInventory, GetStackAmount, ItemTagIsInInventory, UserTransferTaggedItems, SendToCampChest, IterateTagsCategory
 Useful events: TemplateAddedTo, CharacterJoinedParty, CharacterLeftParty
 Make a symblink: mklink /J "D:\GOG\Baldurs Gate 3\Data\Mods\Automatic_Inventory_Manager" "D:\Mods\BG3 Modder MultiTool\My Mods\Automatic_Inventory_Manager\Mods\Automatic_Inventory_Manager"
