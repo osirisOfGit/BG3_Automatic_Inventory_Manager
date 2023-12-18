@@ -36,8 +36,13 @@ local function ProcessWeightByMode(itemFilter,
 				root)
 
 			if #eligiblePartyMembers == 1 or i == numberOfFiltersToProcess then
-				local target = #eligiblePartyMembers == 1 and eligiblePartyMembers[1] or
-					eligiblePartyMembers[Osi.Random(#eligiblePartyMembers) + 1]
+				local target
+				if #eligiblePartyMembers > 0 then
+					target = #eligiblePartyMembers == 1 and eligiblePartyMembers[1] or
+						eligiblePartyMembers[Osi.Random(#eligiblePartyMembers) + 1]
+				else
+					target = partyMembersWithAmountWon[Osi.Random(#partyMembersWithAmountWon) + 1]
+				end
 
 				partyMembersWithAmountWon[target] = partyMembersWithAmountWon[target] + 1
 				_P("Winning command: " .. Ext.Json.Stringify(filter))
@@ -63,10 +68,10 @@ local function ProcessWinners(partyMembersWithAmountWon, item, root, inventoryHo
 				, inventoryHolder))
 			else
 				Osi.SetOriginalOwner(item, inventoryHolder)
-				
+
 				-- This method generates a new uuid for the item upon moving it without forcing us to destroy it and generate a new one from the template
 				Osi.ToInventory(item, target, amount, 0, 0)
-				
+
 				AddItemToProcessingTable(root, target, amount)
 
 				_P(string.format("'Moved' %s of %s to %s from %s"
@@ -80,7 +85,7 @@ local function ProcessWinners(partyMembersWithAmountWon, item, root, inventoryHo
 end
 
 -- If there's a stack limit, returns all the party members that are <, or nil if no members are
---- 
+---
 --- @param itemFilter ItemFilter
 --- @param eligiblePartyMembers CHARACTER[]
 --- @param partyMembersWithAmountWon table<CHARACTER, number>
@@ -105,6 +110,33 @@ local function FilterInitialTargets_ByStackLimit(itemFilter,
 
 		return #filteredSurvivors > 0 and filteredSurvivors or nil
 	end
+end
+
+---
+---@param item GUIDSTRING
+---@param eligiblePartyMembers CHARACTER[]
+---@return table|nil # All party members that won't be encumbered by the item, or nil if all members will
+local function FilterInitialTargets_ByEncumbranceRisk(item, eligiblePartyMembers)
+	local filteredSurvivors = {}
+	local itemWeight = tonumber(Ext.Entity.Get(item).Data.Weight)
+
+	for _, partyMember in pairs(eligiblePartyMembers) do
+		local partyMemberEntity = Ext.Entity.Get(partyMember)
+		-- If not encumbered
+		if tonumber(partyMemberEntity.EncumbranceState.State) == 0 then
+			local unencumberedLimit = tonumber(partyMemberEntity.EncumbranceStats["field_0"])
+			local inventoryWeight = tonumber(partyMemberEntity.InventoryWeight["Weight"])
+			if (inventoryWeight + itemWeight) <= unencumberedLimit then
+				_P(string.format("Item weight %d will not encumber %s, with %d more room!",
+					itemWeight,
+					partyMember,
+					unencumberedLimit - (inventoryWeight + itemWeight)))
+				table.insert(filteredSurvivors, partyMember)
+			end
+		end
+	end
+
+	return #filteredSurvivors > 0 and filteredSurvivors or nil
 end
 
 Processor = {}
@@ -157,6 +189,9 @@ function Processor:ProcessFiltersForItemAgainstParty(item, root, inventoryHolder
 						partyMembersWithAmountWon,
 						root,
 						inventoryHolder)
+					or eligiblePartyMembers
+
+				eligiblePartyMembers = FilterInitialTargets_ByEncumbranceRisk(item, eligiblePartyMembers)
 					or eligiblePartyMembers
 
 				-- _P("Processing " ..
