@@ -26,8 +26,16 @@ Development Outline:
    ✅ Barkskin elixirs to lowest total A/C, 
    scrolls to characters with high int/wis/charisma,
    potion of animal speaking to host character 
- Fallback distribution if exceeds weight limit
- Use PersistantVars to store onReset check
+ ✅ Fallback distribution if exceeds weight limit
+ Setup utilities for loading from JSON files
+ Use PersistantVars to store:
+    onReset check
+    filters
+ Setup config file for:
+    Controlling onReset
+    Logging?
+ Redistribute health potions after use if not in combat
+
  OnContainerOpen, optionally execute distribution according to config
  Add option to have party members move to the item for "realism" - intercept on RequestCanPickup
  SkillActivate - trigger distribution for all party members
@@ -43,3 +51,5 @@ _D(Ext.Entity.Get("S_GLO_Orin_Bhaalist_Dagger_51c312d5-ce5e-4f8c-a5ad-edc2beced3
 IsEquipable -> _D(Ext.StaticData.GetAll("EquipmentType")) -> _D(Ext.Entity.Get("51c312d5-ce5e-4f8c-a5ad-edc2beced3e6").ServerItem.Item.OriginalTemplate.EquipmentTypeID)
 _D(Ext.Types.Serialize(Ext.StaticData.Get("7490e5d0-d346-4b0e-80c6-04e977160863", "Tag")).Name)
 ]]
+
+Ext.Events.SessionLoaded:Subscribe(Config.SyncConfigsAndFilters)

@@ -4,7 +4,7 @@ local function AddItemToProcessingTable(root, target, amount)
 	if not TEMPLATES_BEING_TRANSFERRED[root] then
 		TEMPLATES_BEING_TRANSFERRED[root] = { [target] = amount }
 	else
-		AddItemToTable_AddingToExistingAmount(TEMPLATES_BEING_TRANSFERRED[root], target, amount)
+		Utils:AddItemToTable_AddingToExistingAmount(TEMPLATES_BEING_TRANSFERRED[root], target, amount)
 	end
 end
 
@@ -59,7 +59,8 @@ end
 --- @param inventoryHolder CHARACTER
 local function ProcessWinners(partyMembersWithAmountWon, item, root, inventoryHolder)
 	_P("Final Results: " .. Ext.Json.Stringify(partyMembersWithAmountWon))
-
+	Osi.SetTag(item, TAG_AIM_PROCESSED)
+	
 	for target, amount in pairs(partyMembersWithAmountWon) do
 		if amount > 0 then
 			if target == inventoryHolder then
@@ -74,11 +75,11 @@ local function ProcessWinners(partyMembersWithAmountWon, item, root, inventoryHo
 
 				AddItemToProcessingTable(root, target, amount)
 
-				_P(string.format("'Moved' %s of %s to %s from %s"
-				, amount
-				, item
-				, target
-				, inventoryHolder))
+				-- _P(string.format("Moved %s of %s to %s from %s"
+				-- , amount
+				-- , item
+				-- , target
+				-- , inventoryHolder))
 			end
 		end
 	end
@@ -168,10 +169,10 @@ function Processor:ProcessFiltersForItemAgainstParty(item, root, inventoryHolder
 			if target then
 				if string.lower(target) == "camp" then
 					Osi.SendToCampChest(item, inventoryHolder)
-					_P("Sent item to camp!")
+					-- _P("Sent item to camp!")
 					return
 				elseif Osi.IsPlayer(target) == 1 then
-					AddItemToTable_AddingToExistingAmount(partyMembersWithAmountWon, target, currentItemStackSize)
+					Utils:AddItemToTable_AddingToExistingAmount(partyMembersWithAmountWon, target, currentItemStackSize)
 					break
 				else
 					Ext.Utils.PrintError(string.format(

@@ -57,7 +57,7 @@ function ItemFilters:CompareFilter(first, second)
 		and first.TargetStat == second.TargetStat
 		and first.TargetSubStat == second.TargetSubStat
 		and first.CompareStategy == second.CompareStategy then
-		return true
+			return true
 	end
 
 	return false

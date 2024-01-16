@@ -1,6 +1,6 @@
-ITEMS_TO_DELETE = {}
+local ITEMS_TO_DELETE = {}
 
-function ResetItemStacks()
+local function ResetItemStacks()
 	for _, player in pairs(Osi.DB_Players:Get(nil)) do
 		_P("Cleaning up item stacks on " .. player[1])
 		ITEMS_TO_DELETE[player[1]] = {}
@@ -16,9 +16,9 @@ end)
 
 Ext.Osiris.RegisterListener("LevelGameplayStarted", 2, "after", function(level, _)
 	if level == "SYS_CC_I" then return end
-	if Config.resetAllStacks then
+	if Config.Mod.SORT_ITEMS_ON_LOAD == 1 then
 		ResetItemStacks()
-		Config.resetAllStacks = false
+		Config.Mod.SORT_ITEMS_ON_LOAD = false
 	end
 end)
 
@@ -32,7 +32,7 @@ Ext.Osiris.RegisterListener("EntityEvent", 2, "before", function(guid, event)
 			Osi.SetTag(guid, TAG_AIM_MARK_FOR_DELETION)
 
 			local itemsToDelete = ITEMS_TO_DELETE[character]
-			AddItemToTable_AddingToExistingAmount(itemsToDelete, itemTemplate, currentStackSize)
+			Utils:AddItemToTable_AddingToExistingAmount(itemsToDelete, itemTemplate, currentStackSize)
 		end
 	elseif string.find(event, EVENT_ITERATE_ITEMS_TO_REBUILD_THEM_END) then
 		local character = string.sub(event, string.len(EVENT_ITERATE_ITEMS_TO_REBUILD_THEM_END) + 1)

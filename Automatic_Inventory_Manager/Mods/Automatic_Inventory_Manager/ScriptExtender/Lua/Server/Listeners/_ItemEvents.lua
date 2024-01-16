@@ -1,4 +1,4 @@
-local function SetAsProcessed_IfItemWasAddedByAIM(root, item, inventoryHolder)
+local function RemoveItemFromTracker_IfAlreadySorted(root, item, inventoryHolder)
 	local originalOwner = Osi.GetOriginalOwner(item)
 	if originalOwner and not (originalOwner == Osi.GetUUID(inventoryHolder)) and Osi.IsPlayer(inventoryHolder) == 1 then
 		-- _P("|OriginalOwner| = " .. Osi.GetOriginalOwner(item)
@@ -10,8 +10,6 @@ local function SetAsProcessed_IfItemWasAddedByAIM(root, item, inventoryHolder)
 			, TEMPLATES_BEING_TRANSFERRED[root][inventoryHolder]
 			, item
 			, inventoryHolder))
-
-			Osi.SetTag(item, TAG_AIM_PROCESSED)
 
 			Osi.SetOriginalOwner(item, Osi.GetUUID(inventoryHolder))
 			TEMPLATES_BEING_TRANSFERRED[root][inventoryHolder] = TEMPLATES_BEING_TRANSFERRED[root][inventoryHolder] -
@@ -104,8 +102,8 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(root, item, 
 		return
 	end
 	
-	SetAsProcessed_IfItemWasAddedByAIM(root, item, inventoryHolder)
-
+	RemoveItemFromTracker_IfAlreadySorted(root, item, inventoryHolder)
+	
 	if Osi.IsTagged(item, TAG_AIM_PROCESSED) == 1 then
 		_P("Item was already processed, skipping!\n")
 		return

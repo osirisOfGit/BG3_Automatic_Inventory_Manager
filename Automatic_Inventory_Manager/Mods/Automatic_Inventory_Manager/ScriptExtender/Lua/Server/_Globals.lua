@@ -1,6 +1,5 @@
--- Since moving/creating items in a way that ensures a new item UUID is created is an event, not just a DB update, you can't just move an item and immediately tag it as processed <br/>
--- You need to move it, then wait for the *AddedTo event to fire. So, this global map serves as a tracker for what templates
--- were added to which characters, so that when that event fires, _hopefully_ we can match it and not process it again
+--- Since moving items is an event, not a DB operation, need to track which items are currently in the queue
+--- to be moved, but haven't left the OG inventory yet, so our math in the processor works
 TEMPLATES_BEING_TRANSFERRED = {}
 
 -- Larians Tags(Public/shared/Tags/)
@@ -8,15 +7,6 @@ TEMPLATES_BEING_TRANSFERRED = {}
 -- Custom Tags (/Public/Automatic_Inventory_Manager/Tags)
 TAG_AIM_PROCESSED = "add41a41-a1a8-4405-ae7f-ce12a0788a1a"
 TAG_AIM_MARK_FOR_DELETION = "4b640e87-509b-4c90-a4e7-144c224314b0"
-
-Config = {
-    initDone = false,
-    config_tbl = { MOD_ENABLED = 1 },
-    config_json_file_path = "config.json",
-    logPath = "log.txt",
-    resetAllStacks = true
-    -- CurrentVersion = Ext.Mod.GetMod(MOD_UUID).Info.ModVersion[1].."."..Ext.Mod.GetMod(MOD_UUID).Info.ModVersion[2].."."..Ext.Mod.GetMod(MOD_UUID).Info.ModVersion[3].."."..Ext.Mod.GetMod(MOD_UUID).Info.ModVersion[4],
-}
 
 -- CUSTOM EVENTS
 
