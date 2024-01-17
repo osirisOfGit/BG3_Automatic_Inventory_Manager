@@ -2,12 +2,6 @@ ItemFilters = {}
 
 ItemFilters.ItemFields = {}
 
---- @enum SelectionModes
-ItemFilters.ItemFields.SelectionModes = {
-	TARGET = 'TARGET',
-	WEIGHT_BY = 'WEIGHT_BY'
-}
-
 --- @enum FilterModifiers
 ItemFilters.ItemFields.FilterModifiers = {
 	STACK_LIMIT = "STACK_LIMIT",
@@ -64,7 +58,6 @@ function ItemFilters:CompareFilter(first, second)
 end
 
 --- @class ItemFilter
---- @field Mode SelectionModes
 --- @field Filters Filters
 --- @field Modifiers table<FilterModifiers, any>|nil
 
@@ -80,52 +73,52 @@ local itemFields = ItemFilters.ItemFields
 local filterFields = ItemFilters.FilterFields
 
 ItemFilters.FilterFields.Shortcuts = {}
+--- @type WeightedFilter
 ItemFilters.FilterFields.Shortcuts.ByLargerStack = {
 	TargetStat = filterFields.TargetStat.STACK_AMOUNT,
 	CompareStategy = filterFields.CompareStategy.HIGHER
 }
 
+--- @type ItemFilterMap
 ItemFilters.ItemMaps.Weapons = {
 	[ItemFilters.ItemKeys.WILDCARD] = {
-		Mode = itemFields.SelectionModes.WEIGHT_BY,
 		Filters = {
-			[1] = { TargetStat = filterFields.TargetStat.HAS_TYPE_EQUIPPED },
-			[2] = { TargetStat = filterFields.TargetStat.WEAPON_ABILITY, CompareStategy = filterFields.CompareStategy.HIGHER },
-			[3] = { TargetStat = filterFields.TargetStat.WEAPON_SCORE, CompareStategy = filterFields.CompareStategy.HIGHER },
+			[99] = { TargetStat = filterFields.TargetStat.HAS_TYPE_EQUIPPED },
+			[100] = { TargetStat = filterFields.TargetStat.WEAPON_ABILITY, CompareStategy = filterFields.CompareStategy.HIGHER },
+			[101] = { TargetStat = filterFields.TargetStat.WEAPON_SCORE, CompareStategy = filterFields.CompareStategy.HIGHER },
 		}
 	}
 }
 
+--- @type ItemFilterMap
 ItemFilters.ItemMaps.Equipment = {
 	[ItemFilters.ItemKeys.WILDCARD] = {
-		Mode = itemFields.SelectionModes.WEIGHT_BY,
 		Filters = {
-			[1] = { TargetStat = filterFields.TargetStat.PROFICIENCY },
-			[2] = filterFields.Shortcuts.ByLargerStack
+			[99] = { TargetStat = filterFields.TargetStat.PROFICIENCY },
+			[100] = filterFields.Shortcuts.ByLargerStack
 		}
 	}
 }
 
+--- @type ItemFilterMap
 ItemFilters.ItemMaps.Roots = {
 	-- not a typo :D
 	["ALCH_Soultion_Elixir_Barkskin_cc1a8802-675a-426b-a791-ec1d5a5b6328"] = {
-		Mode = itemFields.SelectionModes.WEIGHT_BY,
 		Modifiers = { [itemFields.FilterModifiers.STACK_LIMIT] = 1 },
 		Filters = {
 			[1] = { TargetStat = filterFields.TargetStat.ARMOR_CLASS, CompareStategy = filterFields.CompareStategy.LOWER }
 		}
 	},
 	["LOOT_Gold_A_1c3c9c74-34a1-4685-989e-410dc080be6f"] = {
-		Mode = itemFields.SelectionModes.WEIGHT_BY,
 		Filters = {
 			[1] = filterFields.Shortcuts.ByLargerStack
 		}
 	}
 }
 
+--- @type ItemFilterMap
 ItemFilters.ItemMaps.Tags = {
 	["HEALING_POTION"] = {
-		Mode = itemFields.SelectionModes.WEIGHT_BY,
 		Modifiers = { [itemFields.FilterModifiers.STACK_LIMIT] = 2 },
 		Filters = {
 			[1] = { TargetStat = filterFields.TargetStat.HEALTH_PERCENTAGE, CompareStategy = filterFields.CompareStategy.LOWER, },
@@ -133,28 +126,50 @@ ItemFilters.ItemMaps.Tags = {
 		},
 	},
 	["LOCKPICKS"] = {
-		Mode = itemFields.SelectionModes.WEIGHT_BY,
 		Filters = {
 			[1] = { TargetStat = filterFields.TargetStat.SKILL_TYPE, TargetSubStat = "SleightOfHand", CompareStategy = filterFields.CompareStategy.HIGHER, },
 			[2] = filterFields.Shortcuts.ByLargerStack
 		},
 	},
 	["TOOL"] = {
-		Mode = itemFields.SelectionModes.WEIGHT_BY,
 		Filters = {
 			[1] = { TargetStat = filterFields.TargetStat.SKILL_TYPE, TargetSubStat = "SleightOfHand", CompareStategy = filterFields.CompareStategy.HIGHER, },
 			[2] = filterFields.Shortcuts.ByLargerStack
 		},
 	},
 	["COATING"] = {
-		Mode = itemFields.SelectionModes.WEIGHT_BY,
 		Filters = {
 			[1] = filterFields.Shortcuts.ByLargerStack,
 			[2] = { TargetStat = filterFields.TargetStat.ABILITY_STAT, TargetSubStat = "Dexterity", CompareStategy = filterFields.CompareStategy.HIGHER }
 		}
 	},
+	["GRENADE"] = {
+		Filters = {
+			[1] = filterFields.Shortcuts.ByLargerStack,
+			[2] = { TargetStat = filterFields.TargetStat.ABILITY_STAT, TargetSubStat = "Strength", CompareStategy = filterFields.CompareStategy.HIGHER }
+		}
+	},
+	["SCROLL"] = {
+		Filters = {
+			[1] = filterFields.Shortcuts.ByLargerStack,
+			[2] = { Target = "originalTarget" },
+		}
+	},
+	["CONSUMABLE"] = {
+		Filters = {
+			[99] = filterFields.Shortcuts.ByLargerStack
+		}
+	},
 	["CAMPSUPPLIES"] = {
-		Mode = itemFields.SelectionModes.TARGET,
+		Filters = {
+			[1] = { Target = "camp" }
+		}
+	}
+}
+
+--- @type ItemFilterMap
+ItemFilters.ItemMaps.RootPartial = {
+	["BOOK"] = {
 		Filters = {
 			[1] = { Target = "camp" }
 		}
@@ -181,6 +196,12 @@ function ItemFilters:GetFiltersByRoot(root)
 	local filters = {}
 
 	GetFiltersFromMap(ItemFilters.ItemMaps.Roots, root, filters)
+
+	for key, filter in pairs(ItemFilters.ItemMaps.RootPartial) do
+		if string.find(root, key) then
+			table.insert(filters, filter)
+		end
+	end
 
 	return filters
 end

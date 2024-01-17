@@ -1,6 +1,3 @@
-PersistentVars = {
-	ItemFilters = {}
-}
 Config = {}
 
 Config.Mod = {
@@ -11,6 +8,11 @@ Config.Mod = {
 	FILTERS_DIR = 'filters/',
 	FILTER_TABLES = {},
 	SYNC_FILTERS = 1
+}
+
+PersistentVars = {
+	---@type ItemFilterMap
+	ItemFilters = {}
 }
 
 function Config:InitializeConfigurations()
@@ -41,6 +43,20 @@ function Config.SyncConfigsAndFilters()
 
 	if config.SYNC_CONFIGS == 1 then
 		Config.Mod = config
+		for mapName, mapValues in pairs(ItemFilters.ItemMaps) do
+			local hasTableRecorded = false
+			for _, filterTable in pairs(Config.Mod.FILTER_TABLES) do
+				if filterTable == mapName then
+					hasTableRecorded = true
+					break
+				end
+			end
+
+			if not hasTableRecorded then
+				table.insert(Config.Mod.FILTER_TABLES, mapName)
+			end
+		end
+		
 		PersistentVars.Config = Config.Mod
 	end
 
@@ -51,12 +67,27 @@ function Config.SyncConfigsAndFilters()
 
 			if filterTable then
 				local success, result = pcall(function()
-					PersistentVars.ItemFilters[filterTableName] = Ext.Json.Parse(filterTable)
+					---@type ItemFilterMap
+					local loadedFilterTable = Ext.Json.Parse(filterTable)
+					
+					if not ItemFilters.ItemMaps[filterTableName] then
+						ItemFilters.ItemMaps[filterTableName] = loadedFilterTable
+					else 
+						for key, itemFilter in pairs(loadedFilterTable) do
+							if not ItemFilters.ItemMaps[filterTableName][key] then
+								ItemFilters.ItemMaps[filterTableName][key] = itemFilter
+							end
+						end
+					end
+
+					PersistentVars.ItemFilters[filterTableName] = ItemFilters.ItemMaps[filterTableName]
 				end)
 
 				if not success then
 					Ext.Utils.PrintError(string.format("Could not parse table %s due to error [%s]", filterTableName,
 						result))
+				else
+					Utils:SaveTableToFile(Config.Mod.FILTERS_DIR .. filterTableName .. ".json", PersistentVars.ItemFilters[filterTableName])
 				end
 			else
 				Ext.Utils.PrintWarning("Could not find filter table file " .. filterTableFilePath)

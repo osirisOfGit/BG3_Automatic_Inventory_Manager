@@ -27,13 +27,10 @@ Development Outline:
    scrolls to characters with high int/wis/charisma,
    potion of animal speaking to host character 
  ✅ Fallback distribution if exceeds weight limit
- Setup utilities for loading from JSON files
- Use PersistantVars to store:
-    onReset check
-    filters
- Setup config file for:
-    Controlling onReset
-    Logging?
+ ✅ Setup utilities for loading from JSON files
+ ✅ Use PersistantVars to store:
+    ✅ onReset check
+    ✅ filters
  Redistribute health potions after use if not in combat
 
  OnContainerOpen, optionally execute distribution according to config

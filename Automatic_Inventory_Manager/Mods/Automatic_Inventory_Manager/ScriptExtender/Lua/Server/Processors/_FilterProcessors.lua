@@ -21,7 +21,7 @@ StatFunctions[targetStats.ARMOR_CLASS] = function(partyMember)
 end
 
 StatFunctions[targetStats.STACK_AMOUNT] = function(partyMember)
-	local totalFutureStackSize = ProcessorUtils:CalculateTotalItemCount(paramMap.partyMembersWithAmountWon,
+	local totalFutureStackSize = ProcessorUtils:CalculateTotalItemCount(paramMap.targetsWithAmountWon,
 		partyMember,
 		paramMap.inventoryHolder,
 		paramMap.root)
@@ -118,24 +118,24 @@ end
 
 FilterProcessors = {}
 
----Executes the provided WeightedFilter against the provided params.
+--- Executes the provided WeightedFilter against the provided params.
 --- @param weightedFilter WeightedFilter
---- @param eligiblePartyMembers CHARACTER[]
---- @param partyMembersWithAmountWon table<CHARACTER, number>
+--- @param eligiblePartyMembers GUIDSTRING[]
+--- @param targetsWithAmountWon table<GUIDSTRING, number>
 --- @param item GUIDSTRING
 --- @param root GUIDSTRING
 --- @param inventoryHolder CHARACTER
 --- @return table winners The survivors that were eligible to receive the item, or the original survivors table if none were eligible
 function FilterProcessors:ExecuteFilterAgainstEligiblePartyMembers(weightedFilter,
 																   eligiblePartyMembers,
-																   partyMembersWithAmountWon,
+																   targetsWithAmountWon,
 																   inventoryHolder,
 																   item,
 																   root)
 	paramMap.winners = {}
 	paramMap.winningVal = nil
 	paramMap.weightedFilter = weightedFilter
-	paramMap.partyMembersWithAmountWon = partyMembersWithAmountWon
+	paramMap.targetsWithAmountWon = targetsWithAmountWon
 	paramMap.inventoryHolder = inventoryHolder
 	paramMap.item = item
 	paramMap.root = root
@@ -145,4 +145,33 @@ function FilterProcessors:ExecuteFilterAgainstEligiblePartyMembers(weightedFilte
 	end
 
 	return #paramMap.winners > 0 and paramMap.winners or eligiblePartyMembers
+end
+
+--- Executes the provided TargetFilter
+---@param filter TargetFilter
+---@param item GUIDSTRING
+---@return table winners
+function FilterProcessors:ExecuteTargetFilter(filter, inventoryHolder, item)
+	paramMap.winners = {}
+	local target = filter.Target
+
+	if target then
+		if string.lower(target) == "camp" then
+			paramMap.winners = { "camp" }
+			-- _P("Sent item to camp!")
+		elseif string.lower(target) == "originaltarget" then
+			paramMap.winners = { inventoryHolder }
+		elseif Osi.IsPlayer(target) == 1 or Osi.Exists(target) == 1 then
+			paramMap.winners = { target }
+		else
+			Ext.Utils.PrintError(string.format(
+				"The target %s was specified for item %s but they are not a party member!"
+				, target
+				, item))
+		end
+	else
+		Ext.Utils.PrintError("A Target was not provided despite using TargetFilter for item " .. item)
+	end
+
+	return paramMap.winners
 end

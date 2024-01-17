@@ -1,4 +1,4 @@
-local ITEMS_TO_DELETE = {}
+ITEMS_TO_DELETE = {}
 
 local function ResetItemStacks()
 	for _, player in pairs(Osi.DB_Players:Get(nil)) do
@@ -18,7 +18,7 @@ Ext.Osiris.RegisterListener("LevelGameplayStarted", 2, "after", function(level, 
 	if level == "SYS_CC_I" then return end
 	if Config.Mod.SORT_ITEMS_ON_LOAD == 1 then
 		ResetItemStacks()
-		Config.Mod.SORT_ITEMS_ON_LOAD = false
+		Config.Mod.SORT_ITEMS_ON_LOAD = 0
 	end
 end)
 

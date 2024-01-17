@@ -26,69 +26,90 @@ local function RemoveItemFromTracker_IfAlreadySorted(root, item, inventoryHolder
 	end
 end
 
+---@param existingFilterTable Filters
+---@param desiredPriority number
+---@return number
+local function DetermineItemFilterPriority(existingFilterTable, desiredPriority)
+	if existingFilterTable[desiredPriority] then
+		return DetermineItemFilterPriority(existingFilterTable, desiredPriority + 1)
+	else
+		return desiredPriority
+	end
+end
+
+
 ---
----@param applicableCommands ItemFilter[] the table of existing commands to append to
----@param newCommands ItemFilter[] the filters to add to the table
-local function AddFiltersToTable(applicableCommands, newCommands)
-	for i = 1, #newCommands do
-		local command = newCommands[i]
-
-		for _, existingCommand in pairs(applicableCommands) do
-			if existingCommand.Mode == command.Mode then
-				-- Consolidate filters by Mode, moving the new filters over as long as we don't already have identical ones
-				for _, newFilter in pairs(command.Filters) do
-					local foundIdenticalFilter = false
-					for _, existingFilter in pairs(existingCommand.Filters) do
-						if ItemFilters:CompareFilter(newFilter, existingFilter) then
-							foundIdenticalFilter = true
-						end
-					end
-					if not foundIdenticalFilter then
-						table.insert(existingCommand.Filters, newFilter)
-					end
+---@param consolidatedItemFilter ItemFilter the existing ItemFilter to consolidate into
+---@param newItemFilters ItemFilter[] the filters to add to the table
+local function AddFiltersToTable(consolidatedItemFilter, newItemFilters)
+	for _, newItemFilter in pairs(newItemFilters) do
+		-- Consolidate filters, ignoring duplicates
+		for newItemFilterPriority, newItemFilter in pairs(newItemFilter.Filters) do
+			local foundIdenticalFilter = false
+			for _, existingFilter in pairs(consolidatedItemFilter.Filters) do
+				if ItemFilters:CompareFilter(newItemFilter, existingFilter) then
+					foundIdenticalFilter = true
 				end
-
-				if command.Modifiers then
-					for modifier, newModifier in pairs(command.Modifiers) do
-						local existingModifier = existingCommand.Modifiers[modifier]
-						if existingModifier then
-							if modifier == ItemFilters.ItemFields.FilterModifiers.STACK_LIMIT then
-								if existingModifier > newModifier then
-									existingCommand.Modifiers[modifier] = newModifier
-								end
-							end
-						else
-							existingCommand.Modifiers[modifier] = newModifier
-						end
-					end
-				end
-				goto continue
+			end
+			if not foundIdenticalFilter then
+				local determinedPriority = DetermineItemFilterPriority(consolidatedItemFilter.Filters,
+					newItemFilterPriority)
+				consolidatedItemFilter.Filters[determinedPriority] = newItemFilter
 			end
 		end
 
-		-- If we don't have a Command with the same Mode already, add to this table
-		applicableCommands[#applicableCommands + 1] = command
-		::continue::
+		if newItemFilter.Modifiers then
+			for modifier, newModifier in pairs(newItemFilter.Modifiers) do
+				if not consolidatedItemFilter.Modifiers[modifier] then
+					consolidatedItemFilter.Modifiers[modifier] = newModifier
+				end
+			end
+		end
 	end
 end
 
 --- Finds all Filters for the given item
 ---@param item GUIDSTRING
 ---@param root GUIDSTRING
----@return ItemFilter[]|nil
+---@return ItemFilter|nil
 local function SearchForItemFilters(item, root)
-	--- @type ItemFilter[]
-	local applicableCommands = {}
+	--- @type ItemFilter
+	local consolidatedItemFilter = { Filters = {}, Modifiers = {} }
 
 	if Osi.IsEquipable(item) == 1 then
-		AddFiltersToTable(applicableCommands, ItemFilters:GetFiltersByEquipmentType(item))
+		AddFiltersToTable(consolidatedItemFilter, ItemFilters:GetFiltersByEquipmentType(item))
 	end
 
-	AddFiltersToTable(applicableCommands, ItemFilters:GetFilterByTag(item))
+	AddFiltersToTable(consolidatedItemFilter, ItemFilters:GetFilterByTag(item))
 
-	AddFiltersToTable(applicableCommands, ItemFilters:GetFiltersByRoot(root))
+	AddFiltersToTable(consolidatedItemFilter, ItemFilters:GetFiltersByRoot(root))
 
-	return applicableCommands
+	local normalizedFilters = {}
+	local index = 0
+	for _,_ in pairs(consolidatedItemFilter.Filters) do
+		index = index + 1
+	end
+	for i = 1, index do
+		local nextLowestNumber
+		for filterPriority, _ in pairs(consolidatedItemFilter.Filters) do
+			if filterPriority == i then
+				nextLowestNumber = i
+				goto continue
+			else
+				if not nextLowestNumber then
+					nextLowestNumber = filterPriority
+				else
+					nextLowestNumber = filterPriority < nextLowestNumber and filterPriority or nextLowestNumber
+				end
+			end
+		end
+		::continue::
+		normalizedFilters[i] = consolidatedItemFilter.Filters[nextLowestNumber]
+		consolidatedItemFilter.Filters[nextLowestNumber] = nil
+	end
+
+	consolidatedItemFilter.Filters = normalizedFilters
+	return consolidatedItemFilter
 end
 
 -- Includes moving from container to other inventories etc...
@@ -101,16 +122,16 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(root, item, 
 		_P("Item doesn't exist!")
 		return
 	end
-	
+
 	RemoveItemFromTracker_IfAlreadySorted(root, item, inventoryHolder)
-	
+
 	if Osi.IsTagged(item, TAG_AIM_PROCESSED) == 1 then
 		_P("Item was already processed, skipping!\n")
 		return
 	end
 
-	local applicableCommands = SearchForItemFilters(item, root)
-	if #applicableCommands > 0 then
+	local applicableItemFilter = SearchForItemFilters(item, root)
+	if #applicableItemFilter.Filters > 0 then
 		Ext.Utils.PrintWarning(
 			"----------------------------------------------------------\n\t\t\tSTARTED\n----------------------------------------------------------")
 
@@ -122,9 +143,9 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(root, item, 
 			.. "\n\t|itemStackSize| = " .. itemStack
 			.. "\n\t|templateStackSize| = " .. templateStack)
 
-		_P(Ext.Json.Stringify(applicableCommands))
+		_P(Ext.Json.Stringify(applicableItemFilter))
 
-		Processor:ProcessFiltersForItemAgainstParty(item, root, inventoryHolder, applicableCommands)
+		Processor:ProcessFiltersForItemAgainstParty(item, root, inventoryHolder, applicableItemFilter)
 
 		Ext.Utils.PrintWarning(
 			"----------------------------------------------------------\n\t\t\tFINISHED\n----------------------------------------------------------")
