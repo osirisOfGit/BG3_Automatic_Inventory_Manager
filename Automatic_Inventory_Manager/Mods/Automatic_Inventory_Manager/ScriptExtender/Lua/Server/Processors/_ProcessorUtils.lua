@@ -85,7 +85,7 @@ function ProcessorUtils:CalculateTotalItemCount(targetsWithAmountWon,
 
 	if TEMPLATES_BEING_TRANSFERRED[root] and TEMPLATES_BEING_TRANSFERRED[root][targetChar] then
 		totalFutureStackSize = totalFutureStackSize + TEMPLATES_BEING_TRANSFERRED[root][targetChar]
-		-- _P("Added " .. TEMPLATES_BEING_TRANSFERRED[root][targetChar] .. " to the stack size")
+		-- Logger:BasicDebug("Added " .. TEMPLATES_BEING_TRANSFERRED[root][targetChar] .. " to the stack size")
 	end
 
 	if targetChar == inventoryHolder then
@@ -98,7 +98,7 @@ function ProcessorUtils:CalculateTotalItemCount(targetsWithAmountWon,
 		if amountToRemove > totalFutureStackSize then
 			amountToRemove = totalFutureStackSize
 		end
-		-- _P("Brought down inventoryHolder's amount by  " .. amountToRemove)
+		-- Logger:BasicDebug("Brought down inventoryHolder's amount by  " .. amountToRemove)
 		totalFutureStackSize = totalFutureStackSize - amountToRemove
 	end
 

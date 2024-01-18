@@ -25,7 +25,7 @@ StatFunctions[targetStats.STACK_AMOUNT] = function(partyMember)
 		partyMember,
 		paramMap.inventoryHolder,
 		paramMap.root)
-	-- _P("Found " .. totalFutureStackSize .. " on " .. partyMember)
+	Logger:BasicDebug("Found " .. totalFutureStackSize .. " on " .. partyMember)
 
 	return ProcessorUtils:SetWinningVal_ByCompareResult(paramMap.winningVal,
 		totalFutureStackSize,
@@ -69,7 +69,7 @@ end
 StatFunctions[targetStats.WEAPON_ABILITY] = function(partyMember)
 	local weaponAbility = tostring(Ext.Enums.AbilityId[Ext.Entity.Get(paramMap.item).Weapon.Ability])
 	local survivorAbility = Osi.GetAbility(partyMember, weaponAbility)
-	-- _P(string.format("Weapon uses %s, %s has a score of %s", weaponAbility, survivor, survivorAbility))
+	Logger:BasicDebug(string.format("Weapon uses %s, %s has a score of %s", weaponAbility, survivor, survivorAbility))
 	return ProcessorUtils:SetWinningVal_ByCompareResult(paramMap.winningVal,
 		survivorAbility,
 		paramMap.weightedFilter.CompareStategy,
@@ -158,19 +158,18 @@ function FilterProcessors:ExecuteTargetFilter(filter, inventoryHolder, item)
 	if target then
 		if string.lower(target) == "camp" then
 			paramMap.winners = { "camp" }
-			-- _P("Sent item to camp!")
 		elseif string.lower(target) == "originaltarget" then
 			paramMap.winners = { inventoryHolder }
 		elseif Osi.IsPlayer(target) == 1 or (Osi.Exists(target) == 1 and Osi.IsContainer(target) == 1) then
 			paramMap.winners = { target }
 		else
-			Ext.Utils.PrintError(string.format(
+			Logger:BasicError(string.format(
 				"The target %s was specified for item %s but they are not a valid target!"
 				, target
 				, item))
 		end
 	else
-		Ext.Utils.PrintError("A Target was not provided despite using TargetFilter for item " .. item)
+		Logger:BasicError("A Target was not provided despite using TargetFilter for item " .. item)
 	end
 
 	return paramMap.winners

@@ -1,5 +1,6 @@
 --- SETUP
 Ext.Require("Server/_Utils.lua")
+Ext.Require("Server/_Logger.lua")
 Ext.Require("Server/_Globals.lua")
 Ext.Require("Server/_ItemFilters.lua")
 Ext.Require("Server/_Config.lua")

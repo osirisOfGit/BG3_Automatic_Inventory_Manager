@@ -1,12 +1,12 @@
 local function RemoveItemFromTracker_IfAlreadySorted(root, item, inventoryHolder)
 	local originalOwner = Osi.GetOriginalOwner(item)
 	if originalOwner and not (originalOwner == Osi.GetUUID(inventoryHolder)) and Osi.IsPlayer(inventoryHolder) == 1 then
-		-- _P("|OriginalOwner| = " .. Osi.GetOriginalOwner(item)
+		-- Logger:BasicDebug("|OriginalOwner| = " .. Osi.GetOriginalOwner(item)
 		-- 	.. "\n\t|DirectInventoryOwner| = " .. Osi.GetDirectInventoryOwner(item)
 		-- 	.. "\n\t|Owner| = " .. Osi.GetOwner(item))
 
 		if TEMPLATES_BEING_TRANSFERRED[root] and TEMPLATES_BEING_TRANSFERRED[root][inventoryHolder] then
-			_P(string.format("Found %s of %s being transferred to %s - tagging as processed!"
+			Logger:BasicDebug(string.format("Found %s of %s being transferred to %s - tagging as processed!"
 			, TEMPLATES_BEING_TRANSFERRED[root][inventoryHolder]
 			, item
 			, inventoryHolder))
@@ -117,29 +117,29 @@ local function DetermineAndExecuteFiltersForItem(root, item, inventoryHolder, ig
 	RemoveItemFromTracker_IfAlreadySorted(root, item, inventoryHolder)
 
 	if not ignoreProcessedTag and Osi.IsTagged(item, TAG_AIM_PROCESSED) == 1 then
-		_P("Item was already processed, skipping!\n")
+		Logger:BasicDebug("Item was already processed, skipping!\n")
 		return
 	end
 
 	local applicableItemFilter = SearchForItemFilters(item, root)
 	if #applicableItemFilter.Filters > 0 then
-		Ext.Utils.PrintWarning(
+		Logger:BasicDebug(
 			"----------------------------------------------------------\n\t\t\tSTARTED\n----------------------------------------------------------")
 
 		local itemStack, templateStack = Osi.GetStackAmount(item)
-		_P("|item| = " .. item
+		Logger:BasicDebug("|item| = " .. item
 			.. "\n\t|root| = " .. root
 			.. "\n\t|inventoryHolder| = " .. inventoryHolder
 			.. "\n\t|itemStackSize| = " .. itemStack
 			.. "\n\t|templateStackSize| = " .. templateStack)
 
-		_P(Ext.Json.Stringify(applicableItemFilter))
+		Logger:BasicDebug(Ext.Json.Stringify(applicableItemFilter))
 
 		Processor:ProcessFiltersForItemAgainstParty(item, root, inventoryHolder, applicableItemFilter)
-		Ext.Utils.PrintWarning(
+		Logger:BasicDebug(
 			"----------------------------------------------------------\n\t\t\tFINISHED\n----------------------------------------------------------")
 	else
-		Ext.Utils.Print("No command could be found for " ..
+		Logger:BasicDebug("No command could be found for " ..
 			item .. " with root " .. root .. " on " .. inventoryHolder)
 	end
 
@@ -154,10 +154,10 @@ end)
 Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(root, item, inventoryHolder, addType)
 	-- Will be nil if inventoryHolder isn't a character
 	if Osi.IsPlayer(inventoryHolder) ~= 1 then
-		_P(string.format("inventoryHolder %s is not a player", inventoryHolder))
+		Logger:BasicDebug(string.format("inventoryHolder %s is not a player", inventoryHolder))
 		return
 	elseif Osi.Exists(item) ~= 1 then
-		_P("Item doesn't exist!")
+		Logger:BasicDebug("Item doesn't exist!")
 		return
 	end
 
@@ -167,7 +167,7 @@ end)
 
 Ext.Osiris.RegisterListener("TemplateUseFinished", 4, "after", function(character, itemTemplate, item2, success)
 	if success == 1 and Osi.TemplateIsInPartyInventory(itemTemplate, character, 0) > 0 and Osi.IsInCombat(character) == 0 then
-		_P("Resorting all items of template " .. itemTemplate .. " due to finished use of " .. item2)
+		Logger:BasicDebug("Resorting all items of template " .. itemTemplate .. " due to finished use of " .. item2)
 		for _, player in pairs(Osi.DB_Players:Get(nil)) do
 			Osi.IterateInventoryByTemplate(player[1],
 				itemTemplate,
@@ -180,7 +180,7 @@ end)
 Ext.Osiris.RegisterListener("EntityEvent", 2, "before", function(guid, event)
 	if string.find(event, EVENT_ITERATE_ITEMS_TO_RESORT_THEM_START) then
 		if Osi.IsEquipped(guid) == 0 and Ext.Entity.Get(guid).Value.Unique == false and Osi.IsStoryItem(guid) == 0 then
-			_P("Processing item " .. guid .. " for event " .. event)
+			Logger:BasicDebug("Processing item " .. guid .. " for event " .. event)
 			local character = string.sub(event, string.len(EVENT_ITERATE_ITEMS_TO_RESORT_THEM_START) + 1)
 			
 			DetermineAndExecuteFiltersForItem(Osi.GetTemplate(guid), guid, character, true)

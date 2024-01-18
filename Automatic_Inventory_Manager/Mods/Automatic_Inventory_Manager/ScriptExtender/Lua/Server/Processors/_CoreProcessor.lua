@@ -6,13 +6,13 @@ Ext.Require("Server/Processors/_FilterProcessors.lua")
 --- @param root GUIDSTRING
 --- @param inventoryHolder CHARACTER
 local function ProcessWinners(partyMembersWithAmountWon, item, root, inventoryHolder)
-	_P("Final Results: " .. Ext.Json.Stringify(partyMembersWithAmountWon))
+	Logger:BasicInfo(string.format("Final Results for item %s with root %s on inventoryHolder %s: %s", item, root, inventoryHolder, Ext.Json.Stringify(partyMembersWithAmountWon)))
 	Osi.SetTag(item, TAG_AIM_PROCESSED)
 
 	for target, amount in pairs(partyMembersWithAmountWon) do
 		if amount > 0 then
 			if target == inventoryHolder then
-				_P(string.format("Target was determined to be inventoryHolder for %s on character %s"
+				Logger:BasicDebug(string.format("Target was determined to be inventoryHolder for %s on character %s"
 				, item
 				, inventoryHolder))
 			elseif target == "camp" then
@@ -30,7 +30,7 @@ local function ProcessWinners(partyMembersWithAmountWon, item, root, inventoryHo
 					Utils:AddItemToTable_AddingToExistingAmount(TEMPLATES_BEING_TRANSFERRED[root], target, amount)
 				end
 
-				_P(string.format("Moved %s of %s to %s from %s"
+				Logger:BasicInfo(string.format("Moved %s of %s to %s from %s"
 				, amount
 				, item
 				, target
@@ -85,7 +85,7 @@ local function FilterInitialTargets_ByEncumbranceRisk(item, eligiblePartyMembers
 			local unencumberedLimit = tonumber(partyMemberEntity.EncumbranceStats["field_0"])
 			local inventoryWeight = tonumber(partyMemberEntity.InventoryWeight["Weight"])
 			if (inventoryWeight + itemWeight) <= unencumberedLimit then
-				-- _P(string.format("Item weight %d will not encumber %s, with %d more room!",
+				-- Logger:BasicDebug(string.format("Item weight %d will not encumber %s, with %d more room!",
 				-- 	itemWeight,
 				-- 	partyMember,
 				-- 	unencumberedLimit - (inventoryWeight + itemWeight)))
@@ -152,14 +152,9 @@ function Processor:ProcessFiltersForItemAgainstParty(item, root, inventoryHolder
 				end
 
 				Utils:AddItemToTable_AddingToExistingAmount(targetsWithAmountWon, target, 1)
-				-- _P("Winning command: " .. Ext.Json.Stringify(filter))
+				Logger:BasicDebug("Winning command: " .. Ext.Json.Stringify(filter))
 				goto continue
 			end
-			-- _P("Processing " ..
-			-- 	itemCounter ..
-			-- 	" out of " ..
-			-- 	itemStackAmount ..
-			-- 	" with winners: " .. Ext.Json.Stringify(partyMembersWithAmountWon, { Beautify = false }))
 		end
 		::continue::
 	end
