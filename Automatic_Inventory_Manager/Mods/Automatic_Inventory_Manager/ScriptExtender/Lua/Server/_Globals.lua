@@ -6,7 +6,6 @@ TEMPLATES_BEING_TRANSFERRED = {}
 
 -- Custom Tags (/Public/Automatic_Inventory_Manager/Tags)
 TAG_AIM_PROCESSED = "add41a41-a1a8-4405-ae7f-ce12a0788a1a"
-TAG_AIM_MARK_FOR_DELETION = "4b640e87-509b-4c90-a4e7-144c224314b0"
 
 -- CUSTOM EVENTS
 
