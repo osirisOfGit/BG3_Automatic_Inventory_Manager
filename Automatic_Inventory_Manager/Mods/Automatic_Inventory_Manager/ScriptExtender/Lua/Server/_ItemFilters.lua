@@ -143,6 +143,12 @@ ItemFilters.ItemMaps.Tags = {
 			[2] = { TargetStat = filterFields.TargetStat.ABILITY_STAT, TargetSubStat = "Dexterity", CompareStategy = filterFields.CompareStategy.HIGHER }
 		}
 	},
+	["ARROW"] = {
+		Filters = {
+			[1] = filterFields.Shortcuts.ByLargerStack,
+			[2] = { TargetStat = filterFields.TargetStat.ABILITY_STAT, TargetSubStat = "Dexterity", CompareStategy = filterFields.CompareStategy.HIGHER }
+		}
+	},
 	["GRENADE"] = {
 		Filters = {
 			[1] = filterFields.Shortcuts.ByLargerStack,

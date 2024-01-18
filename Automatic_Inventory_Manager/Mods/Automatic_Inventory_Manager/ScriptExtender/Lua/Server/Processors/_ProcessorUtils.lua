@@ -73,11 +73,13 @@ end
 --- @param targetChar CHARACTER
 --- @param inventoryHolder CHARACTER
 --- @param root GUIDSTRING
+--- @param item GUIDSTRING
 --- @return number totalStackSize
 function ProcessorUtils:CalculateTotalItemCount(targetsWithAmountWon,
 												targetChar,
 												inventoryHolder,
-												root)
+												root,
+											item)
 	local itemByTemplate = Osi.GetItemByTemplateInInventory(root, targetChar)
 	local currentlyHeldAmount = itemByTemplate and Osi.GetStackAmount(itemByTemplate) or 0
 
@@ -89,7 +91,7 @@ function ProcessorUtils:CalculateTotalItemCount(targetsWithAmountWon,
 	end
 
 	if targetChar == inventoryHolder then
-		local amountToRemove = 0
+		local amountToRemove = Osi.GetStackAmount(item)
 		for char, amountReserved in pairs(targetsWithAmountWon) do
 			if not (char == inventoryHolder) then
 				amountToRemove = amountToRemove + amountReserved

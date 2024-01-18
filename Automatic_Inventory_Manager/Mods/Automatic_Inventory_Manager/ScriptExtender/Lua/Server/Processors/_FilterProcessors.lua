@@ -24,7 +24,8 @@ StatFunctions[targetStats.STACK_AMOUNT] = function(partyMember)
 	local totalFutureStackSize = ProcessorUtils:CalculateTotalItemCount(paramMap.targetsWithAmountWon,
 		partyMember,
 		paramMap.inventoryHolder,
-		paramMap.root)
+		paramMap.root,
+		paramMap.item)
 	Logger:BasicDebug("Found " .. totalFutureStackSize .. " on " .. partyMember)
 
 	return ProcessorUtils:SetWinningVal_ByCompareResult(paramMap.winningVal,

@@ -50,18 +50,20 @@ end
 --- @param eligiblePartyMembers GUIDSTRING[]
 --- @param targetsWithAmountWon table<GUIDSTRING, number>
 --- @param root GUIDSTRING
+--- @param item GUIDSTRING
 --- @param inventoryHolder CHARACTER
 ---@return table|nil # All party members that have fewer than the stack limit, or nil if no members do
 local function FilterInitialTargets_ByStackLimit(itemFilter,
 												 eligiblePartyMembers,
 												 targetsWithAmountWon,
 												 root,
+												 item,
 												 inventoryHolder)
 	if itemFilter.Modifiers and itemFilter.Modifiers[ItemFilters.ItemFields.FilterModifiers.STACK_LIMIT] then
 		local filteredSurvivors = {}
 		for _, partyMember in pairs(eligiblePartyMembers) do
 			local totalFutureStackSize = ProcessorUtils:CalculateTotalItemCount(
-				targetsWithAmountWon, partyMember, inventoryHolder, root)
+				targetsWithAmountWon, partyMember, inventoryHolder, root, item)
 
 			if totalFutureStackSize < itemFilter.Modifiers[ItemFilters.ItemFields.FilterModifiers.STACK_LIMIT] then
 				table.insert(filteredSurvivors, partyMember)
@@ -124,6 +126,7 @@ function Processor:ProcessFiltersForItemAgainstParty(item, root, inventoryHolder
 				partyMembers,
 				targetsWithAmountWon,
 				root,
+				item,
 				inventoryHolder)
 			or partyMembers
 

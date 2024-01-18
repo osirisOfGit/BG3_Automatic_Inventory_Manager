@@ -99,32 +99,15 @@ function Logger:BasicInfo(content)
     Logger:BasicPrint(content, Logger.PrintTypes.INFO)
 end
 
--- local logBuffer = ""         -- Initialize an empty log buffer
--- local logBufferMaxSize = 512 -- Maximum buffer size before flushing
-
 local logPath = 'log.txt'
 function Logger:LogMessage(message)
     local fileContent = Utils:LoadFile(logPath) or ""
     local logMessage = Ext.Utils.MonotonicTime() .. " " .. message
     Ext.IO.SaveFile(Utils:BuildTargetFilePath(logPath), fileContent .. logMessage .. "\n")
-    -- logBuffer = logBuffer .. logMessage .. "\n"
-
-    -- Check if the buffer size exceeds the maximum, then flush it
-    -- if #logBuffer >= logBufferMaxSize then
-    --     Logger:FlushLogBuffer()
-    -- end
-end
-
-function Logger:FlushLogBuffer()
-    if logBuffer ~= "" then
-        local fileContent = Utils:LoadFile(logPath) or ""
-        Ext.IO.SaveFile(Utils:BuildTargetFilePath(logPath), fileContent .. logBuffer)
-        logBuffer = "" -- Clear the buffer
-    end
 end
 
 function Logger:ClearLogFile()
     if Utils:LoadFile(logPath) then
-        Ext.IO.SaveFile(logPath, "")
+        Ext.IO.SaveFile(Utils:BuildTargetFilePath(logPath), "")
     end
 end

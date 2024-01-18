@@ -10,6 +10,7 @@ local function ResetItemStacks()
 end
 
 Ext.Events.ResetCompleted:Subscribe(function(_)
+	Config:SyncConfigsAndFilters()
 	ResetItemStacks()
 end)
 
