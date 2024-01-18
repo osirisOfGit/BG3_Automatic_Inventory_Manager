@@ -1,4 +1,4 @@
-Ext.Require("Server/Processors/_FilterProcessors.lua")
+Ext.Require("AIM/Processors/_FilterProcessors.lua")
 
 --- Distributes the item stack according to the winners of the processed filters
 --- @param partyMembersWithAmountWon table<CHARACTER, number>

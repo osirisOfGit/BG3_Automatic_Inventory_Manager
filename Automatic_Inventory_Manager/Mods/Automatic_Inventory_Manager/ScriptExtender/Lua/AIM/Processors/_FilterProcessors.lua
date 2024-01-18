@@ -1,4 +1,4 @@
-Ext.Require("Server/Processors/_ProcessorUtils.lua")
+Ext.Require("AIM/Processors/_ProcessorUtils.lua")
 
 local targetStats = ItemFilters.FilterFields.TargetStat
 local StatFunctions = {}
