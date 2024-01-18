@@ -1,14 +1,5 @@
 Ext.Require("Server/Processors/_FilterProcessors.lua")
 
-local function AddItemToProcessingTable(root, target, amount)
-	if not TEMPLATES_BEING_TRANSFERRED[root] then
-		TEMPLATES_BEING_TRANSFERRED[root] = { [target] = amount }
-	else
-		Utils:AddItemToTable_AddingToExistingAmount(TEMPLATES_BEING_TRANSFERRED[root], target, amount)
-	end
-end
-
-
 --- Distributes the item stack according to the winners of the processed filters
 --- @param partyMembersWithAmountWon table<CHARACTER, number>
 --- @param item GUIDSTRING
@@ -30,9 +21,14 @@ local function ProcessWinners(partyMembersWithAmountWon, item, root, inventoryHo
 				Osi.SetOriginalOwner(item, inventoryHolder)
 
 				-- This method generates a new uuid for the item upon moving it without forcing us to destroy it and generate a new one from the template
+				-- Need to make sure we don't clear the original owner here so our tracker logic in itemEvents knows
 				Osi.ToInventory(item, target, amount, 0, 0)
 
-				AddItemToProcessingTable(root, target, amount)
+				if not TEMPLATES_BEING_TRANSFERRED[root] then
+					TEMPLATES_BEING_TRANSFERRED[root] = { [target] = amount }
+				else
+					Utils:AddItemToTable_AddingToExistingAmount(TEMPLATES_BEING_TRANSFERRED[root], target, amount)
+				end
 
 				_P(string.format("Moved %s of %s to %s from %s"
 				, amount
@@ -70,6 +66,8 @@ local function FilterInitialTargets_ByStackLimit(itemFilter,
 
 		return #filteredSurvivors > 0 and filteredSurvivors or nil
 	end
+
+	return {table.unpack(eligiblePartyMembers)}
 end
 
 ---
@@ -153,8 +151,8 @@ function Processor:ProcessFiltersForItemAgainstParty(item, root, inventoryHolder
 					target = targetsWithAmountWon[Osi.Random(#targetsWithAmountWon) + 1]
 				end
 
-				Utils:AddItemToTable_AddingToExistingAmount(targetsWithAmountWon, target, currentItemStackSize)
-				_P("Winning command: " .. Ext.Json.Stringify(filter))
+				Utils:AddItemToTable_AddingToExistingAmount(targetsWithAmountWon, target, 1)
+				-- _P("Winning command: " .. Ext.Json.Stringify(filter))
 				goto continue
 			end
 			-- _P("Processing " ..

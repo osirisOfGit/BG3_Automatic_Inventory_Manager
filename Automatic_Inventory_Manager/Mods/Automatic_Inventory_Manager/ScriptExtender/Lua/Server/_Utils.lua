@@ -1,9 +1,9 @@
 Utils = {}
 
 function Utils:AddItemToTable_AddingToExistingAmount(tarTable, key, amount)
-	if not tarTable then
-		tarTable = {}
-	end
+	-- if not tarTable then
+	-- 	tarTable = {}
+	-- end
 	if not tarTable[key] then
 		tarTable[key] = amount
 	else

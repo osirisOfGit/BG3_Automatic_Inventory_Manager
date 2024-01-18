@@ -69,19 +69,19 @@ end
 --- to determine the amount of the item's template that are theoretically in the given characters inventory.
 ---
 --- If the targetChar is the inventoryHolder, will subtract the amount of the item stack being processed that has been "won" by the other party members
---- @param partyMembersWithAmountWon table<CHARACTER, number>
+--- @param targetsWithAmountWon table<GUIDSTRING, number>
 --- @param targetChar CHARACTER
 --- @param inventoryHolder CHARACTER
 --- @param root GUIDSTRING
 --- @return number totalStackSize
-function ProcessorUtils:CalculateTotalItemCount(partyMembersWithAmountWon,
+function ProcessorUtils:CalculateTotalItemCount(targetsWithAmountWon,
 												targetChar,
 												inventoryHolder,
 												root)
 	local itemByTemplate = Osi.GetItemByTemplateInInventory(root, targetChar)
-	local totalFutureStackSize = itemByTemplate and Osi.GetStackAmount(itemByTemplate) or 0
+	local currentlyHeldAmount = itemByTemplate and Osi.GetStackAmount(itemByTemplate) or 0
 
-	totalFutureStackSize = totalFutureStackSize + partyMembersWithAmountWon[targetChar]
+	local totalFutureStackSize = currentlyHeldAmount + targetsWithAmountWon[targetChar]
 
 	if TEMPLATES_BEING_TRANSFERRED[root] and TEMPLATES_BEING_TRANSFERRED[root][targetChar] then
 		totalFutureStackSize = totalFutureStackSize + TEMPLATES_BEING_TRANSFERRED[root][targetChar]
@@ -89,8 +89,8 @@ function ProcessorUtils:CalculateTotalItemCount(partyMembersWithAmountWon,
 	end
 
 	if targetChar == inventoryHolder then
-		local amountToRemove = itemByTemplate and Osi.GetStackAmount(itemByTemplate) or 0
-		for char, amountReserved in pairs(partyMembersWithAmountWon) do
+		local amountToRemove = 0
+		for char, amountReserved in pairs(targetsWithAmountWon) do
 			if not (char == inventoryHolder) then
 				amountToRemove = amountToRemove + amountReserved
 			end

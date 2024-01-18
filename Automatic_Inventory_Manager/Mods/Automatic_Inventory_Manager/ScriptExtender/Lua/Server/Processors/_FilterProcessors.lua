@@ -161,11 +161,11 @@ function FilterProcessors:ExecuteTargetFilter(filter, inventoryHolder, item)
 			-- _P("Sent item to camp!")
 		elseif string.lower(target) == "originaltarget" then
 			paramMap.winners = { inventoryHolder }
-		elseif Osi.IsPlayer(target) == 1 or Osi.Exists(target) == 1 then
+		elseif Osi.IsPlayer(target) == 1 or (Osi.Exists(target) == 1 and Osi.IsContainer(target) == 1) then
 			paramMap.winners = { target }
 		else
 			Ext.Utils.PrintError(string.format(
-				"The target %s was specified for item %s but they are not a party member!"
+				"The target %s was specified for item %s but they are not a valid target!"
 				, target
 				, item))
 		end

@@ -31,7 +31,7 @@ Development Outline:
  ✅ Use PersistantVars to store:
     ✅ onReset check
     ✅ filters
- Redistribute health potions after use if not in combat
+ ✅ Redistribute consumables after use if not in combat
 
  OnContainerOpen, optionally execute distribution according to config
  Add option to have party members move to the item for "realism" - intercept on RequestCanPickup
