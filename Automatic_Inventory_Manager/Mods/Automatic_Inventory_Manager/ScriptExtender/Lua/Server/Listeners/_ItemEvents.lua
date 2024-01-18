@@ -52,7 +52,7 @@ local function AddFiltersToTable(consolidatedItemFilter, newItemFilters)
 			end
 			if not foundIdenticalFilter then
 				local determinedPriority = DetermineItemFilterPriority(consolidatedItemFilter.Filters,
-					newItemFilterPriority)
+					tonumber(newItemFilterPriority))
 				consolidatedItemFilter.Filters[determinedPriority] = newItemFilter
 			end
 		end

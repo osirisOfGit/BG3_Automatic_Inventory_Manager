@@ -69,15 +69,14 @@ function Config.SyncConfigsAndFilters()
 					---@type ItemFilterMap
 					local loadedFilterTable = Ext.Json.Parse(filterTable)
 					
-					if not ItemFilters.ItemMaps[filterTableName] then
-						ItemFilters.ItemMaps[filterTableName] = loadedFilterTable
-					else 
-						for key, itemFilter in pairs(loadedFilterTable) do
-							if not ItemFilters.ItemMaps[filterTableName][key] then
-								ItemFilters.ItemMaps[filterTableName][key] = itemFilter
+					if ItemFilters.ItemMaps[filterTableName] then
+						for key, itemFilter in pairs(ItemFilters.ItemMaps[filterTableName]) do
+							if not loadedFilterTable[key] then
+								loadedFilterTable[key] = itemFilter
 							end
 						end
 					end
+					ItemFilters.ItemMaps[filterTableName] = loadedFilterTable
 
 					PersistentVars.ItemFilters[filterTableName] = ItemFilters.ItemMaps[filterTableName]
 				end)
