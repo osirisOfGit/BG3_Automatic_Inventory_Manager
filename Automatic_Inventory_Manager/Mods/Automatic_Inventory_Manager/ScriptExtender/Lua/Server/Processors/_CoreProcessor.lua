@@ -6,7 +6,6 @@ Ext.Require("Server/Processors/_FilterProcessors.lua")
 --- @param root GUIDSTRING
 --- @param inventoryHolder CHARACTER
 local function ProcessWinners(partyMembersWithAmountWon, item, root, inventoryHolder)
-	Logger:BasicInfo(string.format("Final Results for item %s with root %s on inventoryHolder %s: %s", item, root, inventoryHolder, Ext.Json.Stringify(partyMembersWithAmountWon)))
 	Osi.SetTag(item, TAG_AIM_PROCESSED)
 
 	for target, amount in pairs(partyMembersWithAmountWon) do
@@ -85,7 +84,7 @@ local function FilterInitialTargets_ByEncumbranceRisk(item, eligiblePartyMembers
 			local unencumberedLimit = tonumber(partyMemberEntity.EncumbranceStats["field_0"])
 			local inventoryWeight = tonumber(partyMemberEntity.InventoryWeight["Weight"])
 			if (inventoryWeight + itemWeight) <= unencumberedLimit then
-				-- Logger:BasicDebug(string.format("Item weight %d will not encumber %s, with %d more room!",
+				Logger:BasicDebug(string.format("Item weight %d will not encumber %s, with %d more room!",
 				-- 	itemWeight,
 				-- 	partyMember,
 				-- 	unencumberedLimit - (inventoryWeight + itemWeight)))

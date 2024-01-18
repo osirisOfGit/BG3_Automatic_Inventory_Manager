@@ -1,7 +1,7 @@
 local function RemoveItemFromTracker_IfAlreadySorted(root, item, inventoryHolder)
 	local originalOwner = Osi.GetOriginalOwner(item)
 	if originalOwner and not (originalOwner == Osi.GetUUID(inventoryHolder)) and Osi.IsPlayer(inventoryHolder) == 1 then
-		-- Logger:BasicDebug("|OriginalOwner| = " .. Osi.GetOriginalOwner(item)
+		Logger:BasicDebug("|OriginalOwner| = " .. Osi.GetOriginalOwner(item)
 		-- 	.. "\n\t|DirectInventoryOwner| = " .. Osi.GetDirectInventoryOwner(item)
 		-- 	.. "\n\t|Owner| = " .. Osi.GetOwner(item))
 
