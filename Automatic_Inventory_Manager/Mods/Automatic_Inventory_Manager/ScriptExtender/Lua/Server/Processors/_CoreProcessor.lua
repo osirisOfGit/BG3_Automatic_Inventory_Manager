@@ -11,11 +11,16 @@ local function ProcessWinners(partyMembersWithAmountWon, item, root, inventoryHo
 	for target, amount in pairs(partyMembersWithAmountWon) do
 		if amount > 0 then
 			if target == inventoryHolder then
-				Logger:BasicDebug(string.format("Target was determined to be inventoryHolder for %s on character %s"
+				Logger:BasicInfo(string.format("Target was determined to be inventoryHolder for %s on character %s"
 				, item
 				, inventoryHolder))
 			elseif target == "camp" then
 				Osi.SendToCampChest(item, inventoryHolder)
+				Logger:BasicInfo(string.format("Moved %s of %s to CAMP from %s"
+				, amount
+				, item
+				, target
+				, inventoryHolder))
 			else
 				Osi.SetOriginalOwner(item, inventoryHolder)
 
@@ -85,9 +90,9 @@ local function FilterInitialTargets_ByEncumbranceRisk(item, eligiblePartyMembers
 			local inventoryWeight = tonumber(partyMemberEntity.InventoryWeight["Weight"])
 			if (inventoryWeight + itemWeight) <= unencumberedLimit then
 				Logger:BasicDebug(string.format("Item weight %d will not encumber %s, with %d more room!",
-				-- 	itemWeight,
-				-- 	partyMember,
-				-- 	unencumberedLimit - (inventoryWeight + itemWeight)))
+					itemWeight,
+					partyMember,
+					unencumberedLimit - (inventoryWeight + itemWeight)))
 				table.insert(filteredSurvivors, partyMember)
 			end
 		end

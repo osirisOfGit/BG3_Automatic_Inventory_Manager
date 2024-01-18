@@ -29,6 +29,8 @@ function Config:InitializeConfigurations()
 end
 
 function Config.SyncConfigsAndFilters()
+	Logger:ClearLogFile()
+	
 	local config = Utils:LoadFile("config.json")
 
 	if config then

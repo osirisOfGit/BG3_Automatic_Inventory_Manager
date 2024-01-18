@@ -2,8 +2,8 @@ local function RemoveItemFromTracker_IfAlreadySorted(root, item, inventoryHolder
 	local originalOwner = Osi.GetOriginalOwner(item)
 	if originalOwner and not (originalOwner == Osi.GetUUID(inventoryHolder)) and Osi.IsPlayer(inventoryHolder) == 1 then
 		Logger:BasicDebug("|OriginalOwner| = " .. Osi.GetOriginalOwner(item)
-		-- 	.. "\n\t|DirectInventoryOwner| = " .. Osi.GetDirectInventoryOwner(item)
-		-- 	.. "\n\t|Owner| = " .. Osi.GetOwner(item))
+			.. "\n\t|DirectInventoryOwner| = " .. Osi.GetDirectInventoryOwner(item)
+			.. "\n\t|Owner| = " .. Osi.GetOwner(item))
 
 		if TEMPLATES_BEING_TRANSFERRED[root] and TEMPLATES_BEING_TRANSFERRED[root][inventoryHolder] then
 			Logger:BasicDebug(string.format("Found %s of %s being transferred to %s - tagging as processed!"
@@ -124,7 +124,7 @@ local function DetermineAndExecuteFiltersForItem(root, item, inventoryHolder, ig
 	local applicableItemFilter = SearchForItemFilters(item, root)
 	if #applicableItemFilter.Filters > 0 then
 		Logger:BasicDebug(
-			"----------------------------------------------------------\n\t\t\tSTARTED\n----------------------------------------------------------")
+			"\n----------------------------------------------------------\n\t\t\tSTARTED\n----------------------------------------------------------")
 
 		local itemStack, templateStack = Osi.GetStackAmount(item)
 		Logger:BasicDebug("|item| = " .. item
@@ -137,9 +137,9 @@ local function DetermineAndExecuteFiltersForItem(root, item, inventoryHolder, ig
 
 		Processor:ProcessFiltersForItemAgainstParty(item, root, inventoryHolder, applicableItemFilter)
 		Logger:BasicDebug(
-			"----------------------------------------------------------\n\t\t\tFINISHED\n----------------------------------------------------------")
+			"\n----------------------------------------------------------\n\t\t\tFINISHED\n----------------------------------------------------------")
 	else
-		Logger:BasicDebug("No command could be found for " ..
+		Logger:BasicInfo("No command could be found for " ..
 			item .. " with root " .. root .. " on " .. inventoryHolder)
 	end
 
@@ -157,7 +157,7 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(root, item, 
 		Logger:BasicDebug(string.format("inventoryHolder %s is not a player", inventoryHolder))
 		return
 	elseif Osi.Exists(item) ~= 1 then
-		Logger:BasicDebug("Item doesn't exist!")
+		Logger:BasicWarning("Item doesn't exist!")
 		return
 	end
 
@@ -167,7 +167,7 @@ end)
 
 Ext.Osiris.RegisterListener("TemplateUseFinished", 4, "after", function(character, itemTemplate, item2, success)
 	if success == 1 and Osi.TemplateIsInPartyInventory(itemTemplate, character, 0) > 0 and Osi.IsInCombat(character) == 0 then
-		Logger:BasicDebug("Resorting all items of template " .. itemTemplate .. " due to finished use of " .. item2)
+		Logger:BasicInfo("Resorting all items of template " .. itemTemplate .. " due to finished use of " .. item2)
 		for _, player in pairs(Osi.DB_Players:Get(nil)) do
 			Osi.IterateInventoryByTemplate(player[1],
 				itemTemplate,
