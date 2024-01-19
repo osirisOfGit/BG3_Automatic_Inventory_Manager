@@ -51,7 +51,7 @@ function ItemFilters:CompareFilter(first, second)
 		and first.TargetStat == second.TargetStat
 		and first.TargetSubStat == second.TargetSubStat
 		and first.CompareStategy == second.CompareStategy then
-			return true
+		return true
 	end
 
 	return false
@@ -68,6 +68,9 @@ end
 --- @field Equipment ItemFilterMap
 --- @field Tags ItemFilterMap
 ItemFilters.ItemMaps = {}
+
+
+
 
 local itemFields = ItemFilters.ItemFields
 local filterFields = ItemFilters.FilterFields
@@ -182,6 +185,75 @@ ItemFilters.ItemMaps.RootPartial = {
 	}
 }
 
+local function copy(obj, seen)
+	if type(obj) ~= 'table' then return obj end
+	if seen and seen[obj] then return seen[obj] end
+	local s = seen or {}
+	local res = setmetatable({}, getmetatable(obj))
+	s[obj] = res
+	for k, v in pairs(obj) do res[copy(k, s)] = copy(v, s) end
+	return res
+end
+function ItemFilters:CopyItemMaps()
+	ItemFilters.ItemMapsCopy = copy(ItemFilters.ItemMaps)
+end
+
+---
+---@param targetItemFilter ItemFilter the existing ItemFilter to merge into
+---@param newItemFilters ItemFilter[] the filters to add to the table
+---@param prioritizeNewFilters boolean if merging in a filter for an existing ItemFilter, and an existing filter shares the same priority, the provided filter will be given higher priority
+function ItemFilters:MergeItemFiltersIntoTarget(targetItemFilter, newItemFilters, prioritizeNewFilters)
+	for _, newItemFilter in pairs(newItemFilters) do
+		for itemFilterProperty, propertyValue in pairs(newItemFilter) do
+			if itemFilterProperty == "Filters" then
+				--- @cast propertyValue Filters
+				-- Consolidate filters, ignoring duplicates
+				for newFilterPriority, newFilter in pairs(propertyValue) do
+					newFilterPriority = tonumber(newFilterPriority)
+					---@cast newFilterPriority number
+
+					local foundIdenticalFilter = false
+					for _, existingFilter in pairs(targetItemFilter.Filters) do
+						if ItemFilters:CompareFilter(newFilter, existingFilter) then
+							foundIdenticalFilter = true
+							break
+						end
+					end
+					if not foundIdenticalFilter then
+						if targetItemFilter.Filters[newFilterPriority] then
+							-- Find the first empty index after the requested priority -
+							-- if we're prioritizing new filters, we'll shift all consecutive filters down one spot
+							-- otherwise, we'll insert the new filter into that available index
+							local filterIndex = newFilterPriority
+							while targetItemFilter.Filters[filterIndex] do
+								filterIndex = filterIndex + 1
+							end
+							if not prioritizeNewFilters then
+								targetItemFilter.Filters[filterIndex] = newFilter
+							else
+								table.move(targetItemFilter.Filters, newFilterPriority, filterIndex - 1,
+									newFilterPriority + 1)
+								targetItemFilter.Filters[newFilterPriority] = newFilter
+							end
+						else
+							targetItemFilter.Filters[newFilterPriority] = newFilter
+						end
+					end
+				end
+			elseif itemFilterProperty == "Modifiers" then
+				--- @cast propertyValue table<FilterModifiers, any>
+				for modifier, newModifier in pairs(propertyValue) do
+					if not targetItemFilter.Modifiers[modifier] then
+						targetItemFilter.Modifiers[modifier] = newModifier
+					end
+				end
+			else
+				targetItemFilter[itemFilterProperty] = propertyValue
+			end
+		end
+	end
+end
+
 ---@param itemMap ItemMap
 ---@param key string
 ---@param filtersTable ItemFilter[]
@@ -198,12 +270,12 @@ end
 ---
 ---@param root GUIDSTRING root template UUID of the item
 ---@return ItemFilter[]
-function ItemFilters:GetFiltersByRoot(root)
+function ItemFilters.GetFiltersByRoot(itemMaps, root, _, _)
 	local filters = {}
 
-	GetFiltersFromMap(ItemFilters.ItemMaps.Roots, root, filters)
+	GetFiltersFromMap(itemMaps.Roots, root, filters)
 
-	for key, filter in pairs(ItemFilters.ItemMaps.RootPartial) do
+	for key, filter in pairs(itemMaps.RootPartial) do
 		if string.find(root, key) then
 			table.insert(filters, filter)
 		end
@@ -216,17 +288,19 @@ end
 --- The Equipment Map is queried last
 ---@param item GUIDSTRING
 ---@return ItemFilter[]
-function ItemFilters:GetFiltersByEquipmentType(item)
+function ItemFilters.GetFiltersByEquipmentType(itemMaps, _, item, _)
 	local filters = {}
 
 	if Osi.IsWeapon(item) == 1 then
-		GetFiltersFromMap(ItemFilters.ItemMaps.Weapons, item, filters)
+		GetFiltersFromMap(itemMaps.Weapons, item, filters)
 	end
 
-	local equipTypeUUID = Ext.Entity.Get(item).ServerItem.Item.OriginalTemplate.EquipmentTypeID
-	local equipType = Ext.StaticData.Get(equipTypeUUID, "EquipmentType")
-	if equipType then
-		GetFiltersFromMap(ItemFilters.ItemMaps.Equipment, equipType["Name"], filters)
+	if Osi.IsEquipable(item) == 1 then
+		local equipTypeUUID = Ext.Entity.Get(item).ServerItem.Item.OriginalTemplate.EquipmentTypeID
+		local equipType = Ext.StaticData.Get(equipTypeUUID, "EquipmentType")
+		if equipType then
+			GetFiltersFromMap(itemMaps.Equipment, equipType["Name"], filters)
+		end
 	end
 
 	return filters
@@ -234,12 +308,12 @@ end
 
 --- @param item GUIDSTRING
 --- @return ItemFilter[] List of filters that were identified by the tags
-function ItemFilters:GetFilterByTag(item)
+function ItemFilters.GetFilterByTag(itemMaps, _, item, _)
 	local filters = {}
 	for _, tagUUID in pairs(Ext.Entity.Get(item).Tag.Tags) do
 		local tagTable = Ext.StaticData.Get(tagUUID, "Tag")
 		if tagTable then
-			local tagFilter = ItemFilters.ItemMaps.Tags[tagTable["Name"]]
+			local tagFilter = itemMaps.Tags[tagTable["Name"]]
 			if tagFilter then
 				table.insert(filters, tagFilter)
 			end
@@ -247,4 +321,52 @@ function ItemFilters:GetFilterByTag(item)
 	end
 
 	return filters
+end
+
+ItemFilters.ItemFilterLookups = {
+	ItemFilters.GetFiltersByRoot,
+	ItemFilters.GetFilterByTag,
+	ItemFilters.GetFiltersByEquipmentType
+}
+
+--- Finds all Filters for the given item
+---@param item GUIDSTRING
+---@param root GUIDSTRING
+---@return ItemFilter
+function ItemFilters:SearchForItemFilters(item, root, inventoryHolder)
+	--- @type ItemFilter
+	local consolidatedItemFilter = { Filters = {}, Modifiers = {} }
+
+	for _, lookupFunc in pairs(ItemFilters.ItemFilterLookups) do
+		local foundFilters = lookupFunc(ItemFilters.ItemMapsCopy, root, item, inventoryHolder)
+		ItemFilters:MergeItemFiltersIntoTarget(consolidatedItemFilter, foundFilters, false)
+	end
+
+	-- Since lua is addicted to sequential indexes, we have to noramlize the indexes of itemFilters that were given arbitrarily large numbers
+	-- to ensure we can iterate through every filter later
+	local normalizedFilters = {}
+	local numFilters = 0
+	for _, _ in pairs(consolidatedItemFilter.Filters) do
+		numFilters = numFilters + 1
+	end
+	for i = 1, numFilters do
+		local nextLowestNumber
+		for filterPriority, _ in pairs(consolidatedItemFilter.Filters) do
+			if filterPriority == i then
+				nextLowestNumber = i
+				break
+			else
+				if not nextLowestNumber then
+					nextLowestNumber = filterPriority
+				else
+					nextLowestNumber = filterPriority < nextLowestNumber and filterPriority or nextLowestNumber
+				end
+			end
+		end
+		normalizedFilters[i] = consolidatedItemFilter.Filters[nextLowestNumber]
+		consolidatedItemFilter.Filters[nextLowestNumber] = nil
+	end
+
+	consolidatedItemFilter.Filters = normalizedFilters
+	return consolidatedItemFilter
 end

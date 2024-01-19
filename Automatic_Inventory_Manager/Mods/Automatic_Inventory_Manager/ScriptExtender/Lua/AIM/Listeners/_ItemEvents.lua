@@ -21,96 +21,8 @@ local function RemoveItemFromTracker_IfAlreadySorted(root, item, inventoryHolder
 			if #(TEMPLATES_BEING_TRANSFERRED[root]) == 0 then
 				TEMPLATES_BEING_TRANSFERRED[root] = nil
 			end
-		end
+		end 
 	end
-end
-
----@param existingFilterTable Filters
----@param desiredPriority number
----@return number
-local function DetermineItemFilterPriority(existingFilterTable, desiredPriority)
-	if existingFilterTable[desiredPriority] then
-		return DetermineItemFilterPriority(existingFilterTable, desiredPriority + 1)
-	else
-		return desiredPriority
-	end
-end
-
-
----
----@param consolidatedItemFilter ItemFilter the existing ItemFilter to consolidate into
----@param newItemFilters ItemFilter[] the filters to add to the table
-local function AddFiltersToTable(consolidatedItemFilter, newItemFilters)
-	for _, newItemFilter in pairs(newItemFilters) do
-		-- Consolidate filters, ignoring duplicates
-		for newItemFilterPriority, newItemFilter in pairs(newItemFilter.Filters) do
-			local foundIdenticalFilter = false
-			for _, existingFilter in pairs(consolidatedItemFilter.Filters) do
-				if ItemFilters:CompareFilter(newItemFilter, existingFilter) then
-					foundIdenticalFilter = true
-				end
-			end
-			if not foundIdenticalFilter then
-				local determinedPriority = DetermineItemFilterPriority(consolidatedItemFilter.Filters,
-					tonumber(newItemFilterPriority))
-				consolidatedItemFilter.Filters[determinedPriority] = newItemFilter
-			end
-		end
-
-		if newItemFilter.Modifiers then
-			for modifier, newModifier in pairs(newItemFilter.Modifiers) do
-				if not consolidatedItemFilter.Modifiers[modifier] then
-					consolidatedItemFilter.Modifiers[modifier] = newModifier
-				end
-			end
-		end
-	end
-end
-
---- Finds all Filters for the given item
----@param item GUIDSTRING
----@param root GUIDSTRING
----@return ItemFilter
-local function SearchForItemFilters(item, root)
-	--- @type ItemFilter
-	local consolidatedItemFilter = { Filters = {}, Modifiers = {} }
-
-	if Osi.IsEquipable(item) == 1 then
-		AddFiltersToTable(consolidatedItemFilter, ItemFilters:GetFiltersByEquipmentType(item))
-	end
-
-	AddFiltersToTable(consolidatedItemFilter, ItemFilters:GetFilterByTag(item))
-
-	AddFiltersToTable(consolidatedItemFilter, ItemFilters:GetFiltersByRoot(root))
-
-	-- Since lua is addicted to sequential indexes, we have to noramlize the indexes of itemFilters that were given arbitrarily large numbers
-	-- to ensure we can iterate through every filter later
-	local normalizedFilters = {}
-	local numFilters = 0
-	for _, _ in pairs(consolidatedItemFilter.Filters) do
-		numFilters = numFilters + 1
-	end
-	for i = 1, numFilters do
-		local nextLowestNumber
-		for filterPriority, _ in pairs(consolidatedItemFilter.Filters) do
-			if filterPriority == i then
-				nextLowestNumber = i
-				goto continue
-			else
-				if not nextLowestNumber then
-					nextLowestNumber = filterPriority
-				else
-					nextLowestNumber = filterPriority < nextLowestNumber and filterPriority or nextLowestNumber
-				end
-			end
-		end
-		::continue::
-		normalizedFilters[i] = consolidatedItemFilter.Filters[nextLowestNumber]
-		consolidatedItemFilter.Filters[nextLowestNumber] = nil
-	end
-
-	consolidatedItemFilter.Filters = normalizedFilters
-	return consolidatedItemFilter
 end
 
 local function DetermineAndExecuteFiltersForItem(root, item, inventoryHolder, ignoreProcessedTag)
@@ -121,7 +33,7 @@ local function DetermineAndExecuteFiltersForItem(root, item, inventoryHolder, ig
 		return
 	end
 
-	local applicableItemFilter = SearchForItemFilters(item, root)
+	local applicableItemFilter = ItemFilters:SearchForItemFilters(item, root)
 	if #applicableItemFilter.Filters > 0 then
 		Logger:BasicDebug(
 			"\n----------------------------------------------------------\n\t\t\tSTARTED\n----------------------------------------------------------")

@@ -102,4 +102,6 @@ function Config.SyncConfigsAndFilters()
 	for itemFilterTableName, itemFilterTable in pairs(PersistentVars.ItemFilters) do
 		ItemFilters.ItemMaps[itemFilterTableName] = itemFilterTable
 	end
+
+	ItemFilters:CopyItemMaps()
 end
