@@ -3,6 +3,6 @@ title = "AIM - The BG3 Automatic Inventory Manager"
 description = "Automatically manages inventories!"
 format = "discount"
 backtick_references = false
-dir = "Mods/Automatic_Inventory_Manager/ScriptExtender/Lua"
+dir = "public"
 readme = "readme.md"
 style = "!new"
