@@ -6,4 +6,4 @@ LUA_SHAREDIR=$(LUA_PREFIX)/share/lua/5.1
 _REPODIR != cd "$(shell dirname $(firstword $(MAKEFILE_LIST)))/" && pwd
 
 doc-site:
-	lua $(_REPODIR)/Automatic_Inventory_Manager/AIM.lua .
+	lua $(_REPODIR)/ldoc.lua .
