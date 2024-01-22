@@ -1,3 +1,5 @@
+--- @module "AIM._ItemFilters"
+
 ItemFilters = {}
 
 ItemFilters.ItemFields = {}

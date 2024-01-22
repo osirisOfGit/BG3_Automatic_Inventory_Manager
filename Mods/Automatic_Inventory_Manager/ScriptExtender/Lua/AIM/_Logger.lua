@@ -1,3 +1,5 @@
+--- @module "AIM._Logger"
+
 Logger = {}
 
 -- Largely stolen from Auto_Sell_Loot - https://www.nexusmods.com/baldursgate3/mods/2435 Thx m8 (｡･∀･)ﾉﾞ

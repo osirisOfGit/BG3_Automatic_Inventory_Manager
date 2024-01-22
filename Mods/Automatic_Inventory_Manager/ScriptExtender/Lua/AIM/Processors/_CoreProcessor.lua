@@ -1,3 +1,5 @@
+--- @module "AIM.Processors._CoreProcesor"
+
 Ext.Require("AIM/Processors/_FilterProcessors.lua")
 
 --- Distributes the item stack according to the winners of the processed filters

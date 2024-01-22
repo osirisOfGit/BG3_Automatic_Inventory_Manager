@@ -1,5 +1,5 @@
---- Since moving items is an event, not a DB operation, need to track which items are currently in the queue
---- to be moved, but haven't left the OG inventory yet, so our math in the processor works
+-- Since moving items is an event, not a DB operation, need to track which items are currently in the queue
+-- to be moved, but haven't left the OG inventory yet, so our math in the processor works
 TEMPLATES_BEING_TRANSFERRED = {}
 
 -- Larians Tags(Public/shared/Tags/)

@@ -1,3 +1,5 @@
+--- @module "AIM._Utils"
+
 PersistentVars = {}
 Utils = {}
 

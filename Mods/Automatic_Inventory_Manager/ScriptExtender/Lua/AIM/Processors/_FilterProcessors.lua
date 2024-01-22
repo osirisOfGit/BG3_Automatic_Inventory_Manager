@@ -1,3 +1,5 @@
+--- @module "AIM.Processors._FilterProcessors"
+
 Ext.Require("AIM/Processors/_ProcessorUtils.lua")
 
 local targetStats = ItemFilters.FilterFields.TargetStat

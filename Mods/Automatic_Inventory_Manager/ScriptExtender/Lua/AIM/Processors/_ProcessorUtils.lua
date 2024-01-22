@@ -1,3 +1,5 @@
+--- @module "AIM.Processors._ProcessorUtils"
+
 ProcessorUtils = {}
 
 --- @param baseValue number
