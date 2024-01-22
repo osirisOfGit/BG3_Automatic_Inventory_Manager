@@ -1,0 +1,396 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>ldoc</h1>
+
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+<li><a href="#Tables">Tables</a></li>
+<li><a href="#Fields">Fields</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/AIM.Processors._CoreProcesor.html">AIM.Processors._CoreProcesor</a></li>
+  <li><a href="../modules/AIM.Processors._FilterProcessors.html">AIM.Processors._FilterProcessors</a></li>
+  <li><a href="../modules/AIM.Processors._ProcessorUtils.html">AIM.Processors._ProcessorUtils</a></li>
+  <li><strong>AIM._ItemFilters</strong></li>
+  <li><a href="../modules/AIM._Logger.html">AIM._Logger</a></li>
+  <li><a href="../modules/AIM._Utils.html">AIM._Utils</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>AIM._ItemFilters</code></h1>
+<p></p>
+<p></p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#ItemFilters:CompareFilter">ItemFilters:CompareFilter (..., ...)</a></td>
+	<td class="summary">Compare two Filter tables</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#ItemFilters:AddItemFilterMaps">ItemFilters:AddItemFilterMaps (itemFilterMaps, forceOverride, prioritizeNewFilters, updateItemMapClone)</a></td>
+	<td class="summary">For each itemFilterMap, will just add to the superset if the map is not already known, otherwise will do a recursive merge,
+ adding any Filters that are not already added, incrementing the priority to the next highest number if taken.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#ItemFilters:UpdateItemMapsClone">ItemFilters:UpdateItemMapsClone ()</a></td>
+	<td class="summary">Updates ItemFilters.itemMaps</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#ItemFilters:AddItemFilterLookupFunction">ItemFilters:AddItemFilterLookupFunction (lookupFuncs)</a></td>
+	<td class="summary">Add custom function(s) to use to find ItemFilters for a given item - each function should accept:
+ 1.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#ItemFilters:SearchForItemFilters">ItemFilters:SearchForItemFilters (item, root, inventoryHolder)</a></td>
+	<td class="summary">Finds all Filters for the given item</td>
+	</tr>
+</table>
+<h2><a href="#Tables">Tables</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#ItemFilters.ItemFields.FilterModifiers">ItemFilters.ItemFields.FilterModifiers</a></td>
+	<td class="summary">General modifiers that don't fit within the scope of a Filter</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#ItemFilters.FilterFields.CompareStategy">ItemFilters.FilterFields.CompareStategy</a></td>
+	<td class="summary">Used by Compare Filters to determine whether a higher or lower value is considered the "winner"</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#ItemFilters.FilterFields.TargetStat">ItemFilters.FilterFields.TargetStat</a></td>
+	<td class="summary">Used by Compare Filters to identify the criteria that party members are filtered on</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#ItemFilters.ItemKeys">ItemFilters.ItemKeys</a></td>
+	<td class="summary">Convenience table for keys that are common across ItemMaps</td>
+	</tr>
+</table>
+<h2><a href="#Fields">Fields</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#ItemFilters.itemMaps">ItemFilters.itemMaps</a></td>
+	<td class="summary">immutable clone of the itemMaps - can be forceably synced using UpdateItemMapsClone, but we'll do it on each update we know about</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "ItemFilters:CompareFilter"></a>
+    <strong>ItemFilters:CompareFilter (..., ...)</strong>
+    </dt>
+    <dd>
+    Compare two Filter tables
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">...</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">{string,</a></span>
+        }} second
+        </li>
+        <li><span class="parameter">...</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">{string,</a></span>
+        }} second
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">boolean</span></span>
+        true if the tables are equal
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "ItemFilters:AddItemFilterMaps"></a>
+    <strong>ItemFilters:AddItemFilterMaps (itemFilterMaps, forceOverride, prioritizeNewFilters, updateItemMapClone)</strong>
+    </dt>
+    <dd>
+    For each itemFilterMap, will just add to the superset if the map is not already known, otherwise will do a recursive merge,
+ adding any Filters that are not already added, incrementing the priority to the next highest number if taken.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">itemFilterMaps</span>
+
+        </li>
+        <li><span class="parameter">forceOverride</span>
+         if the itemFilterMap is already known, will just completely overwrite with the provided map instead of merging
+        </li>
+        <li><span class="parameter">prioritizeNewFilters</span>
+         if merging in a filter for an existing ItemFilter, and an existing filter shares the same priority, the provided filter will be given higher priority
+        </li>
+        <li><span class="parameter">updateItemMapClone</span>
+         if we should update ItemFilters.itemMap after merging - performance flag in case there are multiple, independent loads that need to happen
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "ItemFilters:UpdateItemMapsClone"></a>
+    <strong>ItemFilters:UpdateItemMapsClone ()</strong>
+    </dt>
+    <dd>
+    Updates ItemFilters.itemMaps
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "ItemFilters:AddItemFilterLookupFunction"></a>
+    <strong>ItemFilters:AddItemFilterLookupFunction (lookupFuncs)</strong>
+    </dt>
+    <dd>
+    Add custom function(s) to use to find ItemFilters for a given item - each function should accept:
+ 1.  table<string, table<string, ItemFilter>> - immutable copy of all the itemMaps to perform lookup against
+ 2. GUIDSTRING - the root template of the item being sorted
+ 3. GUIDSTRING - the item being sorted
+ 4. GUIDSTRING - the inventoryHolder
+
+ and return a list of ItemFilters
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">lookupFuncs</span>
+            <span class="types"><span class="type">function[]</span></span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "ItemFilters:SearchForItemFilters"></a>
+    <strong>ItemFilters:SearchForItemFilters (item, root, inventoryHolder)</strong>
+    </dt>
+    <dd>
+    Finds all Filters for the given item
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">item</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
+
+        </li>
+        <li><span class="parameter">root</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
+
+        </li>
+        <li><span class="parameter">inventoryHolder</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        A consolidated ItemFilter containing all the filters, modifiers, and custom fields found for the given item, with normalized priorities
+    </ol>
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Tables"></a>Tables</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "ItemFilters.ItemFields.FilterModifiers"></a>
+    <strong>ItemFilters.ItemFields.FilterModifiers</strong>
+    </dt>
+    <dd>
+    General modifiers that don't fit within the scope of a Filter
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">STACK_LIMIT</span>
+        Filters out any party members that have > than the specified limit
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "ItemFilters.FilterFields.CompareStategy"></a>
+    <strong>ItemFilters.FilterFields.CompareStategy</strong>
+    </dt>
+    <dd>
+    Used by Compare Filters to determine whether a higher or lower value is considered the "winner"
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">LOWER</span>
+
+        </li>
+        <li><span class="parameter">HIGHER</span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "ItemFilters.FilterFields.TargetStat"></a>
+    <strong>ItemFilters.FilterFields.TargetStat</strong>
+    </dt>
+    <dd>
+    Used by Compare Filters to identify the criteria that party members are filtered on
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">HEALTH_PERCENTAGE</span>
+
+        </li>
+        <li><span class="parameter">STACK_AMOUNT</span>
+        the amount of that item's template in the party's inventory
+        </li>
+        <li><span class="parameter">PROFICIENCY</span>
+        as dictated by the item, i.e. SleightOfHand for lockpicks
+        </li>
+        <li><span class="parameter">WEAPON_SCORE</span>
+        using Osi.WeaponScore, does some math, i have no idea.
+        </li>
+        <li><span class="parameter">WEAPON_ABILITY</span>
+        as dictated by the item, i.e. Greatswords use Strength
+        </li>
+        <li><span class="parameter">HAS_TYPE_EQUIPPED</span>
+
+        </li>
+        <li><span class="parameter">SKILL_TYPE</span>
+        requires TargetSubStat to be specified
+        </li>
+        <li><span class="parameter">ABILITY_STAT</span>
+        requires TargetSubStat to be specified
+        </li>
+        <li><span class="parameter">ARMOR_CLASS</span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "ItemFilters.ItemKeys"></a>
+    <strong>ItemFilters.ItemKeys</strong>
+    </dt>
+    <dd>
+    Convenience table for keys that are common across ItemMaps
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">WILDCARD</span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Fields"></a>Fields</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "ItemFilters.itemMaps"></a>
+    <strong>ItemFilters.itemMaps</strong>
+    </dt>
+    <dd>
+    immutable clone of the itemMaps - can be forceably synced using UpdateItemMapsClone, but we'll do it on each update we know about
+
+
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/lunarmodules/LDoc">LDoc 1.5.0</a></i>
+<i style="float:right;">Last updated 2024-01-22 23:54:14 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>ldoc</h1>
+
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/AIM.Processors._CoreProcesor.html">AIM.Processors._CoreProcesor</a></li>
+  <li><a href="../modules/AIM.Processors._FilterProcessors.html">AIM.Processors._FilterProcessors</a></li>
+  <li><strong>AIM.Processors._ProcessorUtils</strong></li>
+  <li><a href="../modules/AIM._ItemFilters.html">AIM._ItemFilters</a></li>
+  <li><a href="../modules/AIM._Logger.html">AIM._Logger</a></li>
+  <li><a href="../modules/AIM._Utils.html">AIM._Utils</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>AIM.Processors._ProcessorUtils</code></h1>
+<p></p>
+<p></p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#ProcessorUtils:SetWinningVal_ByCompareResult">ProcessorUtils:SetWinningVal_ByCompareResult (baseValue, challengerValue, comparator, winnersTable, targetPartyMember)</a></td>
+	<td class="summary">Calculates the winner based on the result of comparing the baseValue against the challengerValue, using the Comparator
+ to determine the nature of the compare</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#ProcessorUtils:CalculateTotalItemCount">ProcessorUtils:CalculateTotalItemCount (targetsWithAmountWon, targetChar, inventoryHolder, root, item)</a></td>
+	<td class="summary">Uses the following on the targetChar
+ + Osi.GetStackAmount (via Osi.GetItemByTemplateInInventory)
+ + the calculated amount won for this item stack thusfar
+ + the calculated amount won for previous items of the same template that haven't been added to the targetChar inventory yet (event hasn't been processed)
+
+ to determine the amount of the item's template that are theoretically in the given characters inventory.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "ProcessorUtils:SetWinningVal_ByCompareResult"></a>
+    <strong>ProcessorUtils:SetWinningVal_ByCompareResult (baseValue, challengerValue, comparator, winnersTable, targetPartyMember)</strong>
+    </dt>
+    <dd>
+    Calculates the winner based on the result of comparing the baseValue against the challengerValue, using the Comparator
+ to determine the nature of the compare
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">baseValue</span>
+         number|nil
+        </li>
+        <li><span class="parameter">challengerValue</span>
+         number
+        </li>
+        <li><span class="parameter">comparator</span>
+         CompareStrategy
+        </li>
+        <li><span class="parameter">winnersTable</span>
+         table
+        </li>
+        <li><span class="parameter">targetPartyMember</span>
+         GUIDSTRING
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+        table winners table of winners - will either append the targetPartyMember if the values were equal, or replace the table with just targetPartyMember if the challenger won</li>
+        <li>
+        number winningVal value that won in the compare, or baseValue if both were equal</li>
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "ProcessorUtils:CalculateTotalItemCount"></a>
+    <strong>ProcessorUtils:CalculateTotalItemCount (targetsWithAmountWon, targetChar, inventoryHolder, root, item)</strong>
+    </dt>
+    <dd>
+    Uses the following on the targetChar
+ + Osi.GetStackAmount (via Osi.GetItemByTemplateInInventory)
+ + the calculated amount won for this item stack thusfar
+ + the calculated amount won for previous items of the same template that haven't been added to the targetChar inventory yet (event hasn't been processed)
+
+ to determine the amount of the item's template that are theoretically in the given characters inventory.
+
+ If the targetChar is the inventoryHolder, will subtract the amount of the item stack being processed that has been "won" by the other party members
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">targetsWithAmountWon</span>
+         table<GUIDSTRING, number>
+        </li>
+        <li><span class="parameter">targetChar</span>
+         CHARACTER
+        </li>
+        <li><span class="parameter">inventoryHolder</span>
+         CHARACTER
+        </li>
+        <li><span class="parameter">root</span>
+         GUIDSTRING
+        </li>
+        <li><span class="parameter">item</span>
+         GUIDSTRING
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        number totalStackSize
+    </ol>
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/lunarmodules/LDoc">LDoc 1.5.0</a></i>
+<i style="float:right;">Last updated 2024-01-22 23:54:14 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>
