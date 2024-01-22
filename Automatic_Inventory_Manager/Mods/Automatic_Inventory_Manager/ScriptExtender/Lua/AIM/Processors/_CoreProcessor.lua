@@ -88,7 +88,7 @@ local function FilterInitialTargets_ByEncumbranceRisk(item, eligiblePartyMembers
 		local partyMemberEntity = Ext.Entity.Get(partyMember)
 		-- If not encumbered
 		if tonumber(partyMemberEntity.EncumbranceState.State) == 0 then
-			local unencumberedLimit = tonumber(partyMemberEntity.EncumbranceStats["field_0"])
+			local unencumberedLimit = tonumber(partyMemberEntity.EncumbranceStats.UnencumberedWeight)
 			local inventoryWeight = tonumber(partyMemberEntity.InventoryWeight["Weight"])
 			if (inventoryWeight + itemWeight) <= unencumberedLimit then
 				Logger:BasicTrace(string.format("Item weight %d will not encumber %s, with %d more room!",

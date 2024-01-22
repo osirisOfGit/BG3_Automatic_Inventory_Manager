@@ -1,0 +1,5 @@
+{
+    "RequiredVersion": 12,
+    "ModTable": "Mod_Using_AIM",
+    "FeatureFlags": ["Lua"]
+}

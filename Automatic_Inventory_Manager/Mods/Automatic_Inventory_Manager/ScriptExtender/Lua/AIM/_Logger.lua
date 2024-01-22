@@ -61,7 +61,7 @@ end
 
 -- Function to print text with custom colors, message type, custom prefix, rainbowText ,and prefix length
 function Logger:BasicPrint(content, messageType, textColor, customPrefix, rainbowText, prefixLength)
-    if PersistentVars.Config.LOG_LEVEL and tonumber(PersistentVars.Config.LOG_LEVEL) >= messageType then
+    if PersistentVars.Config and PersistentVars.Config.LOG_LEVEL and tonumber(PersistentVars.Config.LOG_LEVEL) >= messageType then
 		prefixLength=prefixLength or 15
 		messageType = messageType or Logger.PrintTypes.INFO
 		local textColorCode = textColor or TEXT_COLORS.cyan -- Default to cyan

@@ -236,6 +236,50 @@ local function MergeItemFiltersIntoTarget(targetItemFilter, newItemFilters, prio
 	end
 end
 
+--- For each itemFilterMap, will just add to the superset if the map is not already known, otherwise will do a recursive merge,
+--- adding any Filters that are not already added, incrementing the priority to the next highest number if taken.
+---@param itemFilterMaps table<string, ItemFilterMap>
+---@param forceOverride boolean if the itemFilterMap is already known, will just completely overwrite with the provided map instead of merging
+---@param prioritizeNewFilters boolean if merging in a filter for an existing ItemFilter, and an existing filter shares the same priority, the provided filter will be given higher priority
+---@param updateItemMapClone boolean if we should update ItemFilters.itemMap after merging - performance flag in case there are multiple, independent loads that need to happen
+function ItemFilters:AddItemFilterMaps(itemFilterMaps, forceOverride, prioritizeNewFilters, updateItemMapClone)
+	for mapName, itemFilterMap in pairs(itemFilterMaps) do
+		if not itemMaps[mapName] or forceOverride == true then
+			itemMaps[mapName] = itemFilterMap
+		else
+			---@type ItemFilterMap
+			local existingItemFilterMap = itemMaps[mapName]
+			for itemKey, itemFilter in pairs(itemFilterMap) do
+				if not existingItemFilterMap[itemKey] then
+					existingItemFilterMap[itemKey] = itemFilter
+				else
+					MergeItemFiltersIntoTarget(existingItemFilterMap[itemKey], { itemFilter }, prioritizeNewFilters)
+				end
+			end
+		end
+	end
+
+	if updateItemMapClone == true then ItemFilters:UpdateItemMapsClone() end
+end
+
+--- @type table<string, ItemMap> immutable clone of the itemMaps - can be foreably synced using UpdateItemMapsClone, but we'll do it on each update we know about
+ItemFilters.itemMaps = Utils:MakeImmutableTableCopy(itemMaps)
+function ItemFilters:UpdateItemMapsClone()
+	ItemFilters.itemMaps = Utils:MakeImmutableTableCopy(itemMaps)
+
+	for mapName, itemMap in pairs(ItemFilters.itemMaps) do
+		for _, itemFilter in pairs(itemMap) do
+			for _, filter in pairs(itemFilter.Filters) do
+				if filter.TargetStat and not ItemFilters.FilterFields.TargetStat[filter.TargetStat] then
+					ItemFilters.FilterFields.TargetStat[filter.TargetStat] = filter.TargetStat
+				end
+			end
+		end
+		Utils:SaveTableToFile(Config.FILTERS_DIR .. mapName .. ".json", itemMaps[mapName])
+		PersistentVars.ItemFilters[mapName] = itemMap
+	end
+end
+
 ---@param itemMap ItemMap
 ---@param key string
 ---@param filtersTable ItemFilter[]
@@ -311,55 +355,17 @@ local itemFilterLookups = {
 	GetFiltersByEquipmentType
 }
 
----@param filterLookups function[]
-function ItemFilters:AddItemFilterLookupFunction(filterLookups)
-	for _, func in pairs(filterLookups) do
-		table.insert(ItemFilters.ItemFilterLookups, func)
-	end
-	Logger:BasicInfo(string.format("ItemFilterLookup list now contains %d lookups", #ItemFilters.ItemFilterLookups))
-end
-
---- For each itemFilterMap, will just add to the superset if the map is not already known, otherwise will do a recursive merge,
---- adding any Filters that are not already added, incrementing the priority to the next highest number if taken.
----@param itemFilterMaps table<string, ItemFilterMap>
----@param forceOverride boolean if the itemFilterMap is already known, will just completely overwrite with the provided map instead of merging
----@param prioritizeNewFilters boolean if merging in a filter for an existing ItemFilter, and an existing filter shares the same priority, the provided filter will be given higher priority
----@param updateItemMapClone boolean if we should update ItemFilters.itemMap after merging - performance flag in case there are multiple, independent loads that need to happen
-function ItemFilters:AddItemFilterMaps(itemFilterMaps, forceOverride, prioritizeNewFilters, updateItemMapClone)
-	for mapName, itemFilterMap in pairs(itemFilterMaps) do
-		if not itemMaps[mapName] or forceOverride == true then
-			itemMaps[mapName] = itemFilterMap
-		else
-			---@type ItemFilterMap
-			local existingItemFilterMap = itemMaps[mapName]
-			for itemKey, itemFilter in pairs(itemFilterMap) do
-				if not existingItemFilterMap[itemKey] then
-					existingItemFilterMap[itemKey] = itemFilter
-				else
-					MergeItemFiltersIntoTarget(existingItemFilterMap[itemKey], {itemFilter}, prioritizeNewFilters)
-				end
-			end
-		end
-	end
-
-	if updateItemMapClone == true then ItemFilters:UpdateItemMapsClone() end
-end
-
---- @type table<string, ItemMap> immutable clone of the itemMaps - can be foreably synced using UpdateItemMapsClone, but we'll do it on each update we know about
-ItemFilters.itemMaps = Utils:MakeImmutableTableCopy(itemMaps)
-function ItemFilters:UpdateItemMapsClone()
-	ItemFilters.itemMaps = Utils:MakeImmutableTableCopy(itemMaps)
-
-	for mapName, itemMap in pairs(ItemFilters.itemMaps) do
-		for _, itemFilter in pairs(itemMap) do
-			for _, filter in pairs(itemFilter.Filters) do
-				if filter.TargetStat and not ItemFilters.FilterFields.TargetStat[filter.TargetStat] then
-					ItemFilters.FilterFields.TargetStat[filter.TargetStat] = filter.TargetStat
-				end
-			end
-		end
-		Utils:SaveTableToFile(Config.FILTERS_DIR .. mapName .. ".json", itemMaps[mapName])
-		PersistentVars.ItemFilters[mapName] = itemMap
+--- Add custom function(s) to use to find ItemFilters for a given item - each function should accept:
+--- 1. table<string, table<string, ItemFilter>> - immutable copy of all the itemMaps to perform lookup against
+--- 2. GUIDSTRING - the root template of the item being sorted
+--- 3. GUIDSTRING - the item being sorted
+--- 4. GUIDSTRING - the inventoryHolder
+---
+--- and return a list of ItemFilters
+---@param lookupFuncs function[]
+function ItemFilters:AddItemFilterLookupFunction(lookupFuncs)
+	for _, lookupFunc in pairs(lookupFuncs) do
+		table.insert(itemFilterLookups, lookupFunc)
 	end
 end
 
