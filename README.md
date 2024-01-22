@@ -28,7 +28,7 @@ All these values are stored in the [PersistentVars](https://github.com/Norbyte/b
 There are two main aspects to this mods functionality: ItemFilters, and FilterProcessors (no, i don't like these names either).
 
 ### Item Filters
-Each file in `filters\` contains a .json file representing Lua tables with the following structure:
+Each file in `filters\` contains a .json file representing Lua tables (known internally as ItemMaps) with the following structure:
 ```
 {
   "ITEM_KEY": {
@@ -43,6 +43,10 @@ Each file in `filters\` contains a .json file representing Lua tables with the f
 }
 ```
 
+Each file name represents a different category of criteria used to identify an item that can be processed by a FilterProcessor - for example, Tags.json represents Ext.Entity.Tags values (in their human readable, case-sensitive, forms, AIM translates to the GUID during processing) that an item must have to be processed, and Weapons.json is for items that `Osi.IsWeapon` returns `1` for.
+
+This is done primarily for organization and secondarily for efficiency reasons, to avoid looping a million times on every item, as we can sometimes somewhat intelligently guess which ItemMap to inspect based on criteria like `Osi.IsWeapon` or `Osi.IsEquipable`. It also makes merging in multiple sources of ItemMaps (like from third-party mods) a heck of a lot easier, and limits the damage a third-party ItemMap can cause.
+
 #### ItemFilter
 An ItemFilter is a table that represents all the instructions that the FilterProcessors must process to determine the correct target. AIM implements the following instructions:
 - Filters
@@ -55,7 +59,7 @@ After each filter is evaluated, if there's more than one possible target still l
 
 There are two variations of Filters that are currently implemented:
 
-<details open>
+<details>
 <summary>Weighted Filters</summary>
 Inspects and compares the value of a specific stat on the eligible party members, using the Compare Strategy to determine the "winner"
 
@@ -121,7 +125,7 @@ This uses two WeightedFilters: the highest priority is Skill Type, the second hi
 So if your party is setup with the following data:
 | Party Member | Sleight Of Hand Skill | Number of Lockpicks in Inventory |
 |--------------|-----------------------|----------------------------------|
-| Lae'Zal | 10 | 0 |
+| Lae'Zel | 10 | 0 |
 | Tav | 14 | 0 |
 | Astarian | 22 | 10 |
 | Shadowheart | 22 | 0 |
@@ -133,7 +137,7 @@ Then Astarian and Shadowheart will pass the SKILL_TYPE filter, but only Astarian
 If Shadowheart and Astarian both had 10 lockpicks in their inventory, one of them would be randomly chosen.
 </details>
 
-<details open>
+<details>
 <summary>Targeted Filters</summary>
   Used to identify one specific target to send the item to - this can be the original party member that picked up the item, a different party member, the camp chest, or a container, but not a character that isn't in the active party.
 
@@ -145,11 +149,13 @@ classDiagram
         Target required
     }
 
+    
     class Target {
         originalTarget that picked up the item
-        GUIDSTRING representing a party member, e.g. S_Player_Laezel_58a69333-40bf-8358-1d17-fff240d7fb12
+        GUIDSTRING 
         camp
     }
+    note for Target "GUIDSTRING represents a party member, i.e. S_Player_Laezel_58a69333-40bf-8358-1d17-fff240d7fb12, or container"
   ```
 
 For example, Tags contains the following entries:
@@ -182,5 +188,11 @@ For example, Tags contains the following entries:
 
 When any item with the tag `CAMPSUPPLIES` is processed, it will be sent straight to the camp chest, no further evaluation needed.
 
-When any item with the tag `SCROLL` is processed, it will first be run through the WeightedFilter for STACK_AMOUNT, and if multiple party members hold the same amount of the scroll, or if nobody currently has this scroll in their inventory, then the character that originally picked up the item will be chosen.
+When any item with the tag `SCROLL` is processed, it will first be run through the WeightedFilter for STACK_AMOUNT, and if multiple party members hold the same amount of the scroll, or if nobody currently has this scroll in their inventory, then the character that originally picked up the item will be chosen (this is done to prevent the user from having to search for the scroll if nobody currently has one in their inventory)
 </details>
+
+##### Modifiers
+
+This generally serves as a generic catch-all for any kind of special rules that the FilterProcessors should consider when choosing a target - currently, only the `STACK_LIMIT` modifier is implemented, which pre-filters out party members if they contain more than the specified limit, unless all party members exceed it, in which case nobody is filtered out. 
+
+A purely internal modifier of Encumberence is implemented as well - this is automatically applied to every item being processed, and pre-filters out party members if receiving the item would make them encumbered, unless all party members would be encumbered.
