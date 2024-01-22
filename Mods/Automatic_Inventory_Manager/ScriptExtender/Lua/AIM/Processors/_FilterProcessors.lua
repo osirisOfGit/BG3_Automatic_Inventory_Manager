@@ -169,9 +169,9 @@ end
 --- @param filter Filter
 --- @param eligiblePartyMembers GUIDSTRING[]
 --- @param targetsWithAmountWon table<GUIDSTRING, number>
+--- @param inventoryHolder CHARACTER
 --- @param item GUIDSTRING
 --- @param root GUIDSTRING
---- @param inventoryHolder CHARACTER
 --- @return table winners The survivors that were eligible to receive the item, or the original survivors table if none were eligible
 function FilterProcessor:ExecuteFilterAgainstEligiblePartyMembers(filter,
 																  eligiblePartyMembers,

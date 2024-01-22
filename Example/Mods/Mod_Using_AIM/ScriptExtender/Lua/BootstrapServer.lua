@@ -7,7 +7,7 @@ if Ext.Mod.IsModLoaded("23bdda0c-a671-498f-89f5-a69e8d3a4b52") then
 	local newItemMap = {
 		-- Adding a new itemMap key
 		["ARMOR"] = {
-			["ALL"] = {
+			[Mods.Automatic_Inventory_Manager.ItemFilters.ItemKeys.WILDCARD] = {
 				Filters = {
 					[99] = {
 						-- We can add arbitrary stats without a separate call - AIM will take care of adding new ones to the relevant table
