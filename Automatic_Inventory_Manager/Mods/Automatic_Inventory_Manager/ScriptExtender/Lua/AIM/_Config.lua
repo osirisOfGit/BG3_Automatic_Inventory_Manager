@@ -1,12 +1,12 @@
-Config = {}
-
+Config = {
+	FILTERS_DIR = 'filters/',
+}
 local INITIAL_CONFIGS = {
 	ENABLED = 1,
 	LOG_LEVEL = 3,
 	RESET_CONFIGS = 0,
 	SYNC_CONFIGS = 1,
 	SORT_ITEMS_ON_LOAD = 1,
-	FILTERS_DIR = 'filters/',
 	FILTER_TABLES = {},
 	SYNC_FILTERS = 1
 }
@@ -21,10 +21,11 @@ function Config:InitializeConfigurations()
 
 	for mapName, mapValues in pairs(ItemFilters.itemMaps) do
 		table.insert(INITIAL_CONFIGS.FILTER_TABLES, mapName)
-		Utils:SaveTableToFile(PersistentVars.Config.FILTERS_DIR .. mapName .. ".json", mapValues)
+		Utils:SaveTableToFile(Config.FILTERS_DIR .. mapName .. ".json", mapValues)
 	end
 
 	PersistentVars.Config = INITIAL_CONFIGS
+	PersistentVars.ItemFilters = {}
 	Utils:SaveTableToFile("config.json", PersistentVars.Config)
 end
 
@@ -67,7 +68,7 @@ function Config.SyncConfigsAndFilters()
 	if PersistentVars.Config.SYNC_FILTERS == 1 then
 		Logger:BasicInfo("Syncing the filters")
 		for _, filterTableName in pairs(PersistentVars.Config.FILTER_TABLES) do
-			local filterTableFilePath = PersistentVars.Config.FILTERS_DIR .. "/" .. filterTableName .. ".json"
+			local filterTableFilePath = Config.FILTERS_DIR .. "/" .. filterTableName .. ".json"
 			local filterTable = Utils:LoadFile(filterTableFilePath)
 
 			if filterTable then
@@ -84,7 +85,7 @@ function Config.SyncConfigsAndFilters()
 					Logger:BasicError(string.format("Could not parse table %s due to error [%s]", filterTableName,
 						result))
 				else
-					Utils:SaveTableToFile(PersistentVars.Config.FILTERS_DIR .. filterTableName .. ".json",
+					Utils:SaveTableToFile(Config.FILTERS_DIR .. filterTableName .. ".json",
 						PersistentVars.ItemFilters[filterTableName])
 				end
 			else

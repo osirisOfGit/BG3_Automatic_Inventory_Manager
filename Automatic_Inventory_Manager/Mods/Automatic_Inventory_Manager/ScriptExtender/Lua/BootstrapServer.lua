@@ -1,6 +1,4 @@
 --- SETUP
-Api = {}
-
 Ext.Require("AIM/_Utils.lua")
 Ext.Require("AIM/_Logger.lua")
 Ext.Require("AIM/_Globals.lua")

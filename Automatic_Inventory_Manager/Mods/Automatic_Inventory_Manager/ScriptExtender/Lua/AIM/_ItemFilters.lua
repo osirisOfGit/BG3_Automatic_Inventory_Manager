@@ -187,7 +187,7 @@ itemMaps.RootPartial = {
 local function MergeItemFiltersIntoTarget(targetItemFilter, newItemFilters, prioritizeNewFilters)
 	for _, newItemFilter in pairs(newItemFilters) do
 		for itemFilterProperty, propertyValue in pairs(newItemFilter) do
-			if itemFilterProperty == "Filters" then
+			if string.lower(itemFilterProperty) == "filters" then
 				--- @cast propertyValue Filters
 				-- Consolidate filters, ignoring duplicates
 				for newFilterPriority, newFilter in pairs(propertyValue) do
@@ -210,7 +210,7 @@ local function MergeItemFiltersIntoTarget(targetItemFilter, newItemFilters, prio
 							while targetItemFilter.Filters[filterIndex] do
 								filterIndex = filterIndex + 1
 							end
-							if not prioritizeNewFilters then
+							if prioritizeNewFilters ~= true then
 								targetItemFilter.Filters[filterIndex] = newFilter
 							else
 								table.move(targetItemFilter.Filters, newFilterPriority, filterIndex - 1,
@@ -222,7 +222,7 @@ local function MergeItemFiltersIntoTarget(targetItemFilter, newItemFilters, prio
 						end
 					end
 				end
-			elseif itemFilterProperty == "Modifiers" then
+			elseif string.lower(itemFilterProperty) == "modifiers" then
 				--- @cast propertyValue table<FilterModifiers, any>
 				for modifier, newModifier in pairs(propertyValue) do
 					if not targetItemFilter.Modifiers[modifier] then
@@ -336,20 +336,31 @@ function ItemFilters:AddItemFilterMaps(itemFilterMaps, forceOverride, prioritize
 				if not existingItemFilterMap[itemKey] then
 					existingItemFilterMap[itemKey] = itemFilter
 				else
-					local existingItemFilter = existingItemFilterMap[itemKey]
-					MergeItemFiltersIntoTarget(existingItemFilter, itemFilter, prioritizeNewFilters)
+					MergeItemFiltersIntoTarget(existingItemFilterMap[itemKey], {itemFilter}, prioritizeNewFilters)
 				end
 			end
 		end
 	end
 
-	if updateItemMapClone then ItemFilters:UpdateItemMapsClone() end
+	if updateItemMapClone == true then ItemFilters:UpdateItemMapsClone() end
 end
 
 --- @type table<string, ItemMap> immutable clone of the itemMaps - can be foreably synced using UpdateItemMapsClone, but we'll do it on each update we know about
 ItemFilters.itemMaps = Utils:MakeImmutableTableCopy(itemMaps)
 function ItemFilters:UpdateItemMapsClone()
 	ItemFilters.itemMaps = Utils:MakeImmutableTableCopy(itemMaps)
+
+	for mapName, itemMap in pairs(ItemFilters.itemMaps) do
+		for _, itemFilter in pairs(itemMap) do
+			for _, filter in pairs(itemFilter.Filters) do
+				if filter.TargetStat and not ItemFilters.FilterFields.TargetStat[filter.TargetStat] then
+					ItemFilters.FilterFields.TargetStat[filter.TargetStat] = filter.TargetStat
+				end
+			end
+		end
+		Utils:SaveTableToFile(Config.FILTERS_DIR .. mapName .. ".json", itemMaps[mapName])
+		PersistentVars.ItemFilters[mapName] = itemMap
+	end
 end
 
 --- Finds all Filters for the given item

@@ -49,4 +49,4 @@ IsEquipable -> _D(Ext.StaticData.GetAll("EquipmentType")) -> _D(Ext.Entity.Get("
 _D(Ext.Types.Serialize(Ext.StaticData.Get("7490e5d0-d346-4b0e-80c6-04e977160863", "Tag")).Name)
 ]]
 
-Ext.Events.SessionLoaded:Subscribe(Config.SyncConfigsAndFilters)
+

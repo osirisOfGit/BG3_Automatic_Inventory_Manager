@@ -22,4 +22,4 @@ Ext.Osiris.RegisterListener("LevelGameplayStarted", 2, "after", function(level, 
 	end
 end)
 
-
+Ext.Events.SessionLoaded:Subscribe(Config.SyncConfigsAndFilters)

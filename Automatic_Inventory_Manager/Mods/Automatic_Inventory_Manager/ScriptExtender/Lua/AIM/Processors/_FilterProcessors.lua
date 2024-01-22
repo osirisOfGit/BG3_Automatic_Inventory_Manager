@@ -167,7 +167,7 @@ end
 --- Add a new filter processor -
 ---@param predicateFunction function<Filter, boolean> Should test the filter to see if the filterProcessor can process it
 ---@param filterProcessor function<CHARACTER, FilterParamMap> proceses the filter against the provided character, setting FilterParamMap.winners and optionally FilterParamMap.winningVal
-function FilterProcessor:AddNewFilterProcessors(predicateFunction, filterProcessor)
+function FilterProcessor:AddNewFilterProcessor(predicateFunction, filterProcessor)
 	filterProcessors[predicateFunction] = filterProcessor
 end
 
