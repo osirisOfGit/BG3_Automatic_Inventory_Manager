@@ -115,14 +115,6 @@ StatFunctions[targetStats.HAS_TYPE_EQUIPPED] = function(partyMember, paramMap)
 	end
 end
 
---- @class FilterParamMap
---- @field winners GUIDSTRING[] List of targets that pass the filter - should be set by the FilterProcessor
---- @field winningVal any value identified by the filter that is currently the victor across all partyMembers
---- @field targetsWithAmountWon table<GUIDSTRING, number> copy of the winners table across all filters being run for the given item (resets each stack iteration)
---- @field filter Filter being executed
---- @field item GUIDSTRING being sorted
---- @field root GUIDSTRING rootTemplate of the item
---- @field inventoryHolder CHARACTER
 
 FilterProcessor = {}
 
@@ -187,7 +179,14 @@ function FilterProcessor:ExecuteFilterAgainstEligiblePartyMembers(filter,
 																  inventoryHolder,
 																  item,
 																  root)
-	---@type FilterParamMap
+	--- @class FilterParamMap
+	--- @field winners GUIDSTRING[] List of targets that pass the filter - should be set by the FilterProcessor
+	--- @field winningVal any value identified by the filter that is currently the victor across all partyMembers
+	--- @field targetsWithAmountWon table<GUIDSTRING, number> copy of the winners table across all filters being run for the given item (resets each stack iteration)
+	--- @field filter Filter being executed
+	--- @field item GUIDSTRING being sorted
+	--- @field root GUIDSTRING rootTemplate of the item
+	--- @field inventoryHolder CHARACTER
 	local paramMap = {
 		winners = {},
 		winningVal = nil,
