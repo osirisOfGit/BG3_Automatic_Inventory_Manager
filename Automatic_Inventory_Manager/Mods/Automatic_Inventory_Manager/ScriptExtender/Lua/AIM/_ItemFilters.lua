@@ -7,6 +7,7 @@ ItemFilters.ItemFields.FilterModifiers = {
 	STACK_LIMIT = "STACK_LIMIT",
 }
 
+
 ItemFilters.FilterFields = {}
 --- @enum CompareStrategy Determines which value to pick when comparing against other party member values.
 ItemFilters.FilterFields.CompareStategy = {
@@ -32,29 +33,33 @@ ItemFilters.ItemKeys = {
 	WILDCARD = "ALL"
 }
 
---- @class TargetFilter
+--- @class Filter
+
+--- @class TargetFilter: Filter
 --- @field Target string
 
---- @class WeightedFilter
+--- @class WeightedFilter: Filter
 --- @field CompareStategy CompareStrategy|nil
 --- @field TargetStat TargetStat
 --- @field TargetSubStat SkillId|AbilityId|nil
 
---- @alias Filters table<number, WeightedFilter|TargetFilter>
+--- @alias Filters table<number, Filter>
 
 ---Compare two Filters tables
----@param first WeightedFilter|TargetFilter
----@param second WeightedFilter|TargetFilter
+---@param first Filter
+---@param second Filter
 ---@return boolean true if the tables are equal
 function ItemFilters:CompareFilter(first, second)
-	if first.Target == second.Target
-		and first.TargetStat == second.TargetStat
-		and first.TargetSubStat == second.TargetSubStat
-		and first.CompareStategy == second.CompareStategy then
-		return true
+	local isEqual = false
+	for property, value in pairs(first) do
+		isEqual = value == second[property]
 	end
 
-	return false
+	for property, value in pairs(second) do
+		isEqual = value == first[property]
+	end
+
+	return isEqual
 end
 
 --- @class ItemFilter
@@ -62,28 +67,21 @@ end
 --- @field Modifiers table<FilterModifiers, any>|nil
 
 --- @alias ItemFilterMap table<string, ItemFilter>
-
---- @class ItemMap
---- @field Weapons ItemFilterMap
---- @field Equipment ItemFilterMap
---- @field Tags ItemFilterMap
-ItemFilters.ItemMaps = {}
-
-
-
+--- @alias ItemMap table<string, ItemFilterMap>
 
 local itemFields = ItemFilters.ItemFields
 local filterFields = ItemFilters.FilterFields
 
-ItemFilters.FilterFields.Shortcuts = {}
+local shortcuts = {}
 --- @type WeightedFilter
-ItemFilters.FilterFields.Shortcuts.ByLargerStack = {
+shortcuts.ByLargerStack = {
 	TargetStat = filterFields.TargetStat.STACK_AMOUNT,
 	CompareStategy = filterFields.CompareStategy.HIGHER
 }
 
---- @type ItemFilterMap
-ItemFilters.ItemMaps.Weapons = {
+--- @type ItemMap
+local itemMaps = {}
+itemMaps.Weapons = {
 	[ItemFilters.ItemKeys.WILDCARD] = {
 		Filters = {
 			[99] = { TargetStat = filterFields.TargetStat.HAS_TYPE_EQUIPPED },
@@ -93,18 +91,16 @@ ItemFilters.ItemMaps.Weapons = {
 	}
 }
 
---- @type ItemFilterMap
-ItemFilters.ItemMaps.Equipment = {
+itemMaps.Equipment = {
 	[ItemFilters.ItemKeys.WILDCARD] = {
 		Filters = {
 			[99] = { TargetStat = filterFields.TargetStat.PROFICIENCY },
-			[100] = filterFields.Shortcuts.ByLargerStack
+			[100] = shortcuts.ByLargerStack
 		}
 	}
 }
 
---- @type ItemFilterMap
-ItemFilters.ItemMaps.Roots = {
+itemMaps.Roots = {
 	-- not a typo :D
 	["ALCH_Soultion_Elixir_Barkskin_cc1a8802-675a-426b-a791-ec1d5a5b6328"] = {
 		Modifiers = { [itemFields.FilterModifiers.STACK_LIMIT] = 1 },
@@ -114,13 +110,12 @@ ItemFilters.ItemMaps.Roots = {
 	},
 	["LOOT_Gold_A_1c3c9c74-34a1-4685-989e-410dc080be6f"] = {
 		Filters = {
-			[1] = filterFields.Shortcuts.ByLargerStack
+			[1] = shortcuts.ByLargerStack
 		}
 	}
 }
 
---- @type ItemFilterMap
-ItemFilters.ItemMaps.Tags = {
+itemMaps.Tags = {
 	["HEALING_POTION"] = {
 		Modifiers = { [itemFields.FilterModifiers.STACK_LIMIT] = 2 },
 		Filters = {
@@ -131,42 +126,42 @@ ItemFilters.ItemMaps.Tags = {
 	["LOCKPICKS"] = {
 		Filters = {
 			[1] = { TargetStat = filterFields.TargetStat.SKILL_TYPE, TargetSubStat = "SleightOfHand", CompareStategy = filterFields.CompareStategy.HIGHER, },
-			[2] = filterFields.Shortcuts.ByLargerStack
+			[2] = shortcuts.ByLargerStack
 		},
 	},
 	["TOOL"] = {
 		Filters = {
 			[1] = { TargetStat = filterFields.TargetStat.SKILL_TYPE, TargetSubStat = "SleightOfHand", CompareStategy = filterFields.CompareStategy.HIGHER, },
-			[2] = filterFields.Shortcuts.ByLargerStack
+			[2] = shortcuts.ByLargerStack
 		},
 	},
 	["COATING"] = {
 		Filters = {
-			[1] = filterFields.Shortcuts.ByLargerStack,
+			[1] = shortcuts.ByLargerStack,
 			[2] = { TargetStat = filterFields.TargetStat.ABILITY_STAT, TargetSubStat = "Dexterity", CompareStategy = filterFields.CompareStategy.HIGHER }
 		}
 	},
 	["ARROW"] = {
 		Filters = {
-			[1] = filterFields.Shortcuts.ByLargerStack,
+			[1] = shortcuts.ByLargerStack,
 			[2] = { TargetStat = filterFields.TargetStat.ABILITY_STAT, TargetSubStat = "Dexterity", CompareStategy = filterFields.CompareStategy.HIGHER }
 		}
 	},
 	["GRENADE"] = {
 		Filters = {
-			[1] = filterFields.Shortcuts.ByLargerStack,
+			[1] = shortcuts.ByLargerStack,
 			[2] = { TargetStat = filterFields.TargetStat.ABILITY_STAT, TargetSubStat = "Strength", CompareStategy = filterFields.CompareStategy.HIGHER }
 		}
 	},
 	["SCROLL"] = {
 		Filters = {
-			[1] = filterFields.Shortcuts.ByLargerStack,
+			[1] = shortcuts.ByLargerStack,
 			[2] = { Target = "originalTarget" },
 		}
 	},
 	["CONSUMABLE"] = {
 		Filters = {
-			[99] = filterFields.Shortcuts.ByLargerStack
+			[99] = shortcuts.ByLargerStack
 		}
 	},
 	["CAMPSUPPLIES"] = {
@@ -177,7 +172,7 @@ ItemFilters.ItemMaps.Tags = {
 }
 
 --- @type ItemFilterMap
-ItemFilters.ItemMaps.RootPartial = {
+itemMaps.RootPartial = {
 	["BOOK"] = {
 		Filters = {
 			[1] = { Target = "camp" }
@@ -185,24 +180,11 @@ ItemFilters.ItemMaps.RootPartial = {
 	}
 }
 
-local function copy(obj, seen)
-	if type(obj) ~= 'table' then return obj end
-	if seen and seen[obj] then return seen[obj] end
-	local s = seen or {}
-	local res = setmetatable({}, getmetatable(obj))
-	s[obj] = res
-	for k, v in pairs(obj) do res[copy(k, s)] = copy(v, s) end
-	return res
-end
-function ItemFilters:CopyItemMaps()
-	ItemFilters.ItemMapsCopy = copy(ItemFilters.ItemMaps)
-end
-
 ---
 ---@param targetItemFilter ItemFilter the existing ItemFilter to merge into
 ---@param newItemFilters ItemFilter[] the filters to add to the table
 ---@param prioritizeNewFilters boolean if merging in a filter for an existing ItemFilter, and an existing filter shares the same priority, the provided filter will be given higher priority
-function ItemFilters:MergeItemFiltersIntoTarget(targetItemFilter, newItemFilters, prioritizeNewFilters)
+local function MergeItemFiltersIntoTarget(targetItemFilter, newItemFilters, prioritizeNewFilters)
 	for _, newItemFilter in pairs(newItemFilters) do
 		for itemFilterProperty, propertyValue in pairs(newItemFilter) do
 			if itemFilterProperty == "Filters" then
@@ -270,7 +252,7 @@ end
 ---
 ---@param root GUIDSTRING root template UUID of the item
 ---@return ItemFilter[]
-function ItemFilters.GetFiltersByRoot(itemMaps, root, _, _)
+local function GetFiltersByRoot(itemMaps, root, _, _)
 	local filters = {}
 
 	GetFiltersFromMap(itemMaps.Roots, root, filters)
@@ -284,11 +266,11 @@ function ItemFilters.GetFiltersByRoot(itemMaps, root, _, _)
 	return filters
 end
 
---- Queries all ItemFilters.ItemMaps related to Equipment and returns all found filters, including wildcards.
+--- Queries all itemMaps related to Equipment and returns all found filters, including wildcards.
 --- The Equipment Map is queried last
 ---@param item GUIDSTRING
 ---@return ItemFilter[]
-function ItemFilters.GetFiltersByEquipmentType(itemMaps, _, item, _)
+local function GetFiltersByEquipmentType(itemMaps, _, item, _)
 	local filters = {}
 
 	if Osi.IsWeapon(item) == 1 then
@@ -296,7 +278,7 @@ function ItemFilters.GetFiltersByEquipmentType(itemMaps, _, item, _)
 	end
 
 	if Osi.IsEquipable(item) == 1 then
-		local equipTypeUUID = Ext.Entity.Get(item).ServerItem.Item.OriginalTemplate.EquipmentTypeID
+		local equipTypeUUID = Ext.Entity.Get(item).ServerItem.OriginalTemplate.EquipmentTypeID
 		local equipType = Ext.StaticData.Get(equipTypeUUID, "EquipmentType")
 		if equipType then
 			GetFiltersFromMap(itemMaps.Equipment, equipType["Name"], filters)
@@ -308,7 +290,7 @@ end
 
 --- @param item GUIDSTRING
 --- @return ItemFilter[] List of filters that were identified by the tags
-function ItemFilters.GetFilterByTag(itemMaps, _, item, _)
+local function GetFilterByTag(itemMaps, _, item, _)
 	local filters = {}
 	for _, tagUUID in pairs(Ext.Entity.Get(item).Tag.Tags) do
 		local tagTable = Ext.StaticData.Get(tagUUID, "Tag")
@@ -323,11 +305,52 @@ function ItemFilters.GetFilterByTag(itemMaps, _, item, _)
 	return filters
 end
 
-ItemFilters.ItemFilterLookups = {
-	ItemFilters.GetFiltersByRoot,
-	ItemFilters.GetFilterByTag,
-	ItemFilters.GetFiltersByEquipmentType
+local itemFilterLookups = {
+	GetFiltersByRoot,
+	GetFilterByTag,
+	GetFiltersByEquipmentType
 }
+
+---@param filterLookups function[]
+function ItemFilters:AddItemFilterLookupFunction(filterLookups)
+	for _, func in pairs(filterLookups) do
+		table.insert(ItemFilters.ItemFilterLookups, func)
+	end
+	Logger:BasicInfo(string.format("ItemFilterLookup list now contains %d lookups", #ItemFilters.ItemFilterLookups))
+end
+
+--- For each itemFilterMap, will just add to the superset if the map is not already known, otherwise will do a recursive merge,
+--- adding any Filters that are not already added, incrementing the priority to the next highest number if taken.
+---@param itemFilterMaps table<string, ItemFilterMap>
+---@param forceOverride boolean if the itemFilterMap is already known, will just completely overwrite with the provided map instead of merging
+---@param prioritizeNewFilters boolean if merging in a filter for an existing ItemFilter, and an existing filter shares the same priority, the provided filter will be given higher priority
+---@param updateItemMapClone boolean if we should update ItemFilters.itemMap after merging - performance flag in case there are multiple, independent loads that need to happen
+function ItemFilters:AddItemFilterMaps(itemFilterMaps, forceOverride, prioritizeNewFilters, updateItemMapClone)
+	for mapName, itemFilterMap in pairs(itemFilterMaps) do
+		if not itemMaps[mapName] or forceOverride == true then
+			itemMaps[mapName] = itemFilterMap
+		else
+			---@type ItemFilterMap
+			local existingItemFilterMap = itemMaps[mapName]
+			for itemKey, itemFilter in pairs(itemFilterMap) do
+				if not existingItemFilterMap[itemKey] then
+					existingItemFilterMap[itemKey] = itemFilter
+				else
+					local existingItemFilter = existingItemFilterMap[itemKey]
+					MergeItemFiltersIntoTarget(existingItemFilter, itemFilter, prioritizeNewFilters)
+				end
+			end
+		end
+	end
+
+	if updateItemMapClone then ItemFilters:UpdateItemMapsClone() end
+end
+
+--- @type table<string, ItemMap> immutable clone of the itemMaps - can be foreably synced using UpdateItemMapsClone, but we'll do it on each update we know about
+ItemFilters.itemMaps = Utils:MakeImmutableTableCopy(itemMaps)
+function ItemFilters:UpdateItemMapsClone()
+	ItemFilters.itemMaps = Utils:MakeImmutableTableCopy(itemMaps)
+end
 
 --- Finds all Filters for the given item
 ---@param item GUIDSTRING
@@ -337,12 +360,24 @@ function ItemFilters:SearchForItemFilters(item, root, inventoryHolder)
 	--- @type ItemFilter
 	local consolidatedItemFilter = { Filters = {}, Modifiers = {} }
 
-	for _, lookupFunc in pairs(ItemFilters.ItemFilterLookups) do
-		local foundFilters = lookupFunc(ItemFilters.ItemMapsCopy, root, item, inventoryHolder)
-		ItemFilters:MergeItemFiltersIntoTarget(consolidatedItemFilter, foundFilters, false)
+	for _, lookupFunc in pairs(itemFilterLookups) do
+		local success, errorMessage = pcall(function()
+			MergeItemFiltersIntoTarget(consolidatedItemFilter,
+				lookupFunc(ItemFilters.itemMaps, root, item, inventoryHolder),
+				false)
+		end
+		)
+		if not success then
+			Logger:BasicError(string.format(
+				"ItemFilters:SearchForItemFilters - Received error executing itemFilterLoop for item %s, root %s, inventoryHolder %s: [%s]",
+				item,
+				root,
+				inventoryHolder,
+				errorMessage))
+		end
 	end
 
-	-- Since lua is addicted to sequential indexes, we have to noramlize the indexes of itemFilters that were given arbitrarily large numbers
+	-- Since lua is addicted to sequential indexes, we have to normalize the indexes of itemFilters that were given arbitrarily large numbers
 	-- to ensure we can iterate through every filter later
 	local normalizedFilters = {}
 	local numFilters = 0

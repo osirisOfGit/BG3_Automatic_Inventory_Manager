@@ -2,7 +2,7 @@ ITEMS_TO_DELETE = {}
 
 local function ResetItemStacks()
 	for _, player in pairs(Osi.DB_Players:Get(nil)) do
-		Logger:BasicDebug("Cleaning up item stacks on " .. player[1])
+		Logger:BasicInfo("Sorting item stacks on " .. player[1])
 		Osi.IterateInventory(player[1],
 			EVENT_ITERATE_ITEMS_TO_RESORT_THEM_START .. player[1],
 			EVENT_ITERATE_ITEMS_TO_RESORT_THEM_END .. player[1])

@@ -73,7 +73,7 @@ local function FilterInitialTargets_ByStackLimit(itemFilter,
 		return #filteredSurvivors > 0 and filteredSurvivors or nil
 	end
 
-	return {table.unpack(eligiblePartyMembers)}
+	return { table.unpack(eligiblePartyMembers) }
 end
 
 ---
@@ -91,7 +91,7 @@ local function FilterInitialTargets_ByEncumbranceRisk(item, eligiblePartyMembers
 			local unencumberedLimit = tonumber(partyMemberEntity.EncumbranceStats["field_0"])
 			local inventoryWeight = tonumber(partyMemberEntity.InventoryWeight["Weight"])
 			if (inventoryWeight + itemWeight) <= unencumberedLimit then
-				Logger:BasicDebug(string.format("Item weight %d will not encumber %s, with %d more room!",
+				Logger:BasicTrace(string.format("Item weight %d will not encumber %s, with %d more room!",
 					itemWeight,
 					partyMember,
 					unencumberedLimit - (inventoryWeight + itemWeight)))
@@ -119,7 +119,6 @@ function Processor:ProcessFiltersForItemAgainstParty(item, root, inventoryHolder
 		table.insert(partyMembers, player[1])
 	end
 
-	-- if itemFilter.Filters then
 	local numberOfFiltersToProcess = #itemFilter.Filters
 	for _ = 1, currentItemStackSize do
 		local eligiblePartyMembers = FilterInitialTargets_ByStackLimit(itemFilter,
@@ -136,18 +135,12 @@ function Processor:ProcessFiltersForItemAgainstParty(item, root, inventoryHolder
 		for i = 1, numberOfFiltersToProcess do
 			local filter = itemFilter.Filters[i]
 
-			if filter.Target then
-				---@cast filter TargetFilter
-				eligiblePartyMembers = FilterProcessors:ExecuteTargetFilter(filter, inventoryHolder, item)
-			elseif filter.CompareStategy then
-				--- @cast filter WeightedFilter
-				eligiblePartyMembers = FilterProcessors:ExecuteFilterAgainstEligiblePartyMembers(filter,
-					eligiblePartyMembers,
-					targetsWithAmountWon,
-					inventoryHolder,
-					item,
-					root)
-			end
+			eligiblePartyMembers = FilterProcessor:ExecuteFilterAgainstEligiblePartyMembers(filter,
+				eligiblePartyMembers,
+				targetsWithAmountWon,
+				inventoryHolder,
+				item,
+				root)
 
 			if #eligiblePartyMembers == 1 or i == numberOfFiltersToProcess then
 				local target
@@ -159,11 +152,10 @@ function Processor:ProcessFiltersForItemAgainstParty(item, root, inventoryHolder
 				end
 
 				Utils:AddItemToTable_AddingToExistingAmount(targetsWithAmountWon, target, 1)
-				Logger:BasicDebug("Winning command: " .. Ext.Json.Stringify(filter))
-				goto continue
+				Logger:BasicTrace("Winning command: " .. Ext.Json.Stringify(filter))
+				break
 			end
 		end
-		::continue::
 	end
 
 	ProcessWinners(targetsWithAmountWon, item, root, inventoryHolder)

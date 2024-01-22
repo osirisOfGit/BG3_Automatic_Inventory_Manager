@@ -1,15 +1,15 @@
 Config = {}
 
-local INITIAL_CONFIGS =  {
-		ENABLED = 1,
-		LOG_LEVEL = 3,
-		RESET_CONFIGS = 0,
-		SYNC_CONFIGS = 1,
-		SORT_ITEMS_ON_LOAD = 1,
-		FILTERS_DIR = 'filters/',
-		FILTER_TABLES = {},
-		SYNC_FILTERS = 1
-	}
+local INITIAL_CONFIGS = {
+	ENABLED = 1,
+	LOG_LEVEL = 3,
+	RESET_CONFIGS = 0,
+	SYNC_CONFIGS = 1,
+	SORT_ITEMS_ON_LOAD = 1,
+	FILTERS_DIR = 'filters/',
+	FILTER_TABLES = {},
+	SYNC_FILTERS = 1
+}
 
 PersistentVars = {
 	---@type ItemFilterMap
@@ -18,19 +18,19 @@ PersistentVars = {
 
 function Config:InitializeConfigurations()
 	PersistentVars.Config.RESET_CONFIGS = 0
-	
-	for mapName, mapValues in pairs(ItemFilters.ItemMaps) do
+
+	for mapName, mapValues in pairs(ItemFilters.itemMaps) do
 		table.insert(INITIAL_CONFIGS.FILTER_TABLES, mapName)
 		Utils:SaveTableToFile(PersistentVars.Config.FILTERS_DIR .. mapName .. ".json", mapValues)
 	end
-	
+
 	PersistentVars.Config = INITIAL_CONFIGS
 	Utils:SaveTableToFile("config.json", PersistentVars.Config)
 end
 
 function Config.SyncConfigsAndFilters()
 	Logger:ClearLogFile()
-	
+
 	local config = Utils:LoadFile("config.json")
 
 	if config then
@@ -40,14 +40,14 @@ function Config.SyncConfigsAndFilters()
 	if not config or config.RESET_CONFIGS == 1 then
 		Config:InitializeConfigurations()
 		Logger:BasicInfo("Initalizing all the configs!")
-		
+
 		config = PersistentVars.Config
 	end
 
 	if config.SYNC_CONFIGS == 1 then
 		PersistentVars.Config = config
 		Logger:BasicInfo("Syncing the config file!")
-		for mapName, _ in pairs(ItemFilters.ItemMaps) do
+		for mapName, _ in pairs(ItemFilters.itemMaps) do
 			local hasTableRecorded = false
 			for _, filterTable in pairs(PersistentVars.Config.FILTER_TABLES) do
 				if filterTable == mapName then
@@ -60,7 +60,7 @@ function Config.SyncConfigsAndFilters()
 				table.insert(PersistentVars.Config.FILTER_TABLES, mapName)
 			end
 		end
-		
+
 		PersistentVars.Config = PersistentVars.Config
 	end
 
@@ -74,34 +74,28 @@ function Config.SyncConfigsAndFilters()
 				local success, result = pcall(function()
 					---@type ItemFilterMap
 					local loadedFilterTable = Ext.Json.Parse(filterTable)
-					
-					if ItemFilters.ItemMaps[filterTableName] then
-						for key, itemFilter in pairs(ItemFilters.ItemMaps[filterTableName]) do
-							if not loadedFilterTable[key] then
-								loadedFilterTable[key] = itemFilter
-							end
-						end
-					end
-					ItemFilters.ItemMaps[filterTableName] = loadedFilterTable
 
-					PersistentVars.ItemFilters[filterTableName] = ItemFilters.ItemMaps[filterTableName]
+					ItemFilters:AddItemFilterMaps({ [filterTableName] = loadedFilterTable }, true, true, false)
+
+					PersistentVars.ItemFilters[filterTableName] = ItemFilters.itemMaps[filterTableName]
 				end)
 
 				if not success then
 					Logger:BasicError(string.format("Could not parse table %s due to error [%s]", filterTableName,
 						result))
 				else
-					Utils:SaveTableToFile(PersistentVars.Config.FILTERS_DIR .. filterTableName .. ".json", PersistentVars.ItemFilters[filterTableName])
+					Utils:SaveTableToFile(PersistentVars.Config.FILTERS_DIR .. filterTableName .. ".json",
+						PersistentVars.ItemFilters[filterTableName])
 				end
 			else
 				Logger:BasicWarning("Could not find filter table file " .. filterTableFilePath)
 			end
 		end
+	else
+		for itemFilterTableName, itemFilterTable in pairs(PersistentVars.ItemFilters) do
+			ItemFilters:AddItemFilterMaps({ [itemFilterTableName] = itemFilterTable }, true, true, false)
+		end
 	end
 
-	for itemFilterTableName, itemFilterTable in pairs(PersistentVars.ItemFilters) do
-		ItemFilters.ItemMaps[itemFilterTableName] = itemFilterTable
-	end
-
-	ItemFilters:CopyItemMaps()
+	ItemFilters:UpdateItemMapsClone()
 end

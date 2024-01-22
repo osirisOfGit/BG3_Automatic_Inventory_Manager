@@ -3,6 +3,7 @@ Logger = {}
 -- Largely stolen from Auto_Sell_Loot - https://www.nexusmods.com/baldursgate3/mods/2435 Thx m8 (｡･∀･)ﾉﾞ
 
 Logger.PrintTypes = {
+    TRACE = 5,
     DEBUG = 4,
     INFO = 3,
     WARNING = 2,
@@ -84,15 +85,18 @@ function Logger:BasicPrint(content, messageType, textColor, customPrefix, rainbo
 end
 
 function Logger:BasicError(content)
-    Logger:BasicPrint(content, Logger.PrintTypes.ERROR)
+    Logger:BasicPrint(content, Logger.PrintTypes.ERROR, TEXT_COLORS.red)
 end
 
 function Logger:BasicWarning(content)
-    Logger:BasicPrint(content, Logger.PrintTypes.WARNING)
+    Logger:BasicPrint(content, Logger.PrintTypes.WARNING, TEXT_COLORS.yellow)
 end
 
 function Logger:BasicDebug(content)
     Logger:BasicPrint(content, Logger.PrintTypes.DEBUG)
+end
+function Logger:BasicTrace(content)
+    Logger:BasicPrint(content, Logger.PrintTypes.TRACE)
 end
 
 function Logger:BasicInfo(content)
