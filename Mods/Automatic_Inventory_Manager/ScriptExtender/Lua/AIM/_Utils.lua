@@ -79,7 +79,6 @@ function Utils:DeeplyCopyTable(obj)
 	return copy(obj, nil, false)
 end
 
--- stolen from https://stackoverflow.com/questions/67781203/how-to-make-global-variables-immutable-in-lua-luaj
 --- Creates an immutable table
 ---@param tableName string
 ---@return table

@@ -226,12 +226,12 @@ These are the functions that identify targets that are eligible to receive the i
 
 ### Customizing AIM
 AIM is designed with four user-centric goals in mind:
-1. Users should be able to modify native ItemMaps without using a mod
-1. Users should be able to add custom ItemMaps with native ItemFilters using a mod
+1. Users should be able to modify native ItemMaps with or without using a mod
+1. Users should be able to add custom ItemMaps with native ItemFilters with or without using a mod
 1. Users should be able to add custom ItemFilters to native or custom ItemMaps using a mod
 1. Users should be able to disable the `Automatic` aspect of AIM and control when to execute the `IM` parts, using a mod (why? ¯\_(ツ)_/¯) 
 
-Goal 1 is accomplished through the use of `filters\` files - any user can add, modify, or delete the entries and have those changes be picked up, as long as the config.json has `SYNC_FILTERS` set to `1` (and `SYNC_CONFIGS`, if adding new ItemMaps that need to be added to the `FILTER_TABLES` property)
+Goal 1 is accomplished through the use of `filters\` files - any user can add, modify, or delete the entries and have those changes be picked up, as long as the config.json has `SYNC_FILTERS` set to `1` (and `SYNC_CONFIGS`, if adding new ItemMaps that need to be added to the `FILTER_TABLES` config property)
 
 Goals 2, 3, and 4 are accomplished by exposing what essentially amount to 3 different APIs via the ModTable:
 - ItemFilters, which contains the definitions for ItemMaps and all their subparts, and the functionality for choosing the appropriate ItemFilters for a given root/item/inventoryHolder
