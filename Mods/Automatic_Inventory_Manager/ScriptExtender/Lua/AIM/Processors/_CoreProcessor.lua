@@ -107,7 +107,7 @@ end
 
 Processor = {}
 
---- Processes the filters on the given params
+--- Processes the filters on the given params, moving the item(s) to the identified targets after all items in the stack have been processed
 ---@param item GUIDSTRING
 ---@param root GUIDSTRING
 ---@param inventoryHolder CHARACTER
