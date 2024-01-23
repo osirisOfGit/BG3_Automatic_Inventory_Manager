@@ -336,7 +336,7 @@ function ItemFilters:AddItemFilterLookupFunction(lookupFuncs)
 	end
 end
 
---- Finds all Filters for the given item
+--- Finds all ItemFilters for the given item
 ---@tparam string item 
 ---@tparam string root 
 ---@tparam string inventoryHolder
