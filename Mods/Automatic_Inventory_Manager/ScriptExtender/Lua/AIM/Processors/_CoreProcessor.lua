@@ -1,4 +1,4 @@
---- @module "AIM.Processors._CoreProcesor"
+--- @module "Processors._CoreProcesor"
 
 Ext.Require("AIM/Processors/_FilterProcessors.lua")
 

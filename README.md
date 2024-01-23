@@ -18,12 +18,12 @@ All these values are stored in the [PersistentVars](https://github.com/Norbyte/b
 | Property Name (case sensitive) | value(s) | default | 
 |--------------|-----------|-----------|
 | ENABLED | 0 for disabled, 1 for enabled. Just disables the processing and tagging of items, configs will still be processed and synced (see SYNC_* properties) | 1 |
-| FILTER_TABLES | array of files in `filters\` to load - case-sensitive. Leave off the .json. If creating a new ItemMap, it needs to be added here to be picked up | `["Equipment", "Roots", "Weapons", "RootPartial", "Tags" ]` |
+| FILTER_TABLES | array of files in `filters\` to load - case-sensitive. Leave off the .json. If creating a new ItemMap file without registering it through the API (so just adding the .json to the directory), it needs to be added here to be picked up. Any itemMaps added through the API will be automatically added. | `["Equipment", "Roots", "Weapons", "RootPartial", "Tags" ]`|
 | LOG_LEVEL | `TRACE = 5, DEBUG = 4, INFO = 3, WARNING = 2, ERROR = 1, OFF = 0` HIGHLY recommended to leave at INFO or below, as writing logs is extremely performance intensive and if you have any items with stack counts in the hundreds or thousands, like gold, it will appear as though your game is frozen. Only increase this if you're actively debugging an issue for a select item.| 3 |
 | RESET_CONFIGS | 1 if you want to completely reinitialize, as if you had deleted the folder (but doesn't wipe out mod-added `filters\` files | 0 |
 | SORT_ITEMS_ON_LOAD | 1 if you want to execute items when you load a save, 0 if you just want it to happen when picking up an item | 1 |
 | SYNC_CONFIGS | 1 to update the PersistentVars with the config.json values on each load, 0 otherwise | 1 |
-| SYNC_FILTERS | 1 to update the PersistentVars with the `filters/` file values (as identified by FILTER_TABLES, 0 otherwise | 1 |
+| SYNC_FILTERS | 1 to update the PersistentVars with the `filters/` file values (as identified by FILTER_TABLES), 0 otherwise | 1 |
 
 ## How and when does this mod even work?
 

@@ -1,4 +1,4 @@
---- @module "AIM.Processors._ProcessorUtils"
+--- @module "Processors._ProcessorUtils"
 
 ProcessorUtils = {}
 
