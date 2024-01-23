@@ -165,6 +165,25 @@ function FilterProcessor:AddNewFilterProcessor(predicateFunction, filterProcesso
 	filterProcessors[predicateFunction] = filterProcessor
 end
 
+--- The table that's passed to each FilterProcessor
+--- @field winners GUIDSTRING[] List of targets that pass the filter - should be set by the FilterProcessor
+--- @field winningVal any value identified by the filter that is currently the victor across all partyMembers
+--- @field targetsWithAmountWon table<GUIDSTRING, number> copy of the winners table across all filters being run for the given item (resets each stack iteration)
+--- @field filter Filter being executed
+--- @field item GUIDSTRING being sorted
+--- @field root GUIDSTRING rootTemplate of the item
+--- @field inventoryHolder CHARACTER
+--- @table FilterParamMap
+FilterProcessor.ParamMap = {
+	winners = nil,
+	winningVal = nil,
+	filter = nil,
+	inventoryHolder = nil,
+	item = nil,
+	root = nil,
+	targetsWithAmountWon = nil,
+}
+
 --- Executes the provided Filter against the provided params. Any exceptions will be logged, swallowed, and whatever the value of the winners table was at exception time will be returned
 --- @param filter Filter
 --- @param eligiblePartyMembers GUIDSTRING[]
@@ -179,15 +198,7 @@ function FilterProcessor:ExecuteFilterAgainstEligiblePartyMembers(filter,
 																  inventoryHolder,
 																  item,
 																  root)
-	--- @class FilterParamMap
-	--- @field winners GUIDSTRING[] List of targets that pass the filter - should be set by the FilterProcessor
-	--- @field winningVal any value identified by the filter that is currently the victor across all partyMembers
-	--- @field targetsWithAmountWon table<GUIDSTRING, number> copy of the winners table across all filters being run for the given item (resets each stack iteration)
-	--- @field filter Filter being executed
-	--- @field item GUIDSTRING being sorted
-	--- @field root GUIDSTRING rootTemplate of the item
-	--- @field inventoryHolder CHARACTER
-	local paramMap = {
+	FilterProcessor.ParamMap = {
 		winners = {},
 		winningVal = nil,
 		filter = filter,

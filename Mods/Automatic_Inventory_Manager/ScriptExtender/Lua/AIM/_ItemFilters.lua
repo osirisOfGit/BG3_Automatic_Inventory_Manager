@@ -215,7 +215,7 @@ end
 
 --- For each itemFilterMap, will just add to the superset if the map is not already known, otherwise will do a recursive merge,
 --- adding any Filters that are not already added, incrementing the priority to the next highest number if taken.
----@param itemFilterMaps
+---@param itemFilterMaps table of mapName:ItemFilters[] to add
 ---@param forceOverride if the itemFilterMap is already known, will just completely overwrite with the provided map instead of merging
 ---@param prioritizeNewFilters if merging in a filter for an existing ItemFilter, and an existing filter shares the same priority, the provided filter will be given higher priority
 ---@param updateItemMapClone if we should update ItemFilters.itemMap after merging - performance flag in case there are multiple, independent loads that need to happen
@@ -322,10 +322,11 @@ local itemFilterLookups = {
 }
 
 --- Add custom function(s) to use to find ItemFilters for a given item - each function should accept:
---- 1. table<string, table<string, ItemFilter>> - immutable copy of all the itemMaps to perform lookup against
---- 2. GUIDSTRING - the root template of the item being sorted
---- 3. GUIDSTRING - the item being sorted
---- 4. GUIDSTRING - the inventoryHolder
+--- 
+--- <br/>1. table<string, table<string, ItemFilter>> - immutable copy of all the itemMaps to perform lookup against
+--- <br/>2. GUIDSTRING - the root template of the item being sorted
+--- <br/>3. GUIDSTRING - the item being sorted
+--- <br/>4. GUIDSTRING - the inventoryHolder
 ---
 --- and return a list of ItemFilters
 ---@tparam function[] lookupFuncs 
