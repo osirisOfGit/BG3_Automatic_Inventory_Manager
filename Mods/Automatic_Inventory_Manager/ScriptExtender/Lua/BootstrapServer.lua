@@ -9,4 +9,3 @@ Ext.Require("AIM/Listeners/_Initializers.lua")
 -- CORE LOGIC
 Ext.Require("AIM/Processors/_CoreProcessor.lua")
 Ext.Require("AIM/Listeners/_ItemEvents.lua")
-Ext.Require("AIM/main.lua")

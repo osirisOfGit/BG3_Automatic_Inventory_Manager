@@ -29,7 +29,7 @@ local function DetermineAndExecuteFiltersForItem(root, item, inventoryHolder, ig
 	if PersistentVars.Config.ENABLED == 1 then
 		RemoveItemFromTracker_IfAlreadySorted(root, item, inventoryHolder)
 
-		if not ignoreProcessedTag and Osi.IsTagged(item, TAG_AIM_PROCESSED) == 1 then
+		if ignoreProcessedTag == false and Osi.IsTagged(item, TAG_AIM_PROCESSED) == 1 then
 			Logger:BasicDebug("Item was already processed, skipping!")
 			return
 		end
