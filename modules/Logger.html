@@ -1,0 +1,285 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>ldoc</h1>
+
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/AIM.Processors._CoreProcesor.html">AIM.Processors._CoreProcesor</a></li>
+  <li><a href="../modules/AIM.Processors._FilterProcessors.html">AIM.Processors._FilterProcessors</a></li>
+  <li><a href="../modules/AIM.Processors._ProcessorUtils.html">AIM.Processors._ProcessorUtils</a></li>
+  <li><a href="../modules/ItemFilters.html">ItemFilters</a></li>
+  <li><strong>Logger</strong></li>
+  <li><a href="../modules/Utils.html">Utils</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>Logger</code></h1>
+<p>Third party mods are encouraged to handle their own logging, for better traceability, but exposing this for my own convenience.</p>
+<p>
+ It's HIGHLY recommended to keep the logging to a minimum, especially logs that are created per FilterProcessor iteration, as writing logs to the log file
+ is extremely performance intensive. May look into refactoring in the future, but for now, users can just set their log levels appropriately.
+</p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#BasicPrint">BasicPrint (content, messageType, textColor, customPrefix, rainbowText, prefixLength)</a></td>
+	<td class="summary">Function to print text with custom colors, message type, custom prefix, rainbowText ,and prefix length</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#BasicError">BasicError (content)</a></td>
+	<td class="summary">Convenience function for Error Logs</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#BasicWarning">BasicWarning (content)</a></td>
+	<td class="summary">Convenience function for Warning Logs</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#BasicDebug">BasicDebug (content)</a></td>
+	<td class="summary">Convenience function for Debug Logs</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#BasicTrace">BasicTrace (content)</a></td>
+	<td class="summary">Convenience function for Trace Logs</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#BasicInfo">BasicInfo (content)</a></td>
+	<td class="summary">Convenience function for Info Logs</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#LogMessage">LogMessage (message)</a></td>
+	<td class="summary">Saves the log to the log.txt</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#ClearLogFile">ClearLogFile ()</a></td>
+	<td class="summary">Wipes the log file</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "BasicPrint"></a>
+    <strong>BasicPrint (content, messageType, textColor, customPrefix, rainbowText, prefixLength)</strong>
+    </dt>
+    <dd>
+    Function to print text with custom colors, message type, custom prefix, rainbowText ,and prefix length
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">content</span>
+
+        </li>
+        <li><span class="parameter">messageType</span>
+
+        </li>
+        <li><span class="parameter">textColor</span>
+
+        </li>
+        <li><span class="parameter">customPrefix</span>
+
+        </li>
+        <li><span class="parameter">rainbowText</span>
+
+        </li>
+        <li><span class="parameter">prefixLength</span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "BasicError"></a>
+    <strong>BasicError (content)</strong>
+    </dt>
+    <dd>
+    Convenience function for Error Logs
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">content</span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "BasicWarning"></a>
+    <strong>BasicWarning (content)</strong>
+    </dt>
+    <dd>
+    Convenience function for Warning Logs
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">content</span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "BasicDebug"></a>
+    <strong>BasicDebug (content)</strong>
+    </dt>
+    <dd>
+    Convenience function for Debug Logs
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">content</span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "BasicTrace"></a>
+    <strong>BasicTrace (content)</strong>
+    </dt>
+    <dd>
+    Convenience function for Trace Logs
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">content</span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "BasicInfo"></a>
+    <strong>BasicInfo (content)</strong>
+    </dt>
+    <dd>
+    Convenience function for Info Logs
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">content</span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "LogMessage"></a>
+    <strong>LogMessage (message)</strong>
+    </dt>
+    <dd>
+    Saves the log to the log.txt
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">message</span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "ClearLogFile"></a>
+    <strong>ClearLogFile ()</strong>
+    </dt>
+    <dd>
+    Wipes the log file
+
+
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/lunarmodules/LDoc">LDoc 1.5.0</a></i>
+<i style="float:right;">Last updated 2024-01-23 00:25:32 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

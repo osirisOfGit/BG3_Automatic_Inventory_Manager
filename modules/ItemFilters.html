@@ -44,16 +44,16 @@
   <li><a href="../modules/AIM.Processors._CoreProcesor.html">AIM.Processors._CoreProcesor</a></li>
   <li><a href="../modules/AIM.Processors._FilterProcessors.html">AIM.Processors._FilterProcessors</a></li>
   <li><a href="../modules/AIM.Processors._ProcessorUtils.html">AIM.Processors._ProcessorUtils</a></li>
-  <li><strong>AIM._ItemFilters</strong></li>
-  <li><a href="../modules/AIM._Logger.html">AIM._Logger</a></li>
-  <li><a href="../modules/AIM._Utils.html">AIM._Utils</a></li>
+  <li><strong>ItemFilters</strong></li>
+  <li><a href="../modules/Logger.html">Logger</a></li>
+  <li><a href="../modules/Utils.html">Utils</a></li>
 </ul>
 
 </div>
 
 <div id="content">
 
-<h1>Module <code>AIM._ItemFilters</code></h1>
+<h1>Module <code>ItemFilters</code></h1>
 <p></p>
 <p></p>
 
@@ -61,26 +61,26 @@
 <h2><a href="#Functions">Functions</a></h2>
 <table class="function_list">
 	<tr>
-	<td class="name" nowrap><a href="#ItemFilters:CompareFilter">ItemFilters:CompareFilter (..., ...)</a></td>
+	<td class="name" nowrap><a href="#CompareFilter">CompareFilter (first, second)</a></td>
 	<td class="summary">Compare two Filter tables</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#ItemFilters:AddItemFilterMaps">ItemFilters:AddItemFilterMaps (itemFilterMaps, forceOverride, prioritizeNewFilters, updateItemMapClone)</a></td>
+	<td class="name" nowrap><a href="#AddItemFilterMaps">AddItemFilterMaps (itemFilterMaps, forceOverride, prioritizeNewFilters, updateItemMapClone)</a></td>
 	<td class="summary">For each itemFilterMap, will just add to the superset if the map is not already known, otherwise will do a recursive merge,
  adding any Filters that are not already added, incrementing the priority to the next highest number if taken.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#ItemFilters:UpdateItemMapsClone">ItemFilters:UpdateItemMapsClone ()</a></td>
+	<td class="name" nowrap><a href="#UpdateItemMapsClone">UpdateItemMapsClone ()</a></td>
 	<td class="summary">Updates ItemFilters.itemMaps</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#ItemFilters:AddItemFilterLookupFunction">ItemFilters:AddItemFilterLookupFunction (lookupFuncs)</a></td>
+	<td class="name" nowrap><a href="#AddItemFilterLookupFunction">AddItemFilterLookupFunction (lookupFuncs)</a></td>
 	<td class="summary">Add custom function(s) to use to find ItemFilters for a given item - each function should accept:
 
  <br/>1.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#ItemFilters:SearchForItemFilters">ItemFilters:SearchForItemFilters (item, root, inventoryHolder)</a></td>
+	<td class="name" nowrap><a href="#SearchForItemFilters">SearchForItemFilters (item, root, inventoryHolder)</a></td>
 	<td class="summary">Finds all Filters for the given item</td>
 	</tr>
 </table>
@@ -99,14 +99,14 @@
 	<td class="summary">Used by Compare Filters to identify the criteria that party members are filtered on</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#ItemFilters.ItemKeys">ItemFilters.ItemKeys</a></td>
+	<td class="name" nowrap><a href="#ItemKeys">ItemKeys</a></td>
 	<td class="summary">Convenience table for keys that are common across ItemMaps</td>
 	</tr>
 </table>
 <h2><a href="#Fields">Fields</a></h2>
 <table class="function_list">
 	<tr>
-	<td class="name" nowrap><a href="#ItemFilters.itemMaps">ItemFilters.itemMaps</a></td>
+	<td class="name" nowrap><a href="#itemMaps">itemMaps</a></td>
 	<td class="summary">immutable clone of the itemMaps - can be forceably synced using UpdateItemMapsClone, but we'll do it on each update we know about</td>
 	</tr>
 </table>
@@ -119,8 +119,8 @@
 
     <dl class="function">
     <dt>
-    <a name = "ItemFilters:CompareFilter"></a>
-    <strong>ItemFilters:CompareFilter (..., ...)</strong>
+    <a name = "CompareFilter"></a>
+    <strong>CompareFilter (first, second)</strong>
     </dt>
     <dd>
     Compare two Filter tables
@@ -128,13 +128,11 @@
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">...</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">{string,</a></span>
-        }} second
+        <li><span class="parameter">first</span>
+
         </li>
-        <li><span class="parameter">...</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">{string,</a></span>
-        }} second
+        <li><span class="parameter">second</span>
+
         </li>
     </ul>
 
@@ -150,8 +148,8 @@
 
 </dd>
     <dt>
-    <a name = "ItemFilters:AddItemFilterMaps"></a>
-    <strong>ItemFilters:AddItemFilterMaps (itemFilterMaps, forceOverride, prioritizeNewFilters, updateItemMapClone)</strong>
+    <a name = "AddItemFilterMaps"></a>
+    <strong>AddItemFilterMaps (itemFilterMaps, forceOverride, prioritizeNewFilters, updateItemMapClone)</strong>
     </dt>
     <dd>
     For each itemFilterMap, will just add to the superset if the map is not already known, otherwise will do a recursive merge,
@@ -180,8 +178,8 @@
 
 </dd>
     <dt>
-    <a name = "ItemFilters:UpdateItemMapsClone"></a>
-    <strong>ItemFilters:UpdateItemMapsClone ()</strong>
+    <a name = "UpdateItemMapsClone"></a>
+    <strong>UpdateItemMapsClone ()</strong>
     </dt>
     <dd>
     Updates ItemFilters.itemMaps
@@ -194,13 +192,13 @@
 
 </dd>
     <dt>
-    <a name = "ItemFilters:AddItemFilterLookupFunction"></a>
-    <strong>ItemFilters:AddItemFilterLookupFunction (lookupFuncs)</strong>
+    <a name = "AddItemFilterLookupFunction"></a>
+    <strong>AddItemFilterLookupFunction (lookupFuncs)</strong>
     </dt>
     <dd>
     Add custom function(s) to use to find ItemFilters for a given item - each function should accept:
 
- <br/>1.  table<string, table<string, ItemFilter>> - immutable copy of all the itemMaps to perform lookup against
+ <br/>1.  table(string, table(string, ItemFilter)) - immutable copy of all the itemMaps to perform lookup against
  <br/>2. GUIDSTRING - the root template of the item being sorted
  <br/>3. GUIDSTRING - the item being sorted
  <br/>4. GUIDSTRING - the inventoryHolder
@@ -222,8 +220,8 @@
 
 </dd>
     <dt>
-    <a name = "ItemFilters:SearchForItemFilters"></a>
-    <strong>ItemFilters:SearchForItemFilters (item, root, inventoryHolder)</strong>
+    <a name = "SearchForItemFilters"></a>
+    <strong>SearchForItemFilters (item, root, inventoryHolder)</strong>
     </dt>
     <dd>
     Finds all Filters for the given item
@@ -347,8 +345,8 @@
 
 </dd>
     <dt>
-    <a name = "ItemFilters.ItemKeys"></a>
-    <strong>ItemFilters.ItemKeys</strong>
+    <a name = "ItemKeys"></a>
+    <strong>ItemKeys</strong>
     </dt>
     <dd>
     Convenience table for keys that are common across ItemMaps
@@ -371,8 +369,8 @@
 
     <dl class="function">
     <dt>
-    <a name = "ItemFilters.itemMaps"></a>
-    <strong>ItemFilters.itemMaps</strong>
+    <a name = "itemMaps"></a>
+    <strong>itemMaps</strong>
     </dt>
     <dd>
     immutable clone of the itemMaps - can be forceably synced using UpdateItemMapsClone, but we'll do it on each update we know about
@@ -391,7 +389,7 @@
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/lunarmodules/LDoc">LDoc 1.5.0</a></i>
-<i style="float:right;">Last updated 2024-01-23 00:01:33 </i>
+<i style="float:right;">Last updated 2024-01-23 00:25:32 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>
