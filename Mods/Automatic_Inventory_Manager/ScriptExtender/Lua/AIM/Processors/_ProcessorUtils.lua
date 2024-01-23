@@ -28,8 +28,8 @@ end
 ---@param comparator CompareStrategy
 ---@param winnersTable table
 ---@param targetPartyMember GUIDSTRING
----@return table winners table of winners - will either append the targetPartyMember if the values were equal, or replace the table with just targetPartyMember if the challenger won
----@return number winningVal value that won in the compare, or baseValue if both were equal
+---@return table of winners - will either append the targetPartyMember if the values were equal, or replace the table with just targetPartyMember if the challenger won
+---@return number that won in the compare, or baseValue if both were equal
 function ProcessorUtils:SetWinningVal_ByCompareResult(baseValue,
 													  challengerValue,
 													  comparator,
@@ -76,7 +76,7 @@ end
 --- @param inventoryHolder CHARACTER
 --- @param root GUIDSTRING
 --- @param item GUIDSTRING
---- @return number totalStackSize
+--- @return number the calculated stack size
 function ProcessorUtils:CalculateTotalItemCount(targetsWithAmountWon,
 												targetChar,
 												inventoryHolder,

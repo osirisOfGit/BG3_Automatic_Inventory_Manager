@@ -1,4 +1,4 @@
---- @module "AIM._Utils"
+--- @module "Utils"
 
 PersistentVars = {}
 Utils = {}
@@ -21,7 +21,7 @@ function Utils:BuildTargetFilePath(filepath)
 	return Utils.MOD_INFO().Directory .. "/" .. filepath
 end
 
---- Convenience for saving a file under the mod directory
+--- Convenience for saving a file under the AIM mod directory
 ---@param filepath string relative to the mod dir (e.g. filters/weapons.json)
 ---@param content any will be stringified using Ext.Json.Stringify
 function Utils:SaveTableToFile(filepath, content)
@@ -36,7 +36,7 @@ function Utils:SaveTableToFile(filepath, content)
 	end
 end
 
---- Convenience for loading a file under the mod directory
+--- Convenience for loading a file under the AIM mod directory
 ---@param filepath string relative to the mod directory
 ---@return string|nil
 function Utils:LoadFile(filepath)

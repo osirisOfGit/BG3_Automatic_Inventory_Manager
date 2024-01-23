@@ -1,4 +1,4 @@
---- @module "AIM._ItemFilters"
+--- @module "ItemFilters"
 
 ItemFilters = {}
 
@@ -36,8 +36,8 @@ ItemFilters.ItemKeys = {
 }
 
 ---Compare two Filter tables
----@tparam {string, {...}} first
----@tparam {string, {...}} second
+---@param first
+---@param second
 ---@treturn boolean true if the tables are equal
 function ItemFilters:CompareFilter(first, second)
 	local isEqual = false
@@ -161,8 +161,8 @@ itemMaps.RootPartial = {
 }
 
 ---
----@tparam {{}...} targetItemFilter the existing ItemFilter to merge into
----@tparam {{}...} newItemFilters the ItemFilters to add to the table
+---@param targetItemFilter the existing ItemFilter to merge into
+---@param newItemFilters the ItemFilters to add to the table
 ---@tparam boolean prioritizeNewFilters if merging in a filter for an existing ItemFilter, and an existing filter shares the same priority, the provided filter will be given higher priority
 local function MergeItemFiltersIntoTarget(targetItemFilter, newItemFilters, prioritizeNewFilters)
 	for _, newItemFilter in pairs(newItemFilters) do
@@ -323,7 +323,7 @@ local itemFilterLookups = {
 
 --- Add custom function(s) to use to find ItemFilters for a given item - each function should accept:
 --- 
---- <br/>1. table<string, table<string, ItemFilter>> - immutable copy of all the itemMaps to perform lookup against
+--- <br/>1. table(string, table(string, ItemFilter)) - immutable copy of all the itemMaps to perform lookup against
 --- <br/>2. GUIDSTRING - the root template of the item being sorted
 --- <br/>3. GUIDSTRING - the item being sorted
 --- <br/>4. GUIDSTRING - the inventoryHolder

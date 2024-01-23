@@ -49,8 +49,8 @@ if Ext.Mod.IsModLoaded("23bdda0c-a671-498f-89f5-a69e8d3a4b52") then
 				table.insert(filters, armorItemMap[item])
 			end
 		
-			if armorItemMap["ALL"] then
-				table.insert(filters, armorItemMap["ALL"])
+			if armorItemMap[Mods.Automatic_Inventory_Manager.ItemFilters.ItemKeys.WILDCARD] then
+				table.insert(filters, armorItemMap[Mods.Automatic_Inventory_Manager.ItemFilters.ItemKeys.WILDCARD])
 			end
 		end
 

@@ -159,8 +159,8 @@ end] = function(partyMember, paramMap)
 end
 
 --- Add a new filter processor -
----@param predicateFunction function<Filter, boolean> Should test the filter to see if the filterProcessor can process it
----@param filterProcessor function<CHARACTER, FilterParamMap> proceses the filter against the provided character, setting FilterParamMap.winners and optionally FilterParamMap.winningVal
+---@param predicateFunction function(Filter, boolean) Should test the filter to see if the filterProcessor can process it, returning true if 
+---@param filterProcessor function(CHARACTER, ParamMap) proceses the filter against the provided character, setting ParamMap.winners and optionally ParamMap.winningVal
 function FilterProcessor:AddNewFilterProcessor(predicateFunction, filterProcessor)
 	filterProcessors[predicateFunction] = filterProcessor
 end

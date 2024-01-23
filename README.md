@@ -1,5 +1,5 @@
 # "Automatic" Inventory Manager (AIM)
-Emphasis on the air quotes.
+If you process the world in if statements, then oh boy, is this the mod for you!
 
 ### Disclaimer
 This mod isn't actually particular useful from a functionality standpoint thanks to Larian's Magic Pockets, multi-select, and Filter implementations - if you're looking at this mod because you think you need to move items and gear to a character before you can use them, or because you don't know about the built-in filters and have trouble finding items, or because you don't know you can select multiple items in your inventory by shift-clicking, then you'll be happy to know that Larian has largely solved these problems already. Play around! 
@@ -19,7 +19,7 @@ All these values are stored in the [PersistentVars](https://github.com/Norbyte/b
 |--------------|-----------|-----------|
 | ENABLED | 0 for disabled, 1 for enabled. Just disables the processing and tagging of items, configs will still be processed and synced (see SYNC_* properties) | 1 |
 | FILTER_TABLES | array of files in `filters\` to load - case-sensitive. Leave off the .json. If creating a new ItemMap, it needs to be added here to be picked up | `["Equipment", "Roots", "Weapons", "RootPartial", "Tags" ]` |
-| LOG_LEVEL | `TRACE = 5, DEBUG = 4, INFO = 3, WARNING = 2, ERROR = 1, OFF = 0` | 3 |
+| LOG_LEVEL | `TRACE = 5, DEBUG = 4, INFO = 3, WARNING = 2, ERROR = 1, OFF = 0` HIGHLY recommended to leave at INFO or below, as writing logs is extremely performance intensive and if you have any items with stack counts in the hundreds or thousands, like gold, it will appear as though your game is frozen. Only increase this if you're actively debugging an issue for a select item.| 3 |
 | RESET_CONFIGS | 1 if you want to completely reinitialize, as if you had deleted the folder (but doesn't wipe out mod-added `filters\` files | 0 |
 | SORT_ITEMS_ON_LOAD | 1 if you want to execute items when you load a save, 0 if you just want it to happen when picking up an item | 1 |
 | SYNC_CONFIGS | 1 to update the PersistentVars with the config.json values on each load, 0 otherwise | 1 |
@@ -79,21 +79,21 @@ A list, ordered in priority with 1 being the highest priority, of instructions t
 
 After each filter is evaluated, if there's more than one possible target still leftover, then the next filter will be processed. If all filters have been processed and there's still more than one possible target, a random target will be chosen.
 
-The filter priority can be arbitrarily high, to communicate that a given filter should be considered after any other filters found in different ItemFilters. For example, Tags contains the entry `CONSUMABLE` which has a WeightedFilter for `STACK_AMOUNT` set at priority 99, and the entry `HEALING_POTION` with two WeightFilters at priorities 1 and 2 - that way, all healing potions, which have both tags, only execute the `CONSUMABLE` filter if the `HEALING_POTION` filters can't isolate a single target.
+The filter priority can be arbitrarily high, to communicate that a given filter should be considered after any other filters found in different ItemFilters. For example, Tags contains the entry `CONSUMABLE` which has a CompareFilter for `STACK_AMOUNT` set at priority 99, and the entry `HEALING_POTION` with two WeightFilters at priorities 1 and 2 - that way, all healing potions, which have both tags, only execute the `CONSUMABLE` filter if the `HEALING_POTION` filters can't isolate a single target.
 
 There are two variations of Filters that are currently implemented:
 
 <details>
-<summary>Weighted Filters</summary>
+<summary>Compare Filters</summary>
 Inspects and compares the value of a specific stat on the eligible party members, using the Compare Strategy to determine the "winner"
 
 ```mermaid
 classDiagram
-    WeightedFilter --> TargetStat 
-    WeightedFilter --> CompareStrategy
-    WeightedFilter --> TargetSubStat
+    CompareFilter --> TargetStat 
+    CompareFilter --> CompareStrategy
+    CompareFilter --> TargetSubStat
     
-    class WeightedFilter{
+    class CompareFilter{
         TargetStat required
         CompareStrategy required
         TargetSubStat optional
@@ -144,7 +144,7 @@ For example, Tags contains the following entry:
 		}
 	},
 ```
-This uses two WeightedFilters: the highest priority is Skill Type, the second highest is Stack Amount. When an item using the `LOCKPICK` tag is picked up, it will be processed by a FilterProcessor using this filter, which will first find the party member(s) with the highest SleightOfHand skill value - if multiple party members have the same highest value, then the amount of lockpicks in each party member's inventory will be compared and a winner chosen based on that.
+This uses two CompareFilters: the highest priority is Skill Type, the second highest is Stack Amount. When an item using the `LOCKPICK` tag is picked up, it will be processed by a FilterProcessor using this filter, which will first find the party member(s) with the highest SleightOfHand skill value - if multiple party members have the same highest value, then the amount of lockpicks in each party member's inventory will be compared and a winner chosen based on that.
 
 So if your party is setup with the following data:
 | Party Member | Sleight Of Hand Skill | Number of Lockpicks in Inventory |
@@ -212,7 +212,7 @@ For example, Tags contains the following entries:
 
 When any item with the tag `CAMPSUPPLIES` is processed, it will be sent straight to the camp chest, no further evaluation needed.
 
-When any item with the tag `SCROLL` is processed, it will first be run through the WeightedFilter for STACK_AMOUNT, and if multiple party members hold the same amount of the scroll, or if nobody currently has this scroll in their inventory, then the character that originally picked up the item will be chosen (this is done to prevent the user from having to search for the scroll if nobody currently has one in their inventory)
+When any item with the tag `SCROLL` is processed, it will first be run through the CompareFilter for STACK_AMOUNT, and if multiple party members hold the same amount of the scroll, or if nobody currently has this scroll in their inventory, then the character that originally picked up the item will be chosen (this is done to prevent the user from having to search for the scroll if nobody currently has one in their inventory)
 </details>
 
 ##### Modifiers
@@ -243,7 +243,11 @@ Goals 2, 3, and 4 are accomplished by exposing what essentially amount to 3 diff
 
 plus Logger, ProcessorUtils, and general Utils.
 
-More information on utilizing these APIs can found in the [API.md](./API.md)
+#### API Information
+This project uses [LDoc](https://github.com/lunarmodules/ldoc) to generate its documentation, which can be found at https://cameron-meyer.github.io/BG3_Automatic_Inventory_Manager. 
+
+All documented modules, functions, and tables are accessible via Mods.Automatic_Inventory_Manager.{module} - an example of a mod that uses the API to full effect can be found at [Example/Mods/Mod_Using_AIM](https://github.com/Cameron-Meyer/BG3_Automatic_Inventory_Manager/tree/master/Example/Mods/Mod_Using_AIM)
+
 
 ## Future Enhancements
 - [ ] Automatically loot corpses after a battle, directing characters to loot the items they "win"

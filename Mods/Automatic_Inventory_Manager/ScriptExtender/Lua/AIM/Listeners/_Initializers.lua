@@ -10,15 +10,19 @@ local function ResetItemStacks()
 end
 
 Ext.Events.ResetCompleted:Subscribe(function(_)
-	Config:SyncConfigsAndFilters()
-	ResetItemStacks()
+	if PersistentVars.Config.ENABLED == 1 then
+		Config:SyncConfigsAndFilters()
+		ResetItemStacks()
+	end
 end)
 
 Ext.Osiris.RegisterListener("LevelGameplayStarted", 2, "after", function(level, _)
-	if level == "SYS_CC_I" then return end
-	if PersistentVars.Config.SORT_ITEMS_ON_LOAD == 1 then
-		Logger:BasicDebug("Resorting items on level load!")
-		ResetItemStacks()
+	if PersistentVars.Config.ENABLED == 1 then
+		if level == "SYS_CC_I" then return end
+		if PersistentVars.Config.SORT_ITEMS_ON_LOAD == 1 then
+			Logger:BasicDebug("Resorting items on level load!")
+			ResetItemStacks()
+		end
 	end
 end)
 

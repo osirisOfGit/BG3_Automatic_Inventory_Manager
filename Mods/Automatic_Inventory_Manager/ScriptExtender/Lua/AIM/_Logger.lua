@@ -1,4 +1,7 @@
---- @module "AIM._Logger"
+--- Third party mods are encouraged to handle their own logging, for better traceability, but exposing this for my own convenience. 
+--- It's HIGHLY recommended to keep the logging to a minimum, especially logs that are created per FilterProcessor iteration, as writing logs to the log file 
+--- is extremely performance intensive. May look into refactoring in the future, but for now, users can just set their log levels appropriately.
+--- @module "Logger"
 
 Logger = {}
 
@@ -61,7 +64,7 @@ local function GetRainbowText(text)
     return coloredText
 end
 
--- Function to print text with custom colors, message type, custom prefix, rainbowText ,and prefix length
+--- Function to print text with custom colors, message type, custom prefix, rainbowText ,and prefix length
 function Logger:BasicPrint(content, messageType, textColor, customPrefix, rainbowText, prefixLength)
     if PersistentVars.Config and PersistentVars.Config.LOG_LEVEL and tonumber(PersistentVars.Config.LOG_LEVEL) >= messageType then
 		prefixLength=prefixLength or 15
@@ -86,32 +89,40 @@ function Logger:BasicPrint(content, messageType, textColor, customPrefix, rainbo
     end
 end
 
+--- Convenience function for Error Logs
 function Logger:BasicError(content)
     Logger:BasicPrint(content, Logger.PrintTypes.ERROR, TEXT_COLORS.red)
 end
 
+--- Convenience function for Warning Logs
 function Logger:BasicWarning(content)
     Logger:BasicPrint(content, Logger.PrintTypes.WARNING, TEXT_COLORS.yellow)
 end
 
+--- Convenience function for Debug Logs
 function Logger:BasicDebug(content)
     Logger:BasicPrint(content, Logger.PrintTypes.DEBUG)
 end
+
+--- Convenience function for Trace Logs
 function Logger:BasicTrace(content)
     Logger:BasicPrint(content, Logger.PrintTypes.TRACE)
 end
 
+--- Convenience function for Info Logs
 function Logger:BasicInfo(content)
     Logger:BasicPrint(content, Logger.PrintTypes.INFO)
 end
 
 local logPath = 'log.txt'
+--- Saves the log to the log.txt
 function Logger:LogMessage(message)
     local fileContent = Utils:LoadFile(logPath) or ""
     local logMessage = Ext.Utils.MonotonicTime() .. " " .. message
     Ext.IO.SaveFile(Utils:BuildTargetFilePath(logPath), fileContent .. logMessage .. "\n")
 end
 
+--- Wipes the log file
 function Logger:ClearLogFile()
     if Utils:LoadFile(logPath) then
         Ext.IO.SaveFile(Utils:BuildTargetFilePath(logPath), "")
