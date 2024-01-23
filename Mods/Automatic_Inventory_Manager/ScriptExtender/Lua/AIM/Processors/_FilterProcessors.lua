@@ -212,7 +212,7 @@ function FilterProcessor:ExecuteFilterAgainstEligiblePartyMembers(filter,
 		for predicate, filterProcessor in pairs(filterProcessors) do
 			if predicate(filter) then
 				for _, partyMember in pairs(eligiblePartyMembers) do
-					filterProcessor(partyMember, paramMap)
+					filterProcessor(partyMember, FilterProcessor.ParamMap)
 				end
 				break
 			end
@@ -221,8 +221,8 @@ function FilterProcessor:ExecuteFilterAgainstEligiblePartyMembers(filter,
 
 	if not success then
 		Logger:BasicError(string.format("Got error while attempting to process filter with paramMap %s: %s",
-			Ext.Json.Stringify(paramMap), errorResponse))
+			Ext.Json.Stringify(FilterProcessor.ParamMap), errorResponse))
 	end
 
-	return #paramMap.winners > 0 and paramMap.winners or eligiblePartyMembers
+	return #FilterProcessor.ParamMap.winners > 0 and FilterProcessor.ParamMap.winners or eligiblePartyMembers
 end
