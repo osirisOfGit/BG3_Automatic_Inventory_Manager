@@ -62,33 +62,8 @@ shortcuts.ByLargerStack = {
 }
 
 local itemMaps = {}
-itemMaps.Weapons = {
-	[ItemFilters.ItemKeys.WILDCARD] = {
-		Filters = {
-			[99] = { TargetStat = filterFields.TargetStat.HAS_TYPE_EQUIPPED },
-			[100] = { TargetStat = filterFields.TargetStat.WEAPON_ABILITY, CompareStategy = filterFields.CompareStategy.HIGHER },
-			[101] = { TargetStat = filterFields.TargetStat.WEAPON_SCORE, CompareStategy = filterFields.CompareStategy.HIGHER },
-		}
-	}
-}
-
-itemMaps.Equipment = {
-	[ItemFilters.ItemKeys.WILDCARD] = {
-		Filters = {
-			[99] = { TargetStat = filterFields.TargetStat.PROFICIENCY },
-			[100] = shortcuts.ByLargerStack
-		}
-	}
-}
 
 itemMaps.Roots = {
-	-- not a typo :D
-	["ALCH_Soultion_Elixir_Barkskin_cc1a8802-675a-426b-a791-ec1d5a5b6328"] = {
-		Modifiers = { [itemFields.FilterModifiers.STACK_LIMIT] = 1 },
-		Filters = {
-			[1] = { TargetStat = filterFields.TargetStat.ARMOR_CLASS, CompareStategy = filterFields.CompareStategy.LOWER }
-		}
-	},
 	["LOOT_Gold_A_1c3c9c74-34a1-4685-989e-410dc080be6f"] = {
 		Filters = {
 			[1] = shortcuts.ByLargerStack
@@ -97,54 +72,6 @@ itemMaps.Roots = {
 }
 
 itemMaps.Tags = {
-	["HEALING_POTION"] = {
-		Modifiers = { [itemFields.FilterModifiers.STACK_LIMIT] = 2 },
-		Filters = {
-			[1] = { TargetStat = filterFields.TargetStat.HEALTH_PERCENTAGE, CompareStategy = filterFields.CompareStategy.LOWER, },
-			[2] = { TargetStat = filterFields.TargetStat.STACK_AMOUNT, CompareStategy = filterFields.CompareStategy.LOWER }
-		},
-	},
-	["LOCKPICKS"] = {
-		Filters = {
-			[1] = { TargetStat = filterFields.TargetStat.SKILL_TYPE, TargetSubStat = "SleightOfHand", CompareStategy = filterFields.CompareStategy.HIGHER, },
-			[2] = shortcuts.ByLargerStack
-		},
-	},
-	["TOOL"] = {
-		Filters = {
-			[1] = { TargetStat = filterFields.TargetStat.SKILL_TYPE, TargetSubStat = "SleightOfHand", CompareStategy = filterFields.CompareStategy.HIGHER, },
-			[2] = shortcuts.ByLargerStack
-		},
-	},
-	["COATING"] = {
-		Filters = {
-			[1] = shortcuts.ByLargerStack,
-			[2] = { TargetStat = filterFields.TargetStat.ABILITY_STAT, TargetSubStat = "Dexterity", CompareStategy = filterFields.CompareStategy.HIGHER }
-		}
-	},
-	["ARROW"] = {
-		Filters = {
-			[1] = shortcuts.ByLargerStack,
-			[2] = { TargetStat = filterFields.TargetStat.ABILITY_STAT, TargetSubStat = "Dexterity", CompareStategy = filterFields.CompareStategy.HIGHER }
-		}
-	},
-	["GRENADE"] = {
-		Filters = {
-			[1] = shortcuts.ByLargerStack,
-			[2] = { TargetStat = filterFields.TargetStat.ABILITY_STAT, TargetSubStat = "Strength", CompareStategy = filterFields.CompareStategy.HIGHER }
-		}
-	},
-	["SCROLL"] = {
-		Filters = {
-			[1] = shortcuts.ByLargerStack,
-			[2] = { Target = "originalTarget" },
-		}
-	},
-	["CONSUMABLE"] = {
-		Filters = {
-			[99] = shortcuts.ByLargerStack
-		},
-	},
 	["CAMPSUPPLIES"] = {
 		Filters = {
 			[1] = { Target = "camp" }
