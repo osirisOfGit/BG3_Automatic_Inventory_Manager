@@ -98,15 +98,20 @@ Ext.Osiris.RegisterListener("TemplateUseFinished", 4, "after", function(characte
 	end
 end)
 
+local function extractCharAndSortItem(guid, event, aimEvent, ignoreProcessedTag) 
+	if Osi.IsEquipped(guid) == 0 and Ext.Entity.Get(guid).Value.Unique == false and Osi.IsStoryItem(guid) == 0 then
+		Logger:BasicDebug("Processing item " .. guid .. " for event " .. event)
+		local character = string.sub(event, string.len(aimEvent) + 1)
+
+		DetermineAndExecuteFiltersForItem(Osi.GetTemplate(guid), guid, character, ignoreProcessedTag)
+	end
+end
 Ext.Osiris.RegisterListener("EntityEvent", 2, "before", function(guid, event)
 	if PersistentVars.Config.ENABLED == 1 then
-		if string.find(event, EVENT_ITERATE_ITEMS_TO_RESORT_THEM_START) or string.find(event, EVENT_RESORT_CONSUMABLE_START) then
-			if Osi.IsEquipped(guid) == 0 and Ext.Entity.Get(guid).Value.Unique == false and Osi.IsStoryItem(guid) == 0 then
-				Logger:BasicDebug("Processing item " .. guid .. " for event " .. event)
-				local character = string.sub(event, string.len(EVENT_ITERATE_ITEMS_TO_RESORT_THEM_START) + 1)
-
-				DetermineAndExecuteFiltersForItem(Osi.GetTemplate(guid), guid, character, string.find(event, EVENT_RESORT_CONSUMABLE_START) ~= nil)
-			end
+		if string.find(event, EVENT_ITERATE_ITEMS_TO_RESORT_THEM_START)then
+			extractCharAndSortItem(guid, event, EVENT_ITERATE_ITEMS_TO_RESORT_THEM_START, false)
+		elseif string.find(event, EVENT_RESORT_CONSUMABLE_START) then
+			extractCharAndSortItem(guid, event, EVENT_RESORT_CONSUMABLE_START, true)
 		end
 	end
 end)

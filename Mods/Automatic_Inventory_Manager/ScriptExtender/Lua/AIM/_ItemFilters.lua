@@ -158,7 +158,6 @@ itemMaps.RootPartial = {
 			[1] = { Target = "camp" }
 		}
 	},
-	,
 	["LOOT_MF_Rune_Tablet"] = {
 		Filters = {
 			[1] = { Target = "camp" }
