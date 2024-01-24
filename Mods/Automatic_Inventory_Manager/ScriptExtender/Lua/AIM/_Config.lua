@@ -3,7 +3,7 @@ Config = {
 }
 local INITIAL_CONFIGS = {
 	ENABLED = 1,
-	LOG_LEVEL = 2,
+	LOG_LEVEL = 3,
 	RESET_CONFIGS = 0,
 	SYNC_CONFIGS = 1,
 	SORT_ITEMS_ON_LOAD = 1,
