@@ -75,7 +75,7 @@ function Config.SyncConfigsAndFilters()
 				local success, result = pcall(function()
 					local loadedFilterTable = Ext.Json.Parse(filterTable)
 
-					ItemFilters:AddItemFilterMaps({ [filterTableName] = loadedFilterTable }, true, true, false)
+					ItemFilters:AddItemFilterMaps({ [filterTableName] = loadedFilterTable }, false, false, false)
 
 					PersistentVars.ItemFilters[filterTableName] = ItemFilters.itemMaps[filterTableName]
 				end)
