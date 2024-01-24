@@ -143,7 +143,7 @@ itemMaps.Tags = {
 	["CONSUMABLE"] = {
 		Filters = {
 			[99] = shortcuts.ByLargerStack
-		}
+		},
 	},
 	["CAMPSUPPLIES"] = {
 		Filters = {
@@ -241,7 +241,7 @@ end
 --- immutable clone of the itemMaps - can be forceably synced using UpdateItemMapsClone, but we'll do it on each update we know about
 ItemFilters.itemMaps = Utils:MakeImmutableTableCopy(itemMaps)
 
---- Updates ItemFilters.itemMaps 
+--- Updates ItemFilters.itemMaps
 function ItemFilters:UpdateItemMapsClone()
 	ItemFilters.itemMaps = Utils:MakeImmutableTableCopy(itemMaps)
 
@@ -322,14 +322,14 @@ local itemFilterLookups = {
 }
 
 --- Add custom function(s) to use to find ItemFilters for a given item - each function should accept:
---- 
+---
 --- <br/>1. table(string, table(string, ItemFilter)) - immutable copy of all the itemMaps to perform lookup against
 --- <br/>2. GUIDSTRING - the root template of the item being sorted
 --- <br/>3. GUIDSTRING - the item being sorted
 --- <br/>4. GUIDSTRING - the inventoryHolder
 ---
 --- and return a list of ItemFilters
----@tparam function[] lookupFuncs 
+---@tparam function[] lookupFuncs
 function ItemFilters:AddItemFilterLookupFunction(lookupFuncs)
 	for _, lookupFunc in pairs(lookupFuncs) do
 		table.insert(itemFilterLookups, lookupFunc)
@@ -337,8 +337,8 @@ function ItemFilters:AddItemFilterLookupFunction(lookupFuncs)
 end
 
 --- Finds all ItemFilters for the given item
----@tparam string item 
----@tparam string root 
+---@tparam string item
+---@tparam string root
 ---@tparam string inventoryHolder
 ---@return A consolidated ItemFilter containing all the filters, modifiers, and custom fields found for the given item, with normalized priorities
 function ItemFilters:SearchForItemFilters(item, root, inventoryHolder)

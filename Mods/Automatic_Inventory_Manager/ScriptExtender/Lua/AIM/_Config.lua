@@ -3,7 +3,7 @@ Config = {
 }
 local INITIAL_CONFIGS = {
 	ENABLED = 1,
-	LOG_LEVEL = 3,
+	LOG_LEVEL = 2,
 	RESET_CONFIGS = 0,
 	SYNC_CONFIGS = 1,
 	SORT_ITEMS_ON_LOAD = 1,
@@ -73,9 +73,7 @@ function Config.SyncConfigsAndFilters()
 
 			if filterTable then
 				local success, result = pcall(function()
-					local loadedFilterTable = Ext.Json.Parse(filterTable)
-
-					ItemFilters:AddItemFilterMaps({ [filterTableName] = loadedFilterTable }, false, false, false)
+					ItemFilters:AddItemFilterMaps({ [filterTableName] = Ext.Json.Parse(filterTable) }, false, false, false)
 
 					PersistentVars.ItemFilters[filterTableName] = ItemFilters.itemMaps[filterTableName]
 				end)
