@@ -84,6 +84,11 @@ itemMaps.RootPartial = {
 		Filters = {
 			[1] = { Target = "camp" }
 		}
+	},
+	["LOOT_MF_Rune_Tablet"] = {
+		Filters = {
+			[1] = { Target = "camp" }
+		}
 	}
 }
 
@@ -209,24 +214,6 @@ local function GetFiltersByRoot(itemMaps, root, _, _)
 	return filters
 end
 
-local function GetFiltersByEquipmentType(itemMaps, _, item, _)
-	local filters = {}
-
-	if Osi.IsWeapon(item) == 1 then
-		GetFiltersFromMap(itemMaps.Weapons, item, filters)
-	end
-
-	if Osi.IsEquipable(item) == 1 then
-		local equipTypeUUID = Ext.Entity.Get(item).ServerItem.OriginalTemplate.EquipmentTypeID
-		local equipType = Ext.StaticData.Get(equipTypeUUID, "EquipmentType")
-		if equipType then
-			GetFiltersFromMap(itemMaps.Equipment, equipType["Name"], filters)
-		end
-	end
-
-	return filters
-end
-
 local function GetFilterByTag(itemMaps, _, item, _)
 	local filters = {}
 	for _, tagUUID in pairs(Ext.Entity.Get(item).Tag.Tags) do
@@ -244,8 +231,7 @@ end
 
 local itemFilterLookups = {
 	GetFiltersByRoot,
-	GetFilterByTag,
-	GetFiltersByEquipmentType
+	GetFilterByTag
 }
 
 --- Add custom function(s) to use to find ItemFilters for a given item - each function should accept:

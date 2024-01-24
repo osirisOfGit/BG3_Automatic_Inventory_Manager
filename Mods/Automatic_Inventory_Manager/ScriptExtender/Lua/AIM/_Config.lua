@@ -12,8 +12,8 @@ local INITIAL_CONFIGS = {
 }
 
 PersistentVars = {
-	---@type ItemFilterMap
-	ItemFilters = {}
+	ItemFilters = {},
+	Config = {}
 }
 
 function Config:InitializeConfigurations()
