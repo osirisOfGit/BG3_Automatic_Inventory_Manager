@@ -85,7 +85,8 @@ end)
 
 Ext.Osiris.RegisterListener("TemplateUseFinished", 4, "after", function(character, itemTemplate, item2, success)
 	if PersistentVars.Config.ENABLED == 1 then
-		if success == 1 and Osi.TemplateIsInPartyInventory(itemTemplate, character, 0) > 0 and Osi.IsInCombat(character) == 0 then
+		local isTemplateInInventory = Osi.TemplateIsInPartyInventory(itemTemplate, character, 0)
+		if success == 1 and (isTemplateInInventory and isTemplateInInventory > 0) and Osi.IsInCombat(character) == 0 then
 			Logger:BasicInfo("Resorting all items of template " .. itemTemplate .. " due to finished use of " .. item2)
 			for _, player in pairs(Osi.DB_Players:Get(nil)) do
 				Osi.IterateInventoryByTemplate(player[1],
