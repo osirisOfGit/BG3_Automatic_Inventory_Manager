@@ -244,11 +244,12 @@ Goals 2, 3, and 4 are accomplished by exposing what essentially amount to 3 diff
 plus Logger, ProcessorUtils, and general Utils.
 
 #### API Information
-This project uses [LDoc](https://github.com/lunarmodules/ldoc) to generate its documentation, which can be found at https://cameron-meyer.github.io/BG3_Automatic_Inventory_Manager. 
+This project uses [LDoc](https://github.com/lunarmodules/ldoc) to generate its documentation, which can be found at [https://osirisofgit.github.io/BG3_Automatic_Inventory_Manager](https://osirisofgit.github.io/BG3_Automatic_Inventory_Manager/)
 
-All documented modules, functions, and tables are accessible via Mods.Automatic_Inventory_Manager.{module} - an example of a mod that uses the API to full effect can be found at [Example/Mods/Mod_Using_AIM](https://github.com/Cameron-Meyer/BG3_Automatic_Inventory_Manager/tree/master/Example/Mods/Mod_Using_AIM)
+All documented modules, functions, and tables are accessible via Mods.Automatic_Inventory_Manager.{module} - an example of a mod that uses the API to full effect can be found at [Example/Mods/Mod_Using_AIM](https://github.com/osirisofgit/BG3_Automatic_Inventory_Manager/tree/master/Example/Mods/Mod_Using_AIM)
 
 
 ## Future Enhancements
+- [ ] Flesh out existing filters more
 - [ ] Automatically loot corpses after a battle, directing characters to loot the items they "win"
 - [ ] Automatically loot nearby containers (will contain a bunch of conservative safeguards to make sure Lae'zel doesn't channel FO4's Dogmeat in a minefield) 
