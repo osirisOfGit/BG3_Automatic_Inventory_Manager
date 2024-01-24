@@ -90,8 +90,8 @@ Ext.Osiris.RegisterListener("TemplateUseFinished", 4, "after", function(characte
 			for _, player in pairs(Osi.DB_Players:Get(nil)) do
 				Osi.IterateInventoryByTemplate(player[1],
 					itemTemplate,
-					EVENT_ITERATE_ITEMS_TO_RESORT_THEM_START .. player[1],
-					EVENT_ITERATE_ITEMS_TO_RESORT_THEM_END .. player[1])
+					EVENT_RESORT_CONSUMABLE_START .. player[1],
+					EVENT_RESORT_CONSUMABLE_END .. player[1])
 			end
 		end
 	end
@@ -99,12 +99,12 @@ end)
 
 Ext.Osiris.RegisterListener("EntityEvent", 2, "before", function(guid, event)
 	if PersistentVars.Config.ENABLED == 1 then
-		if string.find(event, EVENT_ITERATE_ITEMS_TO_RESORT_THEM_START) then
+		if string.find(event, EVENT_ITERATE_ITEMS_TO_RESORT_THEM_START) or string.find(event, EVENT_RESORT_CONSUMABLE_START) then
 			if Osi.IsEquipped(guid) == 0 and Ext.Entity.Get(guid).Value.Unique == false and Osi.IsStoryItem(guid) == 0 then
 				Logger:BasicDebug("Processing item " .. guid .. " for event " .. event)
 				local character = string.sub(event, string.len(EVENT_ITERATE_ITEMS_TO_RESORT_THEM_START) + 1)
 
-				DetermineAndExecuteFiltersForItem(Osi.GetTemplate(guid), guid, character, true)
+				DetermineAndExecuteFiltersForItem(Osi.GetTemplate(guid), guid, character, string.find(event, EVENT_RESORT_CONSUMABLE_START) ~= nil)
 			end
 		end
 	end
