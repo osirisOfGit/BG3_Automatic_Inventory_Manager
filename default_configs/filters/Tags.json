@@ -1,0 +1,11 @@
+{
+	"CAMPSUPPLIES" : 
+	{
+		"Filters" : 
+		[
+			{
+				"Target" : "camp"
+			}
+		]
+	}
+}

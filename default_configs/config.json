@@ -1,0 +1,14 @@
+{
+	"ENABLED" : 1,
+	"FILTER_TABLES" : 
+	[
+		"Roots",
+		"RootPartial",
+		"Tags"
+	],
+	"LOG_LEVEL" : 3,
+	"RESET_CONFIGS" : 0,
+	"SORT_ITEMS_ON_LOAD" : 1,
+	"SYNC_CONFIGS" : 1,
+	"SYNC_FILTERS" : 1
+}
