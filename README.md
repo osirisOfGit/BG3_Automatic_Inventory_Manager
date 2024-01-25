@@ -13,7 +13,9 @@ Configurations are generated at `%localappdata%\Larian Studios\Baldur's Gate 3\S
 
 ## config.json 
 
-All these values are stored in the [PersistentVars](https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#persistent-variables) of each save, alongside the generated ItemMaps
+All these values are stored in the [PersistentVars](https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#persistent-variables) of each save, alongside the generated ItemMaps.
+
+The default configs for this branch have been uploaded to [./defualt_configs](./default_configs/) in case of issues with creating them - still attempting to triage this.
 
 | Property Name (case sensitive) | value(s) | default | 
 |--------------|-----------|-----------|
