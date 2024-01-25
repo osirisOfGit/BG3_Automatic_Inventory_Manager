@@ -1,12 +1,17 @@
 {
-	"LOOT_Gold_A_1c3c9c74-34a1-4685-989e-410dc080be6f" : 
+	"ALL" : 
 	{
 		"Filters" : 
-		[
+		{
+			"100" : 
 			{
 				"CompareStategy" : "HIGHER",
 				"TargetStat" : "STACK_AMOUNT"
+			},
+			"99" : 
+			{
+				"TargetStat" : "PROFICIENCY"
 			}
-		]
+		}
 	}
 }

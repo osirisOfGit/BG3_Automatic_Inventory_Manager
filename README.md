@@ -17,6 +17,8 @@ All these values are stored in the [PersistentVars](https://github.com/Norbyte/b
 
 The default configs for this branch have been uploaded to [./default_configs](./default_configs/) in case of issues with creating them - still attempting to triage this.
 
+The default configs for this branch have been uploaded to ./default_configs in case of issues with creating them - still attempting to triage this.
+
 | Property Name (case sensitive) | value(s) | default | 
 |--------------|-----------|-----------|
 | ENABLED | 0 for disabled, 1 for enabled. Just disables the processing and tagging of items, configs will still be processed and synced (see SYNC_* properties) | 1 |
