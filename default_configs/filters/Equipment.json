@@ -1,0 +1,17 @@
+{
+	"ALL" : 
+	{
+		"Filters" : 
+		{
+			"100" : 
+			{
+				"CompareStategy" : "HIGHER",
+				"TargetStat" : "STACK_AMOUNT"
+			},
+			"99" : 
+			{
+				"TargetStat" : "PROFICIENCY"
+			}
+		}
+	}
+}

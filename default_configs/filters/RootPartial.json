@@ -1,0 +1,20 @@
+{
+	"BOOK" : 
+	{
+		"Filters" : 
+		[
+			{
+				"Target" : "camp"
+			}
+		]
+	},
+	"LOOT_MF_Rune_Tablet" : 
+	{
+		"Filters" : 
+		[
+			{
+				"Target" : "camp"
+			}
+		]
+	}
+}

@@ -1,0 +1,22 @@
+{
+	"ALL" : 
+	{
+		"Filters" : 
+		{
+			"100" : 
+			{
+				"CompareStategy" : "HIGHER",
+				"TargetStat" : "WEAPON_ABILITY"
+			},
+			"101" : 
+			{
+				"CompareStategy" : "HIGHER",
+				"TargetStat" : "WEAPON_SCORE"
+			},
+			"99" : 
+			{
+				"TargetStat" : "HAS_TYPE_EQUIPPED"
+			}
+		}
+	}
+}

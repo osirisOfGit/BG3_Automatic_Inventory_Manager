@@ -1,0 +1,142 @@
+{
+	"ARROW" : 
+	{
+		"Filters" : 
+		{
+			"1" : 
+			{
+				"CompareStategy" : "HIGHER",
+				"TargetStat" : "STACK_AMOUNT"
+			},
+			"2" : 
+			{
+				"CompareStategy" : "HIGHER",
+				"TargetStat" : "ABILITY_STAT",
+				"TargetSubStat" : "Dexterity"
+			}
+		}
+	},
+	"CAMPSUPPLIES" : 
+	{
+		"Filters" : 
+		[
+			{
+				"Target" : "camp"
+			}
+		]
+	},
+	"COATING" : 
+	{
+		"Filters" : 
+		{
+			"1" : 
+			{
+				"CompareStategy" : "HIGHER",
+				"TargetStat" : "STACK_AMOUNT"
+			},
+			"2" : 
+			{
+				"CompareStategy" : "HIGHER",
+				"TargetStat" : "ABILITY_STAT",
+				"TargetSubStat" : "Dexterity"
+			}
+		}
+	},
+	"CONSUMABLE" : 
+	{
+		"Filters" : 
+		{
+			"99" : 
+			{
+				"CompareStategy" : "HIGHER",
+				"TargetStat" : "STACK_AMOUNT"
+			}
+		}
+	},
+	"GRENADE" : 
+	{
+		"Filters" : 
+		{
+			"1" : 
+			{
+				"CompareStategy" : "HIGHER",
+				"TargetStat" : "STACK_AMOUNT"
+			},
+			"2" : 
+			{
+				"CompareStategy" : "HIGHER",
+				"TargetStat" : "ABILITY_STAT",
+				"TargetSubStat" : "Strength"
+			}
+		}
+	},
+	"HEALING_POTION" : 
+	{
+		"Filters" : 
+		{
+			"1" : 
+			{
+				"CompareStategy" : "LOWER",
+				"TargetStat" : "HEALTH_PERCENTAGE"
+			},
+			"2" : 
+			{
+				"CompareStategy" : "LOWER",
+				"TargetStat" : "STACK_AMOUNT"
+			}
+		},
+		"Modifiers" : 
+		{
+			"STACK_LIMIT" : 2
+		}
+	},
+	"LOCKPICKS" : 
+	{
+		"Filters" : 
+		{
+			"1" : 
+			{
+				"CompareStategy" : "HIGHER",
+				"TargetStat" : "SKILL_TYPE",
+				"TargetSubStat" : "SleightOfHand"
+			},
+			"2" : 
+			{
+				"CompareStategy" : "HIGHER",
+				"TargetStat" : "STACK_AMOUNT"
+			}
+		}
+	},
+	"SCROLL" : 
+	{
+		"Filters" : 
+		{
+			"1" : 
+			{
+				"CompareStategy" : "HIGHER",
+				"TargetStat" : "STACK_AMOUNT"
+			},
+			"2" : 
+			{
+				"Target" : "originalTarget"
+			}
+		}
+	},
+	"TOOL" : 
+	{
+		"Filters" : 
+		{
+			"1" : 
+			{
+				"CompareStategy" : "HIGHER",
+				"TargetStat" : "SKILL_TYPE",
+				"TargetSubStat" : "SleightOfHand"
+			},
+			"2" : 
+			{
+				"CompareStategy" : "HIGHER",
+				"TargetStat" : "STACK_AMOUNT"
+			}
+		}
+	}
+}
