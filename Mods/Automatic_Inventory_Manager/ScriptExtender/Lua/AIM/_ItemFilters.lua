@@ -185,7 +185,7 @@ function ItemFilters:UpdateItemMapsClone()
 				end
 			end
 		end
-		Utils:SaveTableToFile(Config.FILTERS_DIR .. mapName .. ".json", itemMaps[mapName])
+		Utils:SaveTableToFile(Config.AIM.FILTERS_DIR .. "/" .. mapName .. ".json", itemMaps[mapName])
 		PersistentVars.ItemFilters[mapName] = itemMap
 	end
 end

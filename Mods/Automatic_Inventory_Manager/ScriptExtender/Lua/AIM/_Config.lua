@@ -1,7 +1,7 @@
-Config = {
-	FILTERS_DIR = 'filters/',
-}
-local INITIAL_CONFIGS = {
+Config = {}
+
+Config.AIM = {
+	FILTERS_DIR = 'filters',
 	ENABLED = 1,
 	LOG_LEVEL = 3,
 	RESET_CONFIGS = 0,
@@ -12,21 +12,20 @@ local INITIAL_CONFIGS = {
 }
 
 PersistentVars = {
-	ItemFilters = {},
-	Config = {}
+	ItemFilters = {}
 }
 
 function Config:InitializeConfigurations()
-	PersistentVars.Config.RESET_CONFIGS = 0
+	Config.AIM.RESET_CONFIGS = 0
 
 	for mapName, mapValues in pairs(ItemFilters.itemMaps) do
-		table.insert(INITIAL_CONFIGS.FILTER_TABLES, mapName)
-		Utils:SaveTableToFile(Config.FILTERS_DIR .. mapName .. ".json", mapValues)
+		table.insert(Config.AIM.FILTER_TABLES, mapName)
+		Utils:SaveTableToFile(Config.AIM.FILTERS_DIR .. "/" .. mapName .. ".json", mapValues)
 	end
 
-	PersistentVars.Config = INITIAL_CONFIGS
+	Config.AIM = Config.AIM
 	PersistentVars.ItemFilters = {}
-	Utils:SaveTableToFile("config.json", PersistentVars.Config)
+	Utils:SaveTableToFile("config.json", Config.AIM)
 end
 
 function Config.SyncConfigsAndFilters()
@@ -42,15 +41,21 @@ function Config.SyncConfigsAndFilters()
 		Config:InitializeConfigurations()
 		Logger:BasicInfo("Initalizing all the configs!")
 
-		config = PersistentVars.Config
+		config = Config.AIM
+	end
+
+	for prop, val in pairs(Config.AIM) do
+		if not config[prop] then
+			config[prop] = val
+		end
 	end
 
 	if config.SYNC_CONFIGS == 1 then
-		PersistentVars.Config = config
+		Config.AIM = config
 		Logger:BasicInfo("Syncing the config file!")
 		for mapName, _ in pairs(ItemFilters.itemMaps) do
 			local hasTableRecorded = false
-			for _, filterTable in pairs(PersistentVars.Config.FILTER_TABLES) do
+			for _, filterTable in pairs(Config.AIM.FILTER_TABLES) do
 				if filterTable == mapName then
 					hasTableRecorded = true
 					break
@@ -58,22 +63,29 @@ function Config.SyncConfigsAndFilters()
 			end
 
 			if not hasTableRecorded then
-				table.insert(PersistentVars.Config.FILTER_TABLES, mapName)
+				table.insert(Config.AIM.FILTER_TABLES, mapName)
 			end
 		end
 
-		PersistentVars.Config = PersistentVars.Config
+		PersistentVars.Config = Config.AIM
+	elseif PersistentVars.Config then
+		Config.AIM = PersistentVars.Config
 	end
 
-	if PersistentVars.Config.SYNC_FILTERS == 1 then
+	if not PersistentVars.ItemFilters then
+		PersistentVars.ItemFilters = {}
+	end
+
+	if Config.AIM.SYNC_FILTERS == 1 then
 		Logger:BasicInfo("Syncing the filters")
-		for _, filterTableName in pairs(PersistentVars.Config.FILTER_TABLES) do
-			local filterTableFilePath = Config.FILTERS_DIR .. "/" .. filterTableName .. ".json"
+		for _, filterTableName in pairs(Config.AIM.FILTER_TABLES) do
+			local filterTableFilePath = Config.AIM.FILTERS_DIR .. "/" .. filterTableName .. ".json"
 			local filterTable = Utils:LoadFile(filterTableFilePath)
 
 			if filterTable then
 				local success, result = pcall(function()
-					ItemFilters:AddItemFilterMaps({ [filterTableName] = Ext.Json.Parse(filterTable) }, false, false, false)
+					ItemFilters:AddItemFilterMaps({ [filterTableName] = Ext.Json.Parse(filterTable) }, false, false,
+						false)
 
 					PersistentVars.ItemFilters[filterTableName] = ItemFilters.itemMaps[filterTableName]
 				end)
@@ -82,7 +94,7 @@ function Config.SyncConfigsAndFilters()
 					Logger:BasicError(string.format("Could not parse table %s due to error [%s]", filterTableName,
 						result))
 				else
-					Utils:SaveTableToFile(Config.FILTERS_DIR .. filterTableName .. ".json",
+					Utils:SaveTableToFile(filterTableFilePath,
 						PersistentVars.ItemFilters[filterTableName])
 				end
 			else

@@ -116,6 +116,10 @@ function Processor:ProcessFiltersForItemAgainstParty(item, root, inventoryHolder
 	local targetsWithAmountWon = {}
 	local currentItemStackSize = Osi.GetStackAmount(item)
 	local partyMembers = {}
+
+	if (#Osi.DB_Players:Get(nil) == 0) then
+		return
+	end
 	for _, player in pairs(Osi.DB_Players:Get(nil)) do
 		targetsWithAmountWon[player[1]] = 0
 		table.insert(partyMembers, player[1])
