@@ -13,7 +13,7 @@ Configurations are generated at `%localappdata%\Larian Studios\Baldur's Gate 3\S
 
 ## config.json 
 
-⚠ PersistentVar functionality has been disabled as of 1.0.5 due to bad implementation (sorry) - will reeanable in the future when I implement a way for users to control syncing per save, in-game, rather than through the config.json ⚠
+⚠ PersistentVar functionality has been disabled as of 1.1.0 due to bad implementation (sorry) - will reeanable in the future when I implement a way for users to control syncing per save, in-game, rather than through the config.json ⚠
 ~~All these values are stored in the [PersistentVars](https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#persistent-variables) of each save, alongside the generated ItemMaps.~~
 
 The default configs for this branch have been uploaded to [./default_configs](./default_configs/) in case of issues with creating them - still attempting to triage this.
@@ -29,7 +29,7 @@ The default configs for this branch have been uploaded to ./default_configs in c
 | RESET_CONFIGS | `1` if you want to completely reinitialize, as if you had deleted the folder (but doesn't wipe out mod-added `filters\` files | 0 |
 | SORT_ITEMS_ON_LOAD | `1` if you want to execute items when you load a save<br/>`0` if you just want it to happen when picking up an item | 1 |
 | ~~SYNC_CONFIGS~~ | ⚠ TEMPORARILY DISABLED - SEE TOP OF [#config.json](#configjson) ⚠ ~~1 to update the PersistentVars with the config.json values on each load, 0 otherwise~~ | 1 |
-| MERGE_DEFAULT_FILTERS | ⚠ CHANGED 1.0.5 from SYNC_FILTERS, with different behavior ⚠ <br/>`1` to sync the default filters AIM has with the files in `filters/{FILTER_TABLES}`<br/>`0` to only use what's currently in the files (this will prevent you from getting new filters through AIM, but will ensure any customizations you make are preserved.) | 1 |
+| MERGE_DEFAULT_FILTERS | ⚠ CHANGED 1.1.0 from SYNC_FILTERS, with different behavior ⚠ <br/>`1` to sync the default filters AIM has with the files in `filters/{FILTER_TABLES}`<br/>`0` to only use what's currently in the files (this will prevent you from getting new filters through AIM, but will ensure any customizations you make are preserved.) | 1 |
 
 #### MERGE_DEFAULT_FILTERS
 To expand on `MERGE_DEFAULT_FILTERS` more, if enabled, AIM will attempt to merge what's present in the json files with what it has in-memory (the defaults) - this merge has the following rules:
