@@ -217,6 +217,11 @@ When any item with the tag `CAMPSUPPLIES` is processed, it will be sent straight
 When any item with the tag `SCROLL` is processed, it will first be run through the CompareFilter for STACK_AMOUNT, and if multiple party members hold the same amount of the scroll, or if nobody currently has this scroll in their inventory, then the character that originally picked up the item will be chosen (this is done to prevent the user from having to search for the scroll if nobody currently has one in their inventory)
 </details>
 
+If you're looking to add/modify a filter and need to know a specific GUID, there are generally three options available:
+- AIM will log the item, rootTemplate, inventoryHolder, and target GUID for every item processed in the log.txt
+- The most excellent https://github.com/ShinyHobo/BG3-Modders-Multitool/wiki/GameObject-Explorer can be used to find the IDs of vanilla game objects
+- If the container is added by a mod, you'll need to refer to that mod's documentation, or unpack their code using https://github.com/ShinyHobo/BG3-Modders-Multitool/wiki/Packaging-Mod-Files and look at their files for the ID 
+
 ##### Modifiers
 
 This serves as a generic catch-all for any kind of special rules that the FilterProcessors should consider when choosing a target - currently, only the `STACK_LIMIT` modifier is implemented, which pre-filters out party members if they contain more than the specified limit, unless all party members exceed it, in which case nobody is filtered out. For example, Tags contains the entry `HEALING_POTION`, which uses the `STACK_LIMIT` modifier to ensure that if the party has more than 6 small healing potions, then every party member has at least 2 on them.
