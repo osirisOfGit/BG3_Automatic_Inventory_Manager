@@ -26,7 +26,7 @@ local function RemoveItemFromTracker_IfAlreadySorted(root, item, inventoryHolder
 end
 
 local function DetermineAndExecuteFiltersForItem(root, item, inventoryHolder, ignoreProcessedTag)
-	if PersistentVars.Config.ENABLED == 1 then
+	if Config.AIM.ENABLED == 1 then
 		RemoveItemFromTracker_IfAlreadySorted(root, item, inventoryHolder)
 
 		if ignoreProcessedTag == false and Osi.IsTagged(item, TAG_AIM_PROCESSED) == 1 then
@@ -61,14 +61,14 @@ local function DetermineAndExecuteFiltersForItem(root, item, inventoryHolder, ig
 end
 
 Ext.Osiris.RegisterListener("DroppedBy", 2, "after", function(object, _)
-	if PersistentVars.Config.ENABLED == 1 then
+	if Config.AIM.ENABLED == 1 then
 		Osi.ClearTag(object, TAG_AIM_PROCESSED)
 	end
 end)
 
 -- Includes moving from container to other inventories etc...
 Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(root, item, inventoryHolder, addType)
-	if PersistentVars.Config.ENABLED == 1 then
+	if Config.AIM.ENABLED == 1 then
 		-- Will be nil if inventoryHolder isn't a character
 		if Osi.IsPlayer(inventoryHolder) ~= 1 then
 			Logger:BasicDebug(string.format("inventoryHolder %s is not a player", inventoryHolder))
@@ -84,7 +84,7 @@ end)
 
 
 Ext.Osiris.RegisterListener("TemplateUseFinished", 4, "after", function(character, itemTemplate, item2, success)
-	if PersistentVars.Config.ENABLED == 1 then
+	if Config.AIM.ENABLED == 1 then
 		local isTemplateInInventory = Osi.TemplateIsInPartyInventory(itemTemplate, character, 0)
 		if success == 1 and (isTemplateInInventory and isTemplateInInventory > 0) and Osi.IsInCombat(character) == 0 then
 			Logger:BasicInfo("Resorting all items of template " .. itemTemplate .. " due to finished use of " .. item2)
@@ -107,7 +107,7 @@ local function extractCharAndSortItem(guid, event, aimEvent, ignoreProcessedTag)
 	end
 end
 Ext.Osiris.RegisterListener("EntityEvent", 2, "before", function(guid, event)
-	if PersistentVars.Config.ENABLED == 1 then
+	if Config.AIM.ENABLED == 1 then
 		if string.find(event, EVENT_ITERATE_ITEMS_TO_RESORT_THEM_START)then
 			extractCharAndSortItem(guid, event, EVENT_ITERATE_ITEMS_TO_RESORT_THEM_START, false)
 		elseif string.find(event, EVENT_RESORT_CONSUMABLE_START) then
