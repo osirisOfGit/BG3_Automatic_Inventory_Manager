@@ -13,7 +13,8 @@ Configurations are generated at `%localappdata%\Larian Studios\Baldur's Gate 3\S
 
 ## config.json 
 
-All these values are stored in the [PersistentVars](https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#persistent-variables) of each save, alongside the generated ItemMaps.
+⚠ PersistentVar functionality has been disabled as of 1.1.0 due to bad implementation (sorry) - will reeanable in the future when I implement a way for users to control syncing per save, in-game, rather than through the config.json ⚠
+~~All these values are stored in the [PersistentVars](https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#persistent-variables) of each save, alongside the generated ItemMaps.~~
 
 The default configs for this branch have been uploaded to [./default_configs](./default_configs/) in case of issues with creating them - still attempting to triage this.
 
@@ -22,12 +23,25 @@ The default configs for this branch have been uploaded to ./default_configs in c
 | Property Name (case sensitive) | value(s) | default | 
 |--------------|-----------|-----------|
 | ENABLED | 0 for disabled, 1 for enabled. Just disables the processing and tagging of items, configs will still be processed and synced (see SYNC_* properties) | 1 |
+| FILTERS_DIR | specifies where the itemMap json files should live relative to `%localappdata%\Larian Studios\Baldur's Gate 3\Script Extender\Automatic_Inventory_Manager` - exposed for my own convenience | `filters` |
 | FILTER_TABLES | array of files in `filters\` to load - case-sensitive. Leave off the .json. If creating a new ItemMap file without registering it through the API (so just adding the .json to the directory), it needs to be added here to be picked up. Any itemMaps added through the API will be automatically added. | `["Equipment", "Roots", "Weapons", "RootPartial", "Tags" ]`|
-| LOG_LEVEL | `TRACE = 5, DEBUG = 4, INFO = 3, WARNING = 2, ERROR = 1, OFF = 0` HIGHLY recommended to leave at INFO or below, as writing logs is extremely performance intensive and if you have any items with stack counts in the hundreds or thousands, like gold, it will appear as though your game is frozen. Only increase this if you're actively debugging an issue for a select item.| 2 |
-| RESET_CONFIGS | 1 if you want to completely reinitialize, as if you had deleted the folder (but doesn't wipe out mod-added `filters\` files | 0 |
-| SORT_ITEMS_ON_LOAD | 1 if you want to execute items when you load a save, 0 if you just want it to happen when picking up an item | 1 |
-| SYNC_CONFIGS | 1 to update the PersistentVars with the config.json values on each load, 0 otherwise | 1 |
-| SYNC_FILTERS | 1 to update the PersistentVars with the `filters/` file values (as identified by FILTER_TABLES), 0 otherwise | 1 |
+| LOG_LEVEL | `TRACE = 5, DEBUG = 4, INFO = 3, WARNING = 2, ERROR = 1, OFF = 0` <br/>HIGHLY recommended to leave at INFO or below, as writing logs is extremely performance intensive and if you have any items with stack counts in the hundreds or thousands, like gold, it will appear as though your game is frozen. Only increase this if you're actively debugging an issue for a select item.| 2 |
+| RESET_CONFIGS | `1` if you want to completely reinitialize, as if you had deleted the folder (but doesn't wipe out mod-added `filters\` files | 0 |
+| SORT_ITEMS_ON_LOAD | `1` if you want to execute items when you load a save<br/>`0` if you just want it to happen when picking up an item | 1 |
+| ~~SYNC_CONFIGS~~ | ⚠ TEMPORARILY DISABLED - SEE TOP OF [#config.json](#configjson) ⚠ ~~1 to update the PersistentVars with the config.json values on each load, 0 otherwise~~ | 1 |
+| MERGE_DEFAULT_FILTERS | ⚠ CHANGED 1.1.0 from SYNC_FILTERS, with different behavior ⚠ <br/>`1` to sync the default filters AIM has with the files in `filters/{FILTER_TABLES}`<br/>`0` to only use what's currently in the files (this will prevent you from getting new filters through AIM, but will ensure any customizations you make are preserved.) | 1 |
+
+#### MERGE_DEFAULT_FILTERS
+To expand on `MERGE_DEFAULT_FILTERS` more, if enabled, AIM will attempt to merge what's present in the json files with what it has in-memory (the defaults) - this merge has the following rules:
+1. If AIM knows about itemMaps that aren't listed in `FILTER_TABLES`, add them to the config 
+1. If there are new filters in the {itemMap}.json, pull those in at the listed priority, reducing the priority of AIM's default filters if there's a conflict (meaning, if you add a filter to Tags.json - CONSUMABLE with priority 99, and AIM already has a filter for CONSUMABLE with priority 99, AIM will set your filter to priority 99 and its filter to priority 100)
+1. If we already know about your filter, ignore it (doesn't matter if the priority is different, AIM prioritizes its own for technical implementation reasons - will attempt to improve in the future)
+
+This merge has the following weakness currently:
+- If you remove a filter in the .json file that AIM has in-memory, or remove an itemMap from `FILTER_TABLES`, AIM will add it back. 
+  - This is because AIM can't currently tell the difference between a filter or itemMap that was added in a recent release, and a filter that always existed, but was deleted by the mod user. Will attempt to improve this functionality in the future.
+
+Therefore, if you want to make changes to the default filters and want to ensure they are always preserved, and are fine with AIM not automatically adding new filters or itemMaps, then you should set MERGE_DEFAULT_FILTERS to 0 so that the `filters/` files completely replace the AIM defaults. You can still manually merge in new filters if desired by checking out [./default_configs](./default_configs/) - it will be updated with changes when applicable.
 
 ## How and when does this mod even work?
 
@@ -240,7 +254,7 @@ AIM is designed with four user-centric goals in mind:
 1. Users should be able to add custom ItemFilters to native or custom ItemMaps using a mod
 1. Users should be able to disable the `Automatic` aspect of AIM and control when to execute the `IM` parts, using a mod (why? ¯\_(ツ)_/¯) 
 
-Goal 1 is accomplished through the use of `filters\` files - any user can add, modify, or delete the entries and have those changes be picked up, as long as the config.json has `SYNC_FILTERS` set to `1` (and `SYNC_CONFIGS`, if adding new ItemMaps that need to be added to the `FILTER_TABLES` config property)
+Goal 1 is accomplished through the use of `filters\` files - any user can add, modify, or delete the entries and have those changes be picked up (see [#MERGE_DEFAULT_FILTERS](#merge_default_filters) for rules on merging with AIM's defaults, and how to disable)
 
 Goals 2, 3, and 4 are accomplished by exposing what essentially amount to 3 different APIs via the ModTable:
 - ItemFilters, which contains the definitions for ItemMaps and all their subparts, and the functionality for choosing the appropriate ItemFilters for a given root/item/inventoryHolder
@@ -259,6 +273,10 @@ All documented modules, functions, and tables are accessible via Mods.Automatic_
 
 
 ## Future Enhancements
+- [ ] Fix Filter merge logic to allow users to redefine existing filter priorities 
+- [ ] Make AIM smart enough to know when a filter or itemMap was removed by the user or added in a new release
 - [ ] Flesh out existing filters more
+- [ ] Set up a way to control PersistentVar syncing in-game, instead of through the cross-save config.json
+  - This stems from issues with syncing and merging filters after modification 
 - [ ] Automatically loot corpses after a battle, directing characters to loot the items they "win"
 - [ ] Automatically loot nearby containers (will contain a bunch of conservative safeguards to make sure Lae'zel doesn't channel FO4's Dogmeat in a minefield) 

@@ -11,7 +11,6 @@ end
 
 Ext.Events.ResetCompleted:Subscribe(function(_)
 	if Config.AIM.ENABLED == 1 then
-		Config:SyncConfigsAndFilters()
 		ResetItemStacks()
 	end
 end)

@@ -165,9 +165,20 @@ function ItemFilters:AddItemFilterMaps(itemFilterMaps, forceOverride, prioritize
 				end
 			end
 		end
+		Logger:BasicDebug(string.format("Finished merging itemMap %s, new map is: ", mapName,
+			Ext.Json.Stringify(itemMaps[mapName])))
 	end
 
 	if updateItemMapClone == true then ItemFilters:UpdateItemMapsClone() end
+end
+
+--- Deletes the given itemMap from memory, preventing it from being considered by itemFilterLookups
+--- or being written to disk. Will not delete the file from disk, don't know how to right now.
+---@tparam string name of the itemMap to remove, e.g. Weapons
+function ItemFilters:DeleteItemFilterMap(itemMapName)
+	Logger:BasicInfo("Deleting itemMap " ..
+		itemMapName .. " (file will still be on disk, but is no longer accessible by AIM for this play session)")
+	itemMaps[itemMapName] = nil
 end
 
 --- immutable clone of the itemMaps - can be forceably synced using UpdateItemMapsClone, but we'll do it on each update we know about
@@ -177,6 +188,7 @@ ItemFilters.itemMaps = Utils:MakeImmutableTableCopy(itemMaps)
 function ItemFilters:UpdateItemMapsClone()
 	ItemFilters.itemMaps = Utils:MakeImmutableTableCopy(itemMaps)
 
+	-- Update the TargetStat enum with new fields for use by FilterProcessors
 	for mapName, itemMap in pairs(ItemFilters.itemMaps) do
 		for _, itemFilter in pairs(itemMap) do
 			for _, filter in pairs(itemFilter.Filters) do
@@ -186,17 +198,19 @@ function ItemFilters:UpdateItemMapsClone()
 			end
 		end
 		Utils:SaveTableToFile(Config.AIM.FILTERS_DIR .. "/" .. mapName .. ".json", itemMaps[mapName])
-		PersistentVars.ItemFilters[mapName] = itemMap
+		-- PersistentVars.ItemFilters[mapName] = itemMap
 	end
 end
 
 local function GetFiltersFromMap(itemMap, key, filtersTable)
-	if itemMap[key] then
-		table.insert(filtersTable, itemMap[key])
-	end
+	if itemMap then
+		if itemMap[key] then
+			table.insert(filtersTable, itemMap[key])
+		end
 
-	if itemMap[ItemFilters.ItemKeys.WILDCARD] then
-		table.insert(filtersTable, itemMap[ItemFilters.ItemKeys.WILDCARD])
+		if itemMap[ItemFilters.ItemKeys.WILDCARD] then
+			table.insert(filtersTable, itemMap[ItemFilters.ItemKeys.WILDCARD])
+		end
 	end
 end
 
@@ -205,9 +219,11 @@ local function GetFiltersByRoot(itemMaps, root, _, _)
 
 	GetFiltersFromMap(itemMaps.Roots, root, filters)
 
-	for key, filter in pairs(itemMaps.RootPartial) do
-		if string.find(root, key) then
-			table.insert(filters, filter)
+	if itemMaps["RootPartial"] then
+		for key, filter in pairs(itemMaps.RootPartial) do
+			if string.find(root, key) then
+				table.insert(filters, filter)
+			end
 		end
 	end
 
@@ -216,12 +232,14 @@ end
 
 local function GetFilterByTag(itemMaps, _, item, _)
 	local filters = {}
-	for _, tagUUID in pairs(Ext.Entity.Get(item).Tag.Tags) do
-		local tagTable = Ext.StaticData.Get(tagUUID, "Tag")
-		if tagTable then
-			local tagFilter = itemMaps.Tags[tagTable["Name"]]
-			if tagFilter then
-				table.insert(filters, tagFilter)
+	if itemMaps["Tags"] then
+		for _, tagUUID in pairs(Ext.Entity.Get(item).Tag.Tags) do
+			local tagTable = Ext.StaticData.Get(tagUUID, "Tag")
+			if tagTable then
+				local tagFilter = itemMaps.Tags[tagTable["Name"]]
+				if tagFilter then
+					table.insert(filters, tagFilter)
+				end
 			end
 		end
 	end
