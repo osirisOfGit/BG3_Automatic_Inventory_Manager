@@ -258,6 +258,7 @@ The inclusion of `RespectEligibility` makes it so Shadowheart is no longer the s
 
 </details>
 
+##### Quick Tip
 If you're looking to add/modify a filter and need to know a specific GUID, there are generally three options available:
 - AIM will log the item, rootTemplate, inventoryHolder, and target GUID for every item processed in the log.txt
 - The most excellent https://github.com/ShinyHobo/BG3-Modders-Multitool/wiki/GameObject-Explorer can be used to find the IDs of vanilla game objects
