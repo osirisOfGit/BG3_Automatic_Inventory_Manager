@@ -1,5 +1,6 @@
 {
 	"ENABLED" : 1,
+	"FILTERS_DIR" : "filters",
 	"FILTER_TABLES" : 
 	[
 		"Roots",
@@ -7,8 +8,7 @@
 		"Tags"
 	],
 	"LOG_LEVEL" : 3,
+	"MERGE_DEFAULT_FILTERS" : 1,
 	"RESET_CONFIGS" : 0,
-	"SORT_ITEMS_ON_LOAD" : 1,
-	"SYNC_CONFIGS" : 1,
-	"SYNC_FILTERS" : 1
+	"SORT_ITEMS_ON_LOAD" : 1
 }
