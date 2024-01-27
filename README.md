@@ -16,14 +16,12 @@ Configurations are generated at `%localappdata%\Larian Studios\Baldur's Gate 3\S
 ⚠ PersistentVar functionality has been disabled as of 1.1.0 due to bad implementation (sorry) - will reeanable in the future when I implement a way for users to control syncing per save, in-game, rather than through the config.json ⚠
 ~~All these values are stored in the [PersistentVars](https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#persistent-variables) of each save, alongside the generated ItemMaps.~~
 
-The default configs for this branch have been uploaded to [./default_configs](./default_configs/) in case of issues with creating them - still attempting to triage this.
-
-The default configs for this branch have been uploaded to ./default_configs in case of issues with creating them - still attempting to triage this.
+The default configs for this branch have been uploaded to [./default_configs](./default_configs/) for mod user's reference, if they wish to manually copy any parts over.
 
 | Property Name (case sensitive) | value(s) | default | 
 |--------------|-----------|-----------|
 | ENABLED | 0 for disabled, 1 for enabled. Just disables the processing and tagging of items, configs will still be processed and synced (see SYNC_* properties) | 1 |
-| FILTERS_DIR | specifies where the itemMap json files should live relative to `%localappdata%\Larian Studios\Baldur's Gate 3\Script Extender\Automatic_Inventory_Manager` - exposed for my own convenience | `filters` |
+| FILTERS_DIR | specifies where the itemMap json files should live relative to `%localappdata%\Larian Studios\Baldur's Gate 3\Script Extender\Automatic_Inventory_Manager` - allows you to create multiple folders for different sets of filters if desired. Future enhancements will make use of this config to create multiple presets of filters | `filters` |
 | FILTER_TABLES | array of files in `filters\` to load - case-sensitive. Leave off the .json. If creating a new ItemMap file without registering it through the API (so just adding the .json to the directory), it needs to be added here to be picked up. Any itemMaps added through the API will be automatically added. | `["Equipment", "Roots", "Weapons", "RootPartial", "Tags" ]`|
 | LOG_LEVEL | `TRACE = 5, DEBUG = 4, INFO = 3, WARNING = 2, ERROR = 1, OFF = 0` <br/>HIGHLY recommended to leave at INFO or below, as writing logs is extremely performance intensive and if you have any items with stack counts in the hundreds or thousands, like gold, it will appear as though your game is frozen. Only increase this if you're actively debugging an issue for a select item.<br/>Any logs above INFO level (debug/trace) will not be logged to console, and will only be sent to the log.txt, due to the sheer amount of information.| 2 |
 | RESET_CONFIGS | `1` if you want to completely reinitialize, as if you had deleted the folder (but doesn't wipe out mod-added `filters\` files | 0 |
@@ -254,7 +252,7 @@ If you want a targetFilter that sends any items with the root `ALCH_Solution_Eli
 		]
 	},
 ``` 
-The inclusion of `RespectEligibility` makes it so Shadowheart is no longer the sole recipient of the item after she receives 2 of them, spreading them out across the rest of the party until every has 2, at which point she will start receiving them again. If you remove `RespectEligibility`, ShadowHeart will always receive the item, no matter what.  
+The inclusion of `RespectEligibility` makes it so Shadowheart is no longer the sole recipient of the item after she receives 2 of them, spreading them out across the rest of the party until everyone has 2, at which point she will start receiving them again. If you remove `RespectEligibility`, ShadowHeart will always receive the item, no matter what.  
 
 </details>
 
