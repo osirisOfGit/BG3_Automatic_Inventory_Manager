@@ -40,16 +40,19 @@ ItemFilters.ItemKeys = {
 ---@param second
 ---@treturn boolean true if the tables are equal
 function ItemFilters:CompareFilter(first, second)
-	local isEqual = false
 	for property, value in pairs(first) do
-		isEqual = value == second[property]
+		if value ~= second[property] then
+			return false
+		end
 	end
 
 	for property, value in pairs(second) do
-		isEqual = value == first[property]
+		if value ~= first[property] then
+			return false
+		end
 	end
 
-	return isEqual
+	return true
 end
 
 local itemFields = ItemFilters.ItemFields
