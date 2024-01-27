@@ -95,7 +95,7 @@ A list, ordered in priority with 1 being the highest priority, of instructions t
 
 After each filter is evaluated, if there's more than one possible target still leftover, then the next filter will be processed. If all filters have been processed and there's still more than one possible target, a random target will be chosen.
 
-The filter priority can be arbitrarily high, to communicate that a given filter should be considered after any other filters found in different ItemFilters. For example, Tags contains the entry `CONSUMABLE` which has a CompareFilter for `STACK_AMOUNT` set at priority 99, and the entry `HEALING_POTION` with two WeightFilters at priorities 1 and 2 - that way, all healing potions, which have both tags, only execute the `CONSUMABLE` filter if the `HEALING_POTION` filters can't isolate a single target.
+The filter priority can be arbitrarily high, to communicate that a given filter should be considered after any other filters found in different ItemFilters. For example, Tags contains the entry `CONSUMABLE` which has a CompareFilter for `STACK_AMOUNT` set at priority 99, and the entry `HEALING_POTION` with two CompareFilters at priorities 1 and 2 - that way, all healing potions, which have both tags, only execute the `CONSUMABLE` filter if the `HEALING_POTION` filters can't isolate a single target.
 
 There are two variations of Filters that are currently implemented:
 
