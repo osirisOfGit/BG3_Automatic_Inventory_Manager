@@ -9,7 +9,7 @@ Ext.Require("AIM/Processors/_FilterProcessors.lua")
 --- @param inventoryHolder CHARACTER
 local function ProcessWinners(partyMembersWithAmountWon, item, root, inventoryHolder)
 	Osi.SetTag(item, TAG_AIM_PROCESSED)
-
+	Logger:BasicDebug("Final results are: " .. Ext.Json.Stringify(partyMembersWithAmountWon))
 	for target, amount in pairs(partyMembersWithAmountWon) do
 		if amount > 0 then
 			if target == inventoryHolder then
@@ -62,16 +62,23 @@ local function FilterInitialTargets_ByStackLimit(itemFilter,
 												 item,
 												 inventoryHolder)
 	if itemFilter.Modifiers and itemFilter.Modifiers[ItemFilters.ItemFields.FilterModifiers.STACK_LIMIT] then
+		Logger:BasicTrace("Processing StackLimit modifier")
 		local filteredSurvivors = {}
 		for _, partyMember in pairs(eligiblePartyMembers) do
 			local totalFutureStackSize = ProcessorUtils:CalculateTotalItemCount(
 				targetsWithAmountWon, partyMember, inventoryHolder, root, item)
 
+			Logger:BasicTrace(string.format("Found %d on %s, against stack limit %d",
+				totalFutureStackSize,
+				partyMember,
+				itemFilter.Modifiers[ItemFilters.ItemFields.FilterModifiers.STACK_LIMIT]))
+
 			if totalFutureStackSize < itemFilter.Modifiers[ItemFilters.ItemFields.FilterModifiers.STACK_LIMIT] then
 				table.insert(filteredSurvivors, partyMember)
 			end
 		end
-
+		
+		Logger:BasicTrace("Party members passing stack limit modifier are: " .. Ext.Json.Stringify(filteredSurvivors))
 		return #filteredSurvivors > 0 and filteredSurvivors or nil
 	end
 
@@ -126,6 +133,14 @@ function Processor:ProcessFiltersForItemAgainstParty(item, root, inventoryHolder
 	end
 
 	local numberOfFiltersToProcess = #itemFilter.Filters
+	local customItemFilterFields = {}
+	for key, val in pairs(itemFilter) do
+		local loweredKey = string.lower(key)
+		if loweredKey ~= "filters" and loweredKey ~= "modifiers" then
+			customItemFilterFields[key] = val
+		end
+	end
+
 	for _ = 1, currentItemStackSize do
 		local eligiblePartyMembers = FilterInitialTargets_ByStackLimit(itemFilter,
 				partyMembers,
@@ -142,6 +157,8 @@ function Processor:ProcessFiltersForItemAgainstParty(item, root, inventoryHolder
 			local filter = itemFilter.Filters[i]
 
 			eligiblePartyMembers = FilterProcessor:ExecuteFilterAgainstEligiblePartyMembers(filter,
+				itemFilter.Modifiers,
+				customItemFilterFields,
 				eligiblePartyMembers,
 				targetsWithAmountWon,
 				inventoryHolder,

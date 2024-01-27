@@ -58,7 +58,7 @@ function ProcessorUtils:SetWinningVal_ByCompareResult(baseValue,
 			end
 		end
 	end
-	
+
 	::continue::
 	return winnersTable, winningValue
 end
@@ -81,7 +81,8 @@ function ProcessorUtils:CalculateTotalItemCount(targetsWithAmountWon,
 												targetChar,
 												inventoryHolder,
 												root,
-											item)
+												item)
+	Logger:BasicTrace("Calculating total item count for " .. inventoryHolder)
 	local itemByTemplate = Osi.GetItemByTemplateInInventory(root, targetChar)
 	local currentlyHeldAmount = itemByTemplate and Osi.GetStackAmount(itemByTemplate) or 0
 
@@ -89,13 +90,15 @@ function ProcessorUtils:CalculateTotalItemCount(targetsWithAmountWon,
 
 	if TEMPLATES_BEING_TRANSFERRED[root] and TEMPLATES_BEING_TRANSFERRED[root][targetChar] then
 		totalFutureStackSize = totalFutureStackSize + TEMPLATES_BEING_TRANSFERRED[root][targetChar]
-		Logger:BasicDebug("Added " .. TEMPLATES_BEING_TRANSFERRED[root][targetChar] .. " to the stack size")
+		Logger:BasicDebug(string.format("Found %d of the item currently being transferreed to %s, adding to the stack size",
+			TEMPLATES_BEING_TRANSFERRED[root][targetChar],
+			targetChar))
 	end
 
 	if targetChar == inventoryHolder then
 		local amountToRemove = Osi.GetStackAmount(item)
 		for char, amountReserved in pairs(targetsWithAmountWon) do
-			if not (char == inventoryHolder) then
+			if char ~= inventoryHolder then
 				amountToRemove = amountToRemove + amountReserved
 			end
 		end
@@ -106,5 +109,6 @@ function ProcessorUtils:CalculateTotalItemCount(targetsWithAmountWon,
 		totalFutureStackSize = totalFutureStackSize - amountToRemove
 	end
 
+	Logger:BasicTrace(string.format("Total item count for %s is %d", targetChar, totalFutureStackSize))
 	return totalFutureStackSize
 end

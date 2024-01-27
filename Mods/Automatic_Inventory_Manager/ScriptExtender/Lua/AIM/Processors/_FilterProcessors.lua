@@ -57,6 +57,7 @@ end
 
 StatFunctions[targetStats.WEAPON_SCORE] = function(partyMember, paramMap)
 	if Osi.IsWeapon(paramMap.item) ~= 1 then
+		Logger:BasicTrace("Item " .. paramMap.item .. " is not a weapon according to Osi!")
 		return
 	end
 
@@ -130,8 +131,7 @@ local filterProcessors = {}
 
 filterProcessors[function(filter)
 	return filter["Target"] ~= nil
-end] = function(_, paramMap)
-	paramMap.winners = {}
+end] = function(partyMember, paramMap)
 	local target = paramMap.filter.Target
 
 	if target then
@@ -139,7 +139,13 @@ end] = function(_, paramMap)
 			paramMap.winners = { "camp" }
 		elseif string.lower(target) == "originaltarget" then
 			paramMap.winners = { paramMap.inventoryHolder }
-		elseif Osi.IsPlayer(target) == 1 or (Osi.Exists(target) == 1 and Osi.IsContainer(target) == 1) then
+		elseif Osi.IsPlayer(target) == 1 then
+			local filterIgnoresEligibility = paramMap.filter["RespectEligibility"] or "false"
+
+			if target == partyMember or string.lower(filterIgnoresEligibility) == "false" then
+				paramMap.winners = { target }
+			end
+		elseif (Osi.Exists(target) == 1 and Osi.IsContainer(target) == 1) then
 			paramMap.winners = { target }
 		else
 			error(string.format(
@@ -159,7 +165,7 @@ end] = function(partyMember, paramMap)
 end
 
 --- Add a new filter processor -
----@param predicateFunction function(Filter, boolean) Should test the filter to see if the filterProcessor can process it, returning true if 
+---@param predicateFunction function(Filter, boolean) Should test the filter to see if the filterProcessor can process it, returning true if
 ---@param filterProcessor function(CHARACTER, ParamMap) proceses the filter against the provided character, setting ParamMap.winners and optionally ParamMap.winningVal
 function FilterProcessor:AddNewFilterProcessor(predicateFunction, filterProcessor)
 	filterProcessors[predicateFunction] = filterProcessor
@@ -169,7 +175,9 @@ end
 --- @field winners GUIDSTRING[] List of targets that pass the filter - should be set by the FilterProcessor
 --- @field winningVal any value identified by the filter that is currently the victor across all partyMembers
 --- @field targetsWithAmountWon table<GUIDSTRING, number> copy of the winners table across all filters being run for the given item (resets each stack iteration)
---- @field filter Filter being executed
+--- @field filter the single filter being evaluated, such as a Compare or TargetFilter
+--- @field modifiers associated with the ItemFilter
+--- @field customItemFilterFields any fields that aren't FILTERS or MODIFIERS that were found on the ItemFilter
 --- @field item GUIDSTRING being sorted
 --- @field root GUIDSTRING rootTemplate of the item
 --- @field inventoryHolder CHARACTER
@@ -178,6 +186,8 @@ FilterProcessor.ParamMap = {
 	winners = nil,
 	winningVal = nil,
 	filter = nil,
+	modifiers = nil,
+	customItemFilterFields = nil,
 	inventoryHolder = nil,
 	item = nil,
 	root = nil,
@@ -185,7 +195,9 @@ FilterProcessor.ParamMap = {
 }
 
 --- Executes the provided Filter against the provided params. Any exceptions will be logged, swallowed, and whatever the value of the winners table was at exception time will be returned
---- @param filter Filter
+--- @param filter the single filter being evaluated, such as a Compare or TargetFilter
+--- @param modifiers associated with the ItemFilter
+--- @param customItemFilterFields any fields that aren't FILTERS or MODIFIERS that were found on the ItemFilter
 --- @param eligiblePartyMembers GUIDSTRING[]
 --- @param targetsWithAmountWon table<GUIDSTRING, number>
 --- @param inventoryHolder CHARACTER
@@ -193,6 +205,8 @@ FilterProcessor.ParamMap = {
 --- @param root GUIDSTRING
 --- @return table winners The survivors that were eligible to receive the item, or the original survivors table if none were eligible
 function FilterProcessor:ExecuteFilterAgainstEligiblePartyMembers(filter,
+																  modifiers,
+																  customItemFilterFields,
 																  eligiblePartyMembers,
 																  targetsWithAmountWon,
 																  inventoryHolder,
@@ -202,6 +216,8 @@ function FilterProcessor:ExecuteFilterAgainstEligiblePartyMembers(filter,
 		winners = {},
 		winningVal = nil,
 		filter = filter,
+		modifiers = modifiers,
+		customItemFilterFields = customItemFilterFields,
 		inventoryHolder = inventoryHolder,
 		item = item,
 		root = root,
@@ -214,7 +230,6 @@ function FilterProcessor:ExecuteFilterAgainstEligiblePartyMembers(filter,
 				for _, partyMember in pairs(eligiblePartyMembers) do
 					filterProcessor(partyMember, FilterProcessor.ParamMap)
 				end
-				break
 			end
 		end
 	end)
@@ -223,6 +238,8 @@ function FilterProcessor:ExecuteFilterAgainstEligiblePartyMembers(filter,
 		Logger:BasicError(string.format("Got error while attempting to process filter with paramMap %s: %s",
 			Ext.Json.Stringify(FilterProcessor.ParamMap), errorResponse))
 	end
+
+	Logger:BasicTrace(string.format("FilterProcessor finished iteration - param map is %s", Ext.Json.Stringify(FilterProcessor.ParamMap)))
 
 	return #FilterProcessor.ParamMap.winners > 0 and FilterProcessor.ParamMap.winners or eligiblePartyMembers
 end
