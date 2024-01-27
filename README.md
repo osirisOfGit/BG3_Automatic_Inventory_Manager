@@ -1,6 +1,8 @@
 # "Automatic" Inventory Manager (AIM)
 If you process the world in if statements, then oh boy, is this the mod for you!
 
+Mod also uploaded to Nexus Mods - https://www.nexusmods.com/baldursgate3/mods/6163
+
 ### Disclaimer
 This mod isn't actually particular useful from a functionality standpoint thanks to Larian's Magic Pockets, multi-select, and Filter implementations - if you're looking at this mod because you think you need to move items and gear to a character before you can use them, or because you don't know about the built-in filters and have trouble finding items, or because you don't know you can select multiple items in your inventory by shift-clicking, then you'll be happy to know that Larian has largely solved these problems already. Play around! 
 
