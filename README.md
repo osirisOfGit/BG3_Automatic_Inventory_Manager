@@ -245,7 +245,7 @@ If you want a targetFilter that sends any items with the root `ALCH_Solution_Eli
 		[
 			"1": {
 				"Target" : "S_Player_ShadowHeart_3ed74f06-3c60-42dc-83f6-f034cb47c679",
-        "RespectEligibility": "true"
+        			"RespectEligibility": "true"
 			},
 			"2": {
 				"CompareStategy" : "LOWER",
