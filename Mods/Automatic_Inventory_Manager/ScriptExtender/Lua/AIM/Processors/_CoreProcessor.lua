@@ -9,19 +9,21 @@ Ext.Require("AIM/Processors/_FilterProcessors.lua")
 --- @param inventoryHolder CHARACTER
 local function ProcessWinners(partyMembersWithAmountWon, item, root, inventoryHolder)
 	Osi.SetTag(item, TAG_AIM_PROCESSED)
-	Logger:BasicDebug("Final results are: " .. Ext.Json.Stringify(partyMembersWithAmountWon))
+	if Logger:IsLogLevelEnabled(Logger.PrintTypes.DEBUG) then
+		Logger:BasicDebug("Final results are: " .. Ext.Json.Stringify(partyMembersWithAmountWon))
+	end
 	for target, amount in pairs(partyMembersWithAmountWon) do
 		if amount > 0 then
 			if target == inventoryHolder then
-				Logger:BasicInfo(string.format("Target was determined to be inventoryHolder for %s on character %s"
-				, item
-				, inventoryHolder))
+				Logger:BasicInfo(string.format("Target %s was determined to be inventoryHolder for %d of %s"
+				, inventoryHolder
+				, amount
+				, item))
 			elseif target == "camp" then
 				Osi.SendToCampChest(item, inventoryHolder)
 				Logger:BasicInfo(string.format("Moved %s of %s to CAMP from %s"
 				, amount
 				, item
-				, target
 				, inventoryHolder))
 			else
 				Osi.SetOriginalOwner(item, inventoryHolder)
@@ -33,7 +35,7 @@ local function ProcessWinners(partyMembersWithAmountWon, item, root, inventoryHo
 				if not TEMPLATES_BEING_TRANSFERRED[root] then
 					TEMPLATES_BEING_TRANSFERRED[root] = { [target] = amount }
 				else
-					Utils:AddItemToTable_AddingToExistingAmount(TEMPLATES_BEING_TRANSFERRED[root], target, amount)
+					TableUtils:AddItemToTable_AddingToExistingAmount(TEMPLATES_BEING_TRANSFERRED[root], target, amount)
 				end
 
 				Logger:BasicInfo(string.format("Moved %s of %s to %s from %s"
@@ -77,8 +79,10 @@ local function FilterInitialTargets_ByStackLimit(itemFilter,
 				table.insert(filteredSurvivors, partyMember)
 			end
 		end
-		
-		Logger:BasicTrace("Party members passing stack limit modifier are: " .. Ext.Json.Stringify(filteredSurvivors))
+
+		if Logger:IsLogLevelEnabled(Logger.PrintTypes.TRACE) then
+			Logger:BasicTrace("Party members passing stack limit modifier are: " .. Ext.Json.Stringify(filteredSurvivors))
+		end
 		return #filteredSurvivors > 0 and filteredSurvivors or nil
 	end
 
@@ -174,8 +178,11 @@ function Processor:ProcessFiltersForItemAgainstParty(item, root, inventoryHolder
 					target = targetsWithAmountWon[Osi.Random(#targetsWithAmountWon) + 1]
 				end
 
-				Utils:AddItemToTable_AddingToExistingAmount(targetsWithAmountWon, target, 1)
-				Logger:BasicTrace("Winning command: " .. Ext.Json.Stringify(filter))
+				TableUtils:AddItemToTable_AddingToExistingAmount(targetsWithAmountWon, target, 1)
+
+				if Logger:IsLogLevelEnabled(Logger.PrintTypes.TRACE) then
+					Logger:BasicTrace("Winning command: " .. Ext.Json.Stringify(filter))
+				end
 				break
 			end
 		end

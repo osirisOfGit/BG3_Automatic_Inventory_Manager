@@ -221,7 +221,7 @@ function FilterProcessor:ExecuteFilterAgainstEligiblePartyMembers(filter,
 		inventoryHolder = inventoryHolder,
 		item = item,
 		root = root,
-		targetsWithAmountWon = Utils:DeeplyCopyTable(targetsWithAmountWon),
+		targetsWithAmountWon = TableUtils:DeeplyCopyTable(targetsWithAmountWon),
 	}
 
 	local success, errorResponse = pcall(function()
@@ -238,8 +238,10 @@ function FilterProcessor:ExecuteFilterAgainstEligiblePartyMembers(filter,
 		Logger:BasicError(string.format("Got error while attempting to process filter with paramMap %s: %s",
 			Ext.Json.Stringify(FilterProcessor.ParamMap), errorResponse))
 	end
-
-	Logger:BasicTrace(string.format("FilterProcessor finished iteration - param map is %s", Ext.Json.Stringify(FilterProcessor.ParamMap)))
+	if Logger:IsLogLevelEnabled(Logger.PrintTypes.TRACE) then
+		Logger:BasicTrace(string.format("FilterProcessor finished iteration - param map is %s",
+			Ext.Json.Stringify(FilterProcessor.ParamMap)))
+	end
 
 	return #FilterProcessor.ParamMap.winners > 0 and FilterProcessor.ParamMap.winners or eligiblePartyMembers
 end

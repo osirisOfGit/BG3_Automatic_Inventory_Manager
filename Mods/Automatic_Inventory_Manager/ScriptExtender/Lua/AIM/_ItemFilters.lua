@@ -138,24 +138,15 @@ function ItemFilters:AddItemFilterMaps(itemFilterMaps, forceOverride, prioritize
 	if updateItemMapClone == true then ItemFilters:UpdateItemMapsClone() end
 end
 
---- Deletes the given itemMap from memory, preventing it from being considered by itemFilterLookups
---- or being written to disk. Will not delete the file from disk, don't know how to right now.
----@tparam string name of the itemMap to remove, e.g. Weapons
-function ItemFilters:DeleteItemFilterMap(itemMapName)
-	Logger:BasicInfo("Deleting itemMap " ..
-		itemMapName .. " (file will still be on disk, but is no longer accessible by AIM for this play session)")
-	itemMaps[itemMapName] = nil
-end
-
 --- immutable clone of the itemMaps - can be forceably synced using UpdateItemMapsClone, but we'll do it on each update we know about
-ItemFilters.itemMaps = Utils:MakeImmutableTableCopy(itemMaps)
+ItemFilters.itemMaps = TableUtils:MakeImmutableTableCopy(itemMaps)
 
 --- Updates ItemFilters.itemMaps
 function ItemFilters:UpdateItemMapsClone()
-	ItemFilters.itemMaps = Utils:MakeImmutableTableCopy(itemMaps)
+	ItemFilters.itemMaps = TableUtils:MakeImmutableTableCopy(itemMaps)
 
 	-- Update the TargetStat enum with new fields for use by FilterProcessors
-	for mapName, itemMap in pairs(ItemFilters.itemMaps) do
+	for _, itemMap in pairs(ItemFilters.itemMaps) do
 		for _, itemFilter in pairs(itemMap) do
 			for _, filter in pairs(itemFilter.Filters) do
 				if filter.TargetStat and not ItemFilters.FilterFields.TargetStat[filter.TargetStat] then

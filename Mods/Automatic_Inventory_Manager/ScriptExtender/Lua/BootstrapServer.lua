@@ -1,6 +1,7 @@
 --- SETUP
-Ext.Require("AIM/_Utils.lua")
-Ext.Require("AIM/_Logger.lua")
+Ext.Require("AIM/Utils/_TableUtils.lua")
+Ext.Require("AIM/Utils/_FileUtils.lua")
+Ext.Require("AIM/Utils/_Logger.lua")
 Ext.Require("AIM/_Globals.lua")
 Ext.Require("AIM/_ItemFilters.lua")
 Ext.Require("AIM/_Config.lua")

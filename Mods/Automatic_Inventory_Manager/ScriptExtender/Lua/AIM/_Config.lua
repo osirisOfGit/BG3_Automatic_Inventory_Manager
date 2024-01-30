@@ -20,7 +20,7 @@ local function InitializeConfigurations()
 		"Initializing configs - will completely remove any customizations to config.json, including custom presets (custom preset directories will be unaffected)")
 	Config.AIM.RESET_CONFIGS = 0
 
-	Utils:SaveTableToFile("config.json", Config.AIM)
+	FileUtils:SaveTableToFile("config.json", Config.AIM)
 end
 
 --- Existing FILTERS_DIR and FILTER_TABLES config porting handled in InitializeFilterPresetsAndMigrateLegacy
@@ -58,8 +58,8 @@ local function InitializeFilterPresetsAndMigrateLegacy()
 	Config.AIM.PRESETS.FILTERS_PRESETS[Preset_CampGoldBooks.Name] = {}
 	for mapName, itemFilterMap in pairs(Preset_CampGoldBooks.ItemMaps) do
 		table.insert(Config.AIM.PRESETS.FILTERS_PRESETS[Preset_CampGoldBooks.Name], mapName)
-		Utils:SaveTableToFile(
-			Utils:BuildRelativeJsonFileTargetPath(mapName, Config.AIM.PRESETS.PRESETS_DIR, Preset_CampGoldBooks.Name),
+		FileUtils:SaveTableToFile(
+			FileUtils:BuildRelativeJsonFileTargetPath(mapName, Config.AIM.PRESETS.PRESETS_DIR, Preset_CampGoldBooks.Name),
 			itemFilterMap)
 	end
 
@@ -67,8 +67,8 @@ local function InitializeFilterPresetsAndMigrateLegacy()
 	Config.AIM.PRESETS.FILTERS_PRESETS[Preset_AllDefaults.Name] = {}
 	for mapName, itemFilterMap in pairs(Preset_AllDefaults.ItemMaps) do
 		table.insert(Config.AIM.PRESETS.FILTERS_PRESETS[Preset_AllDefaults.Name], mapName)
-		Utils:SaveTableToFile(
-			Utils:BuildRelativeJsonFileTargetPath(mapName, Config.AIM.PRESETS.PRESETS_DIR, Preset_AllDefaults.Name),
+		FileUtils:SaveTableToFile(
+			FileUtils:BuildRelativeJsonFileTargetPath(mapName, Config.AIM.PRESETS.PRESETS_DIR, Preset_AllDefaults.Name),
 			itemFilterMap)
 	end
 
@@ -92,12 +92,13 @@ local function InitializeFilterPresetsAndMigrateLegacy()
 
 		local filterTableContents
 		for _, filterTableName in pairs(Config.AIM["FILTER_TABLES"]) do
-			filterTableContents = Utils:LoadFile(Utils:BuildRelativeJsonFileTargetPath(filterTableName,
+			filterTableContents = FileUtils:LoadFile(FileUtils:BuildRelativeJsonFileTargetPath(filterTableName,
 				Config.AIM["FILTERS_DIR"]))
 
 			if filterTableContents then
-				local success = Utils:SaveStringContentToFile(
-					Utils:BuildRelativeJsonFileTargetPath(filterTableName, Config.AIM.PRESETS.PRESETS_DIR, customPresetName),
+				local success = FileUtils:SaveStringContentToFile(
+					FileUtils:BuildRelativeJsonFileTargetPath(filterTableName, Config.AIM.PRESETS.PRESETS_DIR,
+						customPresetName),
 					filterTableContents)
 
 				if success then
@@ -124,36 +125,24 @@ local function InitializeFilterPresetsAndMigrateLegacy()
 		table.insert(Config.AIM.PRESETS.ACTIVE_PRESETS, Preset_AllDefaults.Name)
 	end
 
-	Utils:SaveTableToFile("config.json", Config.AIM)
+	FileUtils:SaveTableToFile("config.json", Config.AIM)
 end
 
 
 local function LoadAndMergeItemMapsFromActivePresets()
-	if not Config.AIM.PRESETS.ACTIVE_PRESETS or #Config.AIM.PRESETS.ACTIVE_PRESETS == 0 then
-		Logger:BasicError("Config property ACTIVE_PRESETS isn't populated - can't determine which preset(s) to load, so AIM functionality will not work."
-		.. " If this is intentional, activating one of the default presets and setting ENABLED to 0 is the preferred approach."
-		.. " Setting ENABLED to 0 in-memory to avoid exceptions during execution.")
-		Config.AIM.ENABLED = 0
-		return
-	elseif not Config.AIM.PRESETS.FILTERS_PRESETS then
-		Logger:BasicError("Config property FILTERS_PRESETS isn't populated - this means there are no filter maps to load, so AIM functionality will not work."
-		..
-		" If this is intentional, listing at least one of the presets (defaults should be loaded for you) and setting ENABLED to 0 is the preferred approach."
-		.. " Setting ENABLED to 0 in-memory to avoid exceptions during execution.")
-		Config.AIM.ENABLED = 0
-		return
-	end
-
 	for _, presetName in pairs(Config.AIM.PRESETS.ACTIVE_PRESETS) do
 		Logger:BasicInfo("Loading filter preset " .. presetName)
 		if not Config.AIM.PRESETS.FILTERS_PRESETS[presetName] then
-			Logger:BasicError(string.format("Specified preset %s was not present in the FILTERS_PRESETS property - please specify a real map (case sensitive)"))
+			Logger:BasicError(string.format(
+				"Specified preset '%s' was not present in the FILTERS_PRESETS property - please specify a real preset (case sensitive)",
+				presetName))
 			goto continue
 		end
 		for _, filterTableName in pairs(Config.AIM.PRESETS.FILTERS_PRESETS[presetName]) do
-			local filterTableFilePath = Utils:BuildRelativeJsonFileTargetPath(filterTableName, Config.AIM.PRESETS.PRESETS_DIR,
+			local filterTableFilePath = FileUtils:BuildRelativeJsonFileTargetPath(filterTableName,
+				Config.AIM.PRESETS.PRESETS_DIR,
 				presetName)
-			local filterTable = Utils:LoadFile(filterTableFilePath)
+			local filterTable = FileUtils:LoadFile(filterTableFilePath)
 
 			if filterTable then
 				local success, result = pcall(function()
@@ -178,17 +167,17 @@ local function LoadAndMergeItemMapsFromActivePresets()
 				Logger:BasicWarning("Could not find filter table file " .. filterTableFilePath)
 			end
 		end
-	    ::continue::
+		::continue::
 	end
 	ItemFilters:UpdateItemMapsClone()
- end
+end
 
 function Config.SyncConfigsAndFilters()
 	Logger:ClearLogFile()
-	
+
 	PersistentVars = nil
 
-	local config = Utils:LoadFile("config.json")
+	local config = FileUtils:LoadFile("config.json")
 
 	if config then
 		config = Ext.Json.Parse(config)

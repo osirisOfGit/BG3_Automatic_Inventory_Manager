@@ -34,5 +34,5 @@ campgoldbooks.RootPartial = {
 
 Preset_CampGoldBooks = {}
 Preset_CampGoldBooks.Name = "Camp-Gold-Books"
-Preset_CampGoldBooks.ItemMaps = Utils:MakeImmutableTableCopy(campgoldbooks)
+Preset_CampGoldBooks.ItemMaps = TableUtils:MakeImmutableTableCopy(campgoldbooks)
 campgoldbooks = nil

@@ -1,20 +1,6 @@
---- @module "Utils"
+FileUtils = {}
 
-PersistentVars = {}
-Utils = {}
-
-function Utils:AddItemToTable_AddingToExistingAmount(tarTable, key, amount)
-	-- if not tarTable then
-	-- 	tarTable = {}
-	-- end
-	if not tarTable[key] then
-		tarTable[key] = amount
-	else
-		tarTable[key] = tarTable[key] + amount
-	end
-end
-
-Utils.MOD_INFO = function()
+FileUtils.MOD_INFO = function()
 	return Ext.Mod.GetMod('23bdda0c-a671-498f-89f5-a69e8d3a4b52').Info
 end
 
@@ -22,7 +8,7 @@ end
 ---@tparam string fileName required
 ---@tparam string... subDirs optional varargs
 ---@treturn string Example: subDir="dir", fileName="file", returns dir/file.json
-function Utils:BuildRelativeJsonFileTargetPath(fileName, ...)
+function FileUtils:BuildRelativeJsonFileTargetPath(fileName, ...)
 	local subDirs = { ... }
 	if subDirs then
 		local filePath = ""
@@ -38,17 +24,17 @@ end
 --- Builds the aboslute file path to the AIM ScriptExtender directory
 ---@tparam string filepath required
 ---@treturn string
-function Utils:BuildAbsoluteFileTargetPath(filepath)
-	return Utils.MOD_INFO().Directory .. "/" .. filepath
+function FileUtils:BuildAbsoluteFileTargetPath(filepath)
+	return FileUtils.MOD_INFO().Directory .. "/" .. filepath
 end
 
 --- Convenience for saving a Lua Table to a file under the AIM mod directory, logging and swallowing any errors encountered
 ---@param filepath string relative to the mod dir (e.g. filters/weapons.json)
 ---@param content any will be stringified using Ext.Json.Stringify
 ---@treturn boolean true if the operation succeeded, false otherwise
-function Utils:SaveTableToFile(filepath, content)
+function FileUtils:SaveTableToFile(filepath, content)
 	local success, error = pcall(function()
-		Utils:SaveStringContentToFile(filepath, Ext.Json.Stringify(content))
+		FileUtils:SaveStringContentToFile(filepath, Ext.Json.Stringify(content))
 	end)
 
 	if not success then
@@ -61,14 +47,14 @@ end
 ---@tparam string filepath relative to the mod dir (e.g. filters/weapons.json)
 ---@tparam any content will be stringified using Ext.Json.Stringify
 ---@treturn boolean true if the operation succeeded, false otherwise
-function Utils:SaveStringContentToFile(filepath, content)
+function FileUtils:SaveStringContentToFile(filepath, content)
 	local success, error = pcall(function()
-		return Ext.IO.SaveFile(Utils:BuildAbsoluteFileTargetPath(filepath), content)
+		return Ext.IO.SaveFile(FileUtils:BuildAbsoluteFileTargetPath(filepath), content)
 	end)
 
 	if not success then
 		Ext.Utils.PrintError(string.format("Failed to save config file %s due to error [%s] ",
-			Utils:BuildAbsoluteFileTargetPath(filepath), error))
+			FileUtils:BuildAbsoluteFileTargetPath(filepath), error))
 
 		return false
 	end
@@ -79,14 +65,14 @@ end
 --- Convenience for loading a file under the AIM mod directory
 ---@param filepath string relative to the mod directory
 ---@return string|nil
-function Utils:LoadFile(filepath)
+function FileUtils:LoadFile(filepath)
 	local success, result = pcall(function()
-		return Ext.IO.LoadFile(Utils:BuildAbsoluteFileTargetPath(filepath))
+		return Ext.IO.LoadFile(FileUtils:BuildAbsoluteFileTargetPath(filepath))
 	end)
 
 	if not success then
 		Ext.Utils.PrintError(string.format("Failed to load %s due to error [%s]",
-			Utils:BuildAbsoluteFileTargetPath(filepath),
+			FileUtils:BuildAbsoluteFileTargetPath(filepath),
 			result))
 		return nil
 	else
@@ -94,35 +80,4 @@ function Utils:LoadFile(filepath)
 	end
 end
 
--- stolen from https://stackoverflow.com/questions/640642/how-do-you-copy-a-lua-table-by-value
-local function copy(obj, seen, makeImmutable)
-	if type(obj) ~= 'table' then return obj end
-	if seen and seen[obj] then return seen[obj] end
-	local s = seen or {}
-	local res = setmetatable({}, getmetatable(obj))
-	s[obj] = res
-	for k, v in pairs(obj) do res[copy(k, s, makeImmutable)] = copy(v, s, makeImmutable) end
 
-	if makeImmutable then
-		res = setmetatable(res, {
-			getmetatable(res) and table.unpack(getmetatable(res)),
-			__newindex = function(...) error("Attempted to modify immutable table") end
-		})
-	end
-
-	return res
-end
-
---- If obj is a table, returns a deep clone of that table, otherwise return obj
----@param obj T
----@return T
-function Utils:DeeplyCopyTable(obj)
-	return copy(obj, nil, false)
-end
-
---- Creates an immutable table
----@param tableName string
----@return table
-function Utils:MakeImmutableTableCopy(myTable)
-	return copy(myTable, nil, true)
-end
