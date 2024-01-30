@@ -65,8 +65,6 @@ local function MergeItemFiltersIntoTarget(targetItemFilter, newItemFilters, prio
 			if string.lower(itemFilterProperty) == "filters" then
 				-- Consolidate filters, ignoring duplicates
 				for newFilterPriority, newFilter in pairs(propertyValue) do
-					newFilterPriority = tonumber(newFilterPriority)
-
 					local foundIdenticalFilter = false
 					for _, existingFilter in pairs(targetItemFilter.Filters) do
 						if ItemFilters:CompareFilter(newFilter, existingFilter) then
@@ -75,12 +73,13 @@ local function MergeItemFiltersIntoTarget(targetItemFilter, newItemFilters, prio
 						end
 					end
 					if not foundIdenticalFilter then
-						if targetItemFilter.Filters[newFilterPriority] then
+						newFilterPriority = tonumber(newFilterPriority)
+						if targetItemFilter.Filters[newFilterPriority] or targetItemFilter.Filters[tostring(newFilterPriority)] then
 							-- Find the first empty index after the requested priority -
 							-- if we're prioritizing new filters, we'll shift all consecutive filters down one spot
 							-- otherwise, we'll insert the new filter into that available index
 							local filterIndex = newFilterPriority
-							while targetItemFilter.Filters[filterIndex] do
+							while targetItemFilter.Filters[filterIndex] or targetItemFilter.Filters[tostring(filterIndex)] do
 								filterIndex = filterIndex + 1
 							end
 							if prioritizeNewFilters ~= true then

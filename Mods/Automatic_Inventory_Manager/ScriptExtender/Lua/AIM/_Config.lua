@@ -146,9 +146,9 @@ local function LoadAndMergeItemMapsFromActivePresets()
 			if filterTable then
 				local success, result = pcall(function()
 					Logger:BasicInfo(string.format(
-						"Merging %s.json from preset %s into active itemMaps",
-						filterTableName,
-						presetName))
+						"Merging %s/%s.json into active itemMaps",
+						presetName,
+						filterTableName))
 
 					ItemFilters:AddItemFilterMaps({ [filterTableName] = Ext.Json.Parse(filterTable) },
 						false,

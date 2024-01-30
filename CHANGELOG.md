@@ -19,7 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 	- MERGE_DEFAULT_FILTERS
 	- FILTERS_DIR
 	- FILTER_TABLES
-	
+
 ### API
 #### Fixed
 - Documentation
@@ -37,3 +37,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Moved _Logger into Utils/
 - Wrapped logs using Ext.Json.Stringify in Logger:IsLogLevelActive checks
 - Exploded _Utils into Utils/FileUtils and Utils/TableUtils
+#### Fixed
+- _ItemFilters:MergeItemFiltersIntoTarget not accounting for stringified number indexes (thanks JSON)
