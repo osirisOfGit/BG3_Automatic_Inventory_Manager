@@ -1,6 +1,7 @@
 --- @module "Processors._CoreProcessor"
 
 Ext.Require("AIM/Processors/_FilterProcessors.lua")
+Ext.Require("AIM/Processors/_ModifierProcessors.lua")
 
 --- Distributes the item stack according to the winners of the processed filters
 --- @param partyMembersWithAmountWon table<CHARACTER, number>
@@ -134,27 +135,26 @@ function Processor:ProcessFiltersForItemAgainstParty(item, root, inventoryHolder
 	local partyMembers = {}
 
 	if (#Osi.DB_Players:Get(nil) == 0) then
+		Logger:BasicDebug("The party is empty - skipping processing")
 		return
 	end
 	for _, player in pairs(Osi.DB_Players:Get(nil)) do
-		if itemFilter.Modifiers and itemFilter.Modifiers[ItemFilters.ItemFields.FilterModifiers.EXCLUDE_PARTY_MEMBERS] then
-			for _, memberToExclude in pairs(itemFilter.Modifiers[ItemFilters.ItemFields.FilterModifiers.EXCLUDE_PARTY_MEMBERS]) do
-				if player[1] == memberToExclude then
-					goto continue
-				end
-			end
-			targetsWithAmountWon[player[1]] = 0
-			table.insert(partyMembers, player[1])
-			::continue::
-		end
+		table.insert(partyMembers, player[1])
 	end
 
-	if itemFilter.Modifiers and itemFilter.Modifiers[ItemFilters.ItemFields.FilterModifiers.EXCLUDE_PARTY_MEMBERS] and Logger:IsLogLevelEnabled(Logger.PrintTypes.DEBUG) then
-		Logger:BasicDebug(string.format(
-			"After processing EXCLUDE_PARTY_MEMBERS modifier, surviving partyMembers are: %s",
-			Ext.Json.Stringify(partyMembers)))
+	partyMembers = ModifierProcessors:ProcessPerStackModifiers(itemFilter.Modifiers,
+		itemFilter,
+		partyMembers,
+		nil,
+		item,
+		currentItemStackSize,
+		root,
+		inventoryHolder)
+
+	for _, partyMember in pairs(partyMembers) do
+		targetsWithAmountWon[partyMember] = 0
 	end
-	
+
 	local numberOfFiltersToProcess = #itemFilter.Filters
 	local customItemFilterFields = {}
 	for key, val in pairs(itemFilter) do

@@ -174,7 +174,7 @@ end
 --- The table that's passed to each FilterProcessor
 --- @field winners GUIDSTRING[] List of targets that pass the filter - should be set by the FilterProcessor
 --- @field winningVal any value identified by the filter that is currently the victor across all partyMembers
---- @field targetsWithAmountWon table<GUIDSTRING, number> copy of the winners table across all filters being run for the given item (resets each stack iteration)
+--- @field targetsWithAmountWon table<GUIDSTRING, number> copy of the winners table across all filters being run for the given item
 --- @field filter the single filter being evaluated, such as a Compare or TargetFilter
 --- @field modifiers associated with the ItemFilter
 --- @field customItemFilterFields any fields that aren't FILTERS or MODIFIERS that were found on the ItemFilter

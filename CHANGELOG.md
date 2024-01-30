@@ -23,6 +23,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 	- FILTER_TABLES
 
 ### API
+#### Added
+- Processors/_ModifierProcessors
 #### Fixed
 - Documentation
 	- Corrected _CoreProcessor spelling
@@ -35,6 +37,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Added
 - Changelog
 - Logger:IsLogLevelActive
+- Utils/_ModUtils
 #### Changed
 - Moved _Logger into Utils/
 - Wrapped logs using Ext.Json.Stringify in Logger:IsLogLevelActive checks

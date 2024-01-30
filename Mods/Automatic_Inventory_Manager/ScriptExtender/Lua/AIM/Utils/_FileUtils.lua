@@ -1,9 +1,5 @@
 FileUtils = {}
 
-FileUtils.MOD_INFO = function()
-	return Ext.Mod.GetMod('23bdda0c-a671-498f-89f5-a69e8d3a4b52').Info
-end
-
 --- Builds a file target path relative to AIM's ScriptExtender/ path (to be used in combination with Utils:BuildAbsoluteFileTargetPath)
 ---@tparam string fileName required
 ---@tparam string... subDirs optional varargs
@@ -25,7 +21,7 @@ end
 ---@tparam string filepath required
 ---@treturn string
 function FileUtils:BuildAbsoluteFileTargetPath(filepath)
-	return FileUtils.MOD_INFO().Directory .. "/" .. filepath
+	return ModUtils:GetAIMModInfo().Directory .. "/" .. filepath
 end
 
 --- Convenience for saving a Lua Table to a file under the AIM mod directory, logging and swallowing any errors encountered

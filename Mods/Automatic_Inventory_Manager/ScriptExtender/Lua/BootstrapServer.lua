@@ -1,4 +1,5 @@
 --- SETUP
+Ext.Require("AIM/Utils/_ModUtils.lua")
 Ext.Require("AIM/Utils/_TableUtils.lua")
 Ext.Require("AIM/Utils/_FileUtils.lua")
 Ext.Require("AIM/Utils/_Logger.lua")

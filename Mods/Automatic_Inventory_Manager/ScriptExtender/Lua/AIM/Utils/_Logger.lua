@@ -75,7 +75,7 @@ function Logger:BasicPrint(content, messageType, textColor, customPrefix, rainbo
         messageType = messageType or Logger.PrintTypes.INFO
         local textColorCode = textColor or TEXT_COLORS.cyan -- Default to cyan
 
-        customPrefix = customPrefix or FileUtils.MOD_INFO().Name
+        customPrefix = customPrefix or ModUtils:GetAIMModInfo().Name
         local padding = string.rep(" ", prefixLength - #customPrefix)
         local message = ConcatOutput(ConcatPrefix(customPrefix .. padding .. "  [" .. messageType .. "]", content))
 
