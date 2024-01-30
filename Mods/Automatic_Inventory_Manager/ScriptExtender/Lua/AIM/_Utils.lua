@@ -17,23 +17,63 @@ end
 Utils.MOD_INFO = function()
 	return Ext.Mod.GetMod('23bdda0c-a671-498f-89f5-a69e8d3a4b52').Info
 end
-function Utils:BuildTargetFilePath(filepath)
+
+--- Builds a file target path relative to AIM's ScriptExtender/ path (to be used in combination with Utils:BuildAbsoluteFileTargetPath)
+---@tparam string fileName required
+---@tparam string... subDirs optional varargs
+---@treturn string Example: subDir="dir", fileName="file", returns dir/file.json
+function Utils:BuildRelativeJsonFileTargetPath(fileName, ...)
+	local subDirs = { ... }
+	if subDirs then
+		local filePath = ""
+		for _, subDir in pairs(subDirs) do
+			filePath = filePath .. subDir .. "/"
+		end
+		return filePath .. fileName .. ".json"
+	else
+		return fileName .. ".json"
+	end
+end
+
+--- Builds the aboslute file path to the AIM ScriptExtender directory
+---@tparam string filepath required
+---@treturn string
+function Utils:BuildAbsoluteFileTargetPath(filepath)
 	return Utils.MOD_INFO().Directory .. "/" .. filepath
 end
 
---- Convenience for saving a file under the AIM mod directory
+--- Convenience for saving a Lua Table to a file under the AIM mod directory, logging and swallowing any errors encountered
 ---@param filepath string relative to the mod dir (e.g. filters/weapons.json)
 ---@param content any will be stringified using Ext.Json.Stringify
+---@treturn boolean true if the operation succeeded, false otherwise
 function Utils:SaveTableToFile(filepath, content)
 	local success, error = pcall(function()
-		local json = Ext.Json.Stringify(content)
-		Ext.IO.SaveFile(Utils:BuildTargetFilePath(filepath), json)
+		Utils:SaveStringContentToFile(filepath, Ext.Json.Stringify(content))
+	end)
+
+	if not success then
+		Ext.Utils.PrintError(string.format("Failed to convert content %s to JSON due to error [%s] ",
+			tostring(content), error))
+	end
+end
+
+--- Convenience for saving a file under the AIM mod directory, logging and swallowing any errors encountered
+---@tparam string filepath relative to the mod dir (e.g. filters/weapons.json)
+---@tparam any content will be stringified using Ext.Json.Stringify
+---@treturn boolean true if the operation succeeded, false otherwise
+function Utils:SaveStringContentToFile(filepath, content)
+	local success, error = pcall(function()
+		return Ext.IO.SaveFile(Utils:BuildAbsoluteFileTargetPath(filepath), content)
 	end)
 
 	if not success then
 		Ext.Utils.PrintError(string.format("Failed to save config file %s due to error [%s] ",
-			Utils:BuildTargetFilePath(filepath), error))
+			Utils:BuildAbsoluteFileTargetPath(filepath), error))
+
+		return false
 	end
+
+	return true
 end
 
 --- Convenience for loading a file under the AIM mod directory
@@ -41,11 +81,12 @@ end
 ---@return string|nil
 function Utils:LoadFile(filepath)
 	local success, result = pcall(function()
-		return Ext.IO.LoadFile(Utils:BuildTargetFilePath(filepath))
+		return Ext.IO.LoadFile(Utils:BuildAbsoluteFileTargetPath(filepath))
 	end)
 
 	if not success then
-		Ext.Utils.PrintError(string.format("Failed to load %s due to error [%s]", Utils:BuildTargetFilePath(filepath),
+		Ext.Utils.PrintError(string.format("Failed to load %s due to error [%s]",
+			Utils:BuildAbsoluteFileTargetPath(filepath),
 			result))
 		return nil
 	else

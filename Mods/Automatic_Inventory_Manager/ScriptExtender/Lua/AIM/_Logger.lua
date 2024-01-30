@@ -119,12 +119,12 @@ local logPath = 'log.txt'
 function Logger:LogMessage(message)
     local fileContent = Utils:LoadFile(logPath) or ""
     local logMessage = Ext.Utils.MonotonicTime() .. " " .. message
-    Ext.IO.SaveFile(Utils:BuildTargetFilePath(logPath), fileContent .. logMessage .. "\n")
+    Ext.IO.SaveFile(Utils:BuildAbsoluteFileTargetPath(logPath), fileContent .. logMessage .. "\n")
 end
 
 --- Wipes the log file
 function Logger:ClearLogFile()
     if Utils:LoadFile(logPath) then
-        Ext.IO.SaveFile(Utils:BuildTargetFilePath(logPath), "")
+        Ext.IO.SaveFile(Utils:BuildAbsoluteFileTargetPath(logPath), "")
     end
 end
