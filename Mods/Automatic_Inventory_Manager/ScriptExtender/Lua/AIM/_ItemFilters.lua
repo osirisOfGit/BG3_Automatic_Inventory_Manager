@@ -7,6 +7,7 @@ ItemFilters.ItemFields = {}
 --- General modifiers that don't fit within the scope of a Filter
 ItemFilters.ItemFields.FilterModifiers = {
 	STACK_LIMIT = "STACK_LIMIT", -- Filters out any party members that have > than the specified limit
+	EXCLUDE_PARTY_MEMBERS = "EXCLUDE_PARTY_MEMBERS"
 }
 
 ItemFilters.FilterFields = {}

@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Mod Users
 #### Added
 - Presets functionality
+- Modifiers
+	- EXCLUDE_PARTY_MEMBERS
 - Configurations
 	- PRESETS
 		- PRESETS_DIR

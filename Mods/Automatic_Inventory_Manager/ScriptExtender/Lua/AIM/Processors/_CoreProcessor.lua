@@ -64,7 +64,6 @@ local function FilterInitialTargets_ByStackLimit(itemFilter,
 												 item,
 												 inventoryHolder)
 	if itemFilter.Modifiers and itemFilter.Modifiers[ItemFilters.ItemFields.FilterModifiers.STACK_LIMIT] then
-		Logger:BasicTrace("Processing StackLimit modifier")
 		local filteredSurvivors = {}
 		for _, partyMember in pairs(eligiblePartyMembers) do
 			local totalFutureStackSize = ProcessorUtils:CalculateTotalItemCount(
@@ -80,8 +79,9 @@ local function FilterInitialTargets_ByStackLimit(itemFilter,
 			end
 		end
 
-		if Logger:IsLogLevelEnabled(Logger.PrintTypes.TRACE) then
-			Logger:BasicTrace("Party members passing stack limit modifier are: " .. Ext.Json.Stringify(filteredSurvivors))
+		if Logger:IsLogLevelEnabled(Logger.PrintTypes.DEBUG) then
+			Logger:BasicDebug("After processing STACK_LIMIT modifier, surviving partyMembers are: %s " ..
+				Ext.Json.Stringify(filteredSurvivors))
 		end
 		return #filteredSurvivors > 0 and filteredSurvivors or nil
 	end
@@ -113,6 +113,11 @@ local function FilterInitialTargets_ByEncumbranceRisk(item, eligiblePartyMembers
 		end
 	end
 
+	if Logger:IsLogLevelEnabled(Logger.PrintTypes.DEBUG) then
+		Logger:BasicDebug("After filtering by EncumbranceRisk, remaining members are: "
+			.. Ext.Json.Stringify(filteredSurvivors))
+	end
+
 	return #filteredSurvivors > 0 and filteredSurvivors or nil
 end
 
@@ -132,10 +137,24 @@ function Processor:ProcessFiltersForItemAgainstParty(item, root, inventoryHolder
 		return
 	end
 	for _, player in pairs(Osi.DB_Players:Get(nil)) do
-		targetsWithAmountWon[player[1]] = 0
-		table.insert(partyMembers, player[1])
+		if itemFilter.Modifiers and itemFilter.Modifiers[ItemFilters.ItemFields.FilterModifiers.EXCLUDE_PARTY_MEMBERS] then
+			for _, memberToExclude in pairs(itemFilter.Modifiers[ItemFilters.ItemFields.FilterModifiers.EXCLUDE_PARTY_MEMBERS]) do
+				if player[1] == memberToExclude then
+					goto continue
+				end
+			end
+			targetsWithAmountWon[player[1]] = 0
+			table.insert(partyMembers, player[1])
+			::continue::
+		end
 	end
 
+	if itemFilter.Modifiers and itemFilter.Modifiers[ItemFilters.ItemFields.FilterModifiers.EXCLUDE_PARTY_MEMBERS] and Logger:IsLogLevelEnabled(Logger.PrintTypes.DEBUG) then
+		Logger:BasicDebug(string.format(
+			"After processing EXCLUDE_PARTY_MEMBERS modifier, surviving partyMembers are: %s",
+			Ext.Json.Stringify(partyMembers)))
+	end
+	
 	local numberOfFiltersToProcess = #itemFilter.Filters
 	local customItemFilterFields = {}
 	for key, val in pairs(itemFilter) do
@@ -158,7 +177,6 @@ function Processor:ProcessFiltersForItemAgainstParty(item, root, inventoryHolder
 			or eligiblePartyMembers
 
 		for i, filter in ipairs(itemFilter.Filters) do
-
 			eligiblePartyMembers = FilterProcessor:ExecuteFilterAgainstEligiblePartyMembers(filter,
 				itemFilter.Modifiers,
 				customItemFilterFields,
