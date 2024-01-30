@@ -1,4 +1,4 @@
---- @module "Processors._CoreProcesor"
+--- @module "Processors._CoreProcessor"
 
 Ext.Require("AIM/Processors/_FilterProcessors.lua")
 
@@ -157,8 +157,7 @@ function Processor:ProcessFiltersForItemAgainstParty(item, root, inventoryHolder
 		eligiblePartyMembers = FilterInitialTargets_ByEncumbranceRisk(item, eligiblePartyMembers)
 			or eligiblePartyMembers
 
-		for i = 1, numberOfFiltersToProcess do
-			local filter = itemFilter.Filters[i]
+		for i, filter in ipairs(itemFilter.Filters) do
 
 			eligiblePartyMembers = FilterProcessor:ExecuteFilterAgainstEligiblePartyMembers(filter,
 				itemFilter.Modifiers,

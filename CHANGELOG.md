@@ -19,11 +19,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 	- MERGE_DEFAULT_FILTERS
 	- FILTERS_DIR
 	- FILTER_TABLES
+	
 ### API
+#### Fixed
+- Documentation
+	- Corrected _CoreProcessor spelling
 #### Removed
 - Documentation
 	- Logger
 	- File utilities
+
 ### Internal Only
 #### Added
 - Changelog

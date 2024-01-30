@@ -116,7 +116,7 @@ local function InitializeFilterPresetsAndMigrateLegacy()
 			end
 		end
 
-		Config.AIM.PRESETS.ACTIVE_PRESETS = { customPresetName }
+		Config.AIM.PRESETS.ACTIVE_PRESETS[1] = { customPresetName }
 		Config.AIM["FILTERS_DIR"] = nil
 		Config.AIM["FILTER_TABLES"] = nil
 	end
@@ -128,9 +128,8 @@ local function InitializeFilterPresetsAndMigrateLegacy()
 	FileUtils:SaveTableToFile("config.json", Config.AIM)
 end
 
-
 local function LoadAndMergeItemMapsFromActivePresets()
-	for _, presetName in pairs(Config.AIM.PRESETS.ACTIVE_PRESETS) do
+	for _, presetName in ipairs(Config.AIM.PRESETS.ACTIVE_PRESETS) do
 		Logger:BasicInfo("Loading filter preset " .. presetName)
 		if not Config.AIM.PRESETS.FILTERS_PRESETS[presetName] then
 			Logger:BasicError(string.format(
@@ -170,6 +169,12 @@ local function LoadAndMergeItemMapsFromActivePresets()
 		::continue::
 	end
 	ItemFilters:UpdateItemMapsClone()
+	if Logger:IsLogLevelEnabled(Logger.PrintTypes.DEBUG) then
+		Logger:BasicDebug("Finished loading in presets - finalized item maps are:")
+		for itemMap, itemMapContent in pairs(ItemFilters.itemMaps) do
+			Logger:BasicDebug(string.format("%s: %s", itemMap, Ext.Json.Stringify(itemMapContent)))
+		end
+	end
 end
 
 function Config.SyncConfigsAndFilters()

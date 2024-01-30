@@ -55,7 +55,6 @@ function ItemFilters:CompareFilter(first, second)
 	return true
 end
 
-
 ---
 ---@param targetItemFilter the existing ItemFilter to merge into
 ---@param newItemFilters the ItemFilters to add to the table
@@ -131,8 +130,10 @@ function ItemFilters:AddItemFilterMaps(itemFilterMaps, forceOverride, prioritize
 				end
 			end
 		end
-		Logger:BasicDebug(string.format("Finished merging itemMap %s, new map is: ", mapName,
-			Ext.Json.Stringify(itemMaps[mapName])))
+		if Logger:IsLogLevelEnabled(Logger.PrintTypes.TRACE) then
+			Logger:BasicTrace(string.format("Finished merging itemMap %s, new map is: %s", mapName,
+				Ext.Json.Stringify(itemMaps[mapName])))
+		end
 	end
 
 	if updateItemMapClone == true then ItemFilters:UpdateItemMapsClone() end
