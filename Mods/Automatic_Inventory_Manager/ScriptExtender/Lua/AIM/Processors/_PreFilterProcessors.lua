@@ -138,15 +138,10 @@ perItemPreFilterProcessors[ItemFilters.ItemFields.PreFilters.STACK_LIMIT] = func
 		end
 	end
 
-	if Logger:IsLogLevelEnabled(Logger.PrintTypes.DEBUG) then
-		Logger:BasicDebug("After processing STACK_LIMIT modifier, surviving partyMembers are: %s" ..
-			Ext.Json.Stringify(filteredSurvivors))
-	end
-
 	return #filteredSurvivors > 0 and filteredSurvivors or nil
 end
 
-perItemPreFilterProcessors["ENCUMBRANCE"] = function(_, paramMap)
+perItemPreFilterProcessors[ItemFilters.ItemFields.PreFilters.ENCUMBRANCE] = function(_, paramMap)
 	local filteredSurvivors = {}
 	local itemWeight = tonumber(Ext.Entity.Get(paramMap.item).Data.Weight)
 
@@ -164,11 +159,6 @@ perItemPreFilterProcessors["ENCUMBRANCE"] = function(_, paramMap)
 				table.insert(filteredSurvivors, partyMember)
 			end
 		end
-	end
-
-	if Logger:IsLogLevelEnabled(Logger.PrintTypes.DEBUG) then
-		Logger:BasicDebug("After filtering by EncumbranceRisk, remaining members are: "
-			.. Ext.Json.Stringify(filteredSurvivors))
 	end
 
 	return #filteredSurvivors > 0 and filteredSurvivors or nil

@@ -105,10 +105,10 @@ function ProcessorUtils:CalculateTotalItemCount(targetsWithAmountWon,
 		if amountToRemove > totalFutureStackSize then
 			amountToRemove = totalFutureStackSize
 		end
-		Logger:BasicDebug("Brought down inventoryHolder's amount by  " .. amountToRemove)
 		totalFutureStackSize = totalFutureStackSize - amountToRemove
+		Logger:BasicDebug(string.format("Brought down %s's, the inventoryHolder of the item, total item count by %d", inventoryHolder, amountToRemove))
 	end
 
-	Logger:BasicTrace(string.format("Total item count for %s is %d", targetChar, totalFutureStackSize))
+	Logger:BasicDebug(string.format("Total item count for %s is %d", targetChar, totalFutureStackSize))
 	return totalFutureStackSize
 end
