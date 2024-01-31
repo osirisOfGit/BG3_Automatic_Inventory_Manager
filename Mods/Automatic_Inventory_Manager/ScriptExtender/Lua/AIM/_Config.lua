@@ -7,12 +7,14 @@ Config.AIM = {
 	ENABLED = 1,
 	RESET_CONFIGS = 0,
 	LOG_LEVEL = 3,
-	SORT_ITEMS_ON_LOAD = 1,
+	SORT_ITEMS_ON_FIRST_LOAD = 1,
+	SORT_ITEMS_DURING_COMBAT = 0,
+	SORT_CONSUMABLE_ITEMS_ON_USE_DURING_COMBAT = 0,
 	PRESETS = {
 		PRESETS_DIR = "presets",
 		ACTIVE_PRESETS = {},
 		FILTERS_PRESETS = {}
-	}
+	},
 }
 
 local function InitializeConfigurations()
@@ -32,7 +34,8 @@ local function UpdateConfigFile(config)
 	end
 
 	local MODIFIED_CONFIG_NAMES = {
-		SYNC_FILTERS = "MERGE_DEFAULT_FILTERS" -- 1.1.0
+		SYNC_FILTERS = "MERGE_DEFAULT_FILTERS", -- 1.1.0
+		SORT_ITEMS_ON_LOAD = "SORT_ITEMS_ON_FIRST_LOAD", -- 2.0.0 
 	}
 
 	for oldProp, newProp in pairs(MODIFIED_CONFIG_NAMES) do

@@ -67,7 +67,7 @@ Ext.Osiris.RegisterListener("DroppedBy", 2, "after", function(object, _)
 end)
 
 -- Includes moving from container to other inventories etc...
-Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(root, item, inventoryHolder, addType)
+Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(root, item, inventoryHolder, _)
 	if Config.AIM.ENABLED == 1 then
 		-- Will be nil if inventoryHolder isn't a character
 		if Osi.IsPlayer(inventoryHolder) ~= 1 then
@@ -78,15 +78,17 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(root, item, 
 			return
 		end
 
-		DetermineAndExecuteFiltersForItem(root, item, inventoryHolder, false)
+		if Config.AIM.SORT_ITEMS_DURING_COMBAT == 1 or Osi.IsInCombat(inventoryHolder) == 0 then
+			DetermineAndExecuteFiltersForItem(root, item, inventoryHolder, false)
+		end
 	end
 end)
 
-
-Ext.Osiris.RegisterListener("TemplateUseFinished", 4, "after", function(character, itemTemplate, item2, success)
-	if Config.AIM.ENABLED == 1 then
+Ext.Osiris.RegisterListener("TemplateUseFinished", 4, "before", function(character, itemTemplate, item2, success)
+	-- Has the consumable tag
+	if Config.AIM.ENABLED == 1 and Osi.IsTagged(item2, "4d79b277-97f0-4227-a780-7a14fb9827fc") then
 		local isTemplateInInventory = Osi.TemplateIsInPartyInventory(itemTemplate, character, 0)
-		if success == 1 and (isTemplateInInventory and isTemplateInInventory > 0) and Osi.IsInCombat(character) == 0 then
+		if success == 1 and (isTemplateInInventory and isTemplateInInventory > 0) and (Config.AIM.SORT_CONSUMABLE_ITEMS_DURING_COMBAT == 1 or Osi.IsInCombat(character) == 0) then
 			Logger:BasicInfo("Resorting all items of template " .. itemTemplate .. " due to finished use of " .. item2)
 			for _, player in pairs(Osi.DB_Players:Get(nil)) do
 				Osi.IterateInventoryByTemplate(player[1],
@@ -98,7 +100,7 @@ Ext.Osiris.RegisterListener("TemplateUseFinished", 4, "after", function(characte
 	end
 end)
 
-local function extractCharAndSortItem(guid, event, aimEvent, ignoreProcessedTag) 
+local function extractCharAndSortItem(guid, event, aimEvent, ignoreProcessedTag)
 	if Osi.IsEquipped(guid) == 0 and Ext.Entity.Get(guid).Value.Unique == false and Osi.IsStoryItem(guid) == 0 then
 		Logger:BasicDebug("Processing item " .. guid .. " for event " .. event)
 		local character = string.sub(event, string.len(aimEvent) + 1)
@@ -108,7 +110,7 @@ local function extractCharAndSortItem(guid, event, aimEvent, ignoreProcessedTag)
 end
 Ext.Osiris.RegisterListener("EntityEvent", 2, "before", function(guid, event)
 	if Config.AIM.ENABLED == 1 then
-		if string.find(event, EVENT_ITERATE_ITEMS_TO_RESORT_THEM_START)then
+		if string.find(event, EVENT_ITERATE_ITEMS_TO_RESORT_THEM_START) then
 			extractCharAndSortItem(guid, event, EVENT_ITERATE_ITEMS_TO_RESORT_THEM_START, false)
 		elseif string.find(event, EVENT_RESORT_CONSUMABLE_START) then
 			extractCharAndSortItem(guid, event, EVENT_RESORT_CONSUMABLE_START, true)

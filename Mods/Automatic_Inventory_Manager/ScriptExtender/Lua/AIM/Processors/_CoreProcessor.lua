@@ -134,8 +134,8 @@ function Processor:ProcessFiltersForItemAgainstParty(item, root, inventoryHolder
 	local currentItemStackSize = Osi.GetStackAmount(item)
 	local partyMembers = {}
 
-	if (#Osi.DB_Players:Get(nil) == 0) then
-		Logger:BasicDebug("The party is empty - skipping processing")
+	if (#Osi.DB_Players:Get(nil) < 1) then
+		Logger:BasicDebug("The party has one or fewer members - skipping processing")
 		return
 	end
 	for _, player in pairs(Osi.DB_Players:Get(nil)) do
