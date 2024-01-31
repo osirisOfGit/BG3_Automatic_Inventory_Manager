@@ -39,12 +39,12 @@
 
 <h2>Modules</h2>
 <ul class="nowrap">
-  <li><strong>Processors._CoreProcessor</strong></li>
+  <li><a href="../modules/Processors._CoreProcessor.html">Processors._CoreProcessor</a></li>
   <li><a href="../modules/Processors._FilterProcessors.html">Processors._FilterProcessors</a></li>
   <li><a href="../modules/Processors._ModifierProcessors.html">Processors._ModifierProcessors</a></li>
   <li><a href="../modules/Processors._ProcessorUtils.html">Processors._ProcessorUtils</a></li>
   <li><a href="../modules/Utils._TableUtils.html">Utils._TableUtils</a></li>
-  <li><a href="../modules/ItemBlackList.html">ItemBlackList</a></li>
+  <li><strong>ItemBlackList</strong></li>
   <li><a href="../modules/ItemFilters.html">ItemFilters</a></li>
 </ul>
 
@@ -52,7 +52,7 @@
 
 <div id="content">
 
-<h1>Module <code>Processors._CoreProcessor</code></h1>
+<h1>Module <code>ItemBlackList</code></h1>
 <p></p>
 <p></p>
 
@@ -60,8 +60,8 @@
 <h2><a href="#Functions">Functions</a></h2>
 <table class="function_list">
 	<tr>
-	<td class="name" nowrap><a href="#Processor:ProcessFiltersForItemAgainstParty">Processor:ProcessFiltersForItemAgainstParty (item, root, inventoryHolder, itemFilter)</a></td>
-	<td class="summary">Processes the filters on the given params, moving the item(s) to the identified targets after all items in the stack have been processed</td>
+	<td class="name" nowrap><a href="#IsItemOrTemplateInBlacklist">IsItemOrTemplateInBlacklist (item, rootTemplate)</a></td>
+	<td class="summary">Checks to see if the item or rootTemplate is in the user-provided blacklist.</td>
 	</tr>
 </table>
 
@@ -73,29 +73,29 @@
 
     <dl class="function">
     <dt>
-    <a name = "Processor:ProcessFiltersForItemAgainstParty"></a>
-    <strong>Processor:ProcessFiltersForItemAgainstParty (item, root, inventoryHolder, itemFilter)</strong>
+    <a name = "IsItemOrTemplateInBlacklist"></a>
+    <strong>IsItemOrTemplateInBlacklist (item, rootTemplate)</strong>
     </dt>
     <dd>
-    Processes the filters on the given params, moving the item(s) to the identified targets after all items in the stack have been processed
+    Checks to see if the item or rootTemplate is in the user-provided blacklist.
 
 
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">item</span>
-         GUIDSTRING
+         GUIDSTRING optional
         </li>
-        <li><span class="parameter">root</span>
-         GUIDSTRING
-        </li>
-        <li><span class="parameter">inventoryHolder</span>
-         CHARACTER
-        </li>
-        <li><span class="parameter">itemFilter</span>
-         ItemFilter
+        <li><span class="parameter">rootTemplate</span>
+         GUIDSTRING optional
         </li>
     </ul>
 
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">boolean</span></span>
+        true if the item or rootTemplate is in the blacklist
+    </ol>
 
 
 
