@@ -203,4 +203,6 @@ function Config.SyncConfigsAndFilters()
 	InitializeFilterPresetsAndMigrateLegacy()
 
 	LoadAndMergeItemMapsFromActivePresets()
+
+	ItemBlackList:InitializeBlackList()
 end

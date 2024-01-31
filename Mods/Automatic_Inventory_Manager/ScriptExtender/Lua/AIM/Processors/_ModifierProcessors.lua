@@ -20,7 +20,6 @@ ModifierProcessors.ParamMap = {
 	inventoryHolder = nil,
 }
 
-
 local perStackModifierProcessors = {}
 
 -- Exclude Party Members
@@ -50,7 +49,7 @@ perStackModifierProcessors[ItemFilters.ItemFields.FilterModifiers.EXCLUDE_PARTY_
 --- last known populated eligiblePartyMembers list will be used.
 ---@treturn boolean if the function was added successfully for the modifierKey
 function ModifierProcessors:AddPerStackModifierProcessor(modUUID, modifierKey, processorFunction)
-	local modName = ModUtils:GetModInfoFromUUID(modUUID)
+	local modName = ModUtils:GetModInfoFromUUID(modUUID).Name
 	if not modName then return false end
 
 	if perStackModifierProcessors[modifierKey] then

@@ -6,11 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [2.0.0]
+### TODO:
+- Implement ModifierProcessors for per-item modifiers
+- Retest vanilla ItemBlackList
+- Update documentation
+- Update Sample Mod to use new functionality
+
+
 ### Mod Users
 #### Added
 - Presets functionality
 - Modifiers
 	- EXCLUDE_PARTY_MEMBERS
+- ItemBlackList.json
 - Configurations
 	- SORT_ITEMS_DURING_COMBAT
 	- SORT_CONSUMABLE_ITEMS_ON_USE_DURING_COMBAT

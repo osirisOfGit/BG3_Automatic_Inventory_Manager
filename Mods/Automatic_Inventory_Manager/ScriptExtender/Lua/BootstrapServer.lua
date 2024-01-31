@@ -6,6 +6,7 @@ Ext.Require("AIM/Utils/_FileUtils.lua")
 Ext.Require("AIM/Utils/_Logger.lua")
 Ext.Require("AIM/_Globals.lua")
 Ext.Require("AIM/_ItemFilters.lua")
+Ext.Require("AIM/_ItemBlackList.lua")
 Ext.Require("AIM/_Config.lua")
 
 -- CORE LOGIC

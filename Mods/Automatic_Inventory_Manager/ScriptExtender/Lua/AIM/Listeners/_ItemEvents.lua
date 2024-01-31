@@ -78,7 +78,7 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(root, item, 
 			return
 		end
 
-		if Config.AIM.SORT_ITEMS_DURING_COMBAT == 1 or Osi.IsInCombat(inventoryHolder) == 0 then
+		if (Config.AIM.SORT_ITEMS_DURING_COMBAT == 1 or Osi.IsInCombat(inventoryHolder) == 0) and not ItemBlackList:IsItemOrTemplateInBlacklist(item, root) then
 			DetermineAndExecuteFiltersForItem(root, item, inventoryHolder, false)
 		end
 	end
@@ -86,7 +86,7 @@ end)
 
 Ext.Osiris.RegisterListener("TemplateUseFinished", 4, "before", function(character, itemTemplate, item2, success)
 	-- Has the consumable tag
-	if Config.AIM.ENABLED == 1 and Osi.IsTagged(item2, "4d79b277-97f0-4227-a780-7a14fb9827fc") then
+	if Config.AIM.ENABLED == 1 and Osi.IsTagged(item2, "4d79b277-97f0-4227-a780-7a14fb9827fc") and not ItemBlackList:IsItemOrTemplateInBlacklist(item2, itemTemplate) then
 		local isTemplateInInventory = Osi.TemplateIsInPartyInventory(itemTemplate, character, 0)
 		if success == 1 and (isTemplateInInventory and isTemplateInInventory > 0) and (Config.AIM.SORT_CONSUMABLE_ITEMS_DURING_COMBAT == 1 or Osi.IsInCombat(character) == 0) then
 			Logger:BasicInfo("Resorting all items of template " .. itemTemplate .. " due to finished use of " .. item2)
@@ -101,13 +101,14 @@ Ext.Osiris.RegisterListener("TemplateUseFinished", 4, "before", function(charact
 end)
 
 local function extractCharAndSortItem(guid, event, aimEvent, ignoreProcessedTag)
-	if Osi.IsEquipped(guid) == 0 and Ext.Entity.Get(guid).Value.Unique == false and Osi.IsStoryItem(guid) == 0 then
+	if Osi.IsEquipped(guid) == 0 and Ext.Entity.Get(guid).Value.Unique == false and Osi.IsStoryItem(guid) == 0 and not ItemBlackList:IsItemOrTemplateInBlacklist(guid, Osi.GetTemplate(guid)) then
 		Logger:BasicDebug("Processing item " .. guid .. " for event " .. event)
 		local character = string.sub(event, string.len(aimEvent) + 1)
 
 		DetermineAndExecuteFiltersForItem(Osi.GetTemplate(guid), guid, character, ignoreProcessedTag)
 	end
 end
+
 Ext.Osiris.RegisterListener("EntityEvent", 2, "before", function(guid, event)
 	if Config.AIM.ENABLED == 1 then
 		if string.find(event, EVENT_ITERATE_ITEMS_TO_RESORT_THEM_START) then

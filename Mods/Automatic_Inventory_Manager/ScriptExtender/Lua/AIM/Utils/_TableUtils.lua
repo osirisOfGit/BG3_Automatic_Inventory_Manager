@@ -1,4 +1,4 @@
---- @module "Utils.TableUtils"
+--- @module "Utils._TableUtils"
 
 TableUtils = {}
 

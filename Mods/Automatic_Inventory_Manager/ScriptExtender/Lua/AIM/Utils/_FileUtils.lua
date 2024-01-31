@@ -6,7 +6,7 @@ FileUtils = {}
 ---@treturn string Example: subDir="dir", fileName="file", returns dir/file.json
 function FileUtils:BuildRelativeJsonFileTargetPath(fileName, ...)
 	local subDirs = { ... }
-	if subDirs then
+	if #subDirs > 0 then
 		local filePath = ""
 		for _, subDir in pairs(subDirs) do
 			filePath = filePath .. subDir .. "/"
@@ -49,13 +49,33 @@ function FileUtils:SaveStringContentToFile(filepath, content)
 	end)
 
 	if not success then
-		Ext.Utils.PrintError(string.format("Failed to save config file %s due to error [%s] ",
+		Logger:BasicError(string.format("Failed to save config file %s due to error [%s] ",
 			FileUtils:BuildAbsoluteFileTargetPath(filepath), error))
 
 		return false
 	end
 
 	return true
+end
+
+function FileUtils:LoadTableFile(filepath)
+	local success, result = pcall(function()
+		local fileContent = FileUtils:LoadFile(filepath)
+		if fileContent then
+			return Ext.Json.Parse(fileContent)
+		else
+			return false
+		end
+	end)
+
+	if not success then
+		Logger:BasicError(string.format("Failed to parse contents of file %s due to error [%s]",
+			FileUtils:BuildAbsoluteFileTargetPath(filepath),
+			result))
+		return false
+	else
+		return result
+	end
 end
 
 --- Convenience for loading a file under the AIM mod directory
@@ -67,7 +87,7 @@ function FileUtils:LoadFile(filepath)
 	end)
 
 	if not success then
-		Ext.Utils.PrintError(string.format("Failed to load %s due to error [%s]",
+		Logger:BasicError(string.format("Failed to load %s due to error [%s]",
 			FileUtils:BuildAbsoluteFileTargetPath(filepath),
 			result))
 		return nil
@@ -75,5 +95,3 @@ function FileUtils:LoadFile(filepath)
 		return result
 	end
 end
-
-
