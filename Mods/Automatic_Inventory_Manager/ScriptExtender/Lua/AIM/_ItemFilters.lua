@@ -4,10 +4,11 @@ ItemFilters = {}
 
 ItemFilters.ItemFields = {}
 
---- General prefilters that don't fit within the scope of a Filter
+--- Filters that pre-filter eligible party members before a stack of items, or an item in the stack, is processed.
 ItemFilters.ItemFields.PreFilters = {
 	STACK_LIMIT = "STACK_LIMIT", -- Filters out any party members that have > than the specified limit
-	EXCLUDE_PARTY_MEMBERS = "EXCLUDE_PARTY_MEMBERS" -- Array of party members to exclude from processing
+	EXCLUDE_PARTY_MEMBERS = "EXCLUDE_PARTY_MEMBERS", -- Array of party members to exclude from processing
+	ENCUMBRANCE = "ENCUMBRANCE", -- Internal only
 }
 
 ItemFilters.FilterFields = {}

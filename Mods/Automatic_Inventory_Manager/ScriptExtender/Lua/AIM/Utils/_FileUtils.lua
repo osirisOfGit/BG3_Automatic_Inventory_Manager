@@ -35,7 +35,10 @@ function FileUtils:SaveTableToFile(filepath, content)
 
 	if not success then
 		Ext.Utils.PrintError(string.format("Failed to convert content %s to JSON due to error [%s]",
-			Ext.Json.Stringify(content), error))
+			Ext.Json.Stringify(content),
+			error))
+
+		return false
 	end
 
 	return true
@@ -51,7 +54,7 @@ function FileUtils:SaveStringContentToFile(filepath, content)
 	end)
 
 	if not success then
-		Logger:BasicError(string.format("Failed to save config file %s due to error [%s] ",
+		Logger:BasicError(string.format("Failed to save config file %s due to error [%s]",
 			FileUtils:BuildAbsoluteFileTargetPath(filepath), error))
 
 		return false

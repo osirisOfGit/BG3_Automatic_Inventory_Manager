@@ -49,79 +49,6 @@ local function ProcessWinners(partyMembersWithAmountWon, item, root, inventoryHo
 	end
 end
 
--- If there's a stack limit, returns all the party members that are <, or nil if no members are
----
---- @param itemFilter ItemFilter
---- @param eligiblePartyMembers GUIDSTRING[]
---- @param targetsWithAmountWon table<GUIDSTRING, number>
---- @param root GUIDSTRING
---- @param item GUIDSTRING
---- @param inventoryHolder CHARACTER
----@return table|nil # All party members that have fewer than the stack limit, or nil if no members do
-local function FilterInitialTargets_ByStackLimit(itemFilter,
-												 eligiblePartyMembers,
-												 targetsWithAmountWon,
-												 root,
-												 item,
-												 inventoryHolder)
-	if itemFilter.PreFilters and itemFilter.PreFilters[ItemFilters.ItemFields.PreFilters.STACK_LIMIT] then
-		local filteredSurvivors = {}
-		for _, partyMember in pairs(eligiblePartyMembers) do
-			local totalFutureStackSize = ProcessorUtils:CalculateTotalItemCount(
-				targetsWithAmountWon, partyMember, inventoryHolder, root, item)
-
-			Logger:BasicTrace(string.format("Found %d on %s, against stack limit %d",
-				totalFutureStackSize,
-				partyMember,
-				itemFilter.PreFilters[ItemFilters.ItemFields.PreFilters.STACK_LIMIT]))
-
-			if totalFutureStackSize < itemFilter.PreFilters[ItemFilters.ItemFields.PreFilters.STACK_LIMIT] then
-				table.insert(filteredSurvivors, partyMember)
-			end
-		end
-
-		if Logger:IsLogLevelEnabled(Logger.PrintTypes.DEBUG) then
-			Logger:BasicDebug("After processing STACK_LIMIT modifier, surviving partyMembers are: %s " ..
-				Ext.Json.Stringify(filteredSurvivors))
-		end
-		return #filteredSurvivors > 0 and filteredSurvivors or nil
-	end
-
-	return { table.unpack(eligiblePartyMembers) }
-end
-
----
----@param item GUIDSTRING
----@param eligiblePartyMembers CHARACTER[]
----@return table|nil # All party members that won't be encumbered by the item, or nil if all members will
-local function FilterInitialTargets_ByEncumbranceRisk(item, eligiblePartyMembers)
-	local filteredSurvivors = {}
-	local itemWeight = tonumber(Ext.Entity.Get(item).Data.Weight)
-
-	for _, partyMember in pairs(eligiblePartyMembers) do
-		local partyMemberEntity = Ext.Entity.Get(partyMember)
-		-- If not encumbered
-		if tonumber(partyMemberEntity.EncumbranceState.State) == 0 then
-			local unencumberedLimit = tonumber(partyMemberEntity.EncumbranceStats.UnencumberedWeight)
-			local inventoryWeight = tonumber(partyMemberEntity.InventoryWeight["Weight"])
-			if (inventoryWeight + itemWeight) <= unencumberedLimit then
-				Logger:BasicTrace(string.format("Item weight %d will not encumber %s, with %d more room!",
-					itemWeight,
-					partyMember,
-					unencumberedLimit - (inventoryWeight + itemWeight)))
-				table.insert(filteredSurvivors, partyMember)
-			end
-		end
-	end
-
-	if Logger:IsLogLevelEnabled(Logger.PrintTypes.DEBUG) then
-		Logger:BasicDebug("After filtering by EncumbranceRisk, remaining members are: "
-			.. Ext.Json.Stringify(filteredSurvivors))
-	end
-
-	return #filteredSurvivors > 0 and filteredSurvivors or nil
-end
-
 Processor = {}
 
 --- Processes the filters on the given params, moving the item(s) to the identified targets after all items in the stack have been processed
@@ -145,7 +72,6 @@ function Processor:ProcessFiltersForItemAgainstParty(item, root, inventoryHolder
 	partyMembers = PreFilterProcessors:ProcessPerStackPreFilters(itemFilter.PreFilters,
 		itemFilter,
 		partyMembers,
-		nil,
 		item,
 		currentItemStackSize,
 		root,
@@ -155,7 +81,6 @@ function Processor:ProcessFiltersForItemAgainstParty(item, root, inventoryHolder
 		targetsWithAmountWon[partyMember] = 0
 	end
 
-	local numberOfFiltersToProcess = #itemFilter.Filters
 	local customItemFilterFields = {}
 	for key, val in pairs(itemFilter) do
 		local loweredKey = string.lower(key)
@@ -163,18 +88,19 @@ function Processor:ProcessFiltersForItemAgainstParty(item, root, inventoryHolder
 			customItemFilterFields[key] = val
 		end
 	end
-
+	
+	itemFilter.PreFilters[ItemFilters.ItemFields.PreFilters.ENCUMBRANCE] = ""
+	
+	local numberOfFiltersToProcess = #itemFilter.Filters
 	for _ = 1, currentItemStackSize do
-		local eligiblePartyMembers = FilterInitialTargets_ByStackLimit(itemFilter,
-				partyMembers,
-				targetsWithAmountWon,
-				root,
-				item,
-				inventoryHolder)
-			or partyMembers
-
-		eligiblePartyMembers = FilterInitialTargets_ByEncumbranceRisk(item, eligiblePartyMembers)
-			or eligiblePartyMembers
+		local eligiblePartyMembers = PreFilterProcessors:ProcessPerItemPreFilters(itemFilter.PreFilters,
+			itemFilter,
+			partyMembers,
+			targetsWithAmountWon,
+			item,
+			currentItemStackSize,
+			root,
+			inventoryHolder)
 
 		for i, filter in ipairs(itemFilter.Filters) do
 			eligiblePartyMembers = FilterProcessor:ExecuteFilterAgainstEligiblePartyMembers(filter,
