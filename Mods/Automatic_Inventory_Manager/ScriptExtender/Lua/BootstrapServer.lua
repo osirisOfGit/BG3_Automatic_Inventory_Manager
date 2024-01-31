@@ -13,3 +13,5 @@ Ext.Require("AIM/_Config.lua")
 Ext.Require("AIM/Processors/_CoreProcessor.lua")
 Ext.Require("AIM/Listeners/_ItemEvents.lua")
 Ext.Require("AIM/Listeners/_Initializers.lua")
+
+Ext.Require("AIM/Utils/_UpgradeUtils.lua")

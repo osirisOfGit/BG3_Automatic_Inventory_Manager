@@ -53,6 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changelog
 - Logger:IsLogLevelActive
 - Utils/_ModUtils
+- Utils/_UpgradeUtils
 #### Changed
 - Moved _Logger into Utils/
 - Wrapped logs using Ext.Json.Stringify in Logger:IsLogLevelActive checks
