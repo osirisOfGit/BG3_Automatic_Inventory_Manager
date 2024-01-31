@@ -45,3 +45,24 @@ end
 function TableUtils:MakeImmutableTableCopy(myTable)
 	return copy(myTable, nil, true)
 end
+
+
+---Compare two lists
+---@param first
+---@param second
+---@treturn boolean true if the lists are equal
+function TableUtils:CompareLists(first, second)
+	for property, value in pairs(first) do
+		if value ~= second[property] then
+			return false
+		end
+	end
+
+	for property, value in pairs(second) do
+		if value ~= first[property] then
+			return false
+		end
+	end
+
+	return true
+end

@@ -95,11 +95,18 @@ local function InitializeFilterPresetsAndMigrateLegacy()
 
 		local filterTableContents
 		for _, filterTableName in pairs(Config.AIM["FILTER_TABLES"]) do
-			filterTableContents = FileUtils:LoadFile(FileUtils:BuildRelativeJsonFileTargetPath(filterTableName,
+			filterTableContents = FileUtils:LoadTableFile(FileUtils:BuildRelativeJsonFileTargetPath(filterTableName,
 				Config.AIM["FILTERS_DIR"]))
 
 			if filterTableContents then
-				local success = FileUtils:SaveStringContentToFile(
+				for _, itemFilter in pairs(filterTableContents) do
+					if itemFilter["Modifiers"] then
+						itemFilter["PreFilters"] = itemFilter["Modifiers"]
+						itemFilter["Modifiers"] = nil
+					end
+				end
+
+				local success = FileUtils:SaveTableToFile(
 					FileUtils:BuildRelativeJsonFileTargetPath(filterTableName, Config.AIM.PRESETS.PRESETS_DIR,
 						customPresetName),
 					filterTableContents)

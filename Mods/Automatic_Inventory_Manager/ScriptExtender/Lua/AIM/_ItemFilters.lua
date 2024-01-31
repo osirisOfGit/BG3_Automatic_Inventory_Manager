@@ -4,10 +4,10 @@ ItemFilters = {}
 
 ItemFilters.ItemFields = {}
 
---- General modifiers that don't fit within the scope of a Filter
-ItemFilters.ItemFields.FilterModifiers = {
+--- General prefilters that don't fit within the scope of a Filter
+ItemFilters.ItemFields.PreFilters = {
 	STACK_LIMIT = "STACK_LIMIT", -- Filters out any party members that have > than the specified limit
-	EXCLUDE_PARTY_MEMBERS = "EXCLUDE_PARTY_MEMBERS"
+	EXCLUDE_PARTY_MEMBERS = "EXCLUDE_PARTY_MEMBERS" -- Array of party members to exclude from processing
 }
 
 ItemFilters.FilterFields = {}
@@ -36,26 +36,6 @@ ItemFilters.ItemKeys = {
 	WILDCARD = "ALL"
 }
 
----Compare two Filter tables
----@param first
----@param second
----@treturn boolean true if the tables are equal
-function ItemFilters:CompareFilter(first, second)
-	for property, value in pairs(first) do
-		if value ~= second[property] then
-			return false
-		end
-	end
-
-	for property, value in pairs(second) do
-		if value ~= first[property] then
-			return false
-		end
-	end
-
-	return true
-end
-
 ---
 ---@param targetItemFilter the existing ItemFilter to merge into
 ---@param newItemFilters the ItemFilters to add to the table
@@ -68,7 +48,7 @@ local function MergeItemFiltersIntoTarget(targetItemFilter, newItemFilters, prio
 				for newFilterPriority, newFilter in pairs(propertyValue) do
 					local foundIdenticalFilter = false
 					for _, existingFilter in pairs(targetItemFilter.Filters) do
-						if ItemFilters:CompareFilter(newFilter, existingFilter) then
+						if TableUtils:CompareLists(newFilter, existingFilter) then
 							foundIdenticalFilter = true
 							break
 						end
@@ -95,10 +75,10 @@ local function MergeItemFiltersIntoTarget(targetItemFilter, newItemFilters, prio
 						end
 					end
 				end
-			elseif string.lower(itemFilterProperty) == "modifiers" then
+			elseif string.lower(itemFilterProperty) == "prefilters" then
 				for modifier, newModifier in pairs(propertyValue) do
-					if not targetItemFilter.Modifiers[modifier] then
-						targetItemFilter.Modifiers[modifier] = newModifier
+					if not targetItemFilter.PreFilters[modifier] then
+						targetItemFilter.PreFilters[modifier] = newModifier
 					end
 				end
 			else
@@ -246,9 +226,9 @@ end
 ---@tparam string item
 ---@tparam string root
 ---@tparam string inventoryHolder
----@return A consolidated ItemFilter containing all the filters, modifiers, and custom fields found for the given item, with normalized priorities
+---@return A consolidated ItemFilter containing all the filters, prefilters, and custom fields found for the given item, with normalized priorities
 function ItemFilters:SearchForItemFilters(item, root, inventoryHolder)
-	local consolidatedItemFilter = { Filters = {}, Modifiers = {} }
+	local consolidatedItemFilter = { Filters = {}, PreFilters = {} }
 
 	for _, lookupFunc in pairs(itemFilterLookups) do
 		local success, errorMessage = pcall(function()

@@ -85,7 +85,7 @@
 				"TargetStat" : "STACK_AMOUNT"
 			}
 		},
-		"Modifiers" : 
+		"PreFilters" : 
 		{
 			"STACK_LIMIT" : 2
 		}

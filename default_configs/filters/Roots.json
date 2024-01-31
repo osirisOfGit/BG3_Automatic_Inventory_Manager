@@ -8,7 +8,7 @@
 				"TargetStat" : "ARMOR_CLASS"
 			}
 		],
-		"Modifiers" : 
+		"PreFilters" : 
 		{
 			"STACK_LIMIT" : 1
 		}

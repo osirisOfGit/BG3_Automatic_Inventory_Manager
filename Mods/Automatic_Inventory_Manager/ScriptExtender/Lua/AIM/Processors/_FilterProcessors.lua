@@ -176,8 +176,8 @@ end
 --- @field winningVal any value identified by the filter that is currently the victor across all partyMembers
 --- @field targetsWithAmountWon table<GUIDSTRING, number> copy of the winners table across all filters being run for the given item
 --- @field filter the single filter being evaluated, such as a Compare or TargetFilter
---- @field modifiers associated with the ItemFilter
---- @field customItemFilterFields any fields that aren't FILTERS or MODIFIERS that were found on the ItemFilter
+--- @field prefilters associated with the ItemFilter
+--- @field customItemFilterFields any fields that aren't FILTERS or PREFILTERS that were found on the ItemFilter
 --- @field item GUIDSTRING being sorted
 --- @field root GUIDSTRING rootTemplate of the item
 --- @field inventoryHolder CHARACTER
@@ -186,7 +186,7 @@ FilterProcessor.ParamMap = {
 	winners = nil,
 	winningVal = nil,
 	filter = nil,
-	modifiers = nil,
+	prefilters = nil,
 	customItemFilterFields = nil,
 	inventoryHolder = nil,
 	item = nil,
@@ -196,8 +196,8 @@ FilterProcessor.ParamMap = {
 
 --- Executes the provided Filter against the provided params. Any exceptions will be logged, swallowed, and whatever the value of the winners table was at exception time will be returned
 --- @param filter the single filter being evaluated, such as a Compare or TargetFilter
---- @param modifiers associated with the ItemFilter
---- @param customItemFilterFields any fields that aren't FILTERS or MODIFIERS that were found on the ItemFilter
+--- @param prefilters associated with the ItemFilter
+--- @param customItemFilterFields any fields that aren't FILTERS or PREFILTERS that were found on the ItemFilter
 --- @param eligiblePartyMembers GUIDSTRING[]
 --- @param targetsWithAmountWon table<GUIDSTRING, number>
 --- @param inventoryHolder CHARACTER
@@ -205,7 +205,7 @@ FilterProcessor.ParamMap = {
 --- @param root GUIDSTRING
 --- @return table winners The survivors that were eligible to receive the item, or the original survivors table if none were eligible
 function FilterProcessor:ExecuteFilterAgainstEligiblePartyMembers(filter,
-																  modifiers,
+																  prefilters,
 																  customItemFilterFields,
 																  eligiblePartyMembers,
 																  targetsWithAmountWon,
@@ -216,7 +216,7 @@ function FilterProcessor:ExecuteFilterAgainstEligiblePartyMembers(filter,
 		winners = {},
 		winningVal = nil,
 		filter = filter,
-		modifiers = modifiers,
+		prefilters = prefilters,
 		customItemFilterFields = customItemFilterFields,
 		inventoryHolder = inventoryHolder,
 		item = item,

@@ -34,9 +34,11 @@ function FileUtils:SaveTableToFile(filepath, content)
 	end)
 
 	if not success then
-		Ext.Utils.PrintError(string.format("Failed to convert content %s to JSON due to error [%s] ",
-			tostring(content), error))
+		Ext.Utils.PrintError(string.format("Failed to convert content %s to JSON due to error [%s]",
+			Ext.Json.Stringify(content), error))
 	end
+
+	return true
 end
 
 --- Convenience for saving a file under the AIM mod directory, logging and swallowing any errors encountered

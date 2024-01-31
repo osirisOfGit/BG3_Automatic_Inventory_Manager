@@ -4,6 +4,8 @@ If you process the world in if statements, then oh boy, is this the mod for you!
 Mod also uploaded to Nexus Mods - https://www.nexusmods.com/baldursgate3/mods/6163
 
 ### Disclaimer
+⚠ The documentation here is unstable due to me committing the cardinal sin of working out of master - a lot is changing for the 2.0.0 update. See https://github.com/osirisOfGit/BG3_Automatic_Inventory_Manager/tree/1.1.1-full for the stable documentation for the latest release ⚠
+
 This mod isn't actually particular useful from a functionality standpoint thanks to Larian's Magic Pockets, multi-select, and Filter implementations - if you're looking at this mod because you think you need to move items and gear to a character before you can use them, or because you don't know about the built-in filters and have trouble finding items, or because you don't know you can select multiple items in your inventory by shift-clicking, then you'll be happy to know that Larian has largely solved these problems already. Play around! 
 
 This mod is more targeted at people like me who hate the giant, messy inventories for aesthetic but also hate swapping between characters to pick up items/constantly right-click "send to"ing, or who find the interface way too busy to manage (especially when playing on small monitors or Steam Deck). 

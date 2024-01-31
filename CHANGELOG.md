@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.0]
 ### TODO:
-- Implement ModifierProcessors for per-item modifiers
+- Implement PreFilterProcessors for per-item modifiers
 - Update ItemFilters API methods to create presets instead of updating the itemMap
 - Retest vanilla ItemBlackList
 - Update documentation
@@ -17,7 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Mod Users
 #### Added
 - Presets functionality
-- Modifiers
+- PreFilters
 	- EXCLUDE_PARTY_MEMBERS
 - ItemBlackList.json
 - Configurations
@@ -28,6 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 		- ACTIVE_PRESETS
 		- FILTERS_PRESETS
 #### Changed
+- Rename Modifiers to PreFilters
 - Configurations
 	- SORT_ITEMS_ON_LOAD -> SORT_ITEMS_ON_FIRST_LOAD - will only apply to the first load in a campaign (assuming a save happens) - implemented a PersistentVar to prevent processing after that, since all items in inventory should be tagged
 #### Removed
@@ -38,7 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### API
 #### Added
-- Processors/_ModifierProcessors
+- Processors/_PreFilterProcessors
 #### Fixed
 - Documentation
 	- Corrected _CoreProcessor spelling

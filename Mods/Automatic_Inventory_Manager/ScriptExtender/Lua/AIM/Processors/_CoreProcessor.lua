@@ -1,7 +1,7 @@
 --- @module "Processors._CoreProcessor"
 
 Ext.Require("AIM/Processors/_FilterProcessors.lua")
-Ext.Require("AIM/Processors/_ModifierProcessors.lua")
+Ext.Require("AIM/Processors/_PreFilterProcessors.lua")
 
 --- Distributes the item stack according to the winners of the processed filters
 --- @param partyMembersWithAmountWon table<CHARACTER, number>
@@ -64,7 +64,7 @@ local function FilterInitialTargets_ByStackLimit(itemFilter,
 												 root,
 												 item,
 												 inventoryHolder)
-	if itemFilter.Modifiers and itemFilter.Modifiers[ItemFilters.ItemFields.FilterModifiers.STACK_LIMIT] then
+	if itemFilter.PreFilters and itemFilter.PreFilters[ItemFilters.ItemFields.PreFilters.STACK_LIMIT] then
 		local filteredSurvivors = {}
 		for _, partyMember in pairs(eligiblePartyMembers) do
 			local totalFutureStackSize = ProcessorUtils:CalculateTotalItemCount(
@@ -73,9 +73,9 @@ local function FilterInitialTargets_ByStackLimit(itemFilter,
 			Logger:BasicTrace(string.format("Found %d on %s, against stack limit %d",
 				totalFutureStackSize,
 				partyMember,
-				itemFilter.Modifiers[ItemFilters.ItemFields.FilterModifiers.STACK_LIMIT]))
+				itemFilter.PreFilters[ItemFilters.ItemFields.PreFilters.STACK_LIMIT]))
 
-			if totalFutureStackSize < itemFilter.Modifiers[ItemFilters.ItemFields.FilterModifiers.STACK_LIMIT] then
+			if totalFutureStackSize < itemFilter.PreFilters[ItemFilters.ItemFields.PreFilters.STACK_LIMIT] then
 				table.insert(filteredSurvivors, partyMember)
 			end
 		end
@@ -142,7 +142,7 @@ function Processor:ProcessFiltersForItemAgainstParty(item, root, inventoryHolder
 		table.insert(partyMembers, player[1])
 	end
 
-	partyMembers = ModifierProcessors:ProcessPerStackModifiers(itemFilter.Modifiers,
+	partyMembers = PreFilterProcessors:ProcessPerStackPreFilters(itemFilter.PreFilters,
 		itemFilter,
 		partyMembers,
 		nil,
@@ -159,7 +159,7 @@ function Processor:ProcessFiltersForItemAgainstParty(item, root, inventoryHolder
 	local customItemFilterFields = {}
 	for key, val in pairs(itemFilter) do
 		local loweredKey = string.lower(key)
-		if loweredKey ~= "filters" and loweredKey ~= "modifiers" then
+		if loweredKey ~= "filters" and loweredKey ~= "prefilters" then
 			customItemFilterFields[key] = val
 		end
 	end
@@ -178,7 +178,7 @@ function Processor:ProcessFiltersForItemAgainstParty(item, root, inventoryHolder
 
 		for i, filter in ipairs(itemFilter.Filters) do
 			eligiblePartyMembers = FilterProcessor:ExecuteFilterAgainstEligiblePartyMembers(filter,
-				itemFilter.Modifiers,
+				itemFilter.PreFilters,
 				customItemFilterFields,
 				eligiblePartyMembers,
 				targetsWithAmountWon,

@@ -24,7 +24,7 @@ all_defaults.Equipment = {
 all_defaults.Roots = {
 	-- not a typo :D
 	["ALCH_Soultion_Elixir_Barkskin_cc1a8802-675a-426b-a791-ec1d5a5b6328"] = {
-		Modifiers = { [ItemFilters.ItemFields.FilterModifiers.STACK_LIMIT] = 1 },
+		PreFilters = { [ItemFilters.ItemFields.PreFilters.STACK_LIMIT] = 1 },
 		Filters = {
 			[1] = { TargetStat = ItemFilters.FilterFields.TargetStat.ARMOR_CLASS, CompareStategy = ItemFilters.FilterFields.CompareStategy.LOWER }
 		}
@@ -41,7 +41,7 @@ all_defaults.Roots = {
 
 all_defaults.Tags = {
 	["HEALING_POTION"] = {
-		Modifiers = { [ItemFilters.ItemFields.FilterModifiers.STACK_LIMIT] = 2 },
+		PreFilters = { [ItemFilters.ItemFields.PreFilters.STACK_LIMIT] = 2 },
 		Filters = {
 			[1] = { TargetStat = ItemFilters.FilterFields.TargetStat.HEALTH_PERCENTAGE, CompareStategy = ItemFilters.FilterFields.CompareStategy.LOWER, },
 			[2] = { TargetStat = ItemFilters.FilterFields.TargetStat.STACK_AMOUNT, CompareStategy = ItemFilters.FilterFields.CompareStategy.LOWER }
