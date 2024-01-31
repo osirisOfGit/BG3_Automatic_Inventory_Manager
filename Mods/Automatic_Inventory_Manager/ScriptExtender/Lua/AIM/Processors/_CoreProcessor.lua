@@ -88,9 +88,9 @@ function Processor:ProcessFiltersForItemAgainstParty(item, root, inventoryHolder
 			customItemFilterFields[key] = val
 		end
 	end
-	
+
 	itemFilter.PreFilters[ItemFilters.ItemFields.PreFilters.ENCUMBRANCE] = ""
-	
+
 	local numberOfFiltersToProcess = #itemFilter.Filters
 	for _ = 1, currentItemStackSize do
 		local eligiblePartyMembers = PreFilterProcessors:ProcessPerItemPreFilters(itemFilter.PreFilters,

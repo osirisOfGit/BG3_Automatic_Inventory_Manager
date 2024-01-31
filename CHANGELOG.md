@@ -7,9 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.0]
 ### TODO:
-- Implement PreFilterProcessors for per-item modifiers
 - Update ItemFilters API methods to create presets instead of updating the itemMap
-- Retest vanilla ItemBlackList
 - Update documentation
 - Update Sample Mod to use new functionality
 

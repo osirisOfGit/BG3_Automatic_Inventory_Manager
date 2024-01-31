@@ -55,57 +55,9 @@ local function InitializeFilterPresetsAndUpgradeLegacyFilters()
 	FileUtils:SaveTableToFile("config.json", Config.AIM)
 end
 
-local function LoadAndMergeItemMapsFromActivePresets()
-	for _, presetName in ipairs(Config.AIM.PRESETS.ACTIVE_PRESETS) do
-		Logger:BasicInfo("Loading filter preset " .. presetName)
-		if not Config.AIM.PRESETS.FILTERS_PRESETS[presetName] then
-			Logger:BasicError(string.format(
-				"Specified preset '%s' was not present in the FILTERS_PRESETS property - please specify a real preset (case sensitive)",
-				presetName))
-			goto continue
-		end
-		for _, filterTableName in pairs(Config.AIM.PRESETS.FILTERS_PRESETS[presetName]) do
-			local filterTableFilePath = FileUtils:BuildRelativeJsonFileTargetPath(filterTableName,
-				Config.AIM.PRESETS.PRESETS_DIR,
-				presetName)
-			local filterTable = FileUtils:LoadFile(filterTableFilePath)
-
-			if filterTable then
-				local success, result = pcall(function()
-					Logger:BasicInfo(string.format(
-						"Merging %s/%s.json into active itemMaps",
-						presetName,
-						filterTableName))
-
-					ItemFilters:AddItemFilterMaps({ [filterTableName] = Ext.Json.Parse(filterTable) },
-						false,
-						false,
-						false)
-				end)
-
-				if not success then
-					Logger:BasicError(string.format("Could not merge table %s from preset %s due to error [%s]",
-						filterTableName,
-						presetName,
-						result))
-				end
-			else
-				Logger:BasicWarning("Could not find filter table file " .. filterTableFilePath)
-			end
-		end
-		::continue::
-	end
-	ItemFilters:UpdateItemMapsClone()
-	if Logger:IsLogLevelEnabled(Logger.PrintTypes.DEBUG) then
-		Logger:BasicDebug("Finished loading in presets - finalized item maps are:")
-		for itemMap, itemMapContent in pairs(ItemFilters.itemMaps) do
-			Logger:BasicDebug(string.format("%s: %s", itemMap, Ext.Json.Stringify(itemMapContent)))
-		end
-	end
-end
-
 function Config.SyncConfigsAndFilters()
 	Logger:ClearLogFile()
+	Logger:BasicInfo("AIM has begun initialization!")
 
 	local config = FileUtils:LoadFile("config.json")
 
@@ -126,7 +78,9 @@ function Config.SyncConfigsAndFilters()
 
 	InitializeFilterPresetsAndUpgradeLegacyFilters()
 
-	LoadAndMergeItemMapsFromActivePresets()
+	ItemFilters:LoadItemFilterPresets()
 
 	ItemBlackList:InitializeBlackList()
+	
+	Logger:BasicInfo("AIM has finished initialization!")
 end

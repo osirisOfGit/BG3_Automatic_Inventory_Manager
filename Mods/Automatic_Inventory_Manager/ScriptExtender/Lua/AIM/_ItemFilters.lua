@@ -6,9 +6,9 @@ ItemFilters.ItemFields = {}
 
 --- Filters that pre-filter eligible party members before a stack of items, or an item in the stack, is processed.
 ItemFilters.ItemFields.PreFilters = {
-	STACK_LIMIT = "STACK_LIMIT", -- Filters out any party members that have > than the specified limit
+	STACK_LIMIT = "STACK_LIMIT",                  -- Filters out any party members that have > than the specified limit
 	EXCLUDE_PARTY_MEMBERS = "EXCLUDE_PARTY_MEMBERS", -- Array of party members to exclude from processing
-	ENCUMBRANCE = "ENCUMBRANCE", -- Internal only
+	ENCUMBRANCE = "ENCUMBRANCE",                  -- Internal only
 }
 
 ItemFilters.FilterFields = {}
@@ -91,13 +91,54 @@ end
 
 local itemMaps = {}
 
+--- Registers a new Preset with the provided ItemFilterMaps - files will be created, overwriting any existing contents, and the preset information will be added to the
+--- PRESETS.FILTERS_PRESETS configuration property.
+--- @tparam UUID modUUID that ScriptExtender has registered for your mod, for tracking purposes - https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#ismodloadedmodguid
+--- will throw an error if the mod identified by that UUID is not loaded
+--- @tparam string presetName to save the itemFilterMaps under - if the preset name already exists (case-insensitive check), an error will be logged and the itemFilterMaps will not be added
+--- @tparam table itemFilterMaps table of mapName:ItemFilters[] to add
+--- @treturn boolean true if the operation succeeded
+function ItemFilters:CreateItemFilterMapPreset(modUUID, presetName, itemFilterMaps)
+	local modName = ModUtils:GetModInfoFromUUID(modUUID).Name
+
+	for existingPresetName, _ in pairs(Config.AIM.PRESETS.FILTERS_PRESETS) do
+		if string.lower(existingPresetName) == string.lower(presetName) then
+			Logger:BasicError(string.format(
+				"Mod %s attempted to add preset %s, which already exists - preset will not be added.",
+				modName,
+				presetName))
+
+			return false
+		end
+	end
+
+	Config.AIM.PRESETS.FILTERS_PRESETS[presetName] = {}
+
+	for mapName, itemFilters in pairs(itemFilterMaps) do
+		local saveSuccess = FileUtils:SaveTableToFile(
+			FileUtils:BuildRelativeJsonFileTargetPath(mapName, Config.AIM.PRESETS.PRESETS_DIR, presetName),
+			itemFilters)
+		if saveSuccess then
+			table.insert(Config.AIM.PRESETS.FILTERS_PRESETS[presetName], mapName)
+		else
+			Logger:BasicError(string.format(
+				"Was unable to save itemFilterMap %s while creating preset %s for mod %s - this map will be skipped! Check previous logs for errors",
+				mapName,
+				presetName,
+				modName))
+		end
+	end
+
+	return true
+end
+
 --- For each itemFilterMap, will just add to the superset if the map is not already known, otherwise will do a recursive merge,
 --- adding any Filters that are not already added, incrementing the priority to the next highest number if taken.
 ---@param itemFilterMaps table of mapName:ItemFilters[] to add
 ---@param forceOverride if the itemFilterMap is already known, will just completely overwrite with the provided map instead of merging
 ---@param prioritizeNewFilters if merging in a filter for an existing ItemFilter, and an existing filter shares the same priority, the provided filter will be given higher priority
 ---@param updateItemMapClone if we should update ItemFilters.itemMap after merging - performance flag in case there are multiple, independent loads that need to happen
-function ItemFilters:AddItemFilterMaps(itemFilterMaps, forceOverride, prioritizeNewFilters, updateItemMapClone)
+local function AddItemFilterMaps(itemFilterMaps, forceOverride, prioritizeNewFilters, updateItemMapClone)
 	for mapName, itemFilterMap in pairs(itemFilterMaps) do
 		if not itemMaps[mapName] or forceOverride == true then
 			itemMaps[mapName] = itemFilterMap
@@ -112,12 +153,73 @@ function ItemFilters:AddItemFilterMaps(itemFilterMaps, forceOverride, prioritize
 			end
 		end
 		if Logger:IsLogLevelEnabled(Logger.PrintTypes.TRACE) then
-			Logger:BasicTrace(string.format("Finished merging itemMap %s, new map is: %s", mapName,
+			Logger:BasicTrace(string.format("Finished merging itemMap %s, new map is: %s",
+				mapName,
 				Ext.Json.Stringify(itemMaps[mapName])))
 		end
 	end
 
 	if updateItemMapClone == true then ItemFilters:UpdateItemMapsClone() end
+end
+
+--- Loads the active ItemMap presets as identified by the PRESETS.ACTIVE_PRESETS configuration property
+function ItemFilters:LoadItemFilterPresets()
+	local loadedTables = {}
+	for _, presetName in ipairs(Config.AIM.PRESETS.ACTIVE_PRESETS) do
+		Logger:BasicInfo("Loading filter preset " .. presetName)
+		if not Config.AIM.PRESETS.FILTERS_PRESETS[presetName] then
+			Logger:BasicError(string.format(
+				"Specified preset '%s' was not present in the FILTERS_PRESETS property - please specify a real preset (case sensitive). This will be skipped!",
+				presetName))
+			goto continue
+		end
+		for _, filterTableName in pairs(Config.AIM.PRESETS.FILTERS_PRESETS[presetName]) do
+			local filterTableFilePath = FileUtils:BuildRelativeJsonFileTargetPath(filterTableName,
+				Config.AIM.PRESETS.PRESETS_DIR,
+				presetName)
+			local filterTable = FileUtils:LoadFile(filterTableFilePath)
+
+			if filterTable then
+				local success, result = pcall(function()
+					Logger:BasicInfo(string.format(
+						"Merging %s/%s.json into active itemMaps",
+						presetName,
+						filterTableName))
+
+					AddItemFilterMaps({ [filterTableName] = Ext.Json.Parse(filterTable) },
+						false,
+						false,
+						false)
+				end)
+
+				if not success then
+					Logger:BasicError(string.format("Could not merge table %s from preset %s due to error [%s]",
+						filterTableName,
+						presetName,
+						result))
+				else
+					table.insert(loadedTables, filterTableName)
+				end
+			else
+				Logger:BasicError("Could not find filter table file " .. filterTableFilePath)
+			end
+		end
+		::continue::
+	end
+
+	if #loadedTables == 0 then
+		local errorMessage = "No preset tables were loaded, likely due to errors! Check previous logs."
+		Logger:BasicError(errorMessage)
+		error(errorMessage)
+	end
+
+	ItemFilters:UpdateItemMapsClone()
+	if Logger:IsLogLevelEnabled(Logger.PrintTypes.DEBUG) then
+		Logger:BasicDebug("Finished loading in presets - finalized item maps are:")
+		for itemMap, itemMapContent in pairs(ItemFilters.itemMaps) do
+			Logger:BasicDebug(string.format("%s: %s", itemMap, Ext.Json.Stringify(itemMapContent)))
+		end
+	end
 end
 
 --- immutable clone of the itemMaps - can be forceably synced using UpdateItemMapsClone, but we'll do it on each update we know about
