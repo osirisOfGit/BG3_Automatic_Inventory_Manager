@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 		- PRESETS_DIR
 		- ACTIVE_PRESETS
 		- FILTERS_PRESETS
+#### Changed
+- Config SORT_ITEMS_ON_LOAD will only apply to the first load in a campaign (assuming a save happens) - implemented a PersistentVar to prevent processing after that, since all items in inventory should be tagged
 #### Removed
 - Configurations
 	- MERGE_DEFAULT_FILTERS

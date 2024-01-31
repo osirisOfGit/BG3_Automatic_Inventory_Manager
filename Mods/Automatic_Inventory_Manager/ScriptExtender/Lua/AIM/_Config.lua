@@ -180,8 +180,6 @@ end
 function Config.SyncConfigsAndFilters()
 	Logger:ClearLogFile()
 
-	PersistentVars = nil
-
 	local config = FileUtils:LoadFile("config.json")
 
 	if config then

@@ -19,10 +19,12 @@ end)
 Ext.Osiris.RegisterListener("LevelGameplayStarted", 2, "after", function(level, _)
 	if Config.AIM.ENABLED == 1 then
 		if level == "SYS_CC_I" then return end
-		if Config.AIM.SORT_ITEMS_ON_LOAD == 1 then
-			Logger:BasicInfo("Resorting items on level load!")
+		if Config.AIM.SORT_ITEMS_ON_LOAD == 1 and PersistentVars.SORT_ITEMS_ON_LOAD ~= 0 then
+			Logger:BasicInfo("Sorting all items in party inventory on save load!")
 			ResetItemStacks()
+			PersistentVars.SORT_ITEMS_ON_LOAD = 0
 		end
+
 	end
 end)
 

@@ -1,3 +1,4 @@
+PersistentVars = {}
 --- SETUP
 Ext.Require("AIM/Utils/_ModUtils.lua")
 Ext.Require("AIM/Utils/_TableUtils.lua")
