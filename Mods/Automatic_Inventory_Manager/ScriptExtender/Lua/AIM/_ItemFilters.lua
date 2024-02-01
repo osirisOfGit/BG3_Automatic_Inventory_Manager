@@ -95,11 +95,14 @@ local itemMaps = {}
 --- PRESETS.FILTERS_PRESETS configuration property.
 --- @tparam UUID modUUID that ScriptExtender has registered for your mod, for tracking purposes - https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#ismodloadedmodguid
 --- will throw an error if the mod identified by that UUID is not loaded
---- @tparam string presetName to save the itemFilterMaps under - if the preset name already exists (case-insensitive check), an error will be logged and the itemFilterMaps will not be added
+--- @tparam string presetName to save the itemFilterMaps under - if the preset name already exists (case-insensitive check), an error will be logged and the itemFilterMaps will not be added.
+--- Your mod name will be automatically prepended to this.
 --- @tparam table itemFilterMaps table of mapName:ItemFilters[] to add
 --- @treturn boolean true if the operation succeeded
-function ItemFilters:CreateItemFilterMapPreset(modUUID, presetName, itemFilterMaps)
+function ItemFilters:RegisterItemFilterMapPreset(modUUID, presetName, itemFilterMaps)
 	local modName = ModUtils:GetModInfoFromUUID(modUUID).Name
+
+	presetName = modName .. "-" .. presetName
 
 	for existingPresetName, _ in pairs(Config.AIM.PRESETS.FILTERS_PRESETS) do
 		if string.lower(existingPresetName) == string.lower(presetName) then
@@ -163,6 +166,8 @@ local function AddItemFilterMaps(itemFilterMaps, forceOverride, prioritizeNewFil
 end
 
 --- Loads the active ItemMap presets as identified by the PRESETS.ACTIVE_PRESETS configuration property
+--- Throws an error if no tables were loaded. 
+--- @treturn boolean true if at least one requested table was succesfully loaded. Error otherwise.
 function ItemFilters:LoadItemFilterPresets()
 	local loadedTables = 0
 	local loadedPresets = 0
@@ -241,6 +246,8 @@ function ItemFilters:LoadItemFilterPresets()
 			Logger:BasicDebug(string.format("%s: %s", itemMap, Ext.Json.Stringify(itemMapContent)))
 		end
 	end
+
+	return true
 end
 
 --- immutable clone of the itemMaps - can be forceably synced using UpdateItemMapsClone, but we'll do it on each update we know about
@@ -339,11 +346,23 @@ local itemFilterLookups = {
 --- <br/>4. GUIDSTRING - the inventoryHolder
 ---
 --- and return a list of ItemFilters
----@tparam function[] lookupFuncs
-function ItemFilters:AddItemFilterLookupFunction(lookupFuncs)
-	for _, lookupFunc in pairs(lookupFuncs) do
+---@param modUUID that ScriptExtender has registered for your mod, for tracking purposes - <a href="https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#ismodloadedmodguid">https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#ismodloadedmodguid</a>
+--- will throw an error if the mod identified by that UUID is not loaded
+---@tparam function ...
+function ItemFilters:RegisterItemFilterLookupFunction(modUUID, ...)
+	local modName = ModUtils:GetModInfoFromUUID(modUUID).Name
+
+	local funcCount = 0
+	for _, lookupFunc in pairs({ ... }) do
 		table.insert(itemFilterLookups, lookupFunc)
+		funcCount = funcCount + 1
 	end
+
+	Logger:BasicInfo(string.format("Mod %s successfully added %d new ItemFilterLookupFunction(s)!",
+		modName,
+		funcCount))
+
+	return true
 end
 
 --- Finds all ItemFilters for the given item

@@ -122,7 +122,7 @@ FilterProcessor = {}
 --- Adds the provided stat functions to the list of possible functions, using the key as the criteria
 ---@param modUUID that ScriptExtender has registered for your mod, for tracking purposes - <a href="https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#ismodloadedmodguid">https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#ismodloadedmodguid</a>
 ---@param statFunctions table<TargetStat|string, function<CHARACTER, FilterParamMap>>
-function FilterProcessor:AddStatFunctions(modUUID, statFunctions)
+function FilterProcessor:RegisterStatFunctions(modUUID, statFunctions)
 	local modName = ModUtils:GetModInfoFromUUID(modUUID).Name
 	for targetStat, statFunction in pairs(statFunctions) do
 		if not StatFunctions[targetStat] then
@@ -181,7 +181,7 @@ end
 --- will throw an error if the mod identified by that UUID is not loaded
 ---@param predicateFunction function(Filter, boolean) Should test the filter to see if the filterProcessor can process it, returning true if
 ---@param filterProcessor function(CHARACTER, ParamMap) proceses the filter against the provided character, setting ParamMap.winners and optionally ParamMap.winningVal
-function FilterProcessor:AddNewFilterProcessor(modUUID, predicateFunction, filterProcessor)
+function FilterProcessor:RegisterNewFilterProcessor(modUUID, predicateFunction, filterProcessor)
 	local modName = ModUtils:GetModInfoFromUUID(modUUID).Name
 
 	filterProcessors[predicateFunction] = filterProcessor

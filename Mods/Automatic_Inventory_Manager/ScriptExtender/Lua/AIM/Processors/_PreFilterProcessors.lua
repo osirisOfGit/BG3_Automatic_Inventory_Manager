@@ -48,7 +48,7 @@ perStackPreFilterProcessors[ItemFilters.ItemFields.PreFilters.EXCLUDE_PARTY_MEMB
 --- <br/> and return the list of party members that are eligible to continue processing. If the list is empty, or nil is returned, the
 --- last known populated eligiblePartyMembers list will be used.
 ---@treturn boolean if the function was added successfully for the prefilterKey
-function PreFilterProcessors:AddPerStackPreFilterProcessor(modUUID, preFilterKey, processorFunction)
+function PreFilterProcessors:RegisterPerStackPreFilterProcessor(modUUID, preFilterKey, processorFunction)
 	local modName = ModUtils:GetModInfoFromUUID(modUUID).Name
 
 	if perStackPreFilterProcessors[preFilterKey] then
@@ -173,7 +173,7 @@ end
 --- <br/> and return the list of party members that are eligible to continue processing. If the list is empty, or nil is returned, the
 --- last known populated eligiblePartyMembers list will be used.
 ---@treturn boolean if the function was added successfully for the prefilterKey
-function PreFilterProcessors:AddPerItemPreFilterProcessor(modUUID, preFilterKey, processorFunction)
+function PreFilterProcessors:RegisterPerItemPreFilterProcessor(modUUID, preFilterKey, processorFunction)
 	local modName = ModUtils:GetModInfoFromUUID(modUUID).Name
 
 	if perItemPreFilterProcessors[preFilterKey] then

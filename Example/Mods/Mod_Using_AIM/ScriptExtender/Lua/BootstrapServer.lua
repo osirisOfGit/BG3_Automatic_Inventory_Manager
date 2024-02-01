@@ -1,9 +1,12 @@
 -- Make symlink for debugging purposes
 -- mklink /J "D:\GOG\Baldurs Gate 3\Data\Mods\Mod_Using_AIM" "D:\Mods\BG3 Modder MultiTool\My Mods\Automatic_Inventory_Manager\Example\Mods\Mod_Using_AIM"
 
+SAMPLE_MOD_UUID = "83f59e8c-7bf4-4e53-92bc-68dc7e8d5d17"
+
 -- Requires AIM
 if Ext.Mod.IsModLoaded("23bdda0c-a671-498f-89f5-a69e8d3a4b52") then
-	--- @type ItemMap
+	AIM_SHORTCUT = Mods.Automatic_Inventory_Manager
+	
 	local newItemMap = {
 		-- Adding a new itemMap key
 		["ARMOR"] = {
@@ -38,30 +41,6 @@ if Ext.Mod.IsModLoaded("23bdda0c-a671-498f-89f5-a69e8d3a4b52") then
 		}
 	}
 
-	-- Adding my new maps, prioritizing my filters over existing ones
-	Mods.Automatic_Inventory_Manager.ItemFilters:AddItemFilterMaps(newItemMap, false, true, true)
-
-	Mods.Automatic_Inventory_Manager.ItemFilters:AddItemFilterLookupFunction({ function(itemMaps,
-																						root,
-																						item,
-																						inventoryHolder)
-		local filters = {}
-
-		Mods.Automatic_Inventory_Manager.Logger:BasicInfo("Look Ma, ItemFilterLookup is working!")
-
-		if Osi.IsEquipable(item) then
-			local armorItemMap = itemMaps["ARMOR"]
-			if armorItemMap[item] then
-				table.insert(filters, armorItemMap[item])
-			end
-
-			if armorItemMap[Mods.Automatic_Inventory_Manager.ItemFilters.ItemKeys.WILDCARD] then
-				table.insert(filters, armorItemMap[Mods.Automatic_Inventory_Manager.ItemFilters.ItemKeys.WILDCARD])
-			end
-		end
-
-		return filters
-	end })
 
 	Mods.Automatic_Inventory_Manager.FilterProcessor:AddNewFilterProcessor(
 		function(filter) return filter["CustomField"] ~= nil end,
