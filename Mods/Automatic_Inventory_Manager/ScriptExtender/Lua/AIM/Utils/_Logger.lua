@@ -78,7 +78,7 @@ function Logger:BasicPrint(content, messageType, textColor, customPrefix, rainbo
         local padding = string.rep(" ", prefixLength - #customPrefix)
         local message = ConcatOutput(ConcatPrefix(customPrefix .. padding .. "  [" .. Logger.PrintTypes[messageType] .. "]", content))
 
-        Logger:LogMessage(ConcatOutput(ConcatPrefix(customPrefix .. "  [" .. messageType .. "]", content)))
+        Logger:LogMessage(ConcatOutput(ConcatPrefix(customPrefix .. "  [" .. Logger.PrintTypes[messageType] .. "]", content)))
         if messageType <= Logger.PrintTypes.INFO then
             local coloredMessage = rainbowText and GetRainbowText(message) or
             string.format("\x1b[%dm%s\x1b[0m", textColorCode, message)

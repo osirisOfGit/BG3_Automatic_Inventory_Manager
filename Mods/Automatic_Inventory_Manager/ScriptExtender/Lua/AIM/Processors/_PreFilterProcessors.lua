@@ -40,7 +40,7 @@ perStackPreFilterProcessors[ItemFilters.ItemFields.PreFilters.EXCLUDE_PARTY_MEMB
 	end
 
 --- Adds a new PreFilter Processor that pre-filters eligiblePartyMembers before the stack is processed.
----@param modUUID that ScriptExtender has registered for your mod, for tracking purposes - https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#ismodloadedmodguid
+---@param modUUID that ScriptExtender has registered for your mod, for tracking purposes - <a href="https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#ismodloadedmodguid">Norbyte/bg3se/blob/main/Docs/API.md#ismodloadedmodguid</a>
 --- will throw an error if the mod identified by that UUID is not loaded
 ---@param preFilterKey the prefilter that this processorFunction can process.
 ---@param processorFunction to actually process the prefilter, accepting the following params:<br/>
