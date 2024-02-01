@@ -8,7 +8,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.0.0]
 ### TODO:
 - Update documentation
-- Update Sample Mod to test and use new functionality
 
 ### Mod Users
 #### Added
