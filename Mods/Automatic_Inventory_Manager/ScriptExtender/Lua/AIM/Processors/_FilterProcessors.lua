@@ -120,10 +120,22 @@ end
 FilterProcessor = {}
 
 --- Adds the provided stat functions to the list of possible functions, using the key as the criteria
+---@param modUUID that ScriptExtender has registered for your mod, for tracking purposes - <a href="https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#ismodloadedmodguid">https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#ismodloadedmodguid</a>
 ---@param statFunctions table<TargetStat|string, function<CHARACTER, FilterParamMap>>
-function FilterProcessor:AddStatFunctions(statFunctions)
+function FilterProcessor:AddStatFunctions(modUUID, statFunctions)
+	local modName = ModUtils:GetModInfoFromUUID(modUUID).Name
 	for targetStat, statFunction in pairs(statFunctions) do
-		StatFunctions[targetStat] = statFunction
+		if not StatFunctions[targetStat] then
+			StatFunctions[targetStat] = statFunction
+
+			Logger:BasicInfo(string.format("Mod %s successfully added new targetStat function for %s",
+				modName,
+				targetStat))
+		else
+			Logger:BasicWarning(string.format("Mod %s tried to add a new StatFunction for existing targetStat %s",
+				modName,
+				targetStat))
+		end
 	end
 end
 
@@ -165,10 +177,16 @@ end] = function(partyMember, paramMap)
 end
 
 --- Add a new filter processor -
+---@param modUUID that ScriptExtender has registered for your mod, for tracking purposes - <a href="https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#ismodloadedmodguid">https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#ismodloadedmodguid</a>
+--- will throw an error if the mod identified by that UUID is not loaded
 ---@param predicateFunction function(Filter, boolean) Should test the filter to see if the filterProcessor can process it, returning true if
 ---@param filterProcessor function(CHARACTER, ParamMap) proceses the filter against the provided character, setting ParamMap.winners and optionally ParamMap.winningVal
-function FilterProcessor:AddNewFilterProcessor(predicateFunction, filterProcessor)
+function FilterProcessor:AddNewFilterProcessor(modUUID, predicateFunction, filterProcessor)
+	local modName = ModUtils:GetModInfoFromUUID(modUUID).Name
+
 	filterProcessors[predicateFunction] = filterProcessor
+	Logger:BasicInfo(string.format("Mod %s successfully added new filter processor!",
+		modName))
 end
 
 --- The table that's passed to each FilterProcessor

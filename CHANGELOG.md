@@ -10,7 +10,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update documentation
 - Update Sample Mod to test and use new functionality
 
-
 ### Mod Users
 #### Added
 - Presets functionality
@@ -40,6 +39,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Fixed
 - Documentation
 	- Corrected _CoreProcessor spelling
+#### Changed
+- Existing API methods that added new processors or functions now require modUUID to be passed in
 #### Removed
 - Documentation
 	- Logger
