@@ -42,6 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Existing methods that added new processors or functions now require modUUID to be passed in
 - Existing Add* methods have been renamed to Register*
 - Rename RegisterStatFunctions to RegisterTargetStatProcessors
+- Broke out SampleMod's samples and fleshed them out more
 #### Removed
 - Documentation
 	- Logger
