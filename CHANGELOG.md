@@ -40,7 +40,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Documentation
 	- Corrected _CoreProcessor spelling
 #### Changed
-- Existing API methods that added new processors or functions now require modUUID to be passed in
+- Existing methods that added new processors or functions now require modUUID to be passed in
+- Existing Add* methods have been renamed to Register*
+- Rename RegisterStatFunctions to RegisterTargetStatProcessors
 #### Removed
 - Documentation
 	- Logger

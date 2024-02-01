@@ -119,10 +119,11 @@ end
 
 FilterProcessor = {}
 
---- Adds the provided stat functions to the list of possible functions, using the key as the criteria
+--- Adds the provided stat functions to the list of possible functions, using the key as the criteria, which process CompareFilters using mod-added 
+-- <a href="https://osirisofgit.github.io/BG3_Automatic_Inventory_Manager/modules/ItemFilters.html#ItemFilters.FilterFields.TargetStat">TargetStats</a>
 ---@param modUUID that ScriptExtender has registered for your mod, for tracking purposes - <a href="https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#ismodloadedmodguid">https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#ismodloadedmodguid</a>
----@param statFunctions table<TargetStat|string, function<CHARACTER, FilterParamMap>>
-function FilterProcessor:RegisterStatFunctions(modUUID, statFunctions)
+---@param statFunctions table of [TargetStat|string] = function(GUIDSTRING, FilterParamMap)
+function FilterProcessor:RegisterTargetStatProcessors(modUUID, statFunctions)
 	local modName = ModUtils:GetModInfoFromUUID(modUUID).Name
 	for targetStat, statFunction in pairs(statFunctions) do
 		if not StatFunctions[targetStat] then
