@@ -195,7 +195,7 @@ end
 --- @param prefilters The entire PreFilters field on the ItemFilter being processed
 --- @param itemFilter being processed for the stack
 --- @param partyMembers the list of party members that have been identified as eligible up to this point for this item in the stack
---- @param targetsWithAmountWon table<GUIDSTRING, number> copy of the winners table across all filters being run for the given item
+--- @param targetsWithAmountWon table(GUIDSTRING = number) copy of the winners table across all filters being run for the given item
 --- @param item GUIDSTRING being sorted
 --- @param currentItemStackSize as identified by the first return of Osi.GetStackAmount
 --- @param root GUIDSTRING rootTemplate of the item
@@ -211,7 +211,7 @@ function PreFilterProcessors:ProcessPerItemPreFilters(prefilters,
 													  inventoryHolder)
 	PreFilterProcessors.ParamMap = {
 		itemFilter = itemFilter,
-		eligiblePartyMembers = TableUtils:MakeImmutableTableCopy(partyMembers),
+		eligiblePartyMembers = partyMembers,
 		targetsWithAmountWon = targetsWithAmountWon,
 		item = item,
 		currentItemStackSize = currentItemStackSize,

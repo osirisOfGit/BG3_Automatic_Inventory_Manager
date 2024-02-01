@@ -117,12 +117,14 @@ function ItemFilters:RegisterItemFilterMapPreset(modUUID, presetName, itemFilter
 
 	Config.AIM.PRESETS.FILTERS_PRESETS[presetName] = {}
 
+	local mapCount = 0
 	for mapName, itemFilters in pairs(itemFilterMaps) do
 		local saveSuccess = FileUtils:SaveTableToFile(
 			FileUtils:BuildRelativeJsonFileTargetPath(mapName, Config.AIM.PRESETS.PRESETS_DIR, presetName),
 			itemFilters)
 		if saveSuccess then
 			table.insert(Config.AIM.PRESETS.FILTERS_PRESETS[presetName], mapName)
+			mapCount = mapCount + 1
 		else
 			Logger:BasicError(string.format(
 				"Was unable to save itemFilterMap %s while creating preset %s for mod %s - this map will be skipped! Check previous logs for errors",
@@ -131,6 +133,15 @@ function ItemFilters:RegisterItemFilterMapPreset(modUUID, presetName, itemFilter
 				modName))
 		end
 	end
+
+	Logger:BasicInfo(string.format("Mod %s successfully registered %d new itemMaps under preset %s",
+		modName,
+		mapCount,
+		presetName))
+
+		if Config.IsInitialized then
+			FileUtils:SaveTableToFile("config.json", Config.AIM)	
+		end
 
 	return true
 end
@@ -166,7 +177,7 @@ local function AddItemFilterMaps(itemFilterMaps, forceOverride, prioritizeNewFil
 end
 
 --- Loads the active ItemMap presets as identified by the PRESETS.ACTIVE_PRESETS configuration property
---- Throws an error if no tables were loaded. 
+--- Throws an error if no tables were loaded.
 --- @treturn boolean true if at least one requested table was succesfully loaded. Error otherwise.
 function ItemFilters:LoadItemFilterPresets()
 	local loadedTables = 0

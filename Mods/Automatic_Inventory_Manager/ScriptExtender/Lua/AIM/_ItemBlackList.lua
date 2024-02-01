@@ -8,7 +8,6 @@ local fileName = "ItemBlackList"
 
 local initialized = false
 
-
 local function AddNonDuplicateEntries(currentTable, newTable)
 	for _, newEntry in pairs(newTable) do
 		local foundEntry = false
@@ -69,20 +68,22 @@ function ItemBlackList:InitializeBlackList()
 	Logger:BasicInfo("ItemBlackList set to: " .. Ext.Json.Stringify(blackListTable))
 end
 
-function ItemBlackList:AddEntriesToBlackList(modUUID, blackListEntries)
-	local modInfo = ModUtils:GetModInfoFromUUID(modUUID)
-
-	if not modInfo then
-		return false
-	else
-		modInfo = modInfo.Name
-	end
-
+--- Add new items or rootTemplates to the blacklist		E
+---@param modUUID any
+---@param blacklistedItems nil or list
+---@param blacklistedRoots nil or list
+---@return boolean
+function ItemBlackList:AddEntriesToBlackList(modUUID, blacklistedItems, blacklistedRoots)
+	local modInfo = ModUtils:GetModInfoFromUUID(modUUID).Name
+	local blackListEntries = {
+		["Items"] = blacklistedItems,
+		["Roots"] = blacklistedRoots
+	}
 	AddBlacklistTables(blackListEntries)
 
 	Logger:BasicInfo(string.format("Mod %s successfully added blackList entries: %s",
 		modInfo,
-		Ext.Json.Stringify(blackListTable)))
+		Ext.Json.Stringify(blackListEntries)))
 
 	-- not sure if mods would be able to add their values before we load from the file - so just a sanity check to make sure we only update the file
 	-- if it's been loaded in already. Initialization takes this into account as well

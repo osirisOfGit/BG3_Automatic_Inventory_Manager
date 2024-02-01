@@ -2,12 +2,6 @@ Upgrade = {}
 
 --- Existing FILTERS_DIR and FILTER_TABLES config porting handled in InitializeFilterPresetsAndMigrateLegacy
 function Upgrade:ConfigFile(config)
-	for prop, val in pairs(Config.AIM) do
-		if not config[prop] then
-			config[prop] = val
-		end
-	end
-
 	local MODIFIED_CONFIG_NAMES = {
 		SYNC_FILTERS = "MERGE_DEFAULT_FILTERS",    -- 1.1.0
 		SORT_ITEMS_ON_LOAD = "SORT_ITEMS_ON_FIRST_LOAD", -- 2.0.0

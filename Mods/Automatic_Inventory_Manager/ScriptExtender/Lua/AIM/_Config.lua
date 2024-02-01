@@ -3,6 +3,8 @@ Ext.Require("AIM/FilterPresets/_CampGoldBooks.lua")
 
 Config = {}
 
+Config.IsInitialized = false
+
 Config.AIM = {
 	ENABLED = 1,
 	RESET_CONFIGS = 0,
@@ -59,17 +61,23 @@ function Config.SyncConfigsAndFilters()
 	Logger:ClearLogFile()
 	Logger:BasicInfo("AIM has begun initialization!")
 
-	local config = FileUtils:LoadFile("config.json")
-
-	if config then
-		config = Ext.Json.Parse(config)
-	end
+	local config = FileUtils:LoadTableFile("config.json")
 
 	if not config or config.RESET_CONFIGS == 1 then
 		InitializeConfigurations()
 		Logger:BasicInfo("Initializing all the configs!")
 
 		config = Config.AIM
+	end
+
+	for prop, val in pairs(Config.AIM) do
+		if not config[prop] then
+			config[prop] = val
+		end
+	end
+
+	for presetName, preset in pairs(Config.AIM.PRESETS.FILTERS_PRESETS) do
+		config.PRESETS.FILTERS_PRESETS[presetName] = preset
 	end
 
 	Upgrade:ConfigFile(config)
@@ -83,4 +91,5 @@ function Config.SyncConfigsAndFilters()
 	ItemBlackList:InitializeBlackList()
 
 	Logger:BasicInfo("AIM has finished initialization!")
+	Config.IsInitialized = true
 end

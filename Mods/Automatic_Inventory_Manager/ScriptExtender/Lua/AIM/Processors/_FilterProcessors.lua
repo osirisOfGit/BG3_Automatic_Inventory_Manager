@@ -120,9 +120,10 @@ end
 FilterProcessor = {}
 
 --- Adds the provided stat functions to the list of possible functions, using the key as the criteria, which process CompareFilters using mod-added 
+-- If the targetStat identified already has a processor associated, ignore the provided one and continue
 -- <a href="https://osirisofgit.github.io/BG3_Automatic_Inventory_Manager/modules/ItemFilters.html#ItemFilters.FilterFields.TargetStat">TargetStats</a>
 ---@param modUUID that ScriptExtender has registered for your mod, for tracking purposes - <a href="https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#ismodloadedmodguid">https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#ismodloadedmodguid</a>
----@param statFunctions table of [TargetStat|string] = function(GUIDSTRING, FilterParamMap)
+---@param statFunctions table of [TargetStat|string] = function(partyMemberBeingProcesed, FilterParamMap)
 function FilterProcessor:RegisterTargetStatProcessors(modUUID, statFunctions)
 	local modName = ModUtils:GetModInfoFromUUID(modUUID).Name
 	for targetStat, statFunction in pairs(statFunctions) do
@@ -180,7 +181,7 @@ end
 --- Add a new filter processor -
 ---@param modUUID that ScriptExtender has registered for your mod, for tracking purposes - <a href="https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#ismodloadedmodguid">https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#ismodloadedmodguid</a>
 --- will throw an error if the mod identified by that UUID is not loaded
----@param predicateFunction function(Filter, boolean) Should test the filter to see if the filterProcessor can process it, returning true if
+---@param predicateFunction function(Filter) Should test the filter to see if the filterProcessor can process it, returning true if so
 ---@param filterProcessor function(CHARACTER, ParamMap) proceses the filter against the provided character, setting ParamMap.winners and optionally ParamMap.winningVal
 function FilterProcessor:RegisterNewFilterProcessor(modUUID, predicateFunction, filterProcessor)
 	local modName = ModUtils:GetModInfoFromUUID(modUUID).Name
@@ -254,8 +255,8 @@ function FilterProcessor:ExecuteFilterAgainstEligiblePartyMembers(filter,
 	end)
 
 	if not success then
-		Logger:BasicError(string.format("Got error while attempting to process filter with paramMap %s: %s",
-			Ext.Json.Stringify(FilterProcessor.ParamMap), errorResponse))
+		Logger:BasicError(string.format("FilterProcessor:ExecuteFilterAgainstEligiblePartyMembers - Got error %s while attempting to process filter with paramMap %s",
+			errorResponse, Ext.Json.Stringify(FilterProcessor.ParamMap)))
 	end
 	if Logger:IsLogLevelEnabled(Logger.PrintTypes.TRACE) then
 		Logger:BasicTrace(string.format("FilterProcessor finished iteration - param map is %s",
