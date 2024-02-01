@@ -7,9 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.0]
 ### TODO:
-- Update ItemFilters API methods to create presets instead of updating the itemMap
 - Update documentation
-- Update Sample Mod to use new functionality
+- Update Sample Mod to test and use new functionality
 
 
 ### Mod Users

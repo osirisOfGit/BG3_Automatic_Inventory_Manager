@@ -164,8 +164,9 @@ end
 
 --- Loads the active ItemMap presets as identified by the PRESETS.ACTIVE_PRESETS configuration property
 function ItemFilters:LoadItemFilterPresets()
-	local loadedTables = {}
-	for _, presetName in ipairs(Config.AIM.PRESETS.ACTIVE_PRESETS) do
+	local loadedTables = 0
+	local loadedPresets = 0
+	for presetName, presetTablesToLoad in pairs(Config.AIM.PRESETS.ACTIVE_PRESETS) do
 		Logger:BasicInfo("Loading filter preset " .. presetName)
 		if not Config.AIM.PRESETS.FILTERS_PRESETS[presetName] then
 			Logger:BasicError(string.format(
@@ -173,45 +174,65 @@ function ItemFilters:LoadItemFilterPresets()
 				presetName))
 			goto continue
 		end
+		loadedPresets = loadedPresets + 1
 		for _, filterTableName in pairs(Config.AIM.PRESETS.FILTERS_PRESETS[presetName]) do
-			local filterTableFilePath = FileUtils:BuildRelativeJsonFileTargetPath(filterTableName,
-				Config.AIM.PRESETS.PRESETS_DIR,
-				presetName)
-			local filterTable = FileUtils:LoadFile(filterTableFilePath)
+			local filterTableIsRequested = false
+			for _, presetTableToLoad in pairs(presetTablesToLoad) do
+				if string.upper(presetTableToLoad) == "ALL" or string.upper(presetTableToLoad) == string.upper(filterTableName) then
+					filterTableIsRequested = true
+					break
+				end
+			end
 
-			if filterTable then
-				local success, result = pcall(function()
-					Logger:BasicInfo(string.format(
-						"Merging %s/%s.json into active itemMaps",
-						presetName,
-						filterTableName))
+			if filterTableIsRequested then
+				local filterTableFilePath = FileUtils:BuildRelativeJsonFileTargetPath(filterTableName,
+					Config.AIM.PRESETS.PRESETS_DIR,
+					presetName)
+				local filterTable = FileUtils:LoadFile(filterTableFilePath)
 
-					AddItemFilterMaps({ [filterTableName] = Ext.Json.Parse(filterTable) },
-						false,
-						false,
-						false)
-				end)
+				if filterTable then
+					local success, result = pcall(function()
+						Logger:BasicInfo(string.format(
+							"Merging %s/%s.json into active itemMaps",
+							presetName,
+							filterTableName))
 
-				if not success then
-					Logger:BasicError(string.format("Could not merge table %s from preset %s due to error [%s]",
-						filterTableName,
-						presetName,
-						result))
+						AddItemFilterMaps({ [filterTableName] = Ext.Json.Parse(filterTable) },
+							false,
+							false,
+							false)
+					end)
+
+					if not success then
+						Logger:BasicError(string.format("Could not merge table %s from preset %s due to error [%s]",
+							filterTableName,
+							presetName,
+							result))
+					else
+						loadedTables = loadedTables + 1
+					end
 				else
-					table.insert(loadedTables, filterTableName)
+					Logger:BasicError("Could not find filter table file " .. filterTableFilePath)
 				end
 			else
-				Logger:BasicError("Could not find filter table file " .. filterTableFilePath)
+				Logger:BasicInfo(string.format(
+					"The table %s in Preset %s was excluded from the ACTIVE_PRESETS list, so skipping it!",
+					filterTableName,
+					presetName))
 			end
 		end
 		::continue::
 	end
 
-	if #loadedTables == 0 then
+	if loadedTables == 0 then
 		local errorMessage = "No preset tables were loaded, likely due to errors! Check previous logs."
 		Logger:BasicError(errorMessage)
 		error(errorMessage)
 	end
+
+	Logger:BasicInfo(string.format("Successfully merged %d Item Filter Maps from %d Preset(s) to the itemMaps!",
+		loadedTables,
+		loadedPresets))
 
 	ItemFilters:UpdateItemMapsClone()
 	if Logger:IsLogLevelEnabled(Logger.PrintTypes.DEBUG) then

@@ -38,7 +38,6 @@ local function ConcatPrefix(prefix, message)
     end
 end
 
---Blatantly stolen from KvCampEvents, mine now
 local function ConcatOutput(...)
     local varArgs = { ... }
     local outStr = ""
@@ -77,7 +76,7 @@ function Logger:BasicPrint(content, messageType, textColor, customPrefix, rainbo
 
         customPrefix = customPrefix or ModUtils:GetAIMModInfo().Name
         local padding = string.rep(" ", prefixLength - #customPrefix)
-        local message = ConcatOutput(ConcatPrefix(customPrefix .. padding .. "  [" .. messageType .. "]", content))
+        local message = ConcatOutput(ConcatPrefix(customPrefix .. padding .. "  [" .. Logger.PrintTypes[messageType] .. "]", content))
 
         Logger:LogMessage(ConcatOutput(ConcatPrefix(customPrefix .. "  [" .. messageType .. "]", content)))
         if messageType <= Logger.PrintTypes.INFO then

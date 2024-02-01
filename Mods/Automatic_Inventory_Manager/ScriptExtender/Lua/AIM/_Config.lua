@@ -48,8 +48,8 @@ local function InitializeFilterPresetsAndUpgradeLegacyFilters()
 
 	Upgrade:LegacyFiltersToPresets()
 
-	if not Config.AIM.PRESETS.ACTIVE_PRESETS or #Config.AIM.PRESETS.ACTIVE_PRESETS == 0 then
-		table.insert(Config.AIM.PRESETS.ACTIVE_PRESETS, Preset_AllDefaults.Name)
+	if not Config.AIM.PRESETS.ACTIVE_PRESETS or next(Config.AIM.PRESETS.ACTIVE_PRESETS) == nil then
+		Config.AIM.PRESETS.ACTIVE_PRESETS = { [Preset_AllDefaults.Name] = { "ALL" } }
 	end
 
 	FileUtils:SaveTableToFile("config.json", Config.AIM)
@@ -81,6 +81,6 @@ function Config.SyncConfigsAndFilters()
 	ItemFilters:LoadItemFilterPresets()
 
 	ItemBlackList:InitializeBlackList()
-	
+
 	Logger:BasicInfo("AIM has finished initialization!")
 end

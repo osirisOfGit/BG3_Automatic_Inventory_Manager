@@ -9,8 +9,8 @@ function Upgrade:ConfigFile(config)
 	end
 
 	local MODIFIED_CONFIG_NAMES = {
-		SYNC_FILTERS = "MERGE_DEFAULT_FILTERS", -- 1.1.0
-		SORT_ITEMS_ON_LOAD = "SORT_ITEMS_ON_FIRST_LOAD", -- 2.0.0 
+		SYNC_FILTERS = "MERGE_DEFAULT_FILTERS",    -- 1.1.0
+		SORT_ITEMS_ON_LOAD = "SORT_ITEMS_ON_FIRST_LOAD", -- 2.0.0
 	}
 
 	for oldProp, newProp in pairs(MODIFIED_CONFIG_NAMES) do
@@ -28,7 +28,6 @@ function Upgrade:ConfigFile(config)
 		config[oldProp] = nil
 	end
 end
-
 
 --- If the Config file contains the FILTERS_DIR and FILTER_TABLES properties, copy the identified tables to the new AIM-Migrated-Custom-Filter-Preset
 function Upgrade:LegacyFiltersToPresets()
@@ -83,7 +82,7 @@ function Upgrade:LegacyFiltersToPresets()
 			end
 		end
 
-		Config.AIM.PRESETS.ACTIVE_PRESETS = { customPresetName }
+		Config.AIM.PRESETS.ACTIVE_PRESETS = { [customPresetName] = { "ALL" } }
 		Config.AIM["FILTERS_DIR"] = nil
 		Config.AIM["FILTER_TABLES"] = nil
 	end
