@@ -29,13 +29,13 @@ function Upgrade:LegacyFiltersToPresets()
 		Logger:BasicError(
 			"The legacy config 'FILTERS_DIR' is present, but the 'FILTER_TABLES' property is either missing or empty,"
 			..
-			" so AIM is unable to copy existing files into a new preset. Please either delete the 'FILTERS_DIR' and 'FILTER_TABLES' property if you don't want your current itemMaps copied,"
-			.. " or specify which itemMaps to copy in the 'FILTER_TABLES' property.")
+			" so AIM is unable to copy existing files into a new preset. Please either delete the 'FILTERS_DIR' and 'FILTER_TABLES' property if you don't want your current itemFilterMaps copied,"
+			.. " or specify which itemFilterMaps to copy in the 'FILTER_TABLES' property.")
 	elseif not Config.AIM["FILTERS_DIR"] and (Config.AIM["FILTER_TABLES"] and #Config.AIM["FILTER_TABLES"] > 0) then
 		Logger:BasicError(
 			"The legacy config 'FILTER_TABLES' is present, but the 'FILTERS_DIR' property is either missing or empty,"
 			..
-			" so AIM is unable to copy existing files into a new preset. Please either delete the 'FILTERS_DIR' and 'FILTERS_TABLES' property if you don't want your current itemMaps copied,"
+			" so AIM is unable to copy existing files into a new preset. Please either delete the 'FILTERS_DIR' and 'FILTERS_TABLES' property if you don't want your current itemFilterMaps copied,"
 			.. " or specify which directory your custom files to copy are in via the 'FILTERS_DIR' property.")
 	elseif Config.AIM["FILTERS_DIR"] and (Config.AIM["FILTER_TABLES"] and #Config.AIM["FILTER_TABLES"] > 0) then
 		local customPresetName = "AIM-Migrated-Custom-Filter-Preset"
@@ -63,7 +63,7 @@ function Upgrade:LegacyFiltersToPresets()
 
 				if success then
 					table.insert(Config.AIM.PRESETS.FILTERS_PRESETS[customPresetName], filterTableName)
-					Logger:BasicInfo(string.format("Successfully added itemMap %s to preset %s", filterTableName,
+					Logger:BasicInfo(string.format("Successfully added itemFilterMap %s to preset %s", filterTableName,
 						customPresetName))
 				else
 					Logger:BasicWarning(string.format(

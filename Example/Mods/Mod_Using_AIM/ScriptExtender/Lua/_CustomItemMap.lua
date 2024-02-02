@@ -1,5 +1,5 @@
-local newItemMap = {
-	-- This is not a known itemMap, so going to have to register a custom FilterLookupFunction for it
+local newItemFilterMap = {
+	-- This is not a known itemFilterMap, so going to have to register a custom FilterLookupFunction for it
 	["ARMOR"] = {
 		-- https://osirisofgit.github.io/BG3_Automatic_Inventory_Manager/modules/ItemFilters.html#ItemKeys
 		[AIM_SHORTCUT.ItemFilters.ItemKeys.WILDCARD] = {
@@ -10,27 +10,27 @@ local newItemMap = {
 	}
 }
 
--- Don't add the new ItemFilterLookup if the itemMap that created it wasn't successfully saved.
+-- Don't add the new ItemFilterLookup if the itemFilterMap that created it wasn't successfully saved.
 -- https://osirisofgit.github.io/BG3_Automatic_Inventory_Manager/modules/ItemFilters.html#RegisterItemFilterMapPreset
-if AIM_SHORTCUT.ItemFilters:RegisterItemFilterMapPreset(SAMPLE_MOD_UUID, "CustomItemMap", newItemMap) then
+if AIM_SHORTCUT.ItemFilters:RegisterItemFilterMapPreset(SAMPLE_MOD_UUID, "CustomItemFilterMap", newItemFilterMap) then
 
 	-- https://osirisofgit.github.io/BG3_Automatic_Inventory_Manager/modules/ItemFilters.html#RegisterItemFilterLookupFunction
-	AIM_SHORTCUT.ItemFilters:RegisterItemFilterLookupFunction(SAMPLE_MOD_UUID, function(itemMaps,
-																						root,
-																						item,
-																						inventoryHolder)
+	AIM_SHORTCUT.ItemFilters:RegisterItemFilterLookupFunction(SAMPLE_MOD_UUID, function(itemFilterMaps,
+                                                                                        root,
+                                                                                        item,
+                                                                                        inventoryHolder)
 		local filters = {}
 
-		if itemMaps.ARMOR and Osi.IsEquipable(item) then
-			local armorItemMap = itemMaps.ARMOR
-			if armorItemMap[item] then
-				table.insert(filters, armorItemMap[item])
+		if itemFilterMaps.ARMOR and Osi.IsEquipable(item) then
+			local armorItemFilterMap = itemFilterMaps.ARMOR
+			if armorItemFilterMap[item] then
+				table.insert(filters, armorItemFilterMap[item])
 			end
-			
-			if armorItemMap[AIM_SHORTCUT.ItemFilters.ItemKeys.WILDCARD] then
-				table.insert(filters, armorItemMap[AIM_SHORTCUT.ItemFilters.ItemKeys.WILDCARD])
+
+			if armorItemFilterMap[AIM_SHORTCUT.ItemFilters.ItemKeys.WILDCARD] then
+				table.insert(filters, armorItemFilterMap[AIM_SHORTCUT.ItemFilters.ItemKeys.WILDCARD])
 			end
-			Ext.Utils.Print("Looky loo, CustomItemMap is working! " .. Ext.Json.Stringify(filters))
+			Ext.Utils.Print("Looky loo, CustomItemFilterMap is working! " .. Ext.Json.Stringify(filters))
 		end
 
 		return filters

@@ -1,4 +1,4 @@
-local newItemMap = {
+local newItemFilterMap = {
 	["Tags"] = {
 		["HEALING_POTION"] = {
 			PreFilters = {
@@ -19,7 +19,7 @@ local newItemMap = {
 -- Mod name is prepended to the presetName for us
 -- don't bother registering the pre-filter processors if the preset that uses them didn't get saved
 -- https://osirisofgit.github.io/BG3_Automatic_Inventory_Manager/modules/ItemFilters.html#RegisterItemFilterMapPreset
-if AIM_SHORTCUT.ItemFilters:RegisterItemFilterMapPreset(SAMPLE_MOD_UUID, "CustomPreFilters", newItemMap) then
+if AIM_SHORTCUT.ItemFilters:RegisterItemFilterMapPreset(SAMPLE_MOD_UUID, "CustomPreFilters", newItemFilterMap) then
 
 	-- https://osirisofgit.github.io/BG3_Automatic_Inventory_Manager/modules/Processors._PreFilterProcessors.html#PreFilterProcessors:RegisterPerStackPreFilterProcessor
 	AIM_SHORTCUT.PreFilterProcessors:RegisterPerStackPreFilterProcessor(SAMPLE_MOD_UUID, "CustomPreFilter-PerStack",

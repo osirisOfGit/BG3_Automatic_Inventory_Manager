@@ -1,4 +1,4 @@
-local newItemMap = {
+local newItemFilterMap = {
 	["Tags2"] = {
 		-- case sensitive
 		["HEALING_POTION"] = {
@@ -11,7 +11,7 @@ local newItemMap = {
 			},
 		},
 	},
-	-- The Tags itemMap is already known by AIM, so it has a FilterLookupFunction associated to it already
+	-- The Tags itemFilterMap is already known by AIM, so it has a FilterLookupFunction associated to it already
 	["Tags"] = {
 		-- case sensitive
 		["HEALING_POTION"] = {
@@ -28,4 +28,4 @@ local newItemMap = {
 
 -- Mod name is prepended to the presetName for us
 -- https://osirisofgit.github.io/BG3_Automatic_Inventory_Manager/modules/ItemFilters.html#RegisterItemFilterMapPreset
-AIM_SHORTCUT.ItemFilters:RegisterItemFilterMapPreset(SAMPLE_MOD_UUID, "VanillaFilters", newItemMap)
+AIM_SHORTCUT.ItemFilters:RegisterItemFilterMapPreset(SAMPLE_MOD_UUID, "VanillaFilters", newItemFilterMap)

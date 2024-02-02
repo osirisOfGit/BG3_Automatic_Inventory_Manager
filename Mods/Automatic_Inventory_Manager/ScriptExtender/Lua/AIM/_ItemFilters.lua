@@ -32,7 +32,7 @@ ItemFilters.FilterFields.TargetStat = {
 	ARMOR_CLASS = "ARMOR_CLASS"
 }
 
---- Convenience table for keys that are common across ItemMaps
+--- Convenience table for keys that are common across ItemFilterMaps
 ItemFilters.ItemKeys = {
 	WILDCARD = "ALL"
 }
@@ -89,7 +89,7 @@ local function MergeItemFiltersIntoTarget(targetItemFilter, newItemFilters, prio
 	end
 end
 
-local itemMaps = {}
+local itemFilterMaps = {}
 
 --- Registers a new Preset with the provided ItemFilterMaps - files will be created, overwriting any existing contents, and the preset information will be added to the
 --- PRESETS.FILTERS_PRESETS configuration property.
@@ -122,7 +122,7 @@ function ItemFilters:RegisterItemFilterMapPreset(modUUID, presetName, itemFilter
 		end
 	end
 
-	Logger:BasicInfo(string.format("Mod %s successfully registered %d new itemMaps under preset %s",
+	Logger:BasicInfo(string.format("Mod %s successfully registered %d new itemFilterMaps under preset %s",
 		modName,
 		mapCount,
 		presetName))
@@ -139,13 +139,13 @@ end
 ---@param itemFilterMaps table of mapName:ItemFilters[] to add
 ---@param forceOverride if the itemFilterMap is already known, will just completely overwrite with the provided map instead of merging
 ---@param prioritizeNewFilters if merging in a filter for an existing ItemFilter, and an existing filter shares the same priority, the provided filter will be given higher priority
----@param updateItemMapClone if we should update ItemFilters.itemMap after merging - performance flag in case there are multiple, independent loads that need to happen
-local function AddItemFilterMaps(itemFilterMaps, forceOverride, prioritizeNewFilters, updateItemMapClone)
+---@param updateItemFilterMapClone if we should update ItemFilters.itemFilterMap after merging - performance flag in case there are multiple, independent loads that need to happen
+local function AddItemFilterMaps(itemFilterMaps, forceOverride, prioritizeNewFilters, updateItemFilterMapClone)
 	for mapName, itemFilterMap in pairs(itemFilterMaps) do
-		if not itemMaps[mapName] or forceOverride == true then
-			itemMaps[mapName] = itemFilterMap
+		if not itemFilterMaps[mapName] or forceOverride == true then
+			itemFilterMaps[mapName] = itemFilterMap
 		else
-			local existingItemFilterMap = itemMaps[mapName]
+			local existingItemFilterMap = itemFilterMaps[mapName]
 			for itemKey, itemFilter in pairs(itemFilterMap) do
 				if not existingItemFilterMap[itemKey] then
 					existingItemFilterMap[itemKey] = itemFilter
@@ -155,16 +155,16 @@ local function AddItemFilterMaps(itemFilterMaps, forceOverride, prioritizeNewFil
 			end
 		end
 		if Logger:IsLogLevelEnabled(Logger.PrintTypes.TRACE) then
-			Logger:BasicTrace(string.format("Finished merging itemMap %s, new map is: %s",
+			Logger:BasicTrace(string.format("Finished merging itemFilterMap %s, new map is: %s",
 				mapName,
-				Ext.Json.Stringify(itemMaps[mapName])))
+				Ext.Json.Stringify(itemFilterMaps[mapName])))
 		end
 	end
 
-	if updateItemMapClone == true then ItemFilters:UpdateItemMapsClone() end
+	if updateItemFilterMapClone == true then ItemFilters:UpdateItemFilterMapsClone() end
 end
 
---- Loads the active ItemMap presets as identified by the PRESETS.ACTIVE_PRESETS configuration property
+--- Loads the active ItemFilterMap presets as identified by the PRESETS.ACTIVE_PRESETS configuration property
 --- Throws an error if no tables were loaded.
 --- @treturn boolean true if at least one requested table was succesfully loaded. Error otherwise.
 function ItemFilters:LoadItemFilterPresets()
@@ -197,7 +197,7 @@ function ItemFilters:LoadItemFilterPresets()
 				if filterTable then
 					local success, result = pcall(function()
 						Logger:BasicInfo(string.format(
-							"Merging %s/%s.json into active itemMaps",
+							"Merging %s/%s.json into active itemFilterMaps",
 							presetName,
 							filterTableName))
 
@@ -234,31 +234,31 @@ function ItemFilters:LoadItemFilterPresets()
 		error(errorMessage)
 	end
 
-	Logger:BasicInfo(string.format("Successfully merged %d Item Filter Maps from %d Preset(s) to the itemMaps!",
+	Logger:BasicInfo(string.format("Successfully merged %d Item Filter Maps from %d Preset(s) to the itemFilterMaps!",
 		loadedTables,
 		loadedPresets))
 
-	ItemFilters:UpdateItemMapsClone()
+	ItemFilters:UpdateItemFilterMapsClone()
 	if Logger:IsLogLevelEnabled(Logger.PrintTypes.DEBUG) then
 		Logger:BasicDebug("Finished loading in presets - finalized item maps are:")
-		for itemMap, itemMapContent in pairs(ItemFilters.itemMaps) do
-			Logger:BasicDebug(string.format("%s: %s", itemMap, Ext.Json.Stringify(itemMapContent)))
+		for itemFilterMap, itemFilterMapContent in pairs(ItemFilters.itemFilterMaps) do
+			Logger:BasicDebug(string.format("%s: %s", itemFilterMap, Ext.Json.Stringify(itemFilterMapContent)))
 		end
 	end
 
 	return true
 end
 
---- immutable clone of the itemMaps - can be forceably synced using UpdateItemMapsClone, but we'll do it on each update we know about
-ItemFilters.itemMaps = TableUtils:MakeImmutableTableCopy(itemMaps)
+--- immutable clone of the itemFilterMaps - can be forceably synced using UpdateItemFilterMapsClone, but we'll do it on each update we know about
+ItemFilters.itemFilterMaps = TableUtils:MakeImmutableTableCopy(itemFilterMaps)
 
---- Updates ItemFilters.itemMaps
-function ItemFilters:UpdateItemMapsClone()
-	ItemFilters.itemMaps = TableUtils:MakeImmutableTableCopy(itemMaps)
+--- Updates ItemFilters.itemFilterMaps
+function ItemFilters:UpdateItemFilterMapsClone()
+	ItemFilters.itemFilterMaps = TableUtils:MakeImmutableTableCopy(itemFilterMaps)
 
 	-- Update the TargetStat enum with new fields for use by FilterProcessors
-	for _, itemMap in pairs(ItemFilters.itemMaps) do
-		for _, itemFilter in pairs(itemMap) do
+	for _, itemFilterMap in pairs(ItemFilters.itemFilterMaps) do
+		for _, itemFilter in pairs(itemFilterMap) do
 			for _, filter in pairs(itemFilter.Filters) do
 				if filter.TargetStat and not ItemFilters.FilterFields.TargetStat[filter.TargetStat] then
 					ItemFilters.FilterFields.TargetStat[filter.TargetStat] = filter.TargetStat
@@ -268,25 +268,25 @@ function ItemFilters:UpdateItemMapsClone()
 	end
 end
 
-local function GetFiltersFromMap(itemMap, key, filtersTable)
-	if itemMap then
-		if itemMap[key] then
-			table.insert(filtersTable, itemMap[key])
+local function GetItemFiltersFromMap(itemFilterMap, key, filtersTable)
+	if itemFilterMap then
+		if itemFilterMap[key] then
+			table.insert(filtersTable, itemFilterMap[key])
 		end
 
-		if itemMap[ItemFilters.ItemKeys.WILDCARD] then
-			table.insert(filtersTable, itemMap[ItemFilters.ItemKeys.WILDCARD])
+		if itemFilterMap[ItemFilters.ItemKeys.WILDCARD] then
+			table.insert(filtersTable, itemFilterMap[ItemFilters.ItemKeys.WILDCARD])
 		end
 	end
 end
 
-local function GetFiltersByRoot(itemMaps, root, _, _)
+local function GetItemFiltersByRoot(itemFilterMaps, root, _, _)
 	local filters = {}
 
-	GetFiltersFromMap(itemMaps.Roots, root, filters)
+	GetItemFiltersFromMap(itemFilterMaps.Roots, root, filters)
 
-	if itemMaps["RootPartial"] then
-		for key, filter in pairs(itemMaps.RootPartial) do
+	if itemFilterMaps["RootPartial"] then
+		for key, filter in pairs(itemFilterMaps.RootPartial) do
 			if string.find(root, key) then
 				table.insert(filters, filter)
 			end
@@ -296,31 +296,31 @@ local function GetFiltersByRoot(itemMaps, root, _, _)
 	return filters
 end
 
-local function GetFiltersByEquipmentType(itemMaps, _, item, _)
+local function GetItemFiltersByEquipmentType(itemFilterMaps, _, item, _)
 	local filters = {}
 
 	if Osi.IsWeapon(item) == 1 then
-		GetFiltersFromMap(itemMaps.Weapons, item, filters)
+		GetItemFiltersFromMap(itemFilterMaps.Weapons, item, filters)
 	end
 
-	if itemMaps["Equipment"] and Osi.IsEquipable(item) == 1 then
+	if itemFilterMaps["Equipment"] and Osi.IsEquipable(item) == 1 then
 		local equipTypeUUID = Ext.Entity.Get(item).ServerItem.OriginalTemplate.EquipmentTypeID
 		local equipType = Ext.StaticData.Get(equipTypeUUID, "EquipmentType")
 		if equipType then
-			GetFiltersFromMap(itemMaps.Equipment, equipType["Name"], filters)
+			GetItemFiltersFromMap(itemFilterMaps.Equipment, equipType["Name"], filters)
 		end
 	end
 
 	return filters
 end
 
-local function GetFilterByTag(itemMaps, _, item, _)
+local function GetItemFilterByTag(itemFilterMaps, _, item, _)
 	local filters = {}
-	if itemMaps["Tags"] then
+	if itemFilterMaps["Tags"] then
 		for _, tagUUID in pairs(Ext.Entity.Get(item).Tag.Tags) do
 			local tagTable = Ext.StaticData.Get(tagUUID, "Tag")
 			if tagTable then
-				local tagFilter = itemMaps.Tags[tagTable["Name"]]
+				local tagFilter = itemFilterMaps.Tags[tagTable["Name"]]
 				if tagFilter then
 					table.insert(filters, tagFilter)
 				end
@@ -332,22 +332,20 @@ local function GetFilterByTag(itemMaps, _, item, _)
 end
 
 local itemFilterLookups = {
-	GetFiltersByRoot,
-	GetFilterByTag,
-	GetFiltersByEquipmentType
+	GetItemFiltersByRoot,
+	GetItemFilterByTag,
+	GetItemFiltersByEquipmentType
 }
 
---- Add custom function(s) to use to find ItemFilters for a given item - each function should accept:
----
---- <br/>1. table(string, table(string, ItemFilter)) - immutable copy of all the itemMaps to perform lookup against
+--- Add custom function(s) to use to find ItemFilters for a given item within the available ItemFilterMaps
+---@param modUUID that ScriptExtender has registered for your mod, for tracking purposes - <a href="https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#ismodloadedmodguid">https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#ismodloadedmodguid</a>
+--- will throw an error if the mod identified by that UUID is not loaded
+---@tparam function ... should accept:
+--- <br/>1. table(string, table(string, ItemFilter)) - immutable copy of all the itemFilterMaps to perform lookup against
 --- <br/>2. GUIDSTRING - the root template of the item being sorted
 --- <br/>3. GUIDSTRING - the item being sorted
 --- <br/>4. GUIDSTRING - the inventoryHolder
----
---- and return a list of ItemFilters
----@param modUUID that ScriptExtender has registered for your mod, for tracking purposes - <a href="https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#ismodloadedmodguid">https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#ismodloadedmodguid</a>
---- will throw an error if the mod identified by that UUID is not loaded
----@tparam function ...
+--- <br/>and return a list of ItemFilters
 function ItemFilters:RegisterItemFilterLookupFunction(modUUID, ...)
 	local modName = ModUtils:GetModInfoFromUUID(modUUID).Name
 
@@ -375,7 +373,7 @@ function ItemFilters:SearchForItemFilters(item, root, inventoryHolder)
 	for _, lookupFunc in pairs(itemFilterLookups) do
 		local success, errorMessage = pcall(function()
 			MergeItemFiltersIntoTarget(consolidatedItemFilter,
-				lookupFunc(ItemFilters.itemMaps, root, item, inventoryHolder),
+				lookupFunc(ItemFilters.itemFilterMaps, root, item, inventoryHolder),
 				false)
 		end
 		)

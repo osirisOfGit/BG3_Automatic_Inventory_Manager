@@ -7,7 +7,7 @@ Ext.Utils.Print("AIM's SampleMod is starting to register its stuff")
 if Ext.Mod.IsModLoaded("23bdda0c-a671-498f-89f5-a69e8d3a4b52") then
 	AIM_SHORTCUT = Mods.Automatic_Inventory_Manager
 	Ext.Require("_CustomFilters.lua")
-	Ext.Require("_CustomItemMap.lua")
+	Ext.Require("_CustomItemFilterMap.lua")
 	Ext.Require("_CustomPreFilters.lua")
 	Ext.Require("_WithVanillaFunctionality.lua")
 	Ext.Require("_ItemBlackList.lua")

@@ -1,4 +1,4 @@
-local newItemMap = {
+local newItemFilterMap = {
 	["Tags"] = {
 		["HEALING_POTION"] = {
 			Filters = {
@@ -17,7 +17,7 @@ local newItemMap = {
 			},
 			-- As of 2.0.0, there's no mechanism available to register a new processor for new ItemFilterFields
 			-- However, custom ItemFilterFields will be passed to stat functions and filter processors via
-			-- https://osirisofgit.github.io/BG3_Automatic_Inventory_Manager/modules/Processors._FilterProcessors.html#FilterParamMap
+			-- their respective ParamMaps
 			MyCustomItemFilterField = {
 				Cuz = true
 			}
@@ -29,7 +29,7 @@ local newItemMap = {
 -- Mod name is prepended to the presetName for us
 -- don't bother registering the filter processors if the preset that uses them didn't get saved
 -- https://osirisofgit.github.io/BG3_Automatic_Inventory_Manager/modules/ItemFilters.html#RegisterItemFilterMapPreset
-if AIM_SHORTCUT.ItemFilters:RegisterItemFilterMapPreset(SAMPLE_MOD_UUID, "CustomFilters", newItemMap) then
+if AIM_SHORTCUT.ItemFilters:RegisterItemFilterMapPreset(SAMPLE_MOD_UUID, "CustomFilters", newItemFilterMap) then
 	-- https://osirisofgit.github.io/BG3_Automatic_Inventory_Manager/modules/Processors._FilterProcessors.html
 	AIM_SHORTCUT.FilterProcessor:RegisterTargetStatProcessors(SAMPLE_MOD_UUID,
 		{
@@ -52,6 +52,8 @@ if AIM_SHORTCUT.ItemFilters:RegisterItemFilterMapPreset(SAMPLE_MOD_UUID, "Custom
 			-- https://osirisofgit.github.io/BG3_Automatic_Inventory_Manager/modules/Processors._FilterProcessors.html#FilterParamMap
 			if paramMap.targetsWithAmountWon[partyMemberFilterIsBeingRunAgainst]
 				and (paramMap.customItemFilterFields["MyCustomItemFilterField"] and paramMap.customItemFilterFields["MyCustomItemFilterField"].Cuz) then
+				
+				table.insert(paramMap.winners, partyMemberFilterIsBeingRunAgainst)
 				Ext.Utils.Print("HECK YEAH")
 			end
 		end)

@@ -131,5 +131,5 @@ all_defaults.RootPartial = {
 
 Preset_AllDefaults = {}
 Preset_AllDefaults.Name = "All-Defaults"
-Preset_AllDefaults.ItemMaps = TableUtils:MakeImmutableTableCopy(all_defaults)
+Preset_AllDefaults.ItemFilterMaps = TableUtils:MakeImmutableTableCopy(all_defaults)
 all_defaults = nil

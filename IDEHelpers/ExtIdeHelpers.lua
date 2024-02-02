@@ -4104,7 +4104,7 @@ Osi = {}
 --- @class ItemItemComponent:BaseComponent
 
 
---- @class ItemMapMarkerStyleComponent:BaseComponent
+--- @class ItemFilterMapMarkerStyleComponent:BaseComponent
 --- @field Style FixedString
 
 
