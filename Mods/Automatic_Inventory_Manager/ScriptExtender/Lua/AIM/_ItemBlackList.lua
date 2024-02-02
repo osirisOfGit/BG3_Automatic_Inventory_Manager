@@ -10,17 +10,14 @@ local initialized = false
 
 local function AddNonDuplicateEntries(currentTable, newTable)
 	for _, newEntry in pairs(newTable) do
-		local foundEntry = false
 		for _, currentEntry in pairs(currentTable) do
 			if newEntry == currentEntry then
-				foundEntry = true
-				break
+				goto continue
 			end
 		end
 
-		if not foundEntry then
-			table.insert(currentTable, newEntry)
-		end
+		table.insert(currentTable, newEntry)
+		::continue::
 	end
 end
 
@@ -68,16 +65,17 @@ function ItemBlackList:InitializeBlackList()
 	Logger:BasicInfo("ItemBlackList set to: " .. Ext.Json.Stringify(blackListTable))
 end
 
---- Add new items or rootTemplates to the blacklist		E
+--- Add new items or rootTemplates to the blacklist - duplicate entries will be ignored
 ---@param modUUID any
 ---@param blacklistedItems nil or list
 ---@param blacklistedRoots nil or list
----@return boolean
+---@treturn boolean if there weren't any problems with adding the entries
+--- (will be true even if no tables were provided or all entries provided already existed)
 function ItemBlackList:AddEntriesToBlackList(modUUID, blacklistedItems, blacklistedRoots)
 	local modInfo = ModUtils:GetModInfoFromUUID(modUUID).Name
 	local blackListEntries = {
 		["Items"] = blacklistedItems,
-		["Roots"] = blacklistedRoots
+		["RootTemplates"] = blacklistedRoots
 	}
 	AddBlacklistTables(blackListEntries)
 

@@ -10,6 +10,7 @@ if Ext.Mod.IsModLoaded("23bdda0c-a671-498f-89f5-a69e8d3a4b52") then
 	Ext.Require("_CustomItemMap.lua")
 	Ext.Require("_CustomPreFilters.lua")
 	Ext.Require("_WithVanillaFunctionality.lua")
+	Ext.Require("_ItemBlackList.lua")
 	Ext.Utils.Print("AIM's SampleMod is done registering its stuff")
 else
 	-- The error so nice, we weren't sure where to put it.
