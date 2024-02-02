@@ -30,23 +30,8 @@ end
 --- Initializes the presets from AIM/FilterPresets/, overwriting directory contents, and migrates 1.x FILTER_DIR and FILTER_TABLES config properties to new structure,
 --- copying existing files over to a custom preset directory and activating it. If no legacy configs are detected, sets Preset_AllDefaults as the active preset
 local function InitializeFilterPresetsAndUpgradeLegacyFilters()
-	Logger:BasicDebug("Creating and saving default preset - " .. Preset_CampGoldBooks.Name)
-	Config.AIM.PRESETS.FILTERS_PRESETS[Preset_CampGoldBooks.Name] = {}
-	for mapName, itemFilterMap in pairs(Preset_CampGoldBooks.ItemMaps) do
-		table.insert(Config.AIM.PRESETS.FILTERS_PRESETS[Preset_CampGoldBooks.Name], mapName)
-		FileUtils:SaveTableToFile(
-			FileUtils:BuildRelativeJsonFileTargetPath(mapName, Config.AIM.PRESETS.PRESETS_DIR, Preset_CampGoldBooks.Name),
-			itemFilterMap)
-	end
-
-	Logger:BasicDebug("Creating and saving default preset - " .. Preset_AllDefaults.Name)
-	Config.AIM.PRESETS.FILTERS_PRESETS[Preset_AllDefaults.Name] = {}
-	for mapName, itemFilterMap in pairs(Preset_AllDefaults.ItemMaps) do
-		table.insert(Config.AIM.PRESETS.FILTERS_PRESETS[Preset_AllDefaults.Name], mapName)
-		FileUtils:SaveTableToFile(
-			FileUtils:BuildRelativeJsonFileTargetPath(mapName, Config.AIM.PRESETS.PRESETS_DIR, Preset_AllDefaults.Name),
-			itemFilterMap)
-	end
+	ItemFilters:RegisterItemFilterMapPreset(ModUtils:GetAIMModInfo().ModuleUUID, Preset_AllDefaults.Name, Preset_AllDefaults.ItemMaps)
+	ItemFilters:RegisterItemFilterMapPreset(ModUtils:GetAIMModInfo().ModuleUUID, Preset_CampGoldBooks.Name, Preset_CampGoldBooks.ItemMaps)
 
 	Upgrade:LegacyFiltersToPresets()
 

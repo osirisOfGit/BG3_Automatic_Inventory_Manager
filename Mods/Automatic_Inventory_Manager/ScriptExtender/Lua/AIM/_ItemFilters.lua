@@ -93,27 +93,15 @@ local itemMaps = {}
 
 --- Registers a new Preset with the provided ItemFilterMaps - files will be created, overwriting any existing contents, and the preset information will be added to the
 --- PRESETS.FILTERS_PRESETS configuration property.
---- @tparam UUID modUUID that ScriptExtender has registered for your mod, for tracking purposes - https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#ismodloadedmodguid
+--- @tparam UUID modUUID that ScriptExtender has registered for your mod, for tracking purposes - <a href="https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#ismodloadedmodguid">https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#ismodloadedmodguid</a>
 --- will throw an error if the mod identified by that UUID is not loaded
---- @tparam string presetName to save the itemFilterMaps under - if the preset name already exists (case-insensitive check), an error will be logged and the itemFilterMaps will not be added.
---- Your mod name will be automatically prepended to this.
+--- @tparam string presetName to save the itemFilterMaps under. Your mod name will be automatically prepended to this in {MOD_NAME}-{presetName} format.
 --- @tparam table itemFilterMaps table of mapName:ItemFilters[] to add
 --- @treturn boolean true if the operation succeeded
 function ItemFilters:RegisterItemFilterMapPreset(modUUID, presetName, itemFilterMaps)
 	local modName = ModUtils:GetModInfoFromUUID(modUUID).Name
 
 	presetName = modName .. "-" .. presetName
-
-	for existingPresetName, _ in pairs(Config.AIM.PRESETS.FILTERS_PRESETS) do
-		if string.lower(existingPresetName) == string.lower(presetName) then
-			Logger:BasicError(string.format(
-				"Mod %s attempted to add preset %s, which already exists - preset will not be added.",
-				modName,
-				presetName))
-
-			return false
-		end
-	end
 
 	Config.AIM.PRESETS.FILTERS_PRESETS[presetName] = {}
 

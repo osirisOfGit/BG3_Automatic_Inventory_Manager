@@ -2,7 +2,7 @@
 
 ItemBlackList = {}
 
-local blackListTable = {}
+local blackListTable = { Items = {}, RootTemplates = {} }
 
 local fileName = "ItemBlackList"
 
@@ -22,16 +22,16 @@ local function AddNonDuplicateEntries(currentTable, newTable)
 end
 
 local function AddBlacklistTables(blackList)
-	if blackList.Items then
-		if blackListTable.Items then
+	if blackList.Items and #blackList.Items > 0 then
+		if #blackListTable.Items > 0 then
 			AddNonDuplicateEntries(blackListTable.Items, blackList.Items)
 		else
 			blackListTable.Items = blackList.Items
 		end
 	end
 
-	if blackList.RootTemplates then
-		if blackListTable.RootTemplates then
+	if blackList.RootTemplates and #blackList.RootTemplates > 0 then
+		if #blackListTable.RootTemplates > 0 then
 			AddNonDuplicateEntries(blackListTable.RootTemplates, blackList.RootTemplates)
 		else
 			blackListTable.RootTemplates = blackList.RootTemplates
@@ -43,22 +43,8 @@ function ItemBlackList:InitializeBlackList()
 	local filePath = FileUtils:BuildRelativeJsonFileTargetPath(fileName)
 	local blackList = FileUtils:LoadTableFile(filePath)
 
-	if blackList then
-		AddBlacklistTables(blackList)
-
-		FileUtils:SaveTableToFile(filePath, blackListTable)
-		-- Don't wipe out the Blacklist file if they just messed up the json syntax
-	elseif not FileUtils:LoadFile(filePath) then
-		FileUtils:SaveTableToFile(filePath, { ["RootTemplates"] = {}, ["Items"] = {} })
-	end
-
-	if not blackListTable.Items then
-		blackListTable.Items = {}
-	end
-
-	if not blackListTable.RootTemplates then
-		blackListTable.RootTemplates = {}
-	end
+	if blackList then AddBlacklistTables(blackList) end
+	FileUtils:SaveTableToFile(filePath, blackListTable)
 
 	initialized = true
 
