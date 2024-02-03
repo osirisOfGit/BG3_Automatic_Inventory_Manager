@@ -114,7 +114,7 @@ function PreFilterProcessors:ProcessPerStackPreFilters(prefilters,
 						Ext.Json.Stringify(survivors)))
 				end
 			end
-		end~
+		end
 	end
 
 	return survivors
