@@ -222,6 +222,7 @@ function PreFilterProcessors:ProcessPerItemPreFilters(prefilters,
 	local survivors = { table.unpack(partyMembers) }
 	local prefilterResult
 	for prefilterKey, prefilterValue in pairs(prefilters) do
+		PreFilterProcessors.ParamMap.eligiblePartyMembers = { table.unpack(survivors) }
 		if perItemPreFilterProcessors[prefilterKey] then
 			prefilterResult = perItemPreFilterProcessors[prefilterKey](prefilterValue, PreFilterProcessors.ParamMap)
 
