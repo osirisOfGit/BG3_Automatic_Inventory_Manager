@@ -127,37 +127,37 @@ function ItemFilters:RegisterItemFilterMapPreset(modUUID, presetName, itemFilter
 		mapCount,
 		presetName))
 
-		if Config.IsInitialized then
-			FileUtils:SaveTableToFile("config.json", Config.AIM)	
-		end
+	if Config.IsInitialized then
+		FileUtils:SaveTableToFile("config.json", Config.AIM)
+	end
 
 	return true
 end
 
 --- For each itemFilterMap, will just add to the superset if the map is not already known, otherwise will do a recursive merge,
 --- adding any Filters that are not already added, incrementing the priority to the next highest number if taken.
----@param itemFilterMaps table of mapName:ItemFilters[] to add
+---@param newItemFilterMaps table of mapName:ItemFilters[] to add
 ---@param forceOverride if the itemFilterMap is already known, will just completely overwrite with the provided map instead of merging
 ---@param prioritizeNewFilters if merging in a filter for an existing ItemFilter, and an existing filter shares the same priority, the provided filter will be given higher priority
 ---@param updateItemFilterMapClone if we should update ItemFilters.itemFilterMap after merging - performance flag in case there are multiple, independent loads that need to happen
-local function AddItemFilterMaps(itemFilterMaps, forceOverride, prioritizeNewFilters, updateItemFilterMapClone)
-	for mapName, itemFilterMap in pairs(itemFilterMaps) do
-		if not itemFilterMaps[mapName] or forceOverride == true then
-			itemFilterMaps[mapName] = itemFilterMap
+local function AddItemFilterMaps(newItemFilterMaps, forceOverride, prioritizeNewFilters, updateItemFilterMapClone)
+	for newMapName, newItemFilterMap in pairs(newItemFilterMaps) do
+		if not itemFilterMaps[newMapName] or forceOverride == true then
+			itemFilterMaps[newMapName] = newItemFilterMap 
 		else
-			local existingItemFilterMap = itemFilterMaps[mapName]
-			for itemKey, itemFilter in pairs(itemFilterMap) do
-				if not existingItemFilterMap[itemKey] then
-					existingItemFilterMap[itemKey] = itemFilter
+			local existingItemFilterMap = itemFilterMaps[newMapName]
+			for newItemKey, newItemFilter in pairs(newItemFilterMap) do
+				if not existingItemFilterMap[newItemKey] then
+					existingItemFilterMap[newItemKey] = newItemFilter
 				else
-					MergeItemFiltersIntoTarget(existingItemFilterMap[itemKey], { itemFilter }, prioritizeNewFilters)
+					MergeItemFiltersIntoTarget(existingItemFilterMap[newItemKey], { newItemFilter }, prioritizeNewFilters)
 				end
 			end
 		end
 		if Logger:IsLogLevelEnabled(Logger.PrintTypes.TRACE) then
 			Logger:BasicTrace(string.format("Finished merging itemFilterMap %s, new map is: %s",
-				mapName,
-				Ext.Json.Stringify(itemFilterMaps[mapName])))
+				newMapName,
+				Ext.Json.Stringify(itemFilterMaps[newMapName])))
 		end
 	end
 
