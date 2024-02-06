@@ -101,14 +101,14 @@ all_defaults.Tags = {
 			[2] = { Target = "originalTarget" },
 		}
 	},
-	-- ["CONSUMABLE"] = {
-	-- 	Filters = {
-	-- 		[99] = {
-	-- 			TargetStat = ItemFilters.FilterFields.TargetStat.STACK_AMOUNT,
-	-- 			CompareStategy = ItemFilters.FilterFields.CompareStategy.HIGHER
-	-- 		}
-	-- 	},
-	-- },
+	["CONSUMABLE"] = {
+		Filters = {
+			[99] = {
+				TargetStat = ItemFilters.FilterFields.TargetStat.STACK_AMOUNT,
+				CompareStategy = ItemFilters.FilterFields.CompareStategy.HIGHER
+			}
+		},
+	},
 	["CAMPSUPPLIES"] = {
 		Filters = {
 			[1] = { Target = "camp" }

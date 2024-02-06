@@ -122,6 +122,11 @@ function Processor:ProcessFiltersForItemAgainstParty(item, root, inventoryHolder
 				end
 
 				TableUtils:AddItemToTable_AddingToExistingAmount(targetsWithAmountWon, target, 1)
+				if Logger:IsLogLevelEnabled(Logger.PrintTypes.DEBUG) then
+					Logger:BasicDebug(string.format("Chose winner %s, new winners table is:\n%s",
+						target,
+						Ext.Json.Stringify(targetsWithAmountWon)))
+				end
 
 				if Logger:IsLogLevelEnabled(Logger.PrintTypes.TRACE) then
 					Logger:BasicTrace("Winning command: " .. Ext.Json.Stringify(filter))
