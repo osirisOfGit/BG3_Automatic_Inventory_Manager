@@ -82,31 +82,32 @@ function ProcessorUtils:CalculateTotalItemCount(targetsWithAmountWon,
 												inventoryHolder,
 												root,
 												item)
-	Logger:BasicTrace("Calculating total item count for " .. inventoryHolder)
-	local itemByTemplate = Osi.GetItemByTemplateInInventory(root, targetChar)
-	local currentlyHeldAmount = itemByTemplate and Osi.GetStackAmount(itemByTemplate) or 0
+	Logger:BasicTrace(string.format("Calculating total count of %s in inventory of %s", root, targetChar))
+	local totalFutureStackSize = targetsWithAmountWon[targetChar]
 
-	local totalFutureStackSize = currentlyHeldAmount + targetsWithAmountWon[targetChar]
+	local itemByTemplate = Osi.GetItemByTemplateInInventory(root, targetChar)
+	if itemByTemplate then
+		local _, templateStackSize = Osi.GetStackAmount(itemByTemplate)
+		totalFutureStackSize = totalFutureStackSize + templateStackSize
+
+		Logger:BasicDebug(string.format("Found %d of %s already in %s's inventory", templateStackSize, root,
+			targetChar))
+	end
 
 	if TEMPLATES_BEING_TRANSFERRED[root] and TEMPLATES_BEING_TRANSFERRED[root][targetChar] then
 		totalFutureStackSize = totalFutureStackSize + TEMPLATES_BEING_TRANSFERRED[root][targetChar]
-		Logger:BasicDebug(string.format("Found %d of the item currently being transferreed to %s, adding to the stack size",
+		Logger:BasicDebug(string.format(
+			"Found %d of the item currently being transferreed to %s, adding to the stack size",
 			TEMPLATES_BEING_TRANSFERRED[root][targetChar],
 			targetChar))
 	end
 
 	if targetChar == inventoryHolder then
 		local amountToRemove = Osi.GetStackAmount(item)
-		for char, amountReserved in pairs(targetsWithAmountWon) do
-			if char ~= inventoryHolder then
-				amountToRemove = amountToRemove + amountReserved
-			end
-		end
-		if amountToRemove > totalFutureStackSize then
-			amountToRemove = totalFutureStackSize
-		end
+		Logger:BasicDebug(string.format(
+			"Brought down %s's, the inventoryHolder of the item, total item count of %d by %d", inventoryHolder,
+			totalFutureStackSize, amountToRemove))
 		totalFutureStackSize = totalFutureStackSize - amountToRemove
-		Logger:BasicDebug(string.format("Brought down %s's, the inventoryHolder of the item, total item count by %d", inventoryHolder, amountToRemove))
 	end
 
 	Logger:BasicDebug(string.format("Total item count for %s is %d", targetChar, totalFutureStackSize))
