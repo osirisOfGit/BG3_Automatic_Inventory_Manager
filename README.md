@@ -11,7 +11,7 @@ This mod is more targeted at people like me who hate the giant, messy inventorie
 Additionally, I have no idea what'll happen in a true multiplayer game - never tested it. According to Norbyte, praise be his name, [single player sessions are really just multiplayer sessions, Milhouse-style](https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#client-server), so it should maybe work fine? File an issue with **_EXACT DETAILS, LOGS, AND A ZIP OF YOUR `filters\` DIRECTORY_** if you have, well, issues. Otherwise, disable this mod using the config.json.
 
 ## Usage Guides
-For in-progress 2.0.0 documentation, see https://github.com/osirisOfGit/BG3_Automatic_Inventory_Manager/wiki
+See https://github.com/osirisOfGit/BG3_Automatic_Inventory_Manager/wiki
 
 ## Future Enhancements (in no particular order)
 - [x] (2.0.0, with presets) - Fix Filter merge logic to allow users to redefine existing filter priorities 
