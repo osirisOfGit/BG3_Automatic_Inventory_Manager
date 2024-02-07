@@ -14,8 +14,8 @@ Additionally, I have no idea what'll happen in a true multiplayer game - never t
 For in-progress 2.0.0 documentation, see https://github.com/osirisOfGit/BG3_Automatic_Inventory_Manager/wiki
 
 ## Future Enhancements (in no particular order)
-- [ ] Fix Filter merge logic to allow users to redefine existing filter priorities 
-- [ ] Make AIM smart enough to know when a filter or itemMap was removed by the user or added in a new release
+- [x] (2.0.0, with presets) - Fix Filter merge logic to allow users to redefine existing filter priorities 
+- [x] (2.0.0, with presets) - Make AIM smart enough to know when a filter or itemMap was removed by the user or added in a new release
 - [ ] Make logging less performance intensive
 - [ ] Flesh out existing filters more
 - [ ] Set up a way to control PersistentVar syncing in-game, instead of through the cross-save config.json
