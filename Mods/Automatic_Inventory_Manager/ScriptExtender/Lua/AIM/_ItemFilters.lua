@@ -296,7 +296,7 @@ local function GetItemFiltersByRoot(itemFilterMaps, root, _, _)
 	return filters
 end
 
-local function GetItemFiltersByEquipmentType(itemFilterMaps, _, item, _)
+local function GetItemFiltersByEquipmentType(itemFilterMaps, root, item, _)
 	local filters = {}
 
 	if Osi.IsWeapon(item) == 1 then
@@ -304,6 +304,8 @@ local function GetItemFiltersByEquipmentType(itemFilterMaps, _, item, _)
 	end
 
 	if itemFilterMaps["Equipment"] and Osi.IsEquipable(item) == 1 then
+		GetItemFiltersFromMap(itemFilterMaps.Equipment, root, filters)
+		
 		local equipTypeUUID = Ext.Entity.Get(item).ServerItem.OriginalTemplate.EquipmentTypeID
 		local equipType = Ext.StaticData.Get(equipTypeUUID, "EquipmentType")
 		if equipType then
