@@ -5,13 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+**Mod Users** - to review any changes more in-depth, check the relevant sections of [the wiki](https://github.com/osirisOfGit/BG3_Automatic_Inventory_Manager/wiki)
+
 ## [2.1.0]
 ### Mod Users
-### Added
-- Equipment.json itemFilterMap now accepts the Root Template UUID as a valid key
-### Fixed
-- Weapons.json now uses rootTemplateUUID, not itemUUID
-### Changed
+#### Added
+- Equipment itemFilterMap now accepts the Root Template UUID as a valid key
+#### Fixed
+- Weapons itemFilterMap now uses rootTemplateUUID, not itemUUID
+#### Changed
 - Target filters now accept any party members as a target, including ones at camp
 
 ## [2.0.1]

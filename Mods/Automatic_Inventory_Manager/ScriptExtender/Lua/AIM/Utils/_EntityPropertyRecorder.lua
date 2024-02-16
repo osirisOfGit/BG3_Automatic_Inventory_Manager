@@ -78,9 +78,7 @@ registeredPropertyRecorders[ModUtils:GetAIMModInfo().Name] = {
 		if Osi.IsPartyMember(entity, 1) == 1 then
 			recordedUUIDs["uuid"][EntityPropertyRecorder.Value] = entity
 			table.insert(recordedUUIDs["uuid"][EntityPropertyRecorder.ApplicableItemFilterFields], "PreFilters")
-		end
-
-		if Osi.IsItem(entity) then
+		elseif Osi.IsItem(entity) then
 			recordedUUIDs["uuid"][EntityPropertyRecorder.Value] = Osi.GetTemplate(entity)
 			table.insert(recordedUUIDs["uuid"][EntityPropertyRecorder.ApplicableItemFilterFields], "Filters")
 
