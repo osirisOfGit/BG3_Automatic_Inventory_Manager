@@ -9,6 +9,9 @@ Ext.Require("AIM/_ItemFilters.lua")
 Ext.Require("AIM/_ItemBlackList.lua")
 Ext.Require("AIM/_Config.lua")
 
+-- After config to allow for not registering any functionality if not enableds
+Ext.Require("AIM/_ItemPropertyRecorder.lua")
+
 -- CORE LOGIC
 Ext.Require("AIM/Processors/_CoreProcessor.lua")
 Ext.Require("AIM/Listeners/_ItemEvents.lua")

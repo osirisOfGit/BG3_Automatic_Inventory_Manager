@@ -300,7 +300,7 @@ local function GetItemFiltersByEquipmentType(itemFilterMaps, root, item, _)
 	local filters = {}
 
 	if Osi.IsWeapon(item) == 1 then
-		GetItemFiltersFromMap(itemFilterMaps.Weapons, root, filters)
+		GetItemFiltersFromMap(itemFilterMaps.Weapons, item, filters)
 	end
 
 	if itemFilterMaps["Equipment"] and Osi.IsEquipable(item) == 1 then
