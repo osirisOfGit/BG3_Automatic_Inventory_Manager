@@ -153,7 +153,7 @@ end] = function(partyMember, paramMap)
 			paramMap.winners = { "camp" }
 		elseif string.lower(target) == "originaltarget" then
 			paramMap.winners = { paramMap.inventoryHolder }
-		elseif Osi.IsPlayer(target) == 1 then
+		elseif Osi.IsPartyMember(target, 1) == 1 then
 			local filterIgnoresEligibility = paramMap.filter["RespectEligibility"] or "false"
 
 			if target == partyMember or string.lower(filterIgnoresEligibility) == "false" then
