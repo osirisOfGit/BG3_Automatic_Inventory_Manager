@@ -1,0 +1,398 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>ldoc</h1>
+
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+<li><a href="#Fields">Fields</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/Processors._CoreProcessor.html">Processors._CoreProcessor</a></li>
+  <li><a href="../modules/Processors._FilterProcessors.html">Processors._FilterProcessors</a></li>
+  <li><a href="../modules/Processors._PreFilterProcessors.html">Processors._PreFilterProcessors</a></li>
+  <li><a href="../modules/Processors._ProcessorUtils.html">Processors._ProcessorUtils</a></li>
+  <li><a href="../modules/Utils._TableUtils.html">Utils._TableUtils</a></li>
+  <li><strong>EntityPropertyRecorder</strong></li>
+  <li><a href="../modules/ItemBlackList.html">ItemBlackList</a></li>
+  <li><a href="../modules/ItemFilters.html">ItemFilters</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>EntityPropertyRecorder</code></h1>
+<p></p>
+<p></p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#BuildInitialRecordEntry">BuildInitialRecordEntry (initialApplicableItemFilterMaps, initialApplicableItemFilterFields, initialApplicableFilterFields, initialApplicablePreFilterFields, initialValue)</a></td>
+	<td class="summary">Constructs the common table structure shared by all recorded entries</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#RegisterPropertyRecorders">RegisterPropertyRecorders (modUUID, ...)</a></td>
+	<td class="summary">Registers new Entity Property Recorders for the given mod</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#RecordEntityProperties">RecordEntityProperties (entity, respectAimDisabledConfig)</a></td>
+	<td class="summary">Runs all the registered recorders against the entity and saves them to the file, if the RECORD_APPLICABLE_ENTITY_PROPS config is enabled
+ Each recorder is run inside of pcall, so all errors will be logged, but not propagated.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#RecordPartyMembers">RecordPartyMembers (respectAimDisabledConfig)</a></td>
+	<td class="summary">Executes EntityPropertyRecorder:RecordEntityProperties against the current party members (as found by Osi.DB_Players:Get(nil))
+ Automatically run after the `Osi.CharacterJoinedParty` and `LevelGamplayStarted` event</td>
+	</tr>
+</table>
+<h2><a href="#Fields">Fields</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#CanBeAppliedTo">CanBeAppliedTo</a></td>
+	<td class="summary">Constant</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#ItemFilterMaps">ItemFilterMaps</a></td>
+	<td class="summary">Constant</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#ItemFilterFields">ItemFilterFields</a></td>
+	<td class="summary">Constant</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#FilterFields">FilterFields</a></td>
+	<td class="summary">Constant</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#PreFilterFields">PreFilterFields</a></td>
+	<td class="summary">Constant</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Filters">Filters</a></td>
+	<td class="summary">Constants</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#PreFilters">PreFilters</a></td>
+	<td class="summary">Constant</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Value">Value</a></td>
+	<td class="summary">Constant</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Key">Key</a></td>
+	<td class="summary">Constant</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "BuildInitialRecordEntry"></a>
+    <strong>BuildInitialRecordEntry (initialApplicableItemFilterMaps, initialApplicableItemFilterFields, initialApplicableFilterFields, initialApplicablePreFilterFields, initialValue)</strong>
+    </dt>
+    <dd>
+    Constructs the common table structure shared by all recorded entries
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">initialApplicableItemFilterMaps</span>
+         will default to {} if not provided
+        </li>
+        <li><span class="parameter">initialApplicableItemFilterFields</span>
+         will default to {} if not provided
+        </li>
+        <li><span class="parameter">initialApplicableFilterFields</span>
+         will be removed if nil is provided
+        </li>
+        <li><span class="parameter">initialApplicablePreFilterFields</span>
+         will be removed if nil is provided
+        </li>
+        <li><span class="parameter">initialValue</span>
+         will default to "N/A" if not provided
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
+
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "RegisterPropertyRecorders"></a>
+    <strong>RegisterPropertyRecorders (modUUID, ...)</strong>
+    </dt>
+    <dd>
+    Registers new Entity Property Recorders for the given mod
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">modUUID</span>
+         that ScriptExtender has registered for your mod, for tracking purposes - <a href="https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#ismodloadedmodguid">https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#ismodloadedmodguid</a>
+ will throw an error if the mod identified by that UUID is not loaded
+        </li>
+        <li><span class="parameter">...</span>
+            <span class="types"><span class="type">function</span></span>
+         the functions to register. Each function should accept the following params:
+ <br/>GUIDSTRING - of the entity being proceseed. Will be the character string or the item UUID, but not the rootTemplateUUID (unless a mod manually triggers recording on one)
+ <br/>and return the record entry as a table to save to the file, or nil. Can be any structure, but recommended to use the existing one (can use EntityPropertyRecorder:BuildInitialRecordEntry to construct it)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">boolean</span></span>
+        true if the operation succeeds
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "RecordEntityProperties"></a>
+    <strong>RecordEntityProperties (entity, respectAimDisabledConfig)</strong>
+    </dt>
+    <dd>
+    Runs all the registered recorders against the entity and saves them to the file, if the RECORD_APPLICABLE_ENTITY_PROPS config is enabled
+ Each recorder is run inside of pcall, so all errors will be logged, but not propagated.
+ Runs an Osi.Exists check first, logging a warning if it returns false
+ Automatically run whenever an item without the AIM_PROCESSED tag is being run through AIM, or after a character joins the party
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">entity</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">string</a></span>
+         the character GUIDSTRING or the item GUIDSTRING (not the rootTemplate)
+        </li>
+        <li><span class="parameter">respectAimDisabledConfig</span>
+            <span class="types"><span class="type">boolean</span></span>
+         true to respect the ENABLED AIM config property, false to only respect the RECORD_APPLICABLE_ENTITY_PROPS config. Defaults to true
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">table</a></span>
+        the recorded result for the entity, or nil if processing wasn't enabled or the entity doesn't exist
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "RecordPartyMembers"></a>
+    <strong>RecordPartyMembers (respectAimDisabledConfig)</strong>
+    </dt>
+    <dd>
+    Executes EntityPropertyRecorder:RecordEntityProperties against the current party members (as found by Osi.DB_Players:Get(nil))
+ Automatically run after the `Osi.CharacterJoinedParty` and `LevelGamplayStarted` event
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">respectAimDisabledConfig</span>
+            <span class="types"><span class="type">boolean</span></span>
+         true to respect the ENABLED AIM config property, false to only respect the RECORD_APPLICABLE_ENTITY_PROPS config. Defaults to true
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Fields"></a>Fields</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "CanBeAppliedTo"></a>
+    <strong>CanBeAppliedTo</strong>
+    </dt>
+    <dd>
+    Constant
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "ItemFilterMaps"></a>
+    <strong>ItemFilterMaps</strong>
+    </dt>
+    <dd>
+    Constant
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "ItemFilterFields"></a>
+    <strong>ItemFilterFields</strong>
+    </dt>
+    <dd>
+    Constant
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "FilterFields"></a>
+    <strong>FilterFields</strong>
+    </dt>
+    <dd>
+    Constant
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "PreFilterFields"></a>
+    <strong>PreFilterFields</strong>
+    </dt>
+    <dd>
+    Constant
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Filters"></a>
+    <strong>Filters</strong>
+    </dt>
+    <dd>
+    Constants
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "PreFilters"></a>
+    <strong>PreFilters</strong>
+    </dt>
+    <dd>
+    Constant
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Value"></a>
+    <strong>Value</strong>
+    </dt>
+    <dd>
+    Constant
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Key"></a>
+    <strong>Key</strong>
+    </dt>
+    <dd>
+    Constant
+
+
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/lunarmodules/LDoc">LDoc 1.5.0</a></i>
+<i style="float:right;">Last updated 2024-02-18 22:04:22 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>
