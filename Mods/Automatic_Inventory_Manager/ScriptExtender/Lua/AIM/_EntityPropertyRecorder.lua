@@ -157,18 +157,19 @@ registeredPropertyRecorders[ModUtils:GetAIMModInfo().Name] = {
 				"EXCLUDE_PARTY_MEMBERS" }
 
 			table.insert(
-			recordedUUIDs["uuid"][EntityPropertyRecorder.CanBeAppliedTo][EntityPropertyRecorder.ItemFilterMaps], "All")
+				recordedUUIDs["uuid"][EntityPropertyRecorder.CanBeAppliedTo][EntityPropertyRecorder.ItemFilterMaps],
+				"All")
 		elseif Osi.IsItem(entity) == 1 then
 			recordedUUIDs["uuid"][EntityPropertyRecorder.Value] = Osi.GetTemplate(entity)
 
 			table.insert(
-			recordedUUIDs["uuid"][EntityPropertyRecorder.CanBeAppliedTo][EntityPropertyRecorder.ItemFilterFields],
+				recordedUUIDs["uuid"][EntityPropertyRecorder.CanBeAppliedTo][EntityPropertyRecorder.ItemFilterFields],
 				"Filters")
 			recordedUUIDs["uuid"][EntityPropertyRecorder.CanBeAppliedTo][EntityPropertyRecorder.FilterFields] = {
 				EntityPropertyRecorder.Key }
 
 			local applicableItemFilterMaps = recordedUUIDs["uuid"][EntityPropertyRecorder.CanBeAppliedTo]
-			[EntityPropertyRecorder.ItemFilterMaps]
+				[EntityPropertyRecorder.ItemFilterMaps]
 			table.insert(applicableItemFilterMaps, "Roots")
 			table.insert(applicableItemFilterMaps, "RootPartial")
 
@@ -188,9 +189,9 @@ registeredPropertyRecorders[ModUtils:GetAIMModInfo().Name] = {
 --- Registers new Entity Property Recorders for the given mod
 --- @param modUUID that ScriptExtender has registered for your mod, for tracking purposes - <a href="https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#ismodloadedmodguid">https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#ismodloadedmodguid</a>
 --- will throw an error if the mod identified by that UUID is not loaded
---- @param ... the functions to register. Each function should accept the following params:<br/>
---- <ol><li>GUIDSTRING - of the entity being proceseed. Will be the character string or the item UUID, but not the rootTemplateUUID (unless a mod manually triggers recording on one)</ol></li> <br/>
---- and return the record entry as a table to save to the file, or nil. Can be any structure, but recommended to use the existing one (can use EntityPropertyRecorder:BuildInitialRecordEntry to construct it)
+--- @tparam function ... the functions to register. Each function should accept the following params:
+--- <br/>GUIDSTRING - of the entity being proceseed. Will be the character string or the item UUID, but not the rootTemplateUUID (unless a mod manually triggers recording on one)
+--- <br/>and return the record entry as a table to save to the file, or nil. Can be any structure, but recommended to use the existing one (can use EntityPropertyRecorder:BuildInitialRecordEntry to construct it)
 --- @treturn boolean true if the operation succeeds
 function EntityPropertyRecorder:RegisterPropertyRecorders(modUUID, ...)
 	local modName = ModUtils:GetModInfoFromUUID(modUUID).Name
@@ -203,8 +204,8 @@ function EntityPropertyRecorder:RegisterPropertyRecorders(modUUID, ...)
 	end
 
 	Logger:BasicInfo(string.format("Mod %s registered %d new Entity Property Recorders!",
-modName,
-recorderCount))
+		modName,
+		recorderCount))
 
 	return true
 end
@@ -214,7 +215,7 @@ end
 --- Runs an Osi.Exists check first, logging a warning if it returns false
 --- Automatically run whenever an item without the AIM_PROCESSED tag is being run through AIM, or after a character joins the party
 --- @tparam string entity the character GUIDSTRING or the item GUIDSTRING (not the rootTemplate)
---- @tparam boolean? respectAimDisabledConfig true to respect the ENABLED AIM config property, false to only respect the RECORD_APPLICABLE_ENTITY_PROPS config. Defaults to true
+--- @tparam boolean respectAimDisabledConfig true to respect the ENABLED AIM config property, false to only respect the RECORD_APPLICABLE_ENTITY_PROPS config. Defaults to true
 --- @treturn table the recorded result for the entity, or nil if processing wasn't enabled or the entity doesn't exist
 function EntityPropertyRecorder:RecordEntityProperties(entity, respectAimDisabledConfig)
 	if (Config.AIM.ENABLED == 1 or respectAimDisabledConfig == false) and Config.AIM.RECORD_APPLICABLE_ENTITY_PROPS == 1 then
