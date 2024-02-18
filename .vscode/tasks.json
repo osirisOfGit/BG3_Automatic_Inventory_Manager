@@ -6,15 +6,17 @@
 		{
 			"label": "bg3Continue",
 			"type": "shell",
+			// mklink /J "D:\Steamy\steamapps\common\Baldurs Gate 3\Data\Mods\Automatic_Inventory_Manager" "D:\Mods\BG3 Modder MultiTool\Automatic_Inventory_Manager\Mods\Automatic_Inventory_Manager"
+			// mklink /J "D:\Steamy\steamapps\common\Baldurs Gate 3\Data\Public\Automatic_Inventory_Manager" "D:\Mods\BG3 Modder MultiTool\Automatic_Inventory_Manager\Public\Automatic_Inventory_Manager"
 			"windows": {
 				"command": "Start-Process",
 				"args": [
 					"-FilePath",
-					"D:\\GOG\\Baldurs Gate 3\\bin\\bg3.exe",
+					"D:\\Steamy\\steamapps\\common\\Baldurs Gate 3\\bin\\bg3.exe",
 					"-ArgumentList",
 					"-continueGame --skip-launcher", // Starts the last game you had loaded automagically
 					"-WorkingDirectory",
-					"D:\\GOG\\Baldurs Gate 3\\bin"
+					"D:\\Steamy\\steamapps\\common\\Baldurs Gate 3\\bin"
 				],
 				"options": {
 					"shell": {

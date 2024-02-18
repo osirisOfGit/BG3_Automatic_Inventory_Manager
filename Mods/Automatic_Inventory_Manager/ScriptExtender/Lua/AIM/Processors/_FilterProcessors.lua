@@ -88,7 +88,8 @@ StatFunctions[targetStats.PROFICIENCY] = function(partyMember, paramMap)
 end
 
 StatFunctions[targetStats.HAS_TYPE_EQUIPPED] = function(partyMember, paramMap)
-	local itemSlot = tostring(Ext.Entity.Get(paramMap.item).Equipable.Slot)
+	local entity = Ext.Entity.Get(paramMap.item)
+	local itemSlot = tostring(entity.Equipable.Slot)
 
 	-- Getting this aligned with Osi.EQUIPMENTSLOTNAME, because, what the heck Larian (╯°□°）╯︵ ┻━┻
 	if itemSlot == Ext.Enums.StatsItemSlot[Ext.Enums.StatsItemSlot.MeleeMainHand] then
@@ -105,21 +106,34 @@ StatFunctions[targetStats.HAS_TYPE_EQUIPPED] = function(partyMember, paramMap)
 	if not currentEquippedItem then
 		return
 	end
-	--- @cast currentEquippedItem -number # dont know why the heck it would be?
-	local currentEquipTypeUUID = Ext.Entity.Get(currentEquippedItem).ServerItem.OriginalTemplate.EquipmentTypeID
-	local paramItemTypeUUID = Ext.Entity.Get(paramMap.item).ServerItem.OriginalTemplate.EquipmentTypeID
+	local currentEquipEntity = Ext.Entity.Get(currentEquippedItem)
 
-	local paramItemType = Ext.StaticData.Get(currentEquipTypeUUID, "EquipmentType")["Name"]
-	local equippedItemType = Ext.StaticData.Get(paramItemTypeUUID, "EquipmentType")["Name"]
-	if paramItemType == equippedItemType then
-		table.insert(paramMap.winners, partyMember)
+	if entity.Armor then
+		if entity.Armor.ArmorType == currentEquipEntity.Armor.ArmorType then
+			table.insert(paramMap.winners, partyMember)
+		end
+
+		return
 	end
+
+	if entity.ServerItem.Template.EquipmentTypeID ~= "00000000-0000-0000-0000-000000000000" then
+		local paramItemType = Ext.StaticData.Get(entity.ServerItem.Template.EquipmentTypeID, "EquipmentType")["Name"]
+		local equippedItemType = Ext.StaticData.Get(currentEquipEntity.ServerItem.Template.EquipmentTypeID, "EquipmentType")["Name"]
+		if paramItemType == equippedItemType then
+			table.insert(paramMap.winners, partyMember)
+		end
+		
+		return
+	end
+
+	-- If the item isn't an armor piece or doesn't have an equipTypeId (only weapons?), but the slot is filled, then they technically pass
+	table.insert(paramMap.winners, partyMember)
 end
 
 
 FilterProcessor = {}
 
---- Adds the provided stat functions to the list of possible functions, using the key as the criteria, which process CompareFilters using mod-added 
+--- Adds the provided stat functions to the list of possible functions, using the key as the criteria, which process CompareFilters using mod-added
 -- If the targetStat identified already has a processor associated, ignore the provided one and continue
 -- <a href="https://osirisofgit.github.io/BG3_Automatic_Inventory_Manager/modules/ItemFilters.html#ItemFilters.FilterFields.TargetStat">TargetStats</a>
 ---@param modUUID that ScriptExtender has registered for your mod, for tracking purposes - <a href="https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#ismodloadedmodguid">https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#ismodloadedmodguid</a>
@@ -153,7 +167,7 @@ end] = function(partyMember, paramMap)
 			paramMap.winners = { "camp" }
 		elseif string.lower(target) == "originaltarget" then
 			paramMap.winners = { paramMap.inventoryHolder }
-		elseif Osi.IsPlayer(target) == 1 then
+		elseif Osi.IsPartyMember(target, 1) == 1 then
 			local filterIgnoresEligibility = paramMap.filter["RespectEligibility"] or "false"
 
 			if target == partyMember or string.lower(filterIgnoresEligibility) == "false" then
@@ -192,26 +206,17 @@ function FilterProcessor:RegisterNewFilterProcessor(modUUID, predicateFunction, 
 end
 
 --- The table that's passed to each FilterProcessor
---- @field winners GUIDSTRING[] List of targets that pass the filter - should be set by the FilterProcessor
---- @field winningVal any value identified by the filter that is currently the victor across all partyMembers
---- @field targetsWithAmountWon table<GUIDSTRING, number> copy of the winners table across all filters being run for the given item
---- @field filter the single filter being evaluated, such as a Compare or TargetFilter
---- @field prefilters associated with the ItemFilter
---- @field customItemFilterFields any fields that aren't FILTERS or PREFILTERS that were found on the ItemFilter
---- @field item GUIDSTRING being sorted
---- @field root GUIDSTRING rootTemplate of the item
---- @field inventoryHolder CHARACTER
 --- @table FilterParamMap
 FilterProcessor.ParamMap = {
-	winners = nil,
-	winningVal = nil,
-	filter = nil,
-	prefilters = nil,
-	customItemFilterFields = nil,
-	inventoryHolder = nil,
-	item = nil,
-	root = nil,
-	targetsWithAmountWon = nil,
+	winners = nil,             -- GUIDSTRING[] List of targets that pass the filter - should be set by the FilterProcessor
+	winningVal = nil,          -- any value identified by the filter that is currently the victor across all partyMembers
+	filter = nil,              -- table<GUIDSTRING, number> copy of the winners table across all filters being run for the given item
+	prefilters = nil,          -- the single filter being evaluated, such as a Compare or TargetFilter
+	customItemFilterFields = nil, -- associated with the ItemFilter
+	inventoryHolder = nil,     -- any fields that aren't FILTERS or PREFILTERS that were found on the ItemFilter
+	item = nil,                -- GUIDSTRING being sorted
+	root = nil,                -- GUIDSTRING rootTemplate of the item
+	targetsWithAmountWon = nil, -- CHARACTER
 }
 
 --- Executes the provided Filter against the provided params. Any exceptions will be logged, swallowed, and whatever the value of the winners table was at exception time will be returned
@@ -255,7 +260,8 @@ function FilterProcessor:ExecuteFilterAgainstEligiblePartyMembers(filter,
 	end)
 
 	if not success then
-		Logger:BasicError(string.format("FilterProcessor:ExecuteFilterAgainstEligiblePartyMembers - Got error %s while attempting to process filter with paramMap %s",
+		Logger:BasicError(string.format(
+			"FilterProcessor:ExecuteFilterAgainstEligiblePartyMembers - Got error %s while attempting to process filter with paramMap %s",
 			errorResponse, Ext.Json.Stringify(FilterProcessor.ParamMap)))
 	end
 	if Logger:IsLogLevelEnabled(Logger.PrintTypes.TRACE) then

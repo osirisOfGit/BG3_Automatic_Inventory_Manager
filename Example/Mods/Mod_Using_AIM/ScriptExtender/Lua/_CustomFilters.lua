@@ -30,6 +30,72 @@ local newItemFilterMap = {
 -- don't bother registering the filter processors if the preset that uses them didn't get saved
 -- https://osirisofgit.github.io/BG3_Automatic_Inventory_Manager/modules/ItemFilters.html#RegisterItemFilterMapPreset
 if AIM_SHORTCUT.ItemFilters:RegisterItemFilterMapPreset(SAMPLE_MOD_UUID, "CustomFilters", newItemFilterMap) then
+	-- Registering Property Recorders for our new fields so consumers know when they're applicable
+	-- https://osirisofgit.github.io/BG3_Automatic_Inventory_Manager/modules/EntityPropertyRecorder.html
+	AIM_SHORTCUT.EntityPropertyRecorder:RegisterPropertyRecorders(SAMPLE_MOD_UUID,
+		-- CustomField
+		function(entity)
+			if Osi.IsPlayer(entity) == 1 then
+				local recordEntry = AIM_SHORTCUT.EntityPropertyRecorder:BuildInitialRecordEntry(
+					nil,                              -- initialApplicableItemFilterMaps
+					{ AIM_SHORTCUT.EntityPropertyRecorder.Filters }, -- initialApplicableItemFilterFields
+					{ "CustomField" },                -- initialApplicableFilterFields
+					nil,                              -- initialApplicablePreFilterFields
+					"N/A"                             -- initialValue
+				)
+				--[[
+					recordEntry looks like:
+					{
+						"Can Be Applied To" :
+						{
+							"FilterFields" :
+							[
+								"CustomField"
+							],
+							"ItemFilterFields" :
+							[
+								"Filters"
+							],
+							"ItemFilterMaps" :
+							[
+								
+							]
+						},
+						"Value" : "N/A"
+					}
+				]]
+
+				if Osi.IsPartyMember(entity, 1) == 1 then
+					table.insert(
+						recordEntry[AIM_SHORTCUT.EntityPropertyRecorder.CanBeAppliedTo]
+						[AIM_SHORTCUT.EntityPropertyRecorder.ItemFilterMaps],
+						"Tags")
+
+					recordEntry[AIM_SHORTCUT.EntityPropertyRecorder.Value] = "Rando"
+				end
+
+				-- The property that our entry represents - each mod has their own isolated entries, so we can set this to existing values
+				-- if applicable without fear of merge behavior
+				return { ["MyCustomField"] = recordEntry }
+			end
+			-- Returning nil if the condition isn't met
+		end,
+		-- MyCustomItemFilterField
+		function(entity)
+			local recordEntry = AIM_SHORTCUT.EntityPropertyRecorder:BuildInitialRecordEntry(
+				{ "ALL" },        -- initialApplicableItemFilterMaps
+				{ "MyCustomItemFilterField" } -- initialApplicableItemFilterFields
+				-- The rest will be set their defaults 
+			)
+
+			-- Can add custom fields without issue.
+			recordEntry[AIM_SHORTCUT.EntityPropertyRecorder.CanBeAppliedTo]["MyCustomItemFilterFields"] = { "Cuz" }
+			recordEntry[AIM_SHORTCUT.EntityPropertyRecorder.Value] = true
+
+			return { ["JustCuz"] = recordEntry }
+		end
+	)
+
 	-- https://osirisofgit.github.io/BG3_Automatic_Inventory_Manager/modules/Processors._FilterProcessors.html
 	AIM_SHORTCUT.FilterProcessor:RegisterTargetStatProcessors(SAMPLE_MOD_UUID,
 		{
@@ -52,7 +118,6 @@ if AIM_SHORTCUT.ItemFilters:RegisterItemFilterMapPreset(SAMPLE_MOD_UUID, "Custom
 			-- https://osirisofgit.github.io/BG3_Automatic_Inventory_Manager/modules/Processors._FilterProcessors.html#FilterParamMap
 			if paramMap.targetsWithAmountWon[partyMemberFilterIsBeingRunAgainst]
 				and (paramMap.customItemFilterFields["MyCustomItemFilterField"] and paramMap.customItemFilterFields["MyCustomItemFilterField"].Cuz) then
-				
 				table.insert(paramMap.winners, partyMemberFilterIsBeingRunAgainst)
 				Ext.Utils.Print("HECK YEAH")
 			end

@@ -143,7 +143,7 @@ end
 local function AddItemFilterMaps(newItemFilterMaps, forceOverride, prioritizeNewFilters, updateItemFilterMapClone)
 	for newMapName, newItemFilterMap in pairs(newItemFilterMaps) do
 		if not itemFilterMaps[newMapName] or forceOverride == true then
-			itemFilterMaps[newMapName] = newItemFilterMap 
+			itemFilterMaps[newMapName] = newItemFilterMap
 		else
 			local existingItemFilterMap = itemFilterMaps[newMapName]
 			for newItemKey, newItemFilter in pairs(newItemFilterMap) do
@@ -295,19 +295,45 @@ local function GetItemFiltersByRoot(itemFilterMaps, root, _, _)
 
 	return filters
 end
-
-local function GetItemFiltersByEquipmentType(itemFilterMaps, _, item, _)
+local function GetItemFiltersByEquipmentType(itemFilterMaps, root, item, _)
 	local filters = {}
+	local entity = Ext.Entity.Get(item)
+	if (itemFilterMaps["Equipment"] or itemFilterMaps["Weapons"]) and Osi.IsEquipable(item) == 1 then
+		if entity.ServerItem.Template.EquipmentTypeID ~= "00000000-0000-0000-0000-000000000000" then
+			local equipmentType = tostring(Ext.StaticData.Get(entity.ServerItem.Template.EquipmentTypeID, "EquipmentType")["Name"])
+			GetItemFiltersFromMap(itemFilterMaps.Equipment, equipmentType, filters)
+			if Osi.IsWeapon(item) == 1 then
+				GetItemFiltersFromMap(itemFilterMaps.Weapons, equipmentType, filters)
+			end
+		end
 
-	if Osi.IsWeapon(item) == 1 then
-		GetItemFiltersFromMap(itemFilterMaps.Weapons, item, filters)
-	end
+		if Osi.IsWeapon(item) == 1 then
+			GetItemFiltersFromMap(itemFilterMaps.Weapons, root, filters)
+		end
 
-	if itemFilterMaps["Equipment"] and Osi.IsEquipable(item) == 1 then
-		local equipTypeUUID = Ext.Entity.Get(item).ServerItem.OriginalTemplate.EquipmentTypeID
-		local equipType = Ext.StaticData.Get(equipTypeUUID, "EquipmentType")
-		if equipType then
-			GetItemFiltersFromMap(itemFilterMaps.Equipment, equipType["Name"], filters)
+		GetItemFiltersFromMap(itemFilterMaps.Equipment, root, filters)
+
+		if entity.Armor then
+			GetItemFiltersFromMap(itemFilterMaps.Equipment,
+				Ext.Enums.ArmorType[tonumber(entity.Armor.ArmorType)],
+				filters)
+		end
+
+		if entity.Equipable then
+			local itemSlot = tostring(entity.Equipable.Slot)
+			if itemSlot == Ext.Enums.StatsItemSlot[Ext.Enums.StatsItemSlot.MeleeMainHand] then
+				itemSlot = "Melee Main Weapon"
+			elseif itemSlot == Ext.Enums.StatsItemSlot[Ext.Enums.StatsItemSlot.MeleeOffHand] then
+				itemSlot = "Melee Offhand Weapon"
+			elseif itemSlot == Ext.Enums.StatsItemSlot[Ext.Enums.StatsItemSlot.RangedMainHand] then
+				itemSlot = "Ranged Main Weapon"
+			elseif itemSlot == Ext.Enums.StatsItemSlot[Ext.Enums.StatsItemSlot.RangedOffHand] then
+				itemSlot = "Ranged Offhand Weapon"
+			end
+			
+			GetItemFiltersFromMap(itemFilterMaps.Equipment,
+				itemSlot,
+				filters)
 		end
 	end
 
@@ -337,7 +363,7 @@ local itemFilterLookups = {
 	GetItemFiltersByEquipmentType
 }
 
---- Add custom function(s) to use to find ItemFilters for a given item within the available ItemFilterMaps
+--- Add custom function(s) to use to find ItemFilters for a given item within the available ItemFilterMaps. 
 ---@param modUUID that ScriptExtender has registered for your mod, for tracking purposes - <a href="https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#ismodloadedmodguid">https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#ismodloadedmodguid</a>
 --- will throw an error if the mod identified by that UUID is not loaded
 ---@tparam function ... should accept:

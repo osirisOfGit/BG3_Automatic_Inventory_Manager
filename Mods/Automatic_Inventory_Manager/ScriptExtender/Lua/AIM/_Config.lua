@@ -12,6 +12,7 @@ Config.AIM = {
 	SORT_ITEMS_ON_FIRST_LOAD = 1,
 	SORT_ITEMS_DURING_COMBAT = 0,
 	SORT_CONSUMABLE_ITEMS_ON_USE_DURING_COMBAT = 0,
+	RECORD_APPLICABLE_ENTITY_PROPS = 0,
 	PRESETS = {
 		PRESETS_DIR = "presets",
 		ACTIVE_PRESETS = {},
@@ -74,6 +75,8 @@ function Config.SyncConfigsAndFilters()
 	ItemFilters:LoadItemFilterPresets()
 
 	ItemBlackList:InitializeBlackList()
+
+	EntityPropertyRecorder:LoadRecordedItems()
 
 	Logger:BasicInfo("AIM has finished initialization!")
 	Config.IsInitialized = true

@@ -2,7 +2,13 @@
 
 ItemBlackList = {}
 
-local blackListTable = { Items = {}, RootTemplates = {} }
+local blackListTable = {
+	Items = {},
+	RootTemplates = {
+		"FOCUSLODESTONES",
+		"TMOG"
+	}
+}
 
 local fileName = "ItemBlackList"
 
@@ -85,7 +91,7 @@ end
 function ItemBlackList:IsItemOrTemplateInBlacklist(item, rootTemplate)
 	if item then
 		for _, itemUUID in pairs(blackListTable.Items) do
-			if item == itemUUID then
+			if item == itemUUID or string.find(item, itemUUID) then
 				Logger:BasicInfo(string.format("Item %s was found in the blacklist!", item))
 				return true
 			end
@@ -94,7 +100,7 @@ function ItemBlackList:IsItemOrTemplateInBlacklist(item, rootTemplate)
 
 	if rootTemplate then
 		for _, rootUUID in pairs(blackListTable.RootTemplates) do
-			if rootTemplate == rootUUID then
+			if rootTemplate == rootUUID or string.find(rootTemplate, rootUUID) then
 				Logger:BasicInfo(string.format("RootTemplate %s was found in the blacklist!", rootTemplate))
 				return true
 			end
