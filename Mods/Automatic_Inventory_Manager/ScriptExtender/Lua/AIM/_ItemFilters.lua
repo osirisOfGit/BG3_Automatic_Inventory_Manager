@@ -320,8 +320,18 @@ local function GetItemFiltersByEquipmentType(itemFilterMaps, root, item, _)
 		end
 
 		if entity.Equipable then
+			local itemSlot = tostring(entity.Equipable.Slot)
+			if itemSlot == Ext.Enums.StatsItemSlot[Ext.Enums.StatsItemSlot.MeleeMainHand] then
+				itemSlot = "Melee Main Weapon"
+			elseif itemSlot == Ext.Enums.StatsItemSlot[Ext.Enums.StatsItemSlot.MeleeOffHand] then
+				itemSlot = "Melee Offhand Weapon"
+			elseif itemSlot == Ext.Enums.StatsItemSlot[Ext.Enums.StatsItemSlot.RangedMainHand] then
+				itemSlot = "Ranged Main Weapon"
+			elseif itemSlot == Ext.Enums.StatsItemSlot[Ext.Enums.StatsItemSlot.RangedOffHand] then
+				itemSlot = "Ranged Offhand Weapon"
+			end
 			GetItemFiltersFromMap(itemFilterMaps.Equipment,
-				tostring(entity.Equipable.Slot),
+				itemSlot,
 				filters)
 		end
 	end

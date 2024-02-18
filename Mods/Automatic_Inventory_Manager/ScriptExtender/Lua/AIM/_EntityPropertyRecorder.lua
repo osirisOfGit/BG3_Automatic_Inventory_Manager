@@ -213,9 +213,9 @@ end
 --- Each recorder is run inside of pcall, so all errors will be logged, but not propagated.
 --- Runs an Osi.Exists check first, logging a warning if it returns false
 --- Automatically run whenever an item without the AIM_PROCESSED tag is being run through AIM, or after a character joins the party
---- @tparam string the character GUIDSTRING or the item GUIDSTRING (not the rootTemplate)
---- @tparam boolean? true to respect the ENABLED AIM config property, false to only respect the RECORD_APPLICABLE_ENTITY_PROPS config. Defaults to true
---- @treturn table|nil the recorded result for the entity, or nil if processing wasn't enabled or the entity doesn't exist
+--- @tparam string entity the character GUIDSTRING or the item GUIDSTRING (not the rootTemplate)
+--- @tparam boolean? respectAimDisabledConfig true to respect the ENABLED AIM config property, false to only respect the RECORD_APPLICABLE_ENTITY_PROPS config. Defaults to true
+--- @treturn table the recorded result for the entity, or nil if processing wasn't enabled or the entity doesn't exist
 function EntityPropertyRecorder:RecordEntityProperties(entity, respectAimDisabledConfig)
 	if (Config.AIM.ENABLED == 1 or respectAimDisabledConfig == false) and Config.AIM.RECORD_APPLICABLE_ENTITY_PROPS == 1 then
 		if Osi.Exists(entity) == 1 then
@@ -267,7 +267,7 @@ end
 
 --- Executes EntityPropertyRecorder:RecordEntityProperties against the current party members (as found by Osi.DB_Players:Get(nil))
 --- Automatically run after the `Osi.CharacterJoinedParty` and `LevelGamplayStarted` event
---- @tparam boolean? true to respect the ENABLED AIM config property, false to only respect the RECORD_APPLICABLE_ENTITY_PROPS config. Defaults to true
+--- @tparam boolean respectAimDisabledConfig true to respect the ENABLED AIM config property, false to only respect the RECORD_APPLICABLE_ENTITY_PROPS config. Defaults to true
 function EntityPropertyRecorder:RecordPartyMembers(respectAimDisabledConfig)
 	if Config.AIM.RECORD_APPLICABLE_ENTITY_PROPS == 1 then
 		for _, player in pairs(Osi.DB_Players:Get(nil)) do

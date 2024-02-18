@@ -11,8 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Mod Users
 #### Added
 - Config RECORD_APPLICABLE_ENTITY_PROPS and the associated functionality (see wiki)
+- [Transmog Enhanced](https://www.nexusmods.com/baldursgate3/mods/2922) and [Lodestones](https://www.nexusmods.com/baldursgate3/mods/6244) items to ItemBlackList by default
 #### Fixed
 - Weapons itemFilterMap now uses rootTemplateUUID, not itemUUID, as a key
+- Equipment itemFilterMap now uses the Larian values for main/offhand equipment slot values
 #### Changed
 - Equipment itemFilterMap now accepts the Root Template UUID and the Entity fields Equipable.Slot and Armor.ArmorType as a valid key
 - Equipment and Weapon itemFilterMaps now accept `ServerItem.Template.EquipmentTypeID` (translated to human) as a valid key
