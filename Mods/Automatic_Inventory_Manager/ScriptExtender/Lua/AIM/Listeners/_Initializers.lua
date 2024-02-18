@@ -41,6 +41,7 @@ Ext.Osiris.RegisterListener("LevelGameplayStarted", 2, "after", function(level, 
 	if Config.AIM.ENABLED == 1 then
 		if level == "SYS_CC_I" then return end
 		ResetItemStacks()
+		EntityPropertyRecorder:RecordPartyMembers(true)
 	end
 end)
 

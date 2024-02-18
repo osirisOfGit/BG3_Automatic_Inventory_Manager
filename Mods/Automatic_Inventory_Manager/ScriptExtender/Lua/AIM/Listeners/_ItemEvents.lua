@@ -34,6 +34,7 @@ local function DetermineAndExecuteFiltersForItem(root, item, inventoryHolder, ig
 			return
 		end
 
+		EntityPropertyRecorder:RecordEntityProperties(item)
 		local applicableItemFilter = ItemFilters:SearchForItemFilters(item, root, inventoryHolder)
 		if #applicableItemFilter.Filters > 0 then
 			Logger:BasicDebug(

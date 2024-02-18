@@ -29,19 +29,20 @@ end
 ---@param content any will be stringified using Ext.Json.Stringify
 ---@treturn boolean true if the operation succeeded, false otherwise
 function FileUtils:SaveTableToFile(filepath, content)
-	local success, error = pcall(function()
-		FileUtils:SaveStringContentToFile(filepath, Ext.Json.Stringify(content))
+	local jsonSuccess, response = pcall(function()
+		return Ext.Json.Stringify(content)
 	end)
 
-	if not success then
-		Ext.Utils.PrintError(string.format("Failed to convert content %s to JSON due to error [%s]",
-			Ext.Json.Stringify(content),
-			error))
+	if not jsonSuccess then
+		Ext.Utils.PrintError(string.format("Failed to convert content %s for file %s to JSON due to error \n\t%s",
+			content,
+			filepath,
+			response))
 
 		return false
 	end
 
-	return true
+	return FileUtils:SaveStringContentToFile(filepath, response)
 end
 
 --- Convenience for saving a file under the AIM mod directory, logging and swallowing any errors encountered
@@ -54,7 +55,7 @@ function FileUtils:SaveStringContentToFile(filepath, content)
 	end)
 
 	if not success then
-		Logger:BasicError(string.format("Failed to save config file %s due to error [%s]",
+		Logger:BasicError(string.format("Failed to save file %s due to error \n\t%s",
 			FileUtils:BuildAbsoluteFileTargetPath(filepath), error))
 
 		return false
@@ -74,7 +75,7 @@ function FileUtils:LoadTableFile(filepath)
 	end)
 
 	if not success then
-		Logger:BasicError(string.format("Failed to parse contents of file %s due to error [%s]",
+		Logger:BasicError(string.format("Failed to parse contents of file %s due to error \n\t%s",
 			FileUtils:BuildAbsoluteFileTargetPath(filepath),
 			result))
 		return false
@@ -92,7 +93,7 @@ function FileUtils:LoadFile(filepath)
 	end)
 
 	if not success then
-		Logger:BasicError(string.format("Failed to load %s due to error [%s]",
+		Logger:BasicError(string.format("Failed to load %s due to error\n\t%s",
 			FileUtils:BuildAbsoluteFileTargetPath(filepath),
 			result))
 		return nil

@@ -10,11 +10,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.1.0]
 ### Mod Users
 #### Added
-- Equipment itemFilterMap now accepts the Root Template UUID as a valid key
+- Config RECORD_APPLICABLE_ENTITY_PROPS and the associated functionality (see wiki)
 #### Fixed
-- Weapons itemFilterMap now uses rootTemplateUUID, not itemUUID
+- Weapons itemFilterMap now uses rootTemplateUUID, not itemUUID, as a key
 #### Changed
+- Equipment itemFilterMap now accepts the Root Template UUID and the Entity fields Equipable.Slot and Armor.ArmorType as a valid key
+- Equipment and Weapon itemFilterMaps now accept `ServerItem.Template.EquipmentTypeID` (translated to human) as a valid key
+- TargetStat HAS_TYPE_EQUIPPED now checks armorType as well as equipmentType
 - Target filters now accept any party members as a target, including ones at camp
+- ItemBlackList now accepts partial item or root UUIDs
+
+### API
+#### Added
+- EntityPropertyRecorder module, with corresponding sample in `Example\Mods\Mod_Using_AIM\ScriptExtender\Lua\_CustomFilters.lua`
+
+### Internal Only
+- Skip any EquipmentTypeId logic if the value is `"00000000-0000-0000-0000-000000000000"`
+
 
 ## [2.0.1]
 ### Mod Users

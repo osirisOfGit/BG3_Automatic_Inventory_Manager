@@ -1,5 +1,5 @@
 -- Make symlink for debugging purposes
--- mklink /J "D:\GOG\Baldurs Gate 3\Data\Mods\Mod_Using_AIM" "D:\Mods\BG3 Modder MultiTool\Automatic_Inventory_Manager\Example\Mods\Mod_Using_AIM"
+-- mklink /J "D:\Steamy\steamapps\common\Baldurs Gate 3\Data\Mods\Mod_Using_AIM" "D:\Mods\BG3 Modder MultiTool\Automatic_Inventory_Manager\Example\Mods\Mod_Using_AIM"
 
 SAMPLE_MOD_UUID = "83f59e8c-7bf4-4e53-92bc-68dc7e8d5d17"
 Ext.Utils.Print("AIM's SampleMod is starting to register its stuff")
