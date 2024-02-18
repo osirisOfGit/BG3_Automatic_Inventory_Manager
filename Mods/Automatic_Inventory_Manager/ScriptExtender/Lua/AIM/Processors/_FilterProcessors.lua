@@ -208,15 +208,15 @@ end
 --- The table that's passed to each FilterProcessor
 --- @table FilterParamMap
 FilterProcessor.ParamMap = {
-	winners = nil,             --- GUIDSTRING[] List of targets that pass the filter - should be set by the FilterProcessor
-	winningVal = nil,          --- any value identified by the filter that is currently the victor across all partyMembers
-	filter = nil,              --- table<GUIDSTRING, number> copy of the winners table across all filters being run for the given item
-	prefilters = nil,          --- the single filter being evaluated, such as a Compare or TargetFilter
-	customItemFilterFields = nil, --- associated with the ItemFilter
-	inventoryHolder = nil,     --- any fields that aren't FILTERS or PREFILTERS that were found on the ItemFilter
-	item = nil,                --- GUIDSTRING being sorted
-	root = nil,                --- GUIDSTRING rootTemplate of the item
-	targetsWithAmountWon = nil, --- CHARACTER
+	winners = nil,             -- GUIDSTRING[] List of targets that pass the filter - should be set by the FilterProcessor
+	winningVal = nil,          -- any value identified by the filter that is currently the victor across all partyMembers
+	filter = nil,              -- table<GUIDSTRING, number> copy of the winners table across all filters being run for the given item
+	prefilters = nil,          -- the single filter being evaluated, such as a Compare or TargetFilter
+	customItemFilterFields = nil, -- associated with the ItemFilter
+	inventoryHolder = nil,     -- any fields that aren't FILTERS or PREFILTERS that were found on the ItemFilter
+	item = nil,                -- GUIDSTRING being sorted
+	root = nil,                -- GUIDSTRING rootTemplate of the item
+	targetsWithAmountWon = nil, -- CHARACTER
 }
 
 --- Executes the provided Filter against the provided params. Any exceptions will be logged, swallowed, and whatever the value of the winners table was at exception time will be returned
