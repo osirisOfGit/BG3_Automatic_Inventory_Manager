@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 **Mod Users** - to review any changes more in-depth, check the relevant sections of [the wiki](https://github.com/osirisOfGit/BG3_Automatic_Inventory_Manager/wiki)
 
+## [2.1.1]
+### Mod Users
+- Fixed the pak'ing process, so it shouldn't reset the modsettings.lsx when managing load order with Vortex
+
 ## [2.1.0]
 ### Mod Users
 #### Added
