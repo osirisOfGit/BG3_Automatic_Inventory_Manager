@@ -188,15 +188,15 @@ registeredPropertyRecorders[ModUtils:GetAIMModInfo().Name] = {
 		if Osi.IsCharacter(entity) == 1 then
 			local classRecord = EntityPropertyRecorder:BuildInitialRecordEntry({ "ALL" },
 				{ EntityPropertyRecorder.Filters, EntityPropertyRecorder.PreFilters },
-				nil,
-				{ "EXCLUDE_CLASSES" },
+				{ "IS_ONE_OF_CLASS_OR_SUBCLASS" },
+				{ "EXCLUDE_CLASSES_AND_SUBCLASSES" },
 				{}
 			)
 
 			local subClassRecord = EntityPropertyRecorder:BuildInitialRecordEntry({ "ALL" },
 				{ EntityPropertyRecorder.Filters, EntityPropertyRecorder.PreFilters },
-				nil,
-				{ "EXCLUDE_CLASSES" },
+				{ "IS_ONE_OF_CLASS_OR_SUBCLASS" },
+				{ "EXCLUDE_CLASSES_AND_SUBCLASSES" },
 				{}
 			)
 
