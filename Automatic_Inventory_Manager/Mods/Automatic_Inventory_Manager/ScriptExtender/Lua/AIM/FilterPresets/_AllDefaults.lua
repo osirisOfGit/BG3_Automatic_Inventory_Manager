@@ -2,9 +2,9 @@ local all_defaults = {}
 all_defaults.Weapons = {
 	[ItemFilters.ItemKeys.WILDCARD] = {
 		Filters = {
-			[99] = { TargetStat = ItemFilters.FilterFields.TargetStat.HAS_TYPE_EQUIPPED },
-			[100] = { TargetStat = ItemFilters.FilterFields.TargetStat.WEAPON_ABILITY, CompareStategy = ItemFilters.FilterFields.CompareStategy.HIGHER },
-			[101] = { TargetStat = ItemFilters.FilterFields.TargetStat.WEAPON_SCORE, CompareStategy = ItemFilters.FilterFields.CompareStategy.HIGHER },
+			[90] = { TargetStat = ItemFilters.FilterFields.TargetStat.HAS_TYPE_EQUIPPED },
+			[91] = { TargetStat = ItemFilters.FilterFields.TargetStat.WEAPON_ABILITY, CompareStategy = ItemFilters.FilterFields.CompareStategy.HIGHER },
+			[92] = { TargetStat = ItemFilters.FilterFields.TargetStat.WEAPON_SCORE, CompareStategy = ItemFilters.FilterFields.CompareStategy.HIGHER },
 		}
 	}
 }
@@ -12,11 +12,18 @@ all_defaults.Weapons = {
 all_defaults.Equipment = {
 	[ItemFilters.ItemKeys.WILDCARD] = {
 		Filters = {
-			[99] = { TargetStat = ItemFilters.FilterFields.TargetStat.PROFICIENCY },
-			[100] = {
+			[1] = {
+				TargetStat = ItemFilters.FilterFields.TargetStat.IS_ONE_OF_CLASS_OR_SUBCLASS,
+				TargetSubStat = {"TrickeryDomain", "Ranger"}
+			},
+			[50] = {
 				TargetStat = ItemFilters.FilterFields.TargetStat.STACK_AMOUNT,
 				CompareStategy = ItemFilters.FilterFields.CompareStategy.HIGHER
-			}
+			},
+			[99] = { TargetStat = ItemFilters.FilterFields.TargetStat.PROFICIENCY },
+		},
+		PreFilters = {
+			EXCLUDE_CLASSES_AND_SUBCLASSES = "Ranger"
 		}
 	}
 }
@@ -95,10 +102,14 @@ all_defaults.Tags = {
 	["SCROLL"] = {
 		Filters = {
 			[1] = {
+				TargetStat = ItemFilters.FilterFields.TargetStat.IS_ONE_OF_CLASS_OR_SUBCLASS,
+				TargetSubStat = "TrickeryDomain"
+			},
+			[2] = {
 				TargetStat = ItemFilters.FilterFields.TargetStat.STACK_AMOUNT,
 				CompareStategy = ItemFilters.FilterFields.CompareStategy.HIGHER
 			},
-			[2] = { Target = "originalTarget" },
+			[3] = { Target = "originalTarget" },
 		}
 	},
 	["CONSUMABLE"] = {

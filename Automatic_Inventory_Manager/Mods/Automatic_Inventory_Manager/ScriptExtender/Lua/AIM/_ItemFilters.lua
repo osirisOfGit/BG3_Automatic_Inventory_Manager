@@ -6,10 +6,10 @@ ItemFilters.ItemFields = {}
 
 --- Filters that pre-filter eligible party members before a stack of items, or an item in the stack, is processed.
 ItemFilters.ItemFields.PreFilters = {
-	STACK_LIMIT = "STACK_LIMIT",                  -- Filters out any party members that have > than the specified limit
-	EXCLUDE_PARTY_MEMBERS = "EXCLUDE_PARTY_MEMBERS", -- Array of party members to exclude from processing
-	EXCLUDE_CLASSES = "EXCLUDE_CLASSES",          -- Array of (sub)classes to exclude from processing
-	ENCUMBRANCE = "ENCUMBRANCE",                  -- Internal only
+	STACK_LIMIT = "STACK_LIMIT",                          -- Filters out any party members that have > than the specified limit
+	EXCLUDE_PARTY_MEMBERS = "EXCLUDE_PARTY_MEMBERS",      -- Array of party members to exclude from processing
+	EXCLUDE_CLASSES_AND_SUBCLASSES = "EXCLUDE_CLASSES_AND_SUBCLASSES", -- Array of (sub)classes to exclude from processing
+	ENCUMBRANCE = "ENCUMBRANCE",                          -- Internal only
 }
 
 ItemFilters.FilterFields = {}
@@ -23,14 +23,15 @@ ItemFilters.FilterFields.CompareStategy = {
 --- Used by Compare Filters to identify the criteria that party members are filtered on
 ItemFilters.FilterFields.TargetStat = {
 	HEALTH_PERCENTAGE = "HEALTH_PERCENTAGE",
-	STACK_AMOUNT = "STACK_AMOUNT",  -- the amount of that item's template in the party's inventory
-	PROFICIENCY = "PROFICIENCY",    -- as dictated by the item, i.e. SleightOfHand for lockpicks
-	WEAPON_SCORE = "WEAPON_SCORE",  --  using Osi.WeaponScore, does some math, i have no idea.
-	WEAPON_ABILITY = "WEAPON_ABILITY", -- as dictated by the item, i.e. Greatswords use Strength
+	STACK_AMOUNT = "STACK_AMOUNT",                           -- the amount of that item's template in the party's inventory
+	PROFICIENCY = "PROFICIENCY",                             -- as dictated by the item, i.e. SleightOfHand for lockpicks
+	WEAPON_SCORE = "WEAPON_SCORE",                           --  using Osi.WeaponScore, does some math, i have no idea.
+	WEAPON_ABILITY = "WEAPON_ABILITY",                       -- as dictated by the item, i.e. Greatswords use Strength
 	HAS_TYPE_EQUIPPED = "HAS_TYPE_EQUIPPED",
-	SKILL_TYPE = "SKILL_TYPE",      -- requires TargetSubStat to be specified
-	ABILITY_STAT = "ABILITY_STAT",  -- requires TargetSubStat to be specified
-	ARMOR_CLASS = "ARMOR_CLASS"
+	SKILL_TYPE = "SKILL_TYPE",                               -- requires TargetSubStat to be specified
+	ABILITY_STAT = "ABILITY_STAT",                           -- requires TargetSubStat to be specified
+	ARMOR_CLASS = "ARMOR_CLASS",
+	IS_ONE_OF_CLASS_OR_SUBCLASS = "IS_ONE_OF_CLASS_OR_SUBCLASS" -- Main class or subclass
 }
 
 --- Convenience table for keys that are common across ItemFilterMaps
@@ -169,6 +170,7 @@ end
 --- Throws an error if no tables were loaded.
 --- @treturn boolean true if at least one requested table was succesfully loaded. Error otherwise.
 function ItemFilters:LoadItemFilterPresets()
+	local startTime = Ext.Utils.MonotonicTime()
 	local loadedTables = 0
 	local loadedPresets = 0
 	for presetName, presetTablesToLoad in pairs(Config.AIM.PRESETS.ACTIVE_PRESETS) do
@@ -235,10 +237,6 @@ function ItemFilters:LoadItemFilterPresets()
 		error(errorMessage)
 	end
 
-	Logger:BasicInfo(string.format("Successfully merged %d Item Filter Maps from %d Preset(s) to the itemFilterMaps!",
-		loadedTables,
-		loadedPresets))
-
 	ItemFilters:UpdateItemFilterMapsClone()
 	if Logger:IsLogLevelEnabled(Logger.PrintTypes.DEBUG) then
 		Logger:BasicDebug("Finished loading in presets - finalized item maps are:")
@@ -246,6 +244,11 @@ function ItemFilters:LoadItemFilterPresets()
 			Logger:BasicDebug(string.format("%s: %s", itemFilterMap, Ext.Json.Stringify(itemFilterMapContent)))
 		end
 	end
+
+	Logger:BasicInfo(string.format("Successfully merged %d Item Filter Maps from %d Preset(s) to the itemFilterMaps in %dms",
+		loadedTables,
+		loadedPresets,
+		Ext.Utils.MonotonicTime() - startTime))
 
 	return true
 end

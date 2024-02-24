@@ -39,9 +39,12 @@ local perStackPreFilterProcessors = {
 		end,
 
 	-- Exclude (Sub)Classes
-	[ItemFilters.ItemFields.PreFilters.EXCLUDE_CLASSES] =
+	[ItemFilters.ItemFields.PreFilters.EXCLUDE_CLASSES_AND_SUBCLASSES] =
 		function(classesToExclude, paramMap)
 			local survivors = {}
+			if type(classesToExclude) ~= "table" then
+				classesToExclude = { classesToExclude }
+			end
 			for _, player in pairs(paramMap.eligiblePartyMembers) do
 				local classes = Ext.Entity.Get(player).Classes.Classes
 				for _, classToExclude in pairs(classesToExclude) do

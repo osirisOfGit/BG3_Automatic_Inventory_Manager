@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 **Mod Users** - to review any changes more in-depth, check the relevant sections of [the wiki](https://github.com/osirisOfGit/BG3_Automatic_Inventory_Manager/wiki)
 
+## [2.1.3]
+### Mod Users
+#### Added
+- Per-Stack Prefilter EXCLUDE_CLASSES_OR_SUBCLASSES, , which accepts a single value or an array
+- Filter IS_ONE_OF_CLASS_OR_SUBCLASS, which accepts a single value or an array under TargetSubStat
+
+#### Changed
+- Automatic_Inventory_Manager-All-Defaults /Weapons.json and /Equipment.json so stack amount is the highest priority filter 
+for all applicable items, and Weapon filters are prioritized over Equipment filters when applicable
+
+#### Fixed
+- HAS_TYPE_EQUIPPED and PROFICIENCY filter never running
+- The Consumable Tag check that's run on item use, so only consumables should be run again
+
 ## [2.1.2]
 ### Mod Users
 #### Fixed
