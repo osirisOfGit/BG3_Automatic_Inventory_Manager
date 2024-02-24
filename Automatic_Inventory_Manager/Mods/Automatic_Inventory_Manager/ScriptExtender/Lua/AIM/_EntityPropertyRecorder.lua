@@ -165,11 +165,9 @@ registeredPropertyRecorders[ModUtils:GetAIMModInfo().Name] = {
 			table.insert(
 				recordedUUIDs["uuid"][EntityPropertyRecorder.CanBeAppliedTo][EntityPropertyRecorder.ItemFilterFields],
 				"Filters")
-			recordedUUIDs["uuid"][EntityPropertyRecorder.CanBeAppliedTo][EntityPropertyRecorder.FilterFields] = {
-				EntityPropertyRecorder.Key }
+			recordedUUIDs["uuid"][EntityPropertyRecorder.CanBeAppliedTo][EntityPropertyRecorder.FilterFields] = { EntityPropertyRecorder.Key }
 
-			local applicableItemFilterMaps = recordedUUIDs["uuid"][EntityPropertyRecorder.CanBeAppliedTo]
-				[EntityPropertyRecorder.ItemFilterMaps]
+			local applicableItemFilterMaps = recordedUUIDs["uuid"][EntityPropertyRecorder.CanBeAppliedTo][EntityPropertyRecorder.ItemFilterMaps]
 			table.insert(applicableItemFilterMaps, "Roots")
 			table.insert(applicableItemFilterMaps, "RootPartial")
 
@@ -183,6 +181,36 @@ registeredPropertyRecorders[ModUtils:GetAIMModInfo().Name] = {
 		end
 
 		return recordedUUIDs
+	end,
+
+	-- (Sub)Class
+	function(entity)
+		if Osi.IsCharacter(entity) == 1 then
+			local classRecord = EntityPropertyRecorder:BuildInitialRecordEntry({ "ALL" },
+				{ EntityPropertyRecorder.Filters, EntityPropertyRecorder.PreFilters },
+				{ "IS_ONE_OF_CLASS_OR_SUBCLASS" },
+				{ "EXCLUDE_CLASSES_AND_SUBCLASSES" },
+				{}
+			)
+
+			local subClassRecord = EntityPropertyRecorder:BuildInitialRecordEntry({ "ALL" },
+				{ EntityPropertyRecorder.Filters, EntityPropertyRecorder.PreFilters },
+				{ "IS_ONE_OF_CLASS_OR_SUBCLASS" },
+				{ "EXCLUDE_CLASSES_AND_SUBCLASSES" },
+				{}
+			)
+
+			local classes = Ext.Entity.Get(entity).Classes.Classes
+			for _, class in pairs(classes) do
+				table.insert(classRecord["Value"], tostring(Ext.StaticData.Get(class["ClassUUID"], "ClassDescription")["Name"]))
+				table.insert(subClassRecord["Value"], tostring(Ext.StaticData.Get(class["SubClassUUID"], "ClassDescription")["Name"]))
+			end
+
+			return {
+				["Class"] = classRecord,
+				["SubClass"] = subClassRecord
+			}
+		end
 	end
 }
 

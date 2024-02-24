@@ -44,6 +44,7 @@ local function InitializeFilterPresetsAndUpgradeLegacyFilters()
 end
 
 function Config.SyncConfigsAndFilters()
+	local startTime = Ext.Utils.MonotonicTime()
 	Logger:ClearLogFile()
 	Logger:BasicInfo("AIM has begun initialization!")
 
@@ -78,6 +79,6 @@ function Config.SyncConfigsAndFilters()
 
 	EntityPropertyRecorder:LoadRecordedItems()
 
-	Logger:BasicInfo("AIM has finished initialization!")
+	Logger:BasicInfo(string.format("AIM has finished initialization in %dms!", Ext.Utils.MonotonicTime() - startTime))
 	Config.IsInitialized = true
 end

@@ -20,24 +20,49 @@ PreFilterProcessors.ParamMap = {
 	inventoryHolder = nil,
 }
 
-local perStackPreFilterProcessors = {}
-
--- Exclude Party Members
-perStackPreFilterProcessors[ItemFilters.ItemFields.PreFilters.EXCLUDE_PARTY_MEMBERS] =
-	function(partyMembersToExclude, paramMap)
-		local survivors = {}
-		for _, player in pairs(paramMap.eligiblePartyMembers) do
-			for _, memberToExclude in pairs(partyMembersToExclude) do
-				if player == memberToExclude then
-					goto continue
+local perStackPreFilterProcessors = {
+	-- Exclude Party Members
+	[ItemFilters.ItemFields.PreFilters.EXCLUDE_PARTY_MEMBERS] =
+		function(partyMembersToExclude, paramMap)
+			local survivors = {}
+			for _, player in pairs(paramMap.eligiblePartyMembers) do
+				for _, memberToExclude in pairs(partyMembersToExclude) do
+					if player == memberToExclude then
+						goto continue
+					end
 				end
+				table.insert(survivors, player)
+				::continue::
 			end
-			table.insert(survivors, player)
-			::continue::
-		end
 
-		return survivors
-	end
+			return survivors
+		end,
+
+	-- Exclude (Sub)Classes
+	[ItemFilters.ItemFields.PreFilters.EXCLUDE_CLASSES_AND_SUBCLASSES] =
+		function(classesToExclude, paramMap)
+			local survivors = {}
+			if type(classesToExclude) ~= "table" then
+				classesToExclude = { classesToExclude }
+			end
+			for _, player in pairs(paramMap.eligiblePartyMembers) do
+				local classes = Ext.Entity.Get(player).Classes.Classes
+				for _, classToExclude in pairs(classesToExclude) do
+					for _, class in pairs(classes) do
+						if tostring(Ext.StaticData.Get(class["ClassUUID"], "ClassDescription")["Name"]) == classToExclude
+							or tostring(Ext.StaticData.Get(class["SubClassUUID"], "ClassDescription")["Name"]) == classToExclude then
+							goto continue
+						end
+					end
+				end
+				table.insert(survivors, player)
+				::continue::
+			end
+
+			return survivors
+		end
+}
+
 
 --- Adds a new PreFilter Processor that pre-filters eligiblePartyMembers before the stack is processed.
 ---@param modUUID that ScriptExtender has registered for your mod, for tracking purposes - <a href="https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#ismodloadedmodguid">https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#ismodloadedmodguid</a>
@@ -120,50 +145,51 @@ function PreFilterProcessors:ProcessPerStackPreFilters(prefilters,
 	return survivors
 end
 
-local perItemPreFilterProcessors = {}
--- STACK_LIMIT
-perItemPreFilterProcessors[ItemFilters.ItemFields.PreFilters.STACK_LIMIT] = function(stackLimit, paramMap)
-	local filteredSurvivors = {}
-	for _, partyMember in pairs(paramMap.eligiblePartyMembers) do
-		local totalFutureStackSize = ProcessorUtils:CalculateTotalItemCount(
-			paramMap.targetsWithAmountWon, partyMember, paramMap.inventoryHolder, paramMap.root, paramMap.item)
+local perItemPreFilterProcessors = {
+	-- STACK_LIMIT
+	[ItemFilters.ItemFields.PreFilters.STACK_LIMIT] = function(stackLimit, paramMap)
+		local filteredSurvivors = {}
+		for _, partyMember in pairs(paramMap.eligiblePartyMembers) do
+			local totalFutureStackSize = ProcessorUtils:CalculateTotalItemCount(
+				paramMap.targetsWithAmountWon, partyMember, paramMap.inventoryHolder, paramMap.root, paramMap.item)
 
-		Logger:BasicTrace(string.format("Found %d on %s, against stack limit %d",
-			totalFutureStackSize,
-			partyMember,
-			stackLimit))
+			Logger:BasicTrace(string.format("Found %d on %s, against stack limit %d",
+				totalFutureStackSize,
+				partyMember,
+				stackLimit))
 
-		if totalFutureStackSize < stackLimit then
-			table.insert(filteredSurvivors, partyMember)
-		end
-	end
-
-	return #filteredSurvivors > 0 and filteredSurvivors or nil
-end
-
-perItemPreFilterProcessors[ItemFilters.ItemFields.PreFilters.ENCUMBRANCE] = function(_, paramMap)
-	local filteredSurvivors = {}
-	local itemWeight = tonumber(Ext.Entity.Get(paramMap.item).Data.Weight)
-
-	for _, partyMember in pairs(paramMap.eligiblePartyMembers) do
-		local partyMemberEntity = Ext.Entity.Get(partyMember)
-		-- If not encumbered
-		if tonumber(partyMemberEntity.EncumbranceState.State) == 0 then
-			local unencumberedLimit = tonumber(partyMemberEntity.EncumbranceStats.UnencumberedWeight)
-			local inventoryWeight = tonumber(partyMemberEntity.InventoryWeight["Weight"])
-			if (inventoryWeight + itemWeight) <= unencumberedLimit then
-				Logger:BasicTrace(string.format("Item weight %d will not encumber %s, with %d more room!",
-					itemWeight,
-					partyMember,
-					unencumberedLimit - (inventoryWeight + itemWeight)))
+			if totalFutureStackSize < stackLimit then
 				table.insert(filteredSurvivors, partyMember)
 			end
 		end
+
+		return #filteredSurvivors > 0 and filteredSurvivors or nil
+	end,
+
+	-- ENCUMBRANCE
+	[ItemFilters.ItemFields.PreFilters.ENCUMBRANCE] = function(_, paramMap)
+		local filteredSurvivors = {}
+		local itemWeight = tonumber(Ext.Entity.Get(paramMap.item).Data.Weight)
+
+		for _, partyMember in pairs(paramMap.eligiblePartyMembers) do
+			local partyMemberEntity = Ext.Entity.Get(partyMember)
+			-- If not encumbered
+			if tonumber(partyMemberEntity.EncumbranceState.State) == 0 then
+				local unencumberedLimit = tonumber(partyMemberEntity.EncumbranceStats.UnencumberedWeight)
+				local inventoryWeight = tonumber(partyMemberEntity.InventoryWeight["Weight"])
+				if (inventoryWeight + itemWeight) <= unencumberedLimit then
+					Logger:BasicTrace(string.format("Item weight %d will not encumber %s, with %d more room!",
+						itemWeight,
+						partyMember,
+						unencumberedLimit - (inventoryWeight + itemWeight)))
+					table.insert(filteredSurvivors, partyMember)
+				end
+			end
+		end
+
+		return #filteredSurvivors > 0 and filteredSurvivors or nil
 	end
-
-	return #filteredSurvivors > 0 and filteredSurvivors or nil
-end
-
+}
 --- Adds a new PreFilter Processor that pre-filters eligiblePartyMembers before each item in the stack is processed by the filters
 ---@param modUUID that ScriptExtender has registered for your mod, for tracking purposes - <a href="https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#ismodloadedmodguid">https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#ismodloadedmodguid</a>
 --- will throw an error if the mod identified by that UUID is not loaded

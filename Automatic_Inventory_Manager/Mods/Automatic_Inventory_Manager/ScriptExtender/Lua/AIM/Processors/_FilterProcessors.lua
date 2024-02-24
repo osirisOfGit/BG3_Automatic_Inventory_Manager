@@ -3,132 +3,149 @@
 Ext.Require("AIM/Processors/_ProcessorUtils.lua")
 
 local targetStats = ItemFilters.FilterFields.TargetStat
-local StatFunctions = {}
+local StatFunctions = {
+	[targetStats.HEALTH_PERCENTAGE] = function(partyMember, paramMap)
+		paramMap.winners, paramMap.winningVal = ProcessorUtils:SetWinningVal_ByCompareResult(paramMap.winningVal,
+			Osi.GetHitpointsPercentage(partyMember),
+			paramMap.filter.CompareStategy,
+			paramMap.winners,
+			partyMember)
+	end,
 
-StatFunctions[targetStats.HEALTH_PERCENTAGE] = function(partyMember, paramMap)
-	paramMap.winners, paramMap.winningVal = ProcessorUtils:SetWinningVal_ByCompareResult(paramMap.winningVal,
-		Osi.GetHitpointsPercentage(partyMember),
-		paramMap.filter.CompareStategy,
-		paramMap.winners,
-		partyMember)
-end
+	[targetStats.ARMOR_CLASS] = function(partyMember, paramMap)
+		paramMap.winners, paramMap.winningVal = ProcessorUtils:SetWinningVal_ByCompareResult(paramMap.winningVal,
+			Ext.Entity.Get(partyMember).Health.AC,
+			paramMap.filter.CompareStategy,
+			paramMap.winners,
+			partyMember)
+	end,
 
-StatFunctions[targetStats.ARMOR_CLASS] = function(partyMember, paramMap)
-	paramMap.winners, paramMap.winningVal = ProcessorUtils:SetWinningVal_ByCompareResult(paramMap.winningVal,
-		Ext.Entity.Get(partyMember).Health.AC,
-		paramMap.filter.CompareStategy,
-		paramMap.winners,
-		partyMember)
-end
+	[targetStats.STACK_AMOUNT] = function(partyMember, paramMap)
+		local totalFutureStackSize = ProcessorUtils:CalculateTotalItemCount(paramMap.targetsWithAmountWon,
+			partyMember,
+			paramMap.inventoryHolder,
+			paramMap.root,
+			paramMap.item)
 
-StatFunctions[targetStats.STACK_AMOUNT] = function(partyMember, paramMap)
-	local totalFutureStackSize = ProcessorUtils:CalculateTotalItemCount(paramMap.targetsWithAmountWon,
-		partyMember,
-		paramMap.inventoryHolder,
-		paramMap.root,
-		paramMap.item)
-	Logger:BasicTrace("Found " .. totalFutureStackSize .. " on " .. partyMember)
+		Logger:BasicTrace("Found " .. totalFutureStackSize .. " on " .. partyMember)
 
-	paramMap.winners, paramMap.winningVal = ProcessorUtils:SetWinningVal_ByCompareResult(paramMap.winningVal,
-		totalFutureStackSize,
-		paramMap.filter.CompareStategy,
-		paramMap.winners,
-		partyMember)
-end
+		paramMap.winners, paramMap.winningVal = ProcessorUtils:SetWinningVal_ByCompareResult(paramMap.winningVal,
+			totalFutureStackSize,
+			paramMap.filter.CompareStategy,
+			paramMap.winners,
+			partyMember)
+	end,
 
-StatFunctions[targetStats.SKILL_TYPE] = function(partyMember, paramMap)
-	local skillName = tostring(Ext.Enums.SkillId[paramMap.filter.TargetSubStat])
-	local skillScore = Osi.CalculatePassiveSkill(partyMember, skillName)
+	[targetStats.SKILL_TYPE] = function(partyMember, paramMap)
+		local skillName = tostring(Ext.Enums.SkillId[paramMap.filter.TargetSubStat])
 
-	paramMap.winners, paramMap.winningVal = ProcessorUtils:SetWinningVal_ByCompareResult(paramMap.winningVal,
-		skillScore,
-		paramMap.filter.CompareStategy,
-		paramMap.winners,
-		partyMember)
-end
+		paramMap.winners, paramMap.winningVal = ProcessorUtils:SetWinningVal_ByCompareResult(paramMap.winningVal,
+			Osi.CalculatePassiveSkill(partyMember, skillName),
+			paramMap.filter.CompareStategy,
+			paramMap.winners,
+			partyMember)
+	end,
 
-StatFunctions[targetStats.ABILITY_STAT] = function(partyMember, paramMap)
-	paramMap.winners, paramMap.winningVal = ProcessorUtils:SetWinningVal_ByCompareResult(paramMap.winningVal,
-		Osi.GetAbility(partyMember, paramMap.filter.TargetSubStat),
-		paramMap.filter.CompareStategy,
-		paramMap.winners,
-		partyMember)
-end
+	[targetStats.ABILITY_STAT] = function(partyMember, paramMap)
+		paramMap.winners, paramMap.winningVal = ProcessorUtils:SetWinningVal_ByCompareResult(paramMap.winningVal,
+			Osi.GetAbility(partyMember, paramMap.filter.TargetSubStat),
+			paramMap.filter.CompareStategy,
+			paramMap.winners,
+			partyMember)
+	end,
 
-StatFunctions[targetStats.WEAPON_SCORE] = function(partyMember, paramMap)
-	if Osi.IsWeapon(paramMap.item) ~= 1 then
-		Logger:BasicTrace("Item " .. paramMap.item .. " is not a weapon according to Osi!")
-		return
-	end
+	[targetStats.WEAPON_SCORE] = function(partyMember, paramMap)
+		if Osi.IsWeapon(paramMap.item) ~= 1 then
+			Logger:BasicTrace("Item " .. paramMap.item .. " is not a weapon according to Osi!")
+			return
+		end
 
-	local weaponScore = Osi.GetWeaponScoreForCharacter(paramMap.item, partyMember)
-	paramMap.winners, paramMap.winningVal = ProcessorUtils:SetWinningVal_ByCompareResult(paramMap.winningVal,
-		weaponScore,
-		paramMap.filter.CompareStategy,
-		paramMap.winners,
-		partyMember)
-end
+		local weaponScore = Osi.GetWeaponScoreForCharacter(paramMap.item, partyMember)
+		paramMap.winners, paramMap.winningVal = ProcessorUtils:SetWinningVal_ByCompareResult(paramMap.winningVal,
+			weaponScore,
+			paramMap.filter.CompareStategy,
+			paramMap.winners,
+			partyMember)
+	end,
 
-StatFunctions[targetStats.WEAPON_ABILITY] = function(partyMember, paramMap)
-	local weaponAbility = tostring(Ext.Enums.AbilityId[Ext.Entity.Get(paramMap.item).Weapon.Ability])
-	local partyMemberAbilityScore = Osi.GetAbility(partyMember, weaponAbility)
-	Logger:BasicTrace(string.format("Weapon uses %s, %s has a score of %s", weaponAbility, partyMember,
-		partyMemberAbilityScore))
-	paramMap.winners, paramMap.winningVal = ProcessorUtils:SetWinningVal_ByCompareResult(paramMap.winningVal,
-		partyMemberAbilityScore,
-		paramMap.filter.CompareStategy,
-		paramMap.winners,
-		partyMember)
-end
+	[targetStats.WEAPON_ABILITY] = function(partyMember, paramMap)
+		local weaponAbility = tostring(Ext.Enums.AbilityId[Ext.Entity.Get(paramMap.item).Weapon.Ability])
+		local partyMemberAbilityScore = Osi.GetAbility(partyMember, weaponAbility)
+		Logger:BasicTrace(string.format("Weapon uses %s, %s has a score of %s", weaponAbility, partyMember,
+			partyMemberAbilityScore))
+		paramMap.winners, paramMap.winningVal = ProcessorUtils:SetWinningVal_ByCompareResult(paramMap.winningVal,
+			partyMemberAbilityScore,
+			paramMap.filter.CompareStategy,
+			paramMap.winners,
+			partyMember)
+	end,
 
-StatFunctions[targetStats.PROFICIENCY] = function(partyMember, paramMap)
-	if Osi.IsProficientWith(partyMember, paramMap.item) == 1 then
+	[targetStats.PROFICIENCY] = function(partyMember, paramMap)
+		if Osi.IsProficientWith(partyMember, paramMap.item) == 1 then
+			table.insert(paramMap.winners, partyMember)
+		end
+	end,
+
+	[targetStats.HAS_TYPE_EQUIPPED] = function(partyMember, paramMap)
+		local entity = Ext.Entity.Get(paramMap.item)
+		local itemSlot = tostring(entity.Equipable.Slot)
+
+		-- Getting this aligned with Osi.EQUIPMENTSLOTNAME, because, what the heck Larian (╯°□°）╯︵ ┻━┻
+		if itemSlot == Ext.Enums.StatsItemSlot[Ext.Enums.StatsItemSlot.MeleeMainHand] then
+			itemSlot = "Melee Main Weapon"
+		elseif itemSlot == Ext.Enums.StatsItemSlot[Ext.Enums.StatsItemSlot.MeleeOffHand] then
+			itemSlot = "Melee Offhand Weapon"
+		elseif itemSlot == Ext.Enums.StatsItemSlot[Ext.Enums.StatsItemSlot.RangedMainHand] then
+			itemSlot = "Ranged Main Weapon"
+		elseif itemSlot == Ext.Enums.StatsItemSlot[Ext.Enums.StatsItemSlot.RangedOffHand] then
+			itemSlot = "Ranged Offhand Weapon"
+		end
+
+		local currentEquippedItem = Osi.GetEquippedItem(partyMember, itemSlot)
+		if not currentEquippedItem then
+			return
+		end
+		local currentEquipEntity = Ext.Entity.Get(currentEquippedItem)
+
+		if entity.Armor then
+			if entity.Armor.ArmorType == currentEquipEntity.Armor.ArmorType then
+				table.insert(paramMap.winners, partyMember)
+			end
+
+			return
+		end
+
+		if entity.ServerItem.Template.EquipmentTypeID ~= "00000000-0000-0000-0000-000000000000" then
+			local paramItemType = Ext.StaticData.Get(entity.ServerItem.Template.EquipmentTypeID, "EquipmentType")["Name"]
+			local equippedItemType = Ext.StaticData.Get(currentEquipEntity.ServerItem.Template.EquipmentTypeID, "EquipmentType")["Name"]
+			if paramItemType == equippedItemType then
+				table.insert(paramMap.winners, partyMember)
+			end
+
+			return
+		end
+
+		-- If the item isn't an armor piece or doesn't have an equipTypeId (only weapons?), but the slot is filled, then they technically pass
 		table.insert(paramMap.winners, partyMember)
-	end
-end
+	end,
 
-StatFunctions[targetStats.HAS_TYPE_EQUIPPED] = function(partyMember, paramMap)
-	local entity = Ext.Entity.Get(paramMap.item)
-	local itemSlot = tostring(entity.Equipable.Slot)
-
-	-- Getting this aligned with Osi.EQUIPMENTSLOTNAME, because, what the heck Larian (╯°□°）╯︵ ┻━┻
-	if itemSlot == Ext.Enums.StatsItemSlot[Ext.Enums.StatsItemSlot.MeleeMainHand] then
-		itemSlot = "Melee Main Weapon"
-	elseif itemSlot == Ext.Enums.StatsItemSlot[Ext.Enums.StatsItemSlot.MeleeOffHand] then
-		itemSlot = "Melee Offhand Weapon"
-	elseif itemSlot == Ext.Enums.StatsItemSlot[Ext.Enums.StatsItemSlot.RangedMainHand] then
-		itemSlot = "Ranged Main Weapon"
-	elseif itemSlot == Ext.Enums.StatsItemSlot[Ext.Enums.StatsItemSlot.RangedOffHand] then
-		itemSlot = "Ranged Offhand Weapon"
-	end
-
-	local currentEquippedItem = Osi.GetEquippedItem(partyMember, itemSlot)
-	if not currentEquippedItem then
-		return
-	end
-	local currentEquipEntity = Ext.Entity.Get(currentEquippedItem)
-
-	if entity.Armor then
-		if entity.Armor.ArmorType == currentEquipEntity.Armor.ArmorType then
-			table.insert(paramMap.winners, partyMember)
+	[targetStats.IS_ONE_OF_CLASS_OR_SUBCLASS] = function(partyMember, paramMap)
+		local classes = paramMap.filter.TargetSubStat
+		if type(classes) ~= "table" then
+			classes = { classes }
 		end
-
-		return
-	end
-
-	if entity.ServerItem.Template.EquipmentTypeID ~= "00000000-0000-0000-0000-000000000000" then
-		local paramItemType = Ext.StaticData.Get(entity.ServerItem.Template.EquipmentTypeID, "EquipmentType")["Name"]
-		local equippedItemType = Ext.StaticData.Get(currentEquipEntity.ServerItem.Template.EquipmentTypeID, "EquipmentType")["Name"]
-		if paramItemType == equippedItemType then
-			table.insert(paramMap.winners, partyMember)
+		for _, class in pairs(Ext.Entity.Get(partyMember).Classes.Classes) do
+			for _, desiredClass in pairs(classes) do
+				if tostring(Ext.StaticData.Get(class["ClassUUID"], "ClassDescription")["Name"]) == desiredClass
+					or tostring(Ext.StaticData.Get(class["SubClassUUID"], "ClassDescription")["Name"]) == desiredClass
+				then
+					table.insert(paramMap.winners, partyMember)
+					return
+				end
+			end
 		end
-		
-		return
 	end
-
-	-- If the item isn't an armor piece or doesn't have an equipTypeId (only weapons?), but the slot is filled, then they technically pass
-	table.insert(paramMap.winners, partyMember)
-end
+}
 
 
 FilterProcessor = {}
@@ -187,7 +204,7 @@ end] = function(partyMember, paramMap)
 end
 
 filterProcessors[function(filter)
-	return filter["TargetStat"] ~= nil and filter["CompareStategy"] ~= nil
+	return filter["TargetStat"] ~= nil
 end] = function(partyMember, paramMap)
 	StatFunctions[paramMap.filter["TargetStat"]](partyMember, paramMap)
 end
@@ -237,6 +254,7 @@ function FilterProcessor:ExecuteFilterAgainstEligiblePartyMembers(filter,
 																  inventoryHolder,
 																  item,
 																  root)
+	local startTime = Ext.Utils.MonotonicTime()
 	FilterProcessor.ParamMap = {
 		winners = {},
 		winningVal = nil,
@@ -265,8 +283,8 @@ function FilterProcessor:ExecuteFilterAgainstEligiblePartyMembers(filter,
 			errorResponse, Ext.Json.Stringify(FilterProcessor.ParamMap)))
 	end
 	if Logger:IsLogLevelEnabled(Logger.PrintTypes.TRACE) then
-		Logger:BasicTrace(string.format("FilterProcessor finished iteration - param map is %s",
-			Ext.Json.Stringify(FilterProcessor.ParamMap)))
+		Logger:BasicTrace(string.format("FilterProcessor finished iteration in %dms - param map is \n%s",
+			Ext.Utils.MonotonicTime() - startTime, Ext.Json.Stringify(FilterProcessor.ParamMap)))
 	end
 
 	return #FilterProcessor.ParamMap.winners > 0 and FilterProcessor.ParamMap.winners or eligiblePartyMembers
