@@ -12,18 +12,11 @@ all_defaults.Weapons = {
 all_defaults.Equipment = {
 	[ItemFilters.ItemKeys.WILDCARD] = {
 		Filters = {
-			[1] = {
-				TargetStat = ItemFilters.FilterFields.TargetStat.IS_ONE_OF_CLASS_OR_SUBCLASS,
-				TargetSubStat = {"TrickeryDomain", "Ranger"}
-			},
 			[50] = {
 				TargetStat = ItemFilters.FilterFields.TargetStat.STACK_AMOUNT,
 				CompareStategy = ItemFilters.FilterFields.CompareStategy.HIGHER
 			},
 			[99] = { TargetStat = ItemFilters.FilterFields.TargetStat.PROFICIENCY },
-		},
-		PreFilters = {
-			EXCLUDE_CLASSES_AND_SUBCLASSES = "Ranger"
 		}
 	}
 }
@@ -102,14 +95,10 @@ all_defaults.Tags = {
 	["SCROLL"] = {
 		Filters = {
 			[1] = {
-				TargetStat = ItemFilters.FilterFields.TargetStat.IS_ONE_OF_CLASS_OR_SUBCLASS,
-				TargetSubStat = "TrickeryDomain"
-			},
-			[2] = {
 				TargetStat = ItemFilters.FilterFields.TargetStat.STACK_AMOUNT,
 				CompareStategy = ItemFilters.FilterFields.CompareStategy.HIGHER
 			},
-			[3] = { Target = "originalTarget" },
+			[2] = { Target = "originalTarget" },
 		}
 	},
 	["CONSUMABLE"] = {
