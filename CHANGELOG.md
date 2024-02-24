@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 **Mod Users** - to review any changes more in-depth, check the relevant sections of [the wiki](https://github.com/osirisOfGit/BG3_Automatic_Inventory_Manager/wiki)
 
-## [2.1.3]
+## [2.2.0]
 ### Mod Users
 #### Added
 - Per-Stack Prefilter EXCLUDE_CLASSES_OR_SUBCLASSES, which accepts a single value or an array
