@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.1.3]
 ### Mod Users
 #### Added
-- Per-Stack Prefilter EXCLUDE_CLASSES_OR_SUBCLASSES, , which accepts a single value or an array
+- Per-Stack Prefilter EXCLUDE_CLASSES_OR_SUBCLASSES, which accepts a single value or an array
 - Filter IS_ONE_OF_CLASS_OR_SUBCLASS, which accepts a single value or an array under TargetSubStat
 
 #### Changed
@@ -20,6 +20,10 @@ for all applicable items, and Weapon filters are prioritized over Equipment filt
 #### Fixed
 - HAS_TYPE_EQUIPPED and PROFICIENCY filter never running
 - The Consumable Tag check that's run on item use, so only consumables should be run again
+
+### Internal
+#### Added 
+- Performance timing to some methods
 
 ## [2.1.2]
 ### Mod Users
