@@ -8,6 +8,7 @@ ItemFilters.ItemFields = {}
 ItemFilters.ItemFields.PreFilters = {
 	STACK_LIMIT = "STACK_LIMIT",                  -- Filters out any party members that have > than the specified limit
 	EXCLUDE_PARTY_MEMBERS = "EXCLUDE_PARTY_MEMBERS", -- Array of party members to exclude from processing
+	EXCLUDE_CLASSES = "EXCLUDE_CLASSES",          -- Array of (sub)classes to exclude from processing
 	ENCUMBRANCE = "ENCUMBRANCE",                  -- Internal only
 }
 
@@ -330,7 +331,7 @@ local function GetItemFiltersByEquipmentType(itemFilterMaps, root, item, _)
 			elseif itemSlot == Ext.Enums.StatsItemSlot[Ext.Enums.StatsItemSlot.RangedOffHand] then
 				itemSlot = "Ranged Offhand Weapon"
 			end
-			
+
 			GetItemFiltersFromMap(itemFilterMaps.Equipment,
 				itemSlot,
 				filters)
@@ -363,7 +364,7 @@ local itemFilterLookups = {
 	GetItemFiltersByEquipmentType
 }
 
---- Add custom function(s) to use to find ItemFilters for a given item within the available ItemFilterMaps. 
+--- Add custom function(s) to use to find ItemFilters for a given item within the available ItemFilterMaps.
 ---@param modUUID that ScriptExtender has registered for your mod, for tracking purposes - <a href="https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#ismodloadedmodguid">https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#ismodloadedmodguid</a>
 --- will throw an error if the mod identified by that UUID is not loaded
 ---@tparam function ... should accept:

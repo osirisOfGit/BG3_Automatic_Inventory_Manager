@@ -34,6 +34,8 @@ local function DetermineAndExecuteFiltersForItem(root, item, inventoryHolder, ig
 			return
 		end
 
+		local startTime = Ext.Utils.MonotonicTime()
+
 		EntityPropertyRecorder:RecordEntityProperties(item)
 		local applicableItemFilter = ItemFilters:SearchForItemFilters(item, root, inventoryHolder)
 		if #applicableItemFilter.Filters > 0 then
@@ -50,8 +52,9 @@ local function DetermineAndExecuteFiltersForItem(root, item, inventoryHolder, ig
 			Logger:BasicDebug(Ext.Json.Stringify(applicableItemFilter))
 
 			Processor:ProcessFiltersForItemAgainstParty(item, root, inventoryHolder, applicableItemFilter)
-			Logger:BasicDebug(
-				"\n----------------------------------------------------------\n\t\t\tFINISHED\n----------------------------------------------------------")
+			Logger:BasicDebug(string.format(
+				"\n----------------------------------------------------------\n\t\t\tFINISHED in %dms\n----------------------------------------------------------",
+				(Ext.Utils.MonotonicTime() - startTime)))
 		else
 			Logger:BasicInfo("No command could be found for " ..
 				item .. " with root " .. root .. " on " .. inventoryHolder)
@@ -86,8 +89,11 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "before", function(root, item,
 end)
 
 Ext.Osiris.RegisterListener("TemplateUseFinished", 4, "before", function(character, itemTemplate, item2, success)
-	-- Has the consumable tag
-	if Config.AIM.ENABLED == 1 and Osi.IsTagged(item2, "4d79b277-97f0-4227-a780-7a14fb9827fc") and not ItemBlackList:IsItemOrTemplateInBlacklist(item2, itemTemplate) then
+	if Config.AIM.ENABLED == 1
+		-- Has the consumable tag
+		and Osi.IsTagged(item2, "4d79b277-97f0-4227-a780-7a14fb9827fc") == 1
+		and not ItemBlackList:IsItemOrTemplateInBlacklist(item2, itemTemplate)
+	then
 		local isTemplateInInventory = Osi.TemplateIsInPartyInventory(itemTemplate, character, 0)
 		if success == 1 and (isTemplateInInventory and isTemplateInInventory > 0) and (Config.AIM.SORT_CONSUMABLE_ITEMS_DURING_COMBAT == 1 or Osi.IsInCombat(character) == 0) then
 			Logger:BasicInfo("Resorting all items of template " .. itemTemplate .. " due to finished use of " .. item2)
