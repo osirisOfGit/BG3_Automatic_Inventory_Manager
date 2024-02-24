@@ -1,0 +1,41 @@
+[
+	{
+		"When a party member receives one or more of": "Book",
+		"I want to": {
+			"Exclude any party member that": {
+				"is carrying more than": 5,
+				"is one of the following classes or subclasses": "Paladin",
+				"is one of the following characters": [
+					"Laezal"
+				]
+			},
+			"Find the party member that, in priority order,": [
+				{
+					"has the": "lowest",
+					"amount of": "the same item in their inventory"
+				},
+				{
+					"has the": "lowest",
+					"amount of": "health"
+				},
+				{
+					"has the": "highest",
+					"level of": "proficiency"
+				},
+				{
+					"has the": "same type of equipment or weapon equipped"
+				},
+				{
+					"has the": "highest",
+					"level of": "skill",
+					"for": "SleightOfHand"
+				},
+				{
+					"has the": "highest",
+					"level of": "skill",
+					"for": "SleightOfHand"
+				}
+			]
+		}
+	}
+]
