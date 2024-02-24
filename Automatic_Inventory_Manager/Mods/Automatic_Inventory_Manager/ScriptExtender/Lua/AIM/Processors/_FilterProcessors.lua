@@ -187,7 +187,7 @@ end] = function(partyMember, paramMap)
 end
 
 filterProcessors[function(filter)
-	return filter["TargetStat"] ~= nil and filter["CompareStategy"] ~= nil
+	return filter["TargetStat"] ~= nil
 end] = function(partyMember, paramMap)
 	StatFunctions[paramMap.filter["TargetStat"]](partyMember, paramMap)
 end
