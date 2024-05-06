@@ -37,14 +37,14 @@ Localization = {
 						key = "skill",
 						values = {
 							key = "for",
-							allowedValues = {}
+							allowedValues = {} -- generate at runtime
 						}
 					},
 					ability = {
 						key = "ability",
 						values = {
 							key = "for",
-							allowedValues = {}
+							allowedValues = {} -- generate at runtime
 						}
 					}
 				}
