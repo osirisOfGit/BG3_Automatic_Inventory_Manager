@@ -6,10 +6,10 @@ ItemFilters.ItemFields = {}
 
 --- Filters that pre-filter eligible party members before a stack of items, or an item in the stack, is processed.
 ItemFilters.ItemFields.PreFilters = {
-	STACK_LIMIT = "STACK_LIMIT",                          -- Filters out any party members that have > than the specified limit
-	EXCLUDE_PARTY_MEMBERS = "EXCLUDE_PARTY_MEMBERS",      -- Array of party members to exclude from processing
+	STACK_LIMIT = "STACK_LIMIT",                                    -- Filters out any party members that have > than the specified limit
+	EXCLUDE_PARTY_MEMBERS = "EXCLUDE_PARTY_MEMBERS",                -- Array of party members to exclude from processing
 	EXCLUDE_CLASSES_AND_SUBCLASSES = "EXCLUDE_CLASSES_AND_SUBCLASSES", -- Array of (sub)classes to exclude from processing
-	ENCUMBRANCE = "ENCUMBRANCE",                          -- Internal only
+	ENCUMBRANCE = "ENCUMBRANCE",                                    -- Internal only
 }
 
 ItemFilters.FilterFields = {}
@@ -116,18 +116,18 @@ function ItemFilters:RegisterItemFilterMapPreset(modUUID, presetName, itemFilter
 			table.insert(Config.AIM.PRESETS.FILTERS_PRESETS[presetName], mapName)
 			mapCount = mapCount + 1
 		else
-			Logger:BasicError(string.format(
+			Logger:BasicError(
 				"Was unable to save itemFilterMap %s while creating preset %s for mod %s - this map will be skipped! Check previous logs for errors",
 				mapName,
 				presetName,
-				modName))
+				modName)
 		end
 	end
 
-	Logger:BasicInfo(string.format("Mod %s successfully registered %d new itemFilterMaps under preset %s",
+	Logger:BasicInfo("Mod %s successfully registered %d new itemFilterMaps under preset %s",
 		modName,
 		mapCount,
-		presetName))
+		presetName)
 
 	if Config.IsInitialized then
 		FileUtils:SaveTableToFile("config.json", Config.AIM)
@@ -157,9 +157,9 @@ local function AddItemFilterMaps(newItemFilterMaps, forceOverride, prioritizeNew
 			end
 		end
 		if Logger:IsLogLevelEnabled(Logger.PrintTypes.TRACE) then
-			Logger:BasicTrace(string.format("Finished merging itemFilterMap %s, new map is: %s",
+			Logger:BasicTrace("Finished merging itemFilterMap %s, new map is: %s",
 				newMapName,
-				Ext.Json.Stringify(itemFilterMaps[newMapName])))
+				Ext.Json.Stringify(itemFilterMaps[newMapName]))
 		end
 	end
 
@@ -176,9 +176,9 @@ function ItemFilters:LoadItemFilterPresets()
 	for presetName, presetTablesToLoad in pairs(Config.AIM.PRESETS.ACTIVE_PRESETS) do
 		Logger:BasicInfo("Loading filter preset " .. presetName)
 		if not Config.AIM.PRESETS.FILTERS_PRESETS[presetName] then
-			Logger:BasicError(string.format(
+			Logger:BasicError(
 				"Specified preset '%s' was not present in the FILTERS_PRESETS property - please specify a real preset (case sensitive). This will be skipped!",
-				presetName))
+				presetName)
 			goto continue
 		end
 		loadedPresets = loadedPresets + 1
@@ -199,10 +199,10 @@ function ItemFilters:LoadItemFilterPresets()
 
 				if filterTable then
 					local success, result = pcall(function()
-						Logger:BasicInfo(string.format(
+						Logger:BasicInfo(
 							"Merging %s/%s.json into active itemFilterMaps",
 							presetName,
-							filterTableName))
+							filterTableName)
 
 						AddItemFilterMaps({ [filterTableName] = Ext.Json.Parse(filterTable) },
 							false,
@@ -211,21 +211,21 @@ function ItemFilters:LoadItemFilterPresets()
 					end)
 
 					if not success then
-						Logger:BasicError(string.format("Could not merge table %s from preset %s due to error [%s]",
+						Logger:BasicError("Could not merge table %s from preset %s due to error [%s]",
 							filterTableName,
 							presetName,
-							result))
+							result)
 					else
 						loadedTables = loadedTables + 1
 					end
 				else
-					Logger:BasicError("Could not find filter table file " .. filterTableFilePath)
+					Logger:BasicError("Could not find filter table file %s", filterTableFilePath)
 				end
 			else
-				Logger:BasicInfo(string.format(
+				Logger:BasicInfo(
 					"The table %s in Preset %s was excluded from the ACTIVE_PRESETS list, so skipping it!",
 					filterTableName,
-					presetName))
+					presetName)
 			end
 		end
 		::continue::
@@ -241,14 +241,14 @@ function ItemFilters:LoadItemFilterPresets()
 	if Logger:IsLogLevelEnabled(Logger.PrintTypes.DEBUG) then
 		Logger:BasicDebug("Finished loading in presets - finalized item maps are:")
 		for itemFilterMap, itemFilterMapContent in pairs(ItemFilters.itemFilterMaps) do
-			Logger:BasicDebug(string.format("%s: %s", itemFilterMap, Ext.Json.Stringify(itemFilterMapContent)))
+			Logger:BasicDebug("%s: %s", itemFilterMap, Ext.Json.Stringify(itemFilterMapContent))
 		end
 	end
 
-	Logger:BasicInfo(string.format("Successfully merged %d Item Filter Maps from %d Preset(s) to the itemFilterMaps in %dms",
+	Logger:BasicInfo("Successfully merged %d Item Filter Maps from %d Preset(s) to the itemFilterMaps in %dms",
 		loadedTables,
 		loadedPresets,
-		Ext.Utils.MonotonicTime() - startTime))
+		Ext.Utils.MonotonicTime() - startTime)
 
 	return true
 end
@@ -385,9 +385,9 @@ function ItemFilters:RegisterItemFilterLookupFunction(modUUID, ...)
 		funcCount = funcCount + 1
 	end
 
-	Logger:BasicInfo(string.format("Mod %s successfully added %d new ItemFilterLookupFunction(s)!",
+	Logger:BasicInfo("Mod %s successfully added %d new ItemFilterLookupFunction(s)!",
 		modName,
-		funcCount))
+		funcCount)
 
 	return true
 end
@@ -408,12 +408,12 @@ function ItemFilters:SearchForItemFilters(item, root, inventoryHolder)
 		end
 		)
 		if not success then
-			Logger:BasicError(string.format(
+			Logger:BasicError(
 				"ItemFilters:SearchForItemFilters - Received error executing itemFilterLoop for item %s, root %s, inventoryHolder %s: [%s]",
 				item,
 				root,
 				inventoryHolder,
-				errorMessage))
+				errorMessage)
 		end
 	end
 

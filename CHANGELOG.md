@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 **Mod Users** - to review any changes more in-depth, check the relevant sections of [the wiki](https://github.com/osirisOfGit/BG3_Automatic_Inventory_Manager/wiki)
 
+## [2.2.1]
+### Mod Users
+#### Changed
+- Processing on item pickup no longer happens when there's only one character in the party, but items are still tagged
+- ALL_DEFAULTS preset
+	- Changed priority of Proficiency filter for all Equipment up to 51 from 99
+- Improved some log info
+
+### Internal Only
+#### Changed
+- Stopped being the dumb kind of lazy and consolidated string.format into the Logger:Basic* funcs
+#### Fixed
+- Non-nil safe logs
+
 ## [2.2.0]
 ### Mod Users
 #### Added

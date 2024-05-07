@@ -82,7 +82,7 @@ function ProcessorUtils:CalculateTotalItemCount(targetsWithAmountWon,
 												inventoryHolder,
 												root,
 												item)
-	Logger:BasicTrace(string.format("Calculating total count of %s in inventory of %s", root, targetChar))
+	Logger:BasicTrace("Calculating total count of %s in inventory of %s", root, targetChar)
 	local totalFutureStackSize = targetsWithAmountWon[targetChar]
 
 	local itemByTemplate = Osi.GetItemByTemplateInInventory(root, targetChar)
@@ -90,26 +90,25 @@ function ProcessorUtils:CalculateTotalItemCount(targetsWithAmountWon,
 		local _, templateStackSize = Osi.GetStackAmount(itemByTemplate)
 		totalFutureStackSize = totalFutureStackSize + templateStackSize
 
-		Logger:BasicDebug(string.format("Found %d of %s already in %s's inventory", templateStackSize, root,
-			targetChar))
+		Logger:BasicDebug("Found %d of %s already in %s's inventory", templateStackSize, root, targetChar)
 	end
 
 	if TEMPLATES_BEING_TRANSFERRED[root] and TEMPLATES_BEING_TRANSFERRED[root][targetChar] then
 		totalFutureStackSize = totalFutureStackSize + TEMPLATES_BEING_TRANSFERRED[root][targetChar]
-		Logger:BasicDebug(string.format(
+		Logger:BasicDebug(
 			"Found %d of the item currently being transferreed to %s, adding to the stack size",
 			TEMPLATES_BEING_TRANSFERRED[root][targetChar],
-			targetChar))
+			targetChar)
 	end
 
 	if targetChar == inventoryHolder then
 		local amountToRemove = Osi.GetStackAmount(item)
-		Logger:BasicDebug(string.format(
+		Logger:BasicDebug(
 			"Brought down %s's, the inventoryHolder of the item, total item count of %d by %d", inventoryHolder,
-			totalFutureStackSize, amountToRemove))
+			totalFutureStackSize, amountToRemove)
 		totalFutureStackSize = totalFutureStackSize - amountToRemove
 	end
 
-	Logger:BasicDebug(string.format("Total item count for %s is %d", targetChar, totalFutureStackSize))
+	Logger:BasicDebug("Total item count for %s is %d", targetChar, totalFutureStackSize)
 	return totalFutureStackSize
 end

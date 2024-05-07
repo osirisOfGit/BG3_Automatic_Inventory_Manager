@@ -34,10 +34,10 @@ function FileUtils:SaveTableToFile(filepath, content)
 	end)
 
 	if not jsonSuccess then
-		Ext.Utils.PrintError(string.format("Failed to convert content %s for file %s to JSON due to error \n\t%s",
+		Ext.Utils.PrintError("Failed to convert content %s for file %s to JSON due to error \n\t%s",
 			content,
 			filepath,
-			response))
+			response)
 
 		return false
 	end
@@ -55,8 +55,7 @@ function FileUtils:SaveStringContentToFile(filepath, content)
 	end)
 
 	if not success then
-		Logger:BasicError(string.format("Failed to save file %s due to error \n\t%s",
-			FileUtils:BuildAbsoluteFileTargetPath(filepath), error))
+		Logger:BasicError("Failed to save file %s due to error \n\t%s", FileUtils:BuildAbsoluteFileTargetPath(filepath), error)
 
 		return false
 	end
@@ -75,9 +74,9 @@ function FileUtils:LoadTableFile(filepath)
 	end)
 
 	if not success then
-		Logger:BasicError(string.format("Failed to parse contents of file %s due to error \n\t%s",
+		Logger:BasicError("Failed to parse contents of file %s due to error \n\t%s",
 			FileUtils:BuildAbsoluteFileTargetPath(filepath),
-			result))
+			result)
 		return false
 	else
 		return result
@@ -93,9 +92,9 @@ function FileUtils:LoadFile(filepath)
 	end)
 
 	if not success then
-		Logger:BasicError(string.format("Failed to load %s due to error\n\t%s",
+		Logger:BasicError("Failed to load %s due to error\n\t%s",
 			FileUtils:BuildAbsoluteFileTargetPath(filepath),
-			result))
+			result)
 		return nil
 	else
 		return result

@@ -71,9 +71,9 @@ function ItemBlackList:AddEntriesToBlackList(modUUID, blacklistedItems, blacklis
 	}
 	AddBlacklistTables(blackListEntries)
 
-	Logger:BasicInfo(string.format("Mod %s successfully added blackList entries: %s",
+	Logger:BasicInfo("Mod %s successfully added blackList entries: %s",
 		modInfo,
-		Ext.Json.Stringify(blackListEntries)))
+		Ext.Json.Stringify(blackListEntries))
 
 	-- not sure if mods would be able to add their values before we load from the file - so just a sanity check to make sure we only update the file
 	-- if it's been loaded in already. Initialization takes this into account as well
@@ -92,7 +92,7 @@ function ItemBlackList:IsItemOrTemplateInBlacklist(item, rootTemplate)
 	if item then
 		for _, itemUUID in pairs(blackListTable.Items) do
 			if item == itemUUID or string.find(item, itemUUID) then
-				Logger:BasicInfo(string.format("Item %s was found in the blacklist!", item))
+				Logger:BasicInfo("Item %s was found in the blacklist!", item)
 				return true
 			end
 		end
@@ -101,7 +101,7 @@ function ItemBlackList:IsItemOrTemplateInBlacklist(item, rootTemplate)
 	if rootTemplate then
 		for _, rootUUID in pairs(blackListTable.RootTemplates) do
 			if rootTemplate == rootUUID or string.find(rootTemplate, rootUUID) then
-				Logger:BasicInfo(string.format("RootTemplate %s was found in the blacklist!", rootTemplate))
+				Logger:BasicInfo("RootTemplate %s was found in the blacklist!", rootTemplate)
 				return true
 			end
 		end
