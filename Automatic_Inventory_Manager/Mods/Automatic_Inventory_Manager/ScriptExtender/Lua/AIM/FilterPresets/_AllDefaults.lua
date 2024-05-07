@@ -16,7 +16,7 @@ all_defaults.Equipment = {
 				TargetStat = ItemFilters.FilterFields.TargetStat.STACK_AMOUNT,
 				CompareStategy = ItemFilters.FilterFields.CompareStategy.HIGHER
 			},
-			[99] = { TargetStat = ItemFilters.FilterFields.TargetStat.PROFICIENCY },
+			[51] = { TargetStat = ItemFilters.FilterFields.TargetStat.PROFICIENCY },
 		}
 	}
 }

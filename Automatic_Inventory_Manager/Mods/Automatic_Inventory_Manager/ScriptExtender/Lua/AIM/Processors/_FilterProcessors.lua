@@ -27,7 +27,7 @@ local StatFunctions = {
 			paramMap.root,
 			paramMap.item)
 
-		Logger:BasicTrace("Found " .. totalFutureStackSize .. " on " .. partyMember)
+		Logger:BasicTrace("Found %d on %s", totalFutureStackSize, partyMember)
 
 		paramMap.winners, paramMap.winningVal = ProcessorUtils:SetWinningVal_ByCompareResult(paramMap.winningVal,
 			totalFutureStackSize,
@@ -56,7 +56,7 @@ local StatFunctions = {
 
 	[targetStats.WEAPON_SCORE] = function(partyMember, paramMap)
 		if Osi.IsWeapon(paramMap.item) ~= 1 then
-			Logger:BasicTrace("Item " .. paramMap.item .. " is not a weapon according to Osi!")
+			Logger:BasicTrace("Item %s is not a weapon according to Osi!", paramMap.item)
 			return
 		end
 
@@ -71,8 +71,7 @@ local StatFunctions = {
 	[targetStats.WEAPON_ABILITY] = function(partyMember, paramMap)
 		local weaponAbility = tostring(Ext.Enums.AbilityId[Ext.Entity.Get(paramMap.item).Weapon.Ability])
 		local partyMemberAbilityScore = Osi.GetAbility(partyMember, weaponAbility)
-		Logger:BasicTrace(string.format("Weapon uses %s, %s has a score of %s", weaponAbility, partyMember,
-			partyMemberAbilityScore))
+		Logger:BasicTrace("Weapon uses %s, %s has a score of %s", weaponAbility, partyMember, partyMemberAbilityScore)
 		paramMap.winners, paramMap.winningVal = ProcessorUtils:SetWinningVal_ByCompareResult(paramMap.winningVal,
 			partyMemberAbilityScore,
 			paramMap.filter.CompareStategy,
@@ -161,13 +160,13 @@ function FilterProcessor:RegisterTargetStatProcessors(modUUID, statFunctions)
 		if not StatFunctions[targetStat] then
 			StatFunctions[targetStat] = statFunction
 
-			Logger:BasicInfo(string.format("Mod %s successfully added new targetStat function for %s",
+			Logger:BasicInfo("Mod %s successfully added new targetStat function for %s",
 				modName,
-				targetStat))
+				targetStat)
 		else
-			Logger:BasicWarning(string.format("Mod %s tried to add a new StatFunction for existing targetStat %s",
+			Logger:BasicWarning("Mod %s tried to add a new StatFunction for existing targetStat %s",
 				modName,
-				targetStat))
+				targetStat)
 		end
 	end
 end
@@ -218,8 +217,7 @@ function FilterProcessor:RegisterNewFilterProcessor(modUUID, predicateFunction, 
 	local modName = ModUtils:GetModInfoFromUUID(modUUID).Name
 
 	filterProcessors[predicateFunction] = filterProcessor
-	Logger:BasicInfo(string.format("Mod %s successfully added new filter processor!",
-		modName))
+	Logger:BasicInfo("Mod %s successfully added new filter processor!", modName)
 end
 
 --- The table that's passed to each FilterProcessor
@@ -278,13 +276,13 @@ function FilterProcessor:ExecuteFilterAgainstEligiblePartyMembers(filter,
 	end)
 
 	if not success then
-		Logger:BasicError(string.format(
+		Logger:BasicError(
 			"FilterProcessor:ExecuteFilterAgainstEligiblePartyMembers - Got error %s while attempting to process filter with paramMap %s",
-			errorResponse, Ext.Json.Stringify(FilterProcessor.ParamMap)))
+			errorResponse, Ext.Json.Stringify(FilterProcessor.ParamMap))
 	end
 	if Logger:IsLogLevelEnabled(Logger.PrintTypes.TRACE) then
-		Logger:BasicTrace(string.format("FilterProcessor finished iteration in %dms - param map is \n%s",
-			Ext.Utils.MonotonicTime() - startTime, Ext.Json.Stringify(FilterProcessor.ParamMap)))
+		Logger:BasicTrace("FilterProcessor finished iteration in %dms - param map is \n%s",
+			Ext.Utils.MonotonicTime() - startTime, Ext.Json.Stringify(FilterProcessor.ParamMap))
 	end
 
 	return #FilterProcessor.ParamMap.winners > 0 and FilterProcessor.ParamMap.winners or eligiblePartyMembers
