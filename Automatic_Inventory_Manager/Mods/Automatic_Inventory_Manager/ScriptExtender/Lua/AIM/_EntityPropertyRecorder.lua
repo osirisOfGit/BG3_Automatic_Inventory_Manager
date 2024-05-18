@@ -203,7 +203,11 @@ registeredPropertyRecorders[ModUtils:GetAIMModInfo().Name] = {
 			local classes = Ext.Entity.Get(entity).Classes.Classes
 			for _, class in pairs(classes) do
 				table.insert(classRecord["Value"], tostring(Ext.StaticData.Get(class["ClassUUID"], "ClassDescription")["Name"]))
-				table.insert(subClassRecord["Value"], tostring(Ext.StaticData.Get(class["SubClassUUID"], "ClassDescription")["Name"]))
+				if Ext.StaticData.Get(class["SubClassUUID"], "ClassDescription") then
+					table.insert(subClassRecord["Value"], tostring(Ext.StaticData.Get(class["SubClassUUID"], "ClassDescription")["Name"]))
+				else
+					table.insert(subClassRecord["Value"], "N/A")
+				end
 			end
 
 			return {
@@ -231,9 +235,9 @@ function EntityPropertyRecorder:RegisterPropertyRecorders(modUUID, ...)
 		recorderCount = recorderCount + 1
 	end
 
-	Logger:BasicInfo(string.format("Mod %s registered %d new Entity Property Recorders!",
+	Logger:BasicInfo("Mod %s registered %d new Entity Property Recorders!",
 		modName,
-		recorderCount))
+		recorderCount)
 
 	return true
 end
@@ -271,25 +275,25 @@ function EntityPropertyRecorder:RecordEntityProperties(entity, respectAimDisable
 							end
 						end
 					else
-						Logger:BasicError(string.format(
+						Logger:BasicError(
 							"Error occured while attempting to process a propertyRecorder for mod %s on entity %s; error is: \n\t%s",
 							mod,
 							entity,
-							response))
+							response)
 					end
 				end
 			end
-			Logger:BasicDebug(string.format("Finished running all recorders against entity %s, writing to %s!",
+			Logger:BasicDebug("Finished running all recorders against entity %s, writing to %s!",
 				entity,
-				RECORD_FILE))
+				RECORD_FILE)
 
 			FileUtils:SaveTableToFile(RECORD_FILE, recordedEntityProperties)
 
 			return recordedTable
 		else
-			Logger:BasicWarning(string.format(
+			Logger:BasicWarning(
 				"Tried to run the EntityPropertyRecorder on entity %s, which doesn't exist (according to Osi.Exists)!",
-				entity))
+				entity)
 		end
 	end
 end

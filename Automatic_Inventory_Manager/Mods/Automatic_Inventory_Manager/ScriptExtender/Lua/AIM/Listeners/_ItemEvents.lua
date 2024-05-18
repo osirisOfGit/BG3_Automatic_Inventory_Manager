@@ -1,15 +1,17 @@
 local function RemoveItemFromTracker_IfAlreadySorted(root, item, inventoryHolder)
 	local originalOwner = Osi.GetOriginalOwner(item)
 	if originalOwner and not (originalOwner == Osi.GetUUID(inventoryHolder)) and Osi.IsPlayer(inventoryHolder) == 1 then
-		Logger:BasicDebug("|OriginalOwner| = " .. Osi.GetOriginalOwner(item)
-			.. "\n\t|DirectInventoryOwner| = " .. Osi.GetDirectInventoryOwner(item)
-			.. "\n\t|Owner| = " .. Osi.GetOwner(item))
+		Logger:BasicDebug("|OriginalOwner| = %s\n\t|DirectInventoryOwner| = %s\n\t|Owner| = %s",
+			Osi.GetDirectInventoryOwner(item),
+			Osi.GetOwner(item),
+			Osi.GetOriginalOwner(item)
+		)
 
 		if TEMPLATES_BEING_TRANSFERRED[root] and TEMPLATES_BEING_TRANSFERRED[root][inventoryHolder] then
-			Logger:BasicDebug(string.format("Found %s of %s being transferred to %s - tagging as processed!"
+			Logger:BasicDebug("Found %s of %s being transferred to %s - tagging as processed!"
 			, TEMPLATES_BEING_TRANSFERRED[root][inventoryHolder]
 			, item
-			, inventoryHolder))
+			, inventoryHolder)
 
 			TEMPLATES_BEING_TRANSFERRED[root][inventoryHolder] = TEMPLATES_BEING_TRANSFERRED[root][inventoryHolder] -
 				Osi.GetStackAmount(item)
@@ -27,10 +29,16 @@ end
 
 local function DetermineAndExecuteFiltersForItem(root, item, inventoryHolder, ignoreProcessedTag)
 	if Config.AIM.ENABLED == 1 then
+		if #Osi.DB_Players:Get(nil) == 1 then
+			Osi.SetTag(item, TAG_AIM_PROCESSED)
+			Logger:BasicTrace("Item %s was picked up, but there's only one person in the party, so tagging as processed and skipping!", item)
+			return
+		end
+
 		RemoveItemFromTracker_IfAlreadySorted(root, item, inventoryHolder)
 
 		if ignoreProcessedTag == false and Osi.IsTagged(item, TAG_AIM_PROCESSED) == 1 then
-			Logger:BasicDebug("Item was already processed, skipping!")
+			Logger:BasicDebug("Item %s was already processed, skipping!", item)
 			return
 		end
 
@@ -43,21 +51,24 @@ local function DetermineAndExecuteFiltersForItem(root, item, inventoryHolder, ig
 				"\n----------------------------------------------------------\n\t\t\tSTARTED\n----------------------------------------------------------")
 
 			local itemStack, templateStack = Osi.GetStackAmount(item)
-			Logger:BasicDebug("|item| = " .. item
-				.. "\n\t|root| = " .. root
-				.. "\n\t|inventoryHolder| = " .. inventoryHolder
-				.. "\n\t|itemStackSize| = " .. itemStack
-				.. "\n\t|templateStackSize| = " .. templateStack)
 
-			Logger:BasicDebug(Ext.Json.Stringify(applicableItemFilter))
+			if Logger:IsLogLevelEnabled(Logger.PrintTypes.DEBUG) then
+				Logger:BasicDebug(
+					"\n\t|item| = %s\n\t|root| = %s\n\t|inventoryHolder| = %s\n\t|itemStackSize| = %s\n\t|templateStackSize| = %s\n\t|computedItemFilter| = \n%s",
+					item,
+					root,
+					inventoryHolder,
+					itemStack,
+					templateStack,
+					Ext.Json.Stringify(applicableItemFilter))
+			end
 
 			Processor:ProcessFiltersForItemAgainstParty(item, root, inventoryHolder, applicableItemFilter)
-			Logger:BasicDebug(string.format(
+			Logger:BasicDebug(
 				"\n----------------------------------------------------------\n\t\t\tFINISHED in %dms\n----------------------------------------------------------",
-				(Ext.Utils.MonotonicTime() - startTime)))
+				(Ext.Utils.MonotonicTime() - startTime))
 		else
-			Logger:BasicInfo("No command could be found for " ..
-				item .. " with root " .. root .. " on " .. inventoryHolder)
+			Logger:BasicInfo("No command could be found for %s with root %s on %s", item, root, inventoryHolder)
 		end
 
 		Osi.SetTag(item, TAG_AIM_PROCESSED)
@@ -75,10 +86,10 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "before", function(root, item,
 	if Config.AIM.ENABLED == 1 then
 		-- Will be nil if inventoryHolder isn't a character
 		if Osi.IsPlayer(inventoryHolder) ~= 1 then
-			Logger:BasicDebug(string.format("inventoryHolder %s is not a player", inventoryHolder))
+			Logger:BasicDebug("inventoryHolder %s is not a player (for item %s)", inventoryHolder, item)
 			return
 		elseif Osi.Exists(item) ~= 1 then
-			Logger:BasicWarning("Item doesn't exist!")
+			Logger:BasicWarning("Item %s, supposedly held by %s, doesn't exist!", item, inventoryHolder)
 			return
 		end
 
@@ -96,7 +107,7 @@ Ext.Osiris.RegisterListener("TemplateUseFinished", 4, "before", function(charact
 	then
 		local isTemplateInInventory = Osi.TemplateIsInPartyInventory(itemTemplate, character, 0)
 		if success == 1 and (isTemplateInInventory and isTemplateInInventory > 0) and (Config.AIM.SORT_CONSUMABLE_ITEMS_DURING_COMBAT == 1 or Osi.IsInCombat(character) == 0) then
-			Logger:BasicInfo("Resorting all items of template " .. itemTemplate .. " due to finished use of " .. item2)
+			Logger:BasicInfo("Resorting all items of template %s due to finished use of %s", itemTemplate, item2)
 			for _, player in pairs(Osi.DB_Players:Get(nil)) do
 				Osi.IterateInventoryByTemplate(player[1],
 					itemTemplate,
@@ -109,7 +120,7 @@ end)
 
 local function extractCharAndSortItem(guid, event, aimEvent, ignoreProcessedTag)
 	if Osi.IsEquipped(guid) == 0 and Ext.Entity.Get(guid).Value.Unique == false and Osi.IsStoryItem(guid) == 0 and not ItemBlackList:IsItemOrTemplateInBlacklist(guid, Osi.GetTemplate(guid)) then
-		Logger:BasicDebug("Processing item " .. guid .. " for event " .. event)
+		Logger:BasicDebug("Processing item %s for event %s", guid, event)
 		local character = string.sub(event, string.len(aimEvent) + 1)
 
 		DetermineAndExecuteFiltersForItem(Osi.GetTemplate(guid), guid, character, ignoreProcessedTag)

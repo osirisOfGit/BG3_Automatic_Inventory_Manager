@@ -81,7 +81,7 @@ function Logger:BasicPrint(content, messageType, textColor, customPrefix, rainbo
         Logger:LogMessage(ConcatOutput(ConcatPrefix(customPrefix .. "  [" .. Logger.PrintTypes[messageType] .. "]", content)))
         if messageType <= Logger.PrintTypes.INFO then
             local coloredMessage = rainbowText and GetRainbowText(message) or
-            string.format("\x1b[%dm%s\x1b[0m", textColorCode, message)
+                string.format("\x1b[%dm%s\x1b[0m", textColorCode, message)
             if messageType == Logger.PrintTypes.ERROR then
                 Ext.Utils.PrintError(coloredMessage)
             elseif messageType == Logger.PrintTypes.WARNING then
@@ -93,29 +93,34 @@ function Logger:BasicPrint(content, messageType, textColor, customPrefix, rainbo
     end
 end
 
---- Convenience function for Error Logs
-function Logger:BasicError(content)
-    Logger:BasicPrint(content, Logger.PrintTypes.ERROR, TEXT_COLORS.red)
+function Logger:BasicError(content, ...)
+    if Logger:IsLogLevelEnabled(Logger.PrintTypes.ERROR) then
+        Logger:BasicPrint(string.format(content, ...), Logger.PrintTypes.ERROR, TEXT_COLORS.red)
+    end
 end
 
---- Convenience function for Warning Logs
-function Logger:BasicWarning(content)
-    Logger:BasicPrint(content, Logger.PrintTypes.WARNING, TEXT_COLORS.yellow)
+function Logger:BasicWarning(content, ...)
+    if Logger:IsLogLevelEnabled(Logger.PrintTypes.WARNING) then
+        Logger:BasicPrint(string.format(content, ...), Logger.PrintTypes.WARNING, TEXT_COLORS.yellow)
+    end
 end
 
---- Convenience function for Debug Logs
-function Logger:BasicDebug(content)
-    Logger:BasicPrint(content, Logger.PrintTypes.DEBUG)
+function Logger:BasicDebug(content, ...)
+    if Logger:IsLogLevelEnabled(Logger.PrintTypes.DEBUG) then
+        Logger:BasicPrint(string.format(content, ...), Logger.PrintTypes.DEBUG)
+    end
 end
 
---- Convenience function for Trace Logs
-function Logger:BasicTrace(content)
-    Logger:BasicPrint(content, Logger.PrintTypes.TRACE)
+function Logger:BasicTrace(content, ...)
+    if Logger:IsLogLevelEnabled(Logger.PrintTypes.TRACE) then
+        Logger:BasicPrint(string.format(content, ...), Logger.PrintTypes.TRACE)
+    end
 end
 
---- Convenience function for Info Logs
-function Logger:BasicInfo(content)
-    Logger:BasicPrint(content, Logger.PrintTypes.INFO)
+function Logger:BasicInfo(content, ...)
+    if Logger:IsLogLevelEnabled(Logger.PrintTypes.INFO) then
+        Logger:BasicPrint(string.format(content, ...), Logger.PrintTypes.INFO)
+    end
 end
 
 local logPath = 'log.txt'

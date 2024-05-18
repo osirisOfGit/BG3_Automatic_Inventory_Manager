@@ -79,6 +79,6 @@ function Config.SyncConfigsAndFilters()
 
 	EntityPropertyRecorder:LoadRecordedItems()
 
-	Logger:BasicInfo(string.format("AIM has finished initialization in %dms!", Ext.Utils.MonotonicTime() - startTime))
+	Logger:BasicInfo("AIM has finished initialization in %dms!", Ext.Utils.MonotonicTime() - startTime)
 	Config.IsInitialized = true
 end

@@ -77,16 +77,16 @@ function PreFilterProcessors:RegisterPerStackPreFilterProcessor(modUUID, preFilt
 	local modName = ModUtils:GetModInfoFromUUID(modUUID).Name
 
 	if perStackPreFilterProcessors[preFilterKey] then
-		Logger:BasicWarning(string.format("Mod %s tried to add a new prefilter processor for existing prefilterKey %s",
+		Logger:BasicWarning("Mod %s tried to add a new prefilter processor for existing prefilterKey %s",
 			modName,
-			preFilterKey))
+			preFilterKey)
 
 		return false
 	else
 		perStackPreFilterProcessors[preFilterKey] = processorFunction
-		Logger:BasicInfo(string.format("Mod %s successfully added new perStack prefilterProcesor for prefilterKey %s",
+		Logger:BasicInfo("Mod %s successfully added new perStack prefilterProcesor for prefilterKey %s",
 			modName,
-			preFilterKey))
+			preFilterKey)
 		return true
 	end
 end
@@ -125,18 +125,18 @@ function PreFilterProcessors:ProcessPerStackPreFilters(prefilters,
 
 			if not prefilterResult or #prefilterResult == 0 then
 				if Logger:IsLogLevelEnabled(Logger.PrintTypes.DEBUG) then
-					Logger:BasicDebug(string.format(
+					Logger:BasicDebug(
 						"After processing per-stack PreFilter %s, no party members were considered eligible, so resetting back to list state of: %s",
 						prefilterKey,
-						Ext.Json.Stringify(survivors)))
+						Ext.Json.Stringify(survivors))
 				end
 			else
 				survivors = prefilterResult
 				if Logger:IsLogLevelEnabled(Logger.PrintTypes.DEBUG) then
-					Logger:BasicDebug(string.format(
+					Logger:BasicDebug(
 						"After processing per-stack PreFilter %s, eligible party members are %s",
 						prefilterKey,
-						Ext.Json.Stringify(survivors)))
+						Ext.Json.Stringify(survivors))
 				end
 			end
 		end
@@ -153,10 +153,10 @@ local perItemPreFilterProcessors = {
 			local totalFutureStackSize = ProcessorUtils:CalculateTotalItemCount(
 				paramMap.targetsWithAmountWon, partyMember, paramMap.inventoryHolder, paramMap.root, paramMap.item)
 
-			Logger:BasicTrace(string.format("Found %d on %s, against stack limit %d",
+			Logger:BasicTrace("Found %d on %s, against stack limit %d",
 				totalFutureStackSize,
 				partyMember,
-				stackLimit))
+				stackLimit)
 
 			if totalFutureStackSize < stackLimit then
 				table.insert(filteredSurvivors, partyMember)
@@ -178,10 +178,10 @@ local perItemPreFilterProcessors = {
 				local unencumberedLimit = tonumber(partyMemberEntity.EncumbranceStats.UnencumberedWeight)
 				local inventoryWeight = tonumber(partyMemberEntity.InventoryWeight["Weight"])
 				if (inventoryWeight + itemWeight) <= unencumberedLimit then
-					Logger:BasicTrace(string.format("Item weight %d will not encumber %s, with %d more room!",
+					Logger:BasicTrace("Item weight %d will not encumber %s, with %d more room!",
 						itemWeight,
 						partyMember,
-						unencumberedLimit - (inventoryWeight + itemWeight)))
+						unencumberedLimit - (inventoryWeight + itemWeight))
 					table.insert(filteredSurvivors, partyMember)
 				end
 			end
@@ -203,16 +203,16 @@ function PreFilterProcessors:RegisterPerItemPreFilterProcessor(modUUID, preFilte
 	local modName = ModUtils:GetModInfoFromUUID(modUUID).Name
 
 	if perItemPreFilterProcessors[preFilterKey] then
-		Logger:BasicWarning(string.format("Mod %s tried to add a new prefilter processor for existing prefilterKey %s",
+		Logger:BasicWarning("Mod %s tried to add a new prefilter processor for existing prefilterKey %s",
 			modName,
-			preFilterKey))
+			preFilterKey)
 
 		return false
 	else
 		perItemPreFilterProcessors[preFilterKey] = processorFunction
-		Logger:BasicInfo(string.format("Mod %s successfully added new perStack prefilterProcesor for prefilterKey %s",
+		Logger:BasicInfo("Mod %s successfully added new perStack prefilterProcesor for prefilterKey %s",
 			modName,
-			preFilterKey))
+			preFilterKey)
 		return true
 	end
 end
@@ -254,18 +254,18 @@ function PreFilterProcessors:ProcessPerItemPreFilters(prefilters,
 
 			if not prefilterResult or #prefilterResult == 0 then
 				if Logger:IsLogLevelEnabled(Logger.PrintTypes.DEBUG) then
-					Logger:BasicDebug(string.format(
+					Logger:BasicDebug(
 						"After processing per-item PreFilter %s, no party members were considered eligible, so resetting back to list state of: %s",
 						prefilterKey,
-						Ext.Json.Stringify(survivors)))
+						Ext.Json.Stringify(survivors))
 				end
 			else
 				survivors = prefilterResult
 				if Logger:IsLogLevelEnabled(Logger.PrintTypes.DEBUG) then
-					Logger:BasicDebug(string.format(
+					Logger:BasicDebug(
 						"After processing per-item PreFilter %s, eligible party members are %s",
 						prefilterKey,
-						Ext.Json.Stringify(survivors)))
+						Ext.Json.Stringify(survivors))
 				end
 			end
 		end

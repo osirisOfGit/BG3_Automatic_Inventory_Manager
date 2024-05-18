@@ -16,16 +16,16 @@ local function ProcessWinners(partyMembersWithAmountWon, item, root, inventoryHo
 	for target, amount in pairs(partyMembersWithAmountWon) do
 		if amount > 0 then
 			if target == inventoryHolder then
-				Logger:BasicInfo(string.format("Target %s was determined to be inventoryHolder for %d of %s"
+				Logger:BasicInfo("Target %s was determined to be inventoryHolder for %d of %s"
 				, inventoryHolder
 				, amount
-				, item))
+				, item)
 			elseif target == "camp" then
 				Osi.SendToCampChest(item, inventoryHolder)
-				Logger:BasicInfo(string.format("Moved %s of %s to CAMP from %s"
+				Logger:BasicInfo("Moved %s of %s to CAMP from %s"
 				, amount
 				, item
-				, inventoryHolder))
+				, inventoryHolder)
 			else
 				Osi.SetOriginalOwner(item, inventoryHolder)
 
@@ -39,11 +39,11 @@ local function ProcessWinners(partyMembersWithAmountWon, item, root, inventoryHo
 					TableUtils:AddItemToTable_AddingToExistingAmount(TEMPLATES_BEING_TRANSFERRED[root], target, amount)
 				end
 
-				Logger:BasicInfo(string.format("Moved %s of %s to %s from %s"
+				Logger:BasicInfo("Moved %s of %s to %s from %s"
 				, amount
 				, item
 				, target
-				, inventoryHolder))
+				, inventoryHolder)
 			end
 		end
 	end
@@ -61,10 +61,11 @@ function Processor:ProcessFiltersForItemAgainstParty(item, root, inventoryHolder
 	local currentItemStackSize = Osi.GetStackAmount(item)
 	local partyMembers = {}
 
-	if (#Osi.DB_Players:Get(nil) < 1) then
+	if (#Osi.DB_Players:Get(nil) <= 1) then
 		Logger:BasicDebug("The party has one or fewer members - skipping processing")
 		return
 	end
+
 	for _, player in pairs(Osi.DB_Players:Get(nil)) do
 		table.insert(partyMembers, player[1])
 	end
@@ -123,13 +124,13 @@ function Processor:ProcessFiltersForItemAgainstParty(item, root, inventoryHolder
 
 				TableUtils:AddItemToTable_AddingToExistingAmount(targetsWithAmountWon, target, 1)
 				if Logger:IsLogLevelEnabled(Logger.PrintTypes.DEBUG) then
-					Logger:BasicDebug(string.format("Chose winner %s, new winners table is:\n%s",
+					Logger:BasicDebug("Chose winner %s, new winners table is:\n%s",
 						target,
-						Ext.Json.Stringify(targetsWithAmountWon)))
+						Ext.Json.Stringify(targetsWithAmountWon))
 				end
 
 				if Logger:IsLogLevelEnabled(Logger.PrintTypes.TRACE) then
-					Logger:BasicTrace("Winning command: " .. Ext.Json.Stringify(filter))
+					Logger:BasicTrace("Winning command: %s", Ext.Json.Stringify(filter))
 				end
 				break
 			end

@@ -63,16 +63,15 @@ function Upgrade:LegacyFiltersToPresets()
 
 				if success then
 					table.insert(Config.AIM.PRESETS.FILTERS_PRESETS[customPresetName], filterTableName)
-					Logger:BasicInfo(string.format("Successfully added itemFilterMap %s to preset %s", filterTableName,
-						customPresetName))
+					Logger:BasicInfo("Successfully added itemFilterMap %s to preset %s", filterTableName, customPresetName)
 				else
-					Logger:BasicWarning(string.format(
+					Logger:BasicWarning(
 						"Operation to save custom table %s failed - will not be including in custom preset %s. See previous logs for error details.",
-						filterTableName, customPresetName))
+						filterTableName, customPresetName)
 				end
 			else
-				Logger:BasicWarning(string.format("Custom FilterTable %s was empty! Will not copy over into Preset %s",
-					filterTableName, customPresetName))
+				Logger:BasicWarning("Custom FilterTable %s was empty! Will not copy over into Preset %s",
+					filterTableName, customPresetName)
 			end
 		end
 
