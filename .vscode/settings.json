@@ -20,4 +20,6 @@
 	"Lua.format.defaultConfig": {
 		"max_line_length": "180"
 	},
+	"bg3ModHelper.rootModPath": "d:\\Mods\\BG3 Modder MultiTool\\Automatic_Inventory_Manager",
+	"bg3ModHelper.packingPriority": 0,
 }
