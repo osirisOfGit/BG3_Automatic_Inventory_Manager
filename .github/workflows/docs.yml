@@ -4,30 +4,30 @@ on:
   workflow_dispatch:
   pull_request:
     branches:
-    - master
+      - master
   push:
     branches:
-    - master
+      - master
 jobs:
   build:
     name: Build docs
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-    - name: Setup Lua
-      uses: leafo/gh-actions-lua@v10
-      with:
-        luaVersion: 5.4
-    - name: Setup Lua Rocks
-      uses: leafo/gh-actions-luarocks@v4
-    - name: Setup dependencies
-      run: luarocks install ldoc
-    - name: Build docs
-      run: make doc-site
-    - name: Deploy
-      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
-      uses: peaceiris/actions-gh-pages@v4
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./doc
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Lua
+        uses: leafo/gh-actions-lua@v10
+        with:
+          luaVersion: 5.4
+      - name: Setup Lua Rocks
+        uses: leafo/gh-actions-luarocks@v4
+      - name: Setup dependencies
+        run: luarocks install ldoc
+      - name: Build docs
+        run: make doc-site
+      - name: Deploy
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./doc
