@@ -1,0 +1,242 @@
+{
+    "SchemaVersion": 1,
+    "Tabs": [
+        {
+            "TabName": "General",
+            "TabId": "general",
+            "Sections": [
+                {
+                    "SectionId": "general_settings",
+                    "SectionName": "General settings",
+                    "Settings": [
+                        {
+                            "Id": "mod_enabled",
+                            "Name": "Enable mod",
+                            "Handles": {
+                                "NameHandle": "h650d0ccb63264aef8f72295a8d7dbcec8fdb",
+                                "DescriptionHandle": "h2ca558d47008421f9c503a548b7ab28c8fg3"
+                            },
+                            "Type": "checkbox",
+                            "Default": true,
+                            "Description": "Toggle the mod on/off without uninstalling it."
+                        }
+                    ]
+                },
+                {
+                    "SectionId": "debugging_settings",
+                    "SectionName": "Debugging",
+                    "Settings": [
+                        {
+                            "Id": "debug_level",
+                            "Name": "Debug level",
+                            "Handles": {
+                                "NameHandle": "h97e04efb063c4fea83f60e8d57376b0ae4b8",
+                                "DescriptionHandle": "h66e8dd40664d4c1b8a237a4a6aea57e40f1e"
+                            },
+                            "Type": "slider_int",
+                            "Default": 0,
+                            "Description": "0 = no debug, 1 = minimal, 2 = verbose debug logs.",
+                            "Options": {
+                                "Min": 0,
+                                "Max": 2
+                            }
+                        },
+                        {
+                            "Id": "timer_in_seconds",
+                            "Name": "Timer in seconds",
+                            "Handles": {
+                                "NameHandle": "h231242910ccd4b288609e8f5c4aedc53951a",
+                                "DescriptionHandle": "h58a59145a82d41128c5970e26ba671517d94"
+                            },
+                            "Type": "checkbox",
+                            "Default": false,
+                            "Description": "Whether to use the timer period as seconds instead of minutes."
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "TabId": "features",
+            "TabName": "Features",
+            "Sections": [
+                {
+                    "SectionId": "timer_settings",
+                    "SectionName": "Timer settings",
+                    "Handles": {
+                        "NameHandle": "he30c37fe6ff54c12a25089af3ecfa7b81f4c"
+                    },
+                    "Settings": [
+                        {
+                            "Id": "autosaving_period_in_minutes",
+                            "Name": "Autosaving period in minutes",
+                            "Handles": {
+                                "NameHandle": "h65b42cd85c1144b8933ba0e17cc9fec734f1",
+                                "DescriptionHandle": "hb53df522319b42618ba3e1f988c7733e3f2a"
+                            },
+                            "Type": "slider_int",
+                            "Default": 10,
+                            "Options": {
+                                "Min": 1,
+                                "Max": 120
+                            },
+                            "Description": "Interval in minutes for autosaving. Set to 10 for a ten-minute interval."
+                        },
+                        {
+                            "Id": "save_aware",
+                            "Name": "Save-aware",
+                            "Handles": {
+                                "NameHandle": "h7dbb8eafef8f4c80ba639ea7f957795e4331",
+                                "DescriptionHandle": "he6e430773fa641fb95c53544ce5707b996f7"
+                            },
+                            "Type": "checkbox",
+                            "Default": true,
+                            "Description": "Whether to reset the timer when any save is made."
+                        }
+                    ]
+                },
+                {
+                    "SectionId": "postponement",
+                    "SectionName": "Postponement control",
+                    "Handles": {
+                        "NameHandle": "hcd2095614e384f0c8923b412a1d0da0f53f6"
+                    },
+                    "Settings": [
+                        {
+                            "Id": "postpone_on_idle",
+                            "Name": "Postpone on idle",
+                            "Handles": {
+                                "NameHandle": "hdfa3fbb8d1f2403faf16490c25ed89d48e62",
+                                "DescriptionHandle": "h9c664f1a8ba94e93b6a4cd8f649e95500277"
+                            },
+                            "Type": "checkbox",
+                            "Default": true,
+                            "Description": "Whether to postpone autosaving if you're idle.\nNote: this works best if you have other options enabled."
+                        },
+                        {
+                            "Id": "postpone_on_inventory",
+                            "Name": "Postpone on inventory",
+                            "Handles": {
+                                "NameHandle": "h3d2a951473c841b79ee3c900a7bcb6165e3c",
+                                "DescriptionHandle": "he3891a097f034b92a1d5a2e267f60776c84c"
+                            },
+                            "Type": "checkbox",
+                            "Default": true,
+                            "Description": "Whether to postpone autosaving while using the inventory."
+                        },
+                        {
+                            "Id": "postpone_on_dialogue",
+                            "Name": "Postpone on dialogue",
+                            "Handles": {
+                                "NameHandle": "hfe03e9624f864e2baccbebb5eeb1e6f09655",
+                                "DescriptionHandle": "h04cfd5f991154dc090880bf145144ca08473"
+                            },
+                            "Type": "checkbox",
+                            "Default": true,
+                            "Description": "Whether to postpone autosaving during dialogue."
+                        },
+                        {
+                            "Id": "postpone_on_combat",
+                            "Name": "Postpone on combat",
+                            "Handles": {
+                                "NameHandle": "h77a85a6ea2e14ea5b81b2312a0298891b5c2",
+                                "DescriptionHandle": "hcadb1cef26854459ab512d4be0cfd156gdeg"
+                            },
+                            "Type": "checkbox",
+                            "Default": true,
+                            "Description": "Whether to postpone autosaving during combat."
+                        },
+                        {
+                            "Id": "postpone_on_combat_turn",
+                            "Name": "Postpone on combat turn",
+                            "Handles": {
+                                "NameHandle": "h9879769f689f4cbc9bbfca583c82616ff071",
+                                "DescriptionHandle": "h0a77b7f945c1495e9209524c6bff119dbffd"
+                            },
+                            "Type": "checkbox",
+                            "Default": true,
+                            "Description": "Whether to allow autosaving during combat, but only after your turn ends."
+                        },
+                        {
+                            "Id": "postpone_on_lockpicking",
+                            "Name": "Postpone on lockpicking",
+                            "Handles": {
+                                "NameHandle": "h47ce4fcd32ed4e2ba7ba6dad8c054ff0acf4",
+                                "DescriptionHandle": "h86522c6464154e809ec453682b9ff82f3009"
+                            },
+                            "Type": "checkbox",
+                            "Default": true,
+                            "Description": "Whether to postpone autosaving during lockpicking."
+                        },
+                        {
+                            "Id": "postpone_on_looting_characters",
+                            "Name": "Postpone on looting characters",
+                            "Handles": {
+                                "NameHandle": "h9ba0310464d047b18242f2c663a4fa3f90b3",
+                                "DescriptionHandle": "h7753b91de3b1465abc755163d176d22c29ab"
+                            },
+                            "Type": "checkbox",
+                            "Default": true,
+                            "Description": "Whether to postpone autosaving while looting characters."
+                        },
+                        {
+                            "Id": "postpone_on_movement",
+                            "Name": "Postpone on movement",
+                            "Handles": {
+                                "NameHandle": "h1887cc4dd06347b88cc4044f233a24d88268",
+                                "DescriptionHandle": "ha7ec785a961247cbbaa55cc6de7275c54aed"
+                            },
+                            "Type": "checkbox",
+                            "Default": true,
+                            "Description": "Whether to postpone autosaving while any party member is moving."
+                        },
+                        {
+                            "Id": "postpone_on_respec_and_mirror",
+                            "Name": "Postpone on respec and mirror",
+                            "Handles": {
+                                "NameHandle": "h7dd817bdeb61421c9dc71462d2e505bff19b",
+                                "DescriptionHandle": "h836a7c7593814d69953bad3e987587997b86"
+                            },
+                            "Type": "checkbox",
+                            "Default": true,
+                            "Description": "Whether to postpone autosaving while respeccing or using the mirror."
+                        },
+                        {
+                            "Id": "postpone_on_trade",
+                            "Name": "Postpone on trade",
+                            "Handles": {
+                                "NameHandle": "h3b5af6ce60ba40f2bfcf1a8cf8e3c04b4cae",
+                                "DescriptionHandle": "h9af1d465e1fb478785218ed3ad2285d15985"
+                            },
+                            "Type": "checkbox",
+                            "Default": true,
+                            "Description": "Whether to postpone autosaving while trading/bartering."
+                        },
+                        {
+                            "Id": "postpone_on_turn_based_mode",
+                            "Name": "Postpone on turn based mode",
+                            "Handles": {
+                                "NameHandle": "h632f4bb605e64d9a94a3646c7ba357901abg",
+                                "DescriptionHandle": "heb88c640db984bd6a4ba3af668c9ff4c8c47"
+                            },
+                            "Type": "checkbox",
+                            "Default": true,
+                            "Description": "Whether to postpone autosaving while in turn-based mode."
+                        },
+                        {
+                            "Id": "postpone_on_using_items",
+                            "Name": "Postpone on using items",
+                            "Handles": {
+                                "NameHandle": "hc702cc8327ab43f19c6be3fa10afdd75bc93",
+                                "DescriptionHandle": "h5d80f8b885fa4a2db8e4ca97b315a3f6ab27"
+                            },
+                            "Type": "checkbox",
+                            "Default": true,
+                            "Description": "Whether to postpone autosaving while using items.\nThis includes ladders and containers."
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -1,4 +1,12 @@
 {
+	"json.schemas": [
+		{
+			"fileMatch": [
+				"MCM_blueprint*.json"
+			],
+			"url": "https://raw.githubusercontent.com/AtilioA/BG3-MCM/main/.vscode/schema.json"
+		}
+	],
 	"Lua.diagnostics.globals": [
 		"Osi",
 		"Osiris",
