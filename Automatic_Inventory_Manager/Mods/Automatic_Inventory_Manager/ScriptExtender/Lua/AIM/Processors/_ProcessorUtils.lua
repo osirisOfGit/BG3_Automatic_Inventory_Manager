@@ -84,7 +84,7 @@ local validStackCriteriaKeys = {
 		end
 		for _, rootToCompare in pairs(rootsToCompare) do
 			local itemRoot = Osi.GetTemplate(item)
-			if string.upper(rootToCompare) == "SELF" and itemRoot == Osi.GetTemplate(originalItem) then
+			if itemRoot == Osi.GetTemplate(originalItem) then
 				return true
 			elseif string.find(itemRoot, rootToCompare) then
 				return true
