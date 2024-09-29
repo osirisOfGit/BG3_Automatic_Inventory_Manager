@@ -32,7 +32,7 @@
 				"command": "taskkill",
 				"args": [
 					"/IM",
-					"bg3.exe"
+					"bg3_dx11.exe"
 				],
 				"options": {
 					"shell": {

@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 **Mod Users** - to review any changes more in-depth, check the relevant sections of [the wiki](https://github.com/osirisOfGit/BG3_Automatic_Inventory_Manager/wiki)
 
+## [2.3.0]
+### Mod Users
+#### Added
+- New `CalculateStackUsing` option for `STACK_AMOUNT` filters, accepting either `ROOTS` or `TAGS` arrays or strings
+
+#### Changed
+- ALL_DEFAULTS preset
+	- Tags.json
+		- ARROWS, COATINGS, and SCROLLS use the new `CalculateStackUsing` option to find the character with the most
+		amount of items with the respective tag, if a winner could not be chosen based on template alone
+- Tweaked some logs around calculating stack size - debug logs should be a little easier to read
+
+### API
+#### Added
+- `CalculateStackUsing` method to allow adding new ways of calculating stack size
+
 ## [2.2.1]
 ### Mod Users
 #### Changed

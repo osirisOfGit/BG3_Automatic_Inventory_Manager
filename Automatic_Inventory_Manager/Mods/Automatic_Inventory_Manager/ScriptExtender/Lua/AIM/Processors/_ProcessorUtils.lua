@@ -165,7 +165,7 @@ function ProcessorUtils:CalculateTotalItemCount(targetsWithAmountWon,
 												root,
 												item,
 												calculateStackUsing)
-	Logger:BasicDebug("Calculating total count of %s in inventory of %s", root, targetChar)
+	Logger:BasicDebug("Calculating total count in inventory of %s", targetChar)
 	local totalFutureStackSize = targetsWithAmountWon[targetChar]
 
 	if not calculateStackUsing or next(calculateStackUsing) == 0 then
@@ -174,11 +174,12 @@ function ProcessorUtils:CalculateTotalItemCount(targetsWithAmountWon,
 			local _, templateStackSize = Osi.GetStackAmount(itemByTemplate)
 			totalFutureStackSize = totalFutureStackSize + templateStackSize
 
-			Logger:BasicDebug("Found %d of %s already in %s's inventory", templateStackSize, root, targetChar)
+			Logger:BasicDebug("Found %d already in %s's inventory", templateStackSize, targetChar)
 		end
 	else
 		local calculatedStackSize = DeepIterateInventory(targetChar, calculateStackUsing, item)
 		Logger:BasicDebug("Found %d relevant items already in %s's inventory, based on the custom CalculateStackUsing criteria", calculatedStackSize, targetChar)
+		totalFutureStackSize = totalFutureStackSize + calculatedStackSize
 	end
 
 	if TEMPLATES_BEING_TRANSFERRED[root] and TEMPLATES_BEING_TRANSFERRED[root][targetChar] then

@@ -71,7 +71,14 @@ all_defaults.Tags = {
 				TargetStat = ItemFilters.FilterFields.TargetStat.STACK_AMOUNT,
 				CompareStategy = ItemFilters.FilterFields.CompareStategy.HIGHER
 			},
-			[2] = { TargetStat = ItemFilters.FilterFields.TargetStat.ABILITY_STAT, TargetSubStat = "Dexterity", CompareStategy = ItemFilters.FilterFields.CompareStategy.HIGHER }
+			[2] = {
+				TargetStat = ItemFilters.FilterFields.TargetStat.STACK_AMOUNT,
+				CompareStategy = ItemFilters.FilterFields.CompareStategy.HIGHER,
+				CalculateStackUsing = {
+					["TAGS"] = { "COATING" }
+				},
+			},
+			[3] = { TargetStat = ItemFilters.FilterFields.TargetStat.ABILITY_STAT, TargetSubStat = "Dexterity", CompareStategy = ItemFilters.FilterFields.CompareStategy.HIGHER }
 		}
 	},
 	["ARROW"] = {
@@ -80,7 +87,14 @@ all_defaults.Tags = {
 				TargetStat = ItemFilters.FilterFields.TargetStat.STACK_AMOUNT,
 				CompareStategy = ItemFilters.FilterFields.CompareStategy.HIGHER
 			},
-			[2] = { TargetStat = ItemFilters.FilterFields.TargetStat.ABILITY_STAT, TargetSubStat = "Dexterity", CompareStategy = ItemFilters.FilterFields.CompareStategy.HIGHER }
+			[2] = {
+				TargetStat = ItemFilters.FilterFields.TargetStat.STACK_AMOUNT,
+				CompareStategy = ItemFilters.FilterFields.CompareStategy.HIGHER,
+				CalculateStackUsing = {
+					["TAGS"] = { "ARROW" }
+				},
+			},
+			[3] = { TargetStat = ItemFilters.FilterFields.TargetStat.ABILITY_STAT, TargetSubStat = "Dexterity", CompareStategy = ItemFilters.FilterFields.CompareStategy.HIGHER }
 		}
 	},
 	["GRENADE"] = {
@@ -89,16 +103,30 @@ all_defaults.Tags = {
 				TargetStat = ItemFilters.FilterFields.TargetStat.STACK_AMOUNT,
 				CompareStategy = ItemFilters.FilterFields.CompareStategy.HIGHER
 			},
-			[2] = { TargetStat = ItemFilters.FilterFields.TargetStat.ABILITY_STAT, TargetSubStat = "Strength", CompareStategy = ItemFilters.FilterFields.CompareStategy.HIGHER }
+			[2] = {
+				TargetStat = ItemFilters.FilterFields.TargetStat.STACK_AMOUNT,
+				CompareStategy = ItemFilters.FilterFields.CompareStategy.HIGHER,
+				CalculateStackUsing = {
+					["TAGS"] = { "GRENADE" }
+				},
+			},
+			[3] = { TargetStat = ItemFilters.FilterFields.TargetStat.ABILITY_STAT, TargetSubStat = "Strength", CompareStategy = ItemFilters.FilterFields.CompareStategy.HIGHER }
 		}
 	},
 	["SCROLL"] = {
 		Filters = {
 			[1] = {
 				TargetStat = ItemFilters.FilterFields.TargetStat.STACK_AMOUNT,
-				CompareStategy = ItemFilters.FilterFields.CompareStategy.HIGHER
+				CompareStategy = ItemFilters.FilterFields.CompareStategy.HIGHER,
 			},
-			[2] = { Target = "originalTarget" },
+			[2] = {
+				TargetStat = ItemFilters.FilterFields.TargetStat.STACK_AMOUNT,
+				CompareStategy = ItemFilters.FilterFields.CompareStategy.HIGHER,
+				CalculateStackUsing = {
+					["TAGS"] = { "SCROLL" }
+				},
+			},
+			[3] = { Target = "originalTarget" },
 		}
 	},
 	["CONSUMABLE"] = {
