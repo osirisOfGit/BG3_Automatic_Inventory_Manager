@@ -86,7 +86,6 @@ local validStackCriteriaKeys = {
 		end
 		return false
 	end,
-
 	["EQUIPMENT_TYPES"] = function(item, equipmentToCompareList, originalItem)
 		if Osi.IsEquipable(item) == 1 then
 			for _, equipmentToCompare in pairs(equipmentToCompareList) do
