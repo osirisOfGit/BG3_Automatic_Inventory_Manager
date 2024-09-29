@@ -34,6 +34,8 @@ EntityPropertyRecorder.PreFilters = "PreFilters"
 EntityPropertyRecorder.Value = "Value"
 --- Constant
 EntityPropertyRecorder.Key = "Key"
+--- Constant
+EntityPropertyRecorder.CalculateStackUsing = "CalculateStackUsing"
 
 --- Constructs the common table structure shared by all recorded entries
 ---@param initialApplicableItemFilterMaps will default to {} if not provided
@@ -67,7 +69,7 @@ registeredPropertyRecorders[ModUtils:GetAIMModInfo().Name] = {
 				["Tags"] =
 					EntityPropertyRecorder:BuildInitialRecordEntry({ "Tags" },
 						{ EntityPropertyRecorder.Filters },
-						{ EntityPropertyRecorder.Key },
+						{ EntityPropertyRecorder.Key, EntityPropertyRecorder.CalculateStackUsing },
 						nil,
 						{}
 					)
@@ -124,7 +126,7 @@ registeredPropertyRecorders[ModUtils:GetAIMModInfo().Name] = {
 				recordedEquipment["EquipmentType"] = EntityPropertyRecorder:BuildInitialRecordEntry(
 					{ "Equipment", "Weapons" },
 					{ EntityPropertyRecorder.Filters },
-					{ EntityPropertyRecorder.Key }
+					{ EntityPropertyRecorder.Key, EntityPropertyRecorder.CalculateStackUsing }
 				)
 
 				recordedEquipment["EquipmentType"][EntityPropertyRecorder.Value] =
@@ -148,7 +150,7 @@ registeredPropertyRecorders[ModUtils:GetAIMModInfo().Name] = {
 				recordedUUIDs["uuid"][EntityPropertyRecorder.CanBeAppliedTo][EntityPropertyRecorder.ItemFilterFields],
 				EntityPropertyRecorder.Filters)
 			recordedUUIDs["uuid"][EntityPropertyRecorder.CanBeAppliedTo][EntityPropertyRecorder.FilterFields] = {
-				"Target" }
+				"Target", EntityPropertyRecorder.CalculateStackUsing }
 
 			table.insert(
 				recordedUUIDs["uuid"][EntityPropertyRecorder.CanBeAppliedTo][EntityPropertyRecorder.ItemFilterFields],
@@ -165,7 +167,7 @@ registeredPropertyRecorders[ModUtils:GetAIMModInfo().Name] = {
 			table.insert(
 				recordedUUIDs["uuid"][EntityPropertyRecorder.CanBeAppliedTo][EntityPropertyRecorder.ItemFilterFields],
 				"Filters")
-			recordedUUIDs["uuid"][EntityPropertyRecorder.CanBeAppliedTo][EntityPropertyRecorder.FilterFields] = { EntityPropertyRecorder.Key }
+			recordedUUIDs["uuid"][EntityPropertyRecorder.CanBeAppliedTo][EntityPropertyRecorder.FilterFields] = { EntityPropertyRecorder.Key, EntityPropertyRecorder.CalculateStackUsing }
 
 			local applicableItemFilterMaps = recordedUUIDs["uuid"][EntityPropertyRecorder.CanBeAppliedTo][EntityPropertyRecorder.ItemFilterMaps]
 			table.insert(applicableItemFilterMaps, "Roots")

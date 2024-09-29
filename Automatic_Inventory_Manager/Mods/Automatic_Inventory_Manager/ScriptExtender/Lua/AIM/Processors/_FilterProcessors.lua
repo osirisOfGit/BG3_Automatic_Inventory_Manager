@@ -25,7 +25,8 @@ local StatFunctions = {
 			partyMember,
 			paramMap.inventoryHolder,
 			paramMap.root,
-			paramMap.item)
+			paramMap.item,
+			paramMap.filter.CalculateStackUsing)
 
 		Logger:BasicTrace("Found %d on %s", totalFutureStackSize, partyMember)
 
