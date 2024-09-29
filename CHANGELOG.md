@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.3.0]
 ### Mod Users
 #### Added
-- New `CalculateStackUsing` option for `STACK_AMOUNT` filters, accepting either `ROOTS` or `TAGS` array of strings or single string
+- New optional `CalculateStackUsing` option for `STACK_AMOUNT` filters, accepting `ROOTS` and/or `TAGS` array of strings or single string
 
 #### Changed
 - ALL_DEFAULTS preset
