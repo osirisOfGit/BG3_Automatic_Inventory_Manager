@@ -10,13 +10,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.3.0]
 ### Mod Users
 #### Added
-- New optional `CalculateStackUsing` option for `STACK_AMOUNT` filters, accepting `ROOTS` and/or `TAGS` array of strings or single string
+- New optional `CalculateStackUsing` option for `STACK_AMOUNT` filters, accepting any combination of `ROOTS`, `TAGS`, and `EQUIPMENT_TYPES` (contrary to the name, this only applies to weapons - armor uses ArmorType, which isn't supported currently cuz it seems useless) - values are array of strings or single string (Use [EntityPropertyRecorder](https://github.com/osirisOfGit/BG3_Automatic_Inventory_Manager/wiki/Configurations#entity-property-recorder))
 
 #### Changed
 - ALL_DEFAULTS preset
 	- Tags.json
 		- ARROWS, COATINGS, and SCROLLS use the new `CalculateStackUsing` option to find the character with the most
 		amount of items with the respective tag, if a winner could not be chosen based on template alone
+ 	- Weapons.json
+		- All weapons use the new `CalculateStackUsing` option `EQUIPMENT_TYPES` to go to the char with the most amount of identical weapon types (Javelins now go to the character with differnt kinds of javelins!)
+	- Roots.json
+		- Increased stack_limit size for Barkskin potions to 2 (why do i even have this?)
 - Tweaked some logs around calculating stack size - debug logs should be a little easier to read
 
 ### API

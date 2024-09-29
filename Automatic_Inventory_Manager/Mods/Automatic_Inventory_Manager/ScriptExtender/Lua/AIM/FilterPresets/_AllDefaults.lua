@@ -2,6 +2,13 @@ local all_defaults = {}
 all_defaults.Weapons = {
 	[ItemFilters.ItemKeys.WILDCARD] = {
 		Filters = {
+			[51] = {
+				TargetStat = ItemFilters.FilterFields.TargetStat.STACK_AMOUNT,
+				CompareStategy = ItemFilters.FilterFields.CompareStategy.HIGHER,
+				CalculateStackUsing = {
+					["EQUIPMENT_TYPES"] = { "SELF" }
+				},
+			},
 			[90] = { TargetStat = ItemFilters.FilterFields.TargetStat.HAS_TYPE_EQUIPPED },
 			[91] = { TargetStat = ItemFilters.FilterFields.TargetStat.WEAPON_ABILITY, CompareStategy = ItemFilters.FilterFields.CompareStategy.HIGHER },
 			[92] = { TargetStat = ItemFilters.FilterFields.TargetStat.WEAPON_SCORE, CompareStategy = ItemFilters.FilterFields.CompareStategy.HIGHER },
@@ -14,9 +21,9 @@ all_defaults.Equipment = {
 		Filters = {
 			[50] = {
 				TargetStat = ItemFilters.FilterFields.TargetStat.STACK_AMOUNT,
-				CompareStategy = ItemFilters.FilterFields.CompareStategy.HIGHER
+				CompareStategy = ItemFilters.FilterFields.CompareStategy.HIGHER,
 			},
-			[51] = { TargetStat = ItemFilters.FilterFields.TargetStat.PROFICIENCY },
+			[52] = { TargetStat = ItemFilters.FilterFields.TargetStat.PROFICIENCY },
 		}
 	}
 }
@@ -24,7 +31,7 @@ all_defaults.Equipment = {
 all_defaults.Roots = {
 	-- not a typo :D
 	["ALCH_Soultion_Elixir_Barkskin_cc1a8802-675a-426b-a791-ec1d5a5b6328"] = {
-		PreFilters = { [ItemFilters.ItemFields.PreFilters.STACK_LIMIT] = 1 },
+		PreFilters = { [ItemFilters.ItemFields.PreFilters.STACK_LIMIT] = 2 },
 		Filters = {
 			[1] = { TargetStat = ItemFilters.FilterFields.TargetStat.ARMOR_CLASS, CompareStategy = ItemFilters.FilterFields.CompareStategy.LOWER }
 		}

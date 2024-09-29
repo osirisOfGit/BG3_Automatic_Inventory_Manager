@@ -85,6 +85,26 @@ local validStackCriteriaKeys = {
 			end
 		end
 		return false
+	end,
+
+	["EQUIPMENT_TYPES"] = function(item, equipmentToCompareList, originalItem)
+		if Osi.IsEquipable(item) == 1 then
+			for _, equipmentToCompare in pairs(equipmentToCompareList) do
+				equipmentToCompare = string.upper(equipmentToCompare)
+				local equipType = Ext.StaticData.Get(Ext.Entity.Get(item).ServerItem.Template.EquipmentTypeID, "EquipmentType")
+				if equipType then
+					equipType = string.upper(equipType["Name"])
+					if equipmentToCompare == "SELF" then
+						local originalItemEquipType = Ext.StaticData.Get(Ext.Entity.Get(originalItem).ServerItem.Template.EquipmentTypeID, "EquipmentType")["Name"]
+						if originalItemEquipType and string.upper(originalItemEquipType) == equipType then
+							return true
+						end
+					elseif equipmentToCompare == equipType then
+						return true
+					end
+				end
+			end
+		end
 	end
 };
 
@@ -150,11 +170,11 @@ local function DeepIterateInventory(container, calculateStackUsing, originalItem
 				Logger:BasicDebug("Item %s had its stack amount of %d added due to %s predicate passing", string.sub(Osi.GetTemplate(uuid), 0, -36) .. uuid, totalAmount, key, value)
 				break
 			end
-		    ::continue::
+			::continue::
 		end
 
 		if isContainer == 1 then
-			DeepIterateInventory(uuid, calculateStackUsing, originalItem, itemAmount, depth + 1)
+			itemAmount = DeepIterateInventory(uuid, calculateStackUsing, originalItem, itemAmount, depth + 1)
 		end
 	end
 
