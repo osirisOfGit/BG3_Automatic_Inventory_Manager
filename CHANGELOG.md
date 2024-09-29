@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Changed
 - ALL_DEFAULTS preset
 	- Tags.json
-		- ARROWS, COATINGS, and SCROLLS use the new `CalculateStackUsing` option to find the character with the most
+		- ARROWS, COATINGS, GRENADES, and SCROLLS use the new `CalculateStackUsing` option to find the character with the most
 		amount of items with the respective tag, if a winner could not be chosen based on template alone
  	- Weapons.json
 		- All weapons use the new `CalculateStackUsing` option `EQUIPMENT_TYPES` to go to the char with the most amount of identical weapon types (Javelins now go to the character with differnt kinds of javelins!)
