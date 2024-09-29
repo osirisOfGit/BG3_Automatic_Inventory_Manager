@@ -186,7 +186,7 @@ function ProcessorUtils:CalculateTotalItemCount(targetsWithAmountWon,
 	Logger:BasicDebug("Calculating total count in inventory of %s", targetChar)
 	local totalFutureStackSize = targetsWithAmountWon[targetChar]
 
-	if not calculateStackUsing or next(calculateStackUsing) == 0 then
+	if not calculateStackUsing or not next(calculateStackUsing) then
 		local itemByTemplate = Osi.GetItemByTemplateInInventory(root, targetChar)
 		if itemByTemplate then
 			local _, templateStackSize = Osi.GetStackAmount(itemByTemplate)
