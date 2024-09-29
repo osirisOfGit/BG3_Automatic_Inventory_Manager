@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.3.0]
 ### Mod Users
 #### Added
-- New `CalculateStackUsing` option for `STACK_AMOUNT` filters, accepting either `ROOTS` or `TAGS` arrays or strings
+- New `CalculateStackUsing` option for `STACK_AMOUNT` filters, accepting either `ROOTS` or `TAGS` array of strings or single string
 
 #### Changed
 - ALL_DEFAULTS preset
@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### API
 #### Added
-- `CalculateStackUsing` method to allow adding new ways of calculating stack size
+- `ProcessorUtils:RegisterCustomStackCalculator` method to allow adding new ways of calculating stack size
 
 ## [2.2.1]
 ### Mod Users

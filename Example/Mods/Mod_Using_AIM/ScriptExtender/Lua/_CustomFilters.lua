@@ -4,16 +4,23 @@ local newItemFilterMap = {
 			Filters = {
 				-- https://osirisofgit.github.io/BG3_Automatic_Inventory_Manager/modules/ItemFilters.html
 				[1] = {
+					TargetStat = "STACK_AMOUNT",
+					CompareStategy = "HIGHER",
+					CalculateStackUsing = {
+						["CUSTOM_KEY"] = "I'M CUSTOM!"
+					},
+				},
+				[2] = {
 					-- CustomTargetStat that we need to register a TargetStatProcessor for
 					TargetStat = "MyCustomStat",
 					-- Need TargetStat and CompareStrategy for this to be recognized as a CompareFilter
 					-- If you don't want to include this, then you need to register a new FilterProcessor
 					CompareStrategy = "HIGHER"
 				},
-				[2] = {
+				[3] = {
 					-- Custom field we need to register a new FilterProcessor for
 					CustomField = "Rando"
-				}
+				},
 			},
 			-- As of 2.0.0, there's no mechanism available to register a new processor for new ItemFilterFields
 			-- However, custom ItemFilterFields will be passed to stat functions and filter processors via
@@ -85,7 +92,7 @@ if AIM_SHORTCUT.ItemFilters:RegisterItemFilterMapPreset(SAMPLE_MOD_UUID, "Custom
 			local recordEntry = AIM_SHORTCUT.EntityPropertyRecorder:BuildInitialRecordEntry(
 				{ "ALL" },        -- initialApplicableItemFilterMaps
 				{ "MyCustomItemFilterField" } -- initialApplicableItemFilterFields
-				-- The rest will be set their defaults 
+			-- The rest will be set their defaults
 			)
 
 			-- Can add custom fields without issue.
@@ -122,4 +129,15 @@ if AIM_SHORTCUT.ItemFilters:RegisterItemFilterMapPreset(SAMPLE_MOD_UUID, "Custom
 				Ext.Utils.Print("HECK YEAH")
 			end
 		end)
+
+	AIM_SHORTCUT.ProcessorUtils:RegisterCustomStackCalculator(SAMPLE_MOD_UUID,
+		{
+			["CUSTOM_KEY"] = function(itemInInventory, valuesToCompareAgainst, originalItem)
+				-- valuesToCompareAgainst will always be a list
+				for _, valueToCompare in pairs(valuesToCompareAgainst) do
+					Ext.Utils.Print("CustomStackCalculator: I'm working, bruh! Value: " .. valueToCompare .. "| Item: " .. itemInInventory .. " | original item: ".. originalItem)
+				end
+				return false
+			end
+		})
 end

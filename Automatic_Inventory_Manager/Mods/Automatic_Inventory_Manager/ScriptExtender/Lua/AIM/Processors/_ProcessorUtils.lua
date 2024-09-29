@@ -65,9 +65,6 @@ end
 
 local validStackCriteriaKeys = {
 	["TAGS"] = function(itemInInventory, tagsToCompare, _)
-		if type(tagsToCompare) ~= "table" then
-			tagsToCompare = { tagsToCompare }
-		end
 		for _, tagUUID in pairs(Ext.Entity.Get(itemInInventory).Tag.Tags) do
 			for _, tagToCompare in pairs(tagsToCompare) do
 				local tagTable = Ext.StaticData.Get(tagUUID, "Tag")
@@ -79,9 +76,6 @@ local validStackCriteriaKeys = {
 		return false
 	end,
 	["ROOTS"] = function(item, rootsToCompare, originalItem)
-		if type(rootsToCompare) ~= "table" then
-			rootsToCompare = { rootsToCompare }
-		end
 		for _, rootToCompare in pairs(rootsToCompare) do
 			local itemRoot = Osi.GetTemplate(item)
 			if itemRoot == Osi.GetTemplate(originalItem) then
@@ -93,6 +87,27 @@ local validStackCriteriaKeys = {
 		return false
 	end
 };
+
+--- Adds the provided customStackAmountCalculator functions to the list of possible functions, using the key as the criteria
+--- If the target key(s) identified already has a processor associated, ignore the provided one and continue
+---@param modUUID that ScriptExtender has registered for your mod, for tracking purposes - <a href="https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#ismodloadedmodguid">https://github.com/Norbyte/bg3se/blob/main/Docs/API.md#ismodloadedmodguid</a>
+---@param customStackCalculatorPairs table of [string] = function(itemInInventory, valuesForKeyToCompare[], originalItem)
+function ProcessorUtils:RegisterCustomStackCalculator(modUUID, customStackCalculatorPairs)
+	local modName = ModUtils:GetModInfoFromUUID(modUUID).Name
+	for key, calculatorFunction in pairs(customStackCalculatorPairs) do
+		if not validStackCriteriaKeys[key] then
+			validStackCriteriaKeys[key] = calculatorFunction
+
+			Logger:BasicInfo("Mod %s successfully added new customStackAmountCalculator function for %s",
+				modName,
+				key)
+		else
+			Logger:BasicWarning("Mod %s tried to add a new customStackAmountCalculator for existing targetStat %s",
+				modName,
+				key)
+		end
+	end
+end
 
 -- Function to deep iterate through the inventory and store items in a table, with depth limit
 -- Credit to SwissFred57 in Larian Discord for the initial code
@@ -126,6 +141,9 @@ local function DeepIterateInventory(container, calculateStackUsing, originalItem
 			if not validStackCriteriaKeys[string.upper(key)] then
 				Logger:BasicWarning("calculateStackUsing key %s is not valid - ignoring it!", key)
 				goto continue
+			end
+			if type(value) ~= "table" then
+				value = { value }
 			end
 			if validStackCriteriaKeys[string.upper(key)](uuid, value, originalItem) then
 				itemAmount = itemAmount + totalAmount
