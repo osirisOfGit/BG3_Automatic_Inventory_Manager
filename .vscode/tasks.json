@@ -12,7 +12,7 @@
 				"command": "Start-Process",
 				"args": [
 					"-FilePath",
-					"D:\\Steamy\\steamapps\\common\\Baldurs Gate 3\\bin\\bg3.exe",
+					"D:\\Steamy\\steamapps\\common\\Baldurs Gate 3\\bin\\bg3_dx11.exe",
 					"-ArgumentList",
 					"-continueGame --skip-launcher", // Starts the last game you had loaded automagically
 					"-WorkingDirectory",

@@ -63,6 +63,87 @@ function ProcessorUtils:SetWinningVal_ByCompareResult(baseValue,
 	return winnersTable, winningValue
 end
 
+local validStackCriteriaKeys = {
+	["TAGS"] = function(itemInInventory, tagsToCompare, _)
+		if type(tagsToCompare) ~= "table" then
+			tagsToCompare = { tagsToCompare }
+		end
+		for _, tagUUID in pairs(Ext.Entity.Get(itemInInventory).Tag.Tags) do
+			for _, tagToCompare in pairs(tagsToCompare) do
+				local tagTable = Ext.StaticData.Get(tagUUID, "Tag")
+				if tagTable and string.upper(tagToCompare) == string.upper(tagTable["Name"]) then
+					return true
+				end
+			end
+		end
+		return false
+	end,
+	["ROOTS"] = function(item, rootsToCompare, originalItem)
+		if type(rootsToCompare) ~= "table" then
+			rootsToCompare = { rootsToCompare }
+		end
+		for _, rootToCompare in pairs(rootsToCompare) do
+			local itemRoot = Osi.GetTemplate(item)
+			if string.upper(rootToCompare) == "SELF" and itemRoot == Osi.GetTemplate(originalItem) then
+				return true
+			elseif string.find(itemRoot, rootToCompare) then
+				return true
+			end
+		end
+		return false
+	end
+};
+
+-- Function to deep iterate through the inventory and store items in a table, with depth limit
+-- Credit to SwissFred57 in Larian Discord for the initial code
+local function DeepIterateInventory(container, calculateStackUsing, originalItem, itemAmount, depth)
+	itemAmount = itemAmount or 0
+	depth = depth or 0
+
+	if depth > 4 then
+		Logger:BasicTrace("DeepIterateInventory: Reached max depth")
+		return itemAmount
+	end
+
+	local entity = Ext.Entity.Get(container)
+	if not entity or not entity.InventoryOwner then
+		Logger:BasicTrace("DeepIterateInventory: Entity %s does not have an inventory", container)
+		return itemAmount
+	end
+
+	local primaryInventory = entity.InventoryOwner.PrimaryInventory
+	if not primaryInventory or not primaryInventory.InventoryContainer then
+		Logger:BasicTrace("DeepIterateInventory: Entity %s does not have an inventory", container)
+		return itemAmount
+	end
+
+	for _, item in pairs(primaryInventory.InventoryContainer.Items) do
+		local uuid = item.Item.Uuid.EntityUuid
+		local _, totalAmount = Osi.GetStackAmount(uuid)
+		local isContainer = Osi.IsContainer(uuid)
+
+		for key, value in pairs(calculateStackUsing) do
+			if not validStackCriteriaKeys[string.upper(key)] then
+				Logger:BasicWarning("calculateStackUsing key %s is not valid - ignoring it!", key)
+				goto continue
+			end
+			if validStackCriteriaKeys[string.upper(key)](uuid, value, originalItem) then
+				itemAmount = itemAmount + totalAmount
+				Logger:BasicDebug("Item %s had its stack amount of %d added due to %s predicate passing", string.sub(Osi.GetTemplate(uuid), 0, -36) .. uuid, totalAmount, key, value)
+				break
+			end
+		    ::continue::
+		end
+
+		if isContainer == 1 then
+			DeepIterateInventory(uuid, calculateStackUsing, originalItem, itemAmount, depth + 1)
+		end
+	end
+
+	-- Return the total count
+	return itemAmount
+end
+
 --- Uses the following on the targetChar
 --- + Osi.GetStackAmount (via Osi.GetItemByTemplateInInventory)
 --- + the calculated amount won for this item stack thusfar
@@ -76,21 +157,28 @@ end
 --- @param inventoryHolder CHARACTER
 --- @param root GUIDSTRING
 --- @param item GUIDSTRING
+--- @param calculateStackUsing table
 --- @return number the calculated stack size
 function ProcessorUtils:CalculateTotalItemCount(targetsWithAmountWon,
 												targetChar,
 												inventoryHolder,
 												root,
-												item)
-	Logger:BasicTrace("Calculating total count of %s in inventory of %s", root, targetChar)
+												item,
+												calculateStackUsing)
+	Logger:BasicDebug("Calculating total count of %s in inventory of %s", root, targetChar)
 	local totalFutureStackSize = targetsWithAmountWon[targetChar]
 
-	local itemByTemplate = Osi.GetItemByTemplateInInventory(root, targetChar)
-	if itemByTemplate then
-		local _, templateStackSize = Osi.GetStackAmount(itemByTemplate)
-		totalFutureStackSize = totalFutureStackSize + templateStackSize
+	if not calculateStackUsing or next(calculateStackUsing) == 0 then
+		local itemByTemplate = Osi.GetItemByTemplateInInventory(root, targetChar)
+		if itemByTemplate then
+			local _, templateStackSize = Osi.GetStackAmount(itemByTemplate)
+			totalFutureStackSize = totalFutureStackSize + templateStackSize
 
-		Logger:BasicDebug("Found %d of %s already in %s's inventory", templateStackSize, root, targetChar)
+			Logger:BasicDebug("Found %d of %s already in %s's inventory", templateStackSize, root, targetChar)
+		end
+	else
+		local calculatedStackSize = DeepIterateInventory(targetChar, calculateStackUsing, item)
+		Logger:BasicDebug("Found %d relevant items already in %s's inventory, based on the custom CalculateStackUsing criteria", calculatedStackSize, targetChar)
 	end
 
 	if TEMPLATES_BEING_TRANSFERRED[root] and TEMPLATES_BEING_TRANSFERRED[root][targetChar] then
