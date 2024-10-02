@@ -30,11 +30,9 @@ end
 
 --- Initializes the presets from AIM/FilterPresets/, overwriting directory contents, and migrates 1.x FILTER_DIR and FILTER_TABLES config properties to new structure,
 --- copying existing files over to a custom preset directory and activating it. If no legacy configs are detected, sets Preset_AllDefaults as the active preset
-local function InitializeFilterPresetsAndUpgradeLegacyFilters()
+local function InitializeFilterPresets()
 	ItemFilters:RegisterItemFilterMapPreset(ModUtils:GetAIMModInfo().ModuleUUID, Preset_AllDefaults.Name, Preset_AllDefaults.ItemFilterMaps)
 	ItemFilters:RegisterItemFilterMapPreset(ModUtils:GetAIMModInfo().ModuleUUID, Preset_CampGoldBooks.Name, Preset_CampGoldBooks.ItemFilterMaps)
-
-	Upgrade:LegacyFiltersToPresets()
 
 	if not Config.AIM.PRESETS.ACTIVE_PRESETS or next(Config.AIM.PRESETS.ACTIVE_PRESETS) == nil then
 		Config.AIM.PRESETS.ACTIVE_PRESETS = { [ModUtils:GetAIMModInfo().Name .. "-" .. Preset_AllDefaults.Name] = { "ALL" } }
@@ -71,7 +69,7 @@ function Config.SyncConfigsAndFilters()
 
 	Config.AIM = config
 
-	InitializeFilterPresetsAndUpgradeLegacyFilters()
+	InitializeFilterPresets()
 
 	ItemFilters:LoadItemFilterPresets()
 

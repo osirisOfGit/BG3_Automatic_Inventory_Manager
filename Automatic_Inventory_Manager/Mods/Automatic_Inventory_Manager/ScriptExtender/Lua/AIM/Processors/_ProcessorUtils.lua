@@ -26,7 +26,7 @@ end
 ---@param baseValue number|nil
 ---@param challengerValue number
 ---@param comparator CompareStrategy
----@param winnersTable table
+---@param winnersTable table  
 ---@param targetPartyMember GUIDSTRING
 ---@return table of winners - will either append the targetPartyMember if the values were equal, or replace the table with just targetPartyMember if the challenger won
 ---@return number that won in the compare, or baseValue if both were equal

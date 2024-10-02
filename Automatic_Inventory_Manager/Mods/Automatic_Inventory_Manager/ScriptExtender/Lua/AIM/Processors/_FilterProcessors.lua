@@ -28,8 +28,6 @@ local StatFunctions = {
 			paramMap.item,
 			paramMap.filter.CalculateStackUsing)
 
-		Logger:BasicTrace("Found %d on %s", totalFutureStackSize, partyMember)
-
 		paramMap.winners, paramMap.winningVal = ProcessorUtils:SetWinningVal_ByCompareResult(paramMap.winningVal,
 			totalFutureStackSize,
 			paramMap.filter.CompareStategy,
