@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Mod Users
 #### Added
 - New optional `CalculateStackUsing` option for `STACK_AMOUNT` filters, accepting any combination of `ROOTS`, `TAGS`, and `EQUIPMENT_TYPES` (contrary to the name, this only applies to weapons - armor uses ArmorType, which isn't supported currently cuz it seems useless) - values are array of strings or single string (Use [EntityPropertyRecorder](https://github.com/osirisOfGit/BG3_Automatic_Inventory_Manager/wiki/Configurations#entity-property-recorder))
+- Ability to blacklist items by TAG
 
 #### Changed
 - ALL_DEFAULTS preset
