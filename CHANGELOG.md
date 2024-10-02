@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 	- Roots.json
 		- Increased stack_limit size for Barkskin potions to 2 (why do i even have this?)
 - Tweaked some logs around calculating stack size - debug logs should be a little easier to read
+- Preventing sorting from triggering if a template is added to the char's inventory, but is also equipped - fixes transmog behavior and manifested weapons
 
 #### Removed
 - Upgrade Utilities designed for the 1.x to 2.x migration - if you're still somehow using a 1.x version of this mod, nuke your AIM config folder and just reinstall it
@@ -30,6 +31,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### API
 #### Added
 - `ProcessorUtils:RegisterCustomStackCalculator` method to allow adding new ways of calculating stack size
+
+### Internal
+#### Changed
+- Running `"TemplateAddedTo"` event listener on `after` instead of `before`
 
 ## [2.2.1]
 ### Mod Users
