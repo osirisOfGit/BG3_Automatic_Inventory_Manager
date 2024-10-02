@@ -65,8 +65,6 @@ function Config.SyncConfigsAndFilters()
 		config.PRESETS.FILTERS_PRESETS[presetName] = preset
 	end
 
-	Upgrade:ConfigFile(config)
-
 	Config.AIM = config
 
 	InitializeFilterPresets()
