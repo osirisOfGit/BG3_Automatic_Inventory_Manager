@@ -26,7 +26,7 @@ end
 ---@param baseValue number|nil
 ---@param challengerValue number
 ---@param comparator CompareStrategy
----@param winnersTable table
+---@param winnersTable table  
 ---@param targetPartyMember GUIDSTRING
 ---@return table of winners - will either append the targetPartyMember if the values were equal, or replace the table with just targetPartyMember if the challenger won
 ---@return number that won in the compare, or baseValue if both were equal
@@ -153,6 +153,13 @@ local function DeepIterateInventory(container, calculateStackUsing, originalItem
 
 	for _, item in pairs(primaryInventory.InventoryContainer.Items) do
 		local uuid = item.Item.Uuid.EntityUuid
+		local rootTemplate = Osi.GetTemplate(uuid)
+
+		if ItemBlackList:IsItemOrTemplateInBlacklist(item, rootTemplate) then
+			Logger:BasicDebug("Item %s is in the blacklist - skipping", string.sub(rootTemplate, 0, -36) .. uuid)
+			goto continueItemLoop
+		end
+
 		local _, totalAmount = Osi.GetStackAmount(uuid)
 		local isContainer = Osi.IsContainer(uuid)
 
@@ -166,7 +173,7 @@ local function DeepIterateInventory(container, calculateStackUsing, originalItem
 			end
 			if validStackCriteriaKeys[string.upper(key)](uuid, value, originalItem) then
 				itemAmount = itemAmount + totalAmount
-				Logger:BasicDebug("Item %s had its stack amount of %d added due to %s predicate passing", string.sub(Osi.GetTemplate(uuid), 0, -36) .. uuid, totalAmount, key, value)
+				Logger:BasicDebug("Item %s had its stack amount of %d added due to %s predicate passing", string.sub(rootTemplate, 0, -36) .. uuid, totalAmount, key, value)
 				break
 			end
 			::continue::
@@ -175,6 +182,8 @@ local function DeepIterateInventory(container, calculateStackUsing, originalItem
 		if isContainer == 1 then
 			itemAmount = DeepIterateInventory(uuid, calculateStackUsing, originalItem, itemAmount, depth + 1)
 		end
+
+		::continueItemLoop::
 	end
 
 	-- Return the total count

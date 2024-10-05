@@ -7,7 +7,8 @@ local blackListTable = {
 	RootTemplates = {
 		"FOCUSLODESTONES",
 		"TMOG"
-	}
+	},
+	Tags = {}
 }
 
 local fileName = "ItemBlackList"
@@ -16,8 +17,9 @@ local initialized = false
 
 local function AddNonDuplicateEntries(currentTable, newTable)
 	for _, newEntry in pairs(newTable) do
+		newEntry = string.upper(newEntry)
 		for _, currentEntry in pairs(currentTable) do
-			if newEntry == currentEntry then
+			if newEntry == string.upper(currentEntry) then
 				goto continue
 			end
 		end
@@ -43,6 +45,17 @@ local function AddBlacklistTables(blackList)
 			blackListTable.RootTemplates = blackList.RootTemplates
 		end
 	end
+
+	if blackList.Tags and #blackList.Tags > 0 then
+		if #blackListTable.Tags > 0 then
+			AddNonDuplicateEntries(blackListTable.Tags, blackList.Tags)
+		else
+			for index, tag in pairs(blackList.Tags) do
+				blackList.Tags[index] = string.upper(tag)
+			end
+			blackListTable.Tags = blackList.Tags
+		end
+	end
 end
 
 function ItemBlackList:InitializeBlackList()
@@ -61,13 +74,15 @@ end
 ---@param modUUID any
 ---@param blacklistedItems nil or list
 ---@param blacklistedRoots nil or list
+---@param blacklistedTags nil or list
 ---@treturn boolean if there weren't any problems with adding the entries
 --- (will be true even if no tables were provided or all entries provided already existed)
-function ItemBlackList:AddEntriesToBlackList(modUUID, blacklistedItems, blacklistedRoots)
+function ItemBlackList:AddEntriesToBlackList(modUUID, blacklistedItems, blacklistedRoots, blacklistedTags)
 	local modInfo = ModUtils:GetModInfoFromUUID(modUUID).Name
 	local blackListEntries = {
 		["Items"] = blacklistedItems,
-		["RootTemplates"] = blacklistedRoots
+		["RootTemplates"] = blacklistedRoots,
+		["Tags"] = blacklistedTags
 	}
 	AddBlacklistTables(blackListEntries)
 
@@ -85,7 +100,7 @@ function ItemBlackList:AddEntriesToBlackList(modUUID, blacklistedItems, blacklis
 end
 
 --- Checks to see if the item or rootTemplate is in the user-provided blacklist.
----@param item GUIDSTRING optional
+---@param item GUIDSTRING optional. If provided, will also check against the blacklisted Tags
 ---@param rootTemplate GUIDSTRING optional
 ---@treturn boolean true if the item or rootTemplate is in the blacklist
 function ItemBlackList:IsItemOrTemplateInBlacklist(item, rootTemplate)
@@ -94,6 +109,19 @@ function ItemBlackList:IsItemOrTemplateInBlacklist(item, rootTemplate)
 			if item == itemUUID or string.find(item, itemUUID) then
 				Logger:BasicInfo("Item %s was found in the blacklist!", item)
 				return true
+			end
+		end
+
+		if #blackListTable.Tags > 0 then
+			for _, tagUUID in pairs(Ext.Entity.Get(item).Tag.Tags) do
+				local tagTable = Ext.StaticData.Get(tagUUID, "Tag")
+				if tagTable then
+					for _, tagToCompare in pairs(blackListTable.Tags) do
+						if tagToCompare == string.upper(tagTable["Name"]) then
+							return true
+						end
+					end
+				end
 			end
 		end
 	end

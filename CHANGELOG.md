@@ -11,21 +11,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Mod Users
 #### Added
 - New optional `CalculateStackUsing` option for `STACK_AMOUNT` filters, accepting any combination of `ROOTS`, `TAGS`, and `EQUIPMENT_TYPES` (contrary to the name, this only applies to weapons - armor uses ArmorType, which isn't supported currently cuz it seems useless) - values are array of strings or single string (Use [EntityPropertyRecorder](https://github.com/osirisOfGit/BG3_Automatic_Inventory_Manager/wiki/Configurations#entity-property-recorder))
+- Ability to blacklist items by TAG
 
 #### Changed
 - ALL_DEFAULTS preset
 	- Tags.json
-		- ARROWS, COATINGS, and SCROLLS use the new `CalculateStackUsing` option to find the character with the most
+		- ARROWS, COATINGS, GRENADES, HEALING_POTIONS, and SCROLLS use the new `CalculateStackUsing` option to find the character with the most
 		amount of items with the respective tag, if a winner could not be chosen based on template alone
  	- Weapons.json
 		- All weapons use the new `CalculateStackUsing` option `EQUIPMENT_TYPES` to go to the char with the most amount of identical weapon types (Javelins now go to the character with differnt kinds of javelins!)
 	- Roots.json
 		- Increased stack_limit size for Barkskin potions to 2 (why do i even have this?)
-- Tweaked some logs around calculating stack size - debug logs should be a little easier to read
+- Tweaked some debug logs 
+- Preventing sorting from triggering if a template is added to the char's inventory, but is also equipped - fixes transmog behavior and manifested weapons
+- Case-insensitive ItemFilter lookups - e.g. `Tool` tag will now match `TOOL` and `tool` and `tOOl` in the Tags.json
+
+#### Removed
+- Upgrade Utilities designed for the 1.x to 2.x migration - if you're still somehow using a 1.x version of this mod, nuke your AIM config folder and just reinstall it
 
 ### API
 #### Added
 - `ProcessorUtils:RegisterCustomStackCalculator` method to allow adding new ways of calculating stack size
+
+### Internal
+#### Changed
+- Running `"TemplateAddedTo"` event listener on `after` instead of `before`
 
 ## [2.2.1]
 ### Mod Users

@@ -51,7 +51,13 @@ all_defaults.Tags = {
 		PreFilters = { [ItemFilters.ItemFields.PreFilters.STACK_LIMIT] = 2 },
 		Filters = {
 			[1] = { TargetStat = ItemFilters.FilterFields.TargetStat.HEALTH_PERCENTAGE, CompareStategy = ItemFilters.FilterFields.CompareStategy.LOWER, },
-			[2] = { TargetStat = ItemFilters.FilterFields.TargetStat.STACK_AMOUNT, CompareStategy = ItemFilters.FilterFields.CompareStategy.LOWER }
+			[2] = {
+				TargetStat = ItemFilters.FilterFields.TargetStat.STACK_AMOUNT,
+				CompareStategy = ItemFilters.FilterFields.CompareStategy.LOWER,
+				CalculateStackUsing = {
+					["TAGS"] = { "HEALING_POTION" }
+				},
+			}
 		},
 	},
 	["LOCKPICKS"] = {

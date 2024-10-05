@@ -150,7 +150,7 @@ registeredPropertyRecorders[ModUtils:GetAIMModInfo().Name] = {
 				recordedUUIDs["uuid"][EntityPropertyRecorder.CanBeAppliedTo][EntityPropertyRecorder.ItemFilterFields],
 				EntityPropertyRecorder.Filters)
 			recordedUUIDs["uuid"][EntityPropertyRecorder.CanBeAppliedTo][EntityPropertyRecorder.FilterFields] = {
-				"Target", EntityPropertyRecorder.CalculateStackUsing }
+				"Target" }
 
 			table.insert(
 				recordedUUIDs["uuid"][EntityPropertyRecorder.CanBeAppliedTo][EntityPropertyRecorder.ItemFilterFields],
