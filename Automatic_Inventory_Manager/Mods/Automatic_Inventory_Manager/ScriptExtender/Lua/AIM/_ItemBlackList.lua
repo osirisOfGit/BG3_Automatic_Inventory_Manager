@@ -8,7 +8,8 @@ local blackListTable = {
 		"FOCUSLODESTONES",
 		"TMOG"
 	},
-	Tags = {}
+	Tags = {},
+	ContainerRoots = {}
 }
 
 local fileName = "ItemBlackList"
@@ -46,6 +47,14 @@ local function AddBlacklistTables(blackList)
 		end
 	end
 
+	if blackList.ContainerRoots and #blackList.ContainerRoots > 0 then
+		if #blackListTable.ContainerRoots > 0 then
+			AddNonDuplicateEntries(blackListTable.ContainerRoots, blackList.ContainerRoots)
+		else
+			blackListTable.ContainerRoots = blackList.ContainerRoots
+		end
+	end
+
 	if blackList.Tags and #blackList.Tags > 0 then
 		if #blackListTable.Tags > 0 then
 			AddNonDuplicateEntries(blackListTable.Tags, blackList.Tags)
@@ -77,12 +86,13 @@ end
 ---@param blacklistedTags nil or list
 ---@treturn boolean if there weren't any problems with adding the entries
 --- (will be true even if no tables were provided or all entries provided already existed)
-function ItemBlackList:AddEntriesToBlackList(modUUID, blacklistedItems, blacklistedRoots, blacklistedTags)
+function ItemBlackList:AddEntriesToBlackList(modUUID, blacklistedItems, blacklistedRoots, blacklistedTags, blacklistedContainers)
 	local modInfo = ModUtils:GetModInfoFromUUID(modUUID).Name
 	local blackListEntries = {
 		["Items"] = blacklistedItems,
 		["RootTemplates"] = blacklistedRoots,
-		["Tags"] = blacklistedTags
+		["Tags"] = blacklistedTags,
+		["ContainerRoots"] = blacklistedContainers
 	}
 	AddBlacklistTables(blackListEntries)
 
@@ -133,6 +143,30 @@ function ItemBlackList:IsItemOrTemplateInBlacklist(item, rootTemplate)
 				return true
 			end
 		end
+	end
+
+	Logger:BasicTrace("Item %s and root %s were not found in the blacklist", item, rootTemplate)
+
+	return false
+end
+
+--- Checks the given item to see if it's a container and in the dedicated blacklist - if it isn't, will recursively check its DirectInventoryOwner
+---@param item GUIDSTRING
+function ItemBlackList:IsContainerInBlacklist(item)
+	if Osi.IsContainer(item) == 1 then
+		local rootTemplate = Osi.GetTemplate(item)
+		local upperTemplate = string.upper(rootTemplate)
+
+		for _, rootUUID in pairs(blackListTable.ContainerRoots) do
+			rootUUID = string.upper(rootUUID)
+			if upperTemplate == rootUUID or string.find(upperTemplate, rootUUID) then
+				Logger:BasicInfo("Container %s with root %s was found in the container blacklist!", string.sub(rootTemplate, 0, -36) .. item, rootTemplate)
+				return true
+			end
+		end
+
+		Logger:BasicDebug("Container %s with root %s was not found in the container blacklist - checking parent %s", string.sub(rootTemplate, 0, -36) .. item, rootTemplate, Osi.GetDirectInventoryOwner(item))
+		return ItemBlackList:IsContainerInBlacklist(Osi.GetDirectInventoryOwner(item))
 	end
 
 	return false
