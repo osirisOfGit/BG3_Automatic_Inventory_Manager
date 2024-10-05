@@ -9,8 +9,8 @@ local newItemFilterMap = {
 				["CustomPreFilter-PerItem"] = { amICool = false },
 			},
 			Filters = {
-				[1] = { TargetStat = AIM_SHORTCUT.ItemFilters.FilterFields.TargetStat.HEALTH_PERCENTAGE, CompareStategy = AIM_SHORTCUT.ItemFilters.FilterFields.CompareStategy.LOWER, },
-				[2] = { TargetStat = AIM_SHORTCUT.ItemFilters.FilterFields.TargetStat.STACK_AMOUNT, CompareStategy = AIM_SHORTCUT.ItemFilters.FilterFields.CompareStategy.LOWER }
+				[1] = { TargetStat = AIM_SHORTCUT.ItemFilters.FilterFields.TargetStat.HEALTH_PERCENTAGE, CompareStrategy = AIM_SHORTCUT.ItemFilters.FilterFields.CompareStrategy.LOWER, },
+				[2] = { TargetStat = AIM_SHORTCUT.ItemFilters.FilterFields.TargetStat.STACK_AMOUNT, CompareStrategy = AIM_SHORTCUT.ItemFilters.FilterFields.CompareStrategy.LOWER }
 			},
 		},
 	}

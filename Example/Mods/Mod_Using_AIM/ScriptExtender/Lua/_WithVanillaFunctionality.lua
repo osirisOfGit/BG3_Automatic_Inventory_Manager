@@ -6,8 +6,8 @@ local newItemFilterMap = {
 			PreFilters = { [AIM_SHORTCUT.ItemFilters.ItemFields.PreFilters.STACK_LIMIT] = 2 },
 			Filters = {
 				-- https://osirisofgit.github.io/BG3_Automatic_Inventory_Manager/modules/ItemFilters.html#ItemFilters.FilterFields.TargetStat
-				[1] = { TargetStat = AIM_SHORTCUT.ItemFilters.FilterFields.TargetStat.HEALTH_PERCENTAGE, CompareStategy = AIM_SHORTCUT.ItemFilters.FilterFields.CompareStategy.LOWER, },
-				[2] = { TargetStat = AIM_SHORTCUT.ItemFilters.FilterFields.TargetStat.STACK_AMOUNT, CompareStategy = AIM_SHORTCUT.ItemFilters.FilterFields.CompareStategy.LOWER }
+				[1] = { TargetStat = AIM_SHORTCUT.ItemFilters.FilterFields.TargetStat.HEALTH_PERCENTAGE, CompareStrategy = AIM_SHORTCUT.ItemFilters.FilterFields.CompareStrategy.LOWER, },
+				[2] = { TargetStat = AIM_SHORTCUT.ItemFilters.FilterFields.TargetStat.STACK_AMOUNT, CompareStrategy = AIM_SHORTCUT.ItemFilters.FilterFields.CompareStrategy.LOWER }
 			},
 		},
 	},
@@ -19,8 +19,8 @@ local newItemFilterMap = {
 			PreFilters = { [AIM_SHORTCUT.ItemFilters.ItemFields.PreFilters.STACK_LIMIT] = 2 },
 			Filters = {
 				-- https://osirisofgit.github.io/BG3_Automatic_Inventory_Manager/modules/ItemFilters.html#ItemFilters.FilterFields.TargetStat
-				[1] = { TargetStat = AIM_SHORTCUT.ItemFilters.FilterFields.TargetStat.HEALTH_PERCENTAGE, CompareStategy = AIM_SHORTCUT.ItemFilters.FilterFields.CompareStategy.LOWER, },
-				[2] = { TargetStat = AIM_SHORTCUT.ItemFilters.FilterFields.TargetStat.STACK_AMOUNT, CompareStategy = AIM_SHORTCUT.ItemFilters.FilterFields.CompareStategy.LOWER }
+				[1] = { TargetStat = AIM_SHORTCUT.ItemFilters.FilterFields.TargetStat.HEALTH_PERCENTAGE, CompareStrategy = AIM_SHORTCUT.ItemFilters.FilterFields.CompareStrategy.LOWER, },
+				[2] = { TargetStat = AIM_SHORTCUT.ItemFilters.FilterFields.TargetStat.STACK_AMOUNT, CompareStrategy = AIM_SHORTCUT.ItemFilters.FilterFields.CompareStrategy.LOWER }
 			},
 		},
 	}

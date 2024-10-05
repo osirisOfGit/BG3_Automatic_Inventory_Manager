@@ -82,7 +82,7 @@ Ext.Osiris.RegisterListener("DroppedBy", 2, "after", function(object, _)
 end)
 
 -- Includes moving from container to other inventories etc...
-Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(root, item, inventoryHolder, _)
+Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "before", function(root, item, inventoryHolder, _)
 	if Config.AIM.ENABLED == 1 then
 		-- Will be nil if inventoryHolder isn't a character
 		if Osi.IsPlayer(inventoryHolder) ~= 1 then
@@ -92,7 +92,7 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(root, item, 
 			Logger:BasicWarning("Item %s, supposedly held by %s, doesn't exist!", item, inventoryHolder)
 			return
 		elseif Osi.IsEquipped(item) ~= 0 then
-			Logger:BasicInfo("Item %s is currently equipped - likely due to some transmog or weapon summoning shenanigans. Marking as tagged and moving on")
+			Logger:BasicInfo("Item %s is currently equipped. Marking as tagged and moving on", item)
 			Osi.SetTag(item, TAG_AIM_PROCESSED)
 			return
 		end

@@ -26,16 +26,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Preventing sorting from triggering if a template is added to the char's inventory, but is also equipped - fixes transmog behavior and manifested weapons
 - Case-insensitive ItemFilter lookups - e.g. `Tool` tag will now match `TOOL` and `tool` and `tOOl` in the Tags.json
 
+#### Fixed
+- `CompareStategy` to `CompareStrategy` - AIM will automatically fix this for you, no manual changes needed
+
 #### Removed
 - Upgrade Utilities designed for the 1.x to 2.x migration - if you're still somehow using a 1.x version of this mod, nuke your AIM config folder and just reinstall it
 
 ### API
 #### Added
 - `ProcessorUtils:RegisterCustomStackCalculator` method to allow adding new ways of calculating stack size
-
-### Internal
-#### Changed
-- Running `"TemplateAddedTo"` event listener on `after` instead of `before`
 
 ## [2.2.1]
 ### Mod Users

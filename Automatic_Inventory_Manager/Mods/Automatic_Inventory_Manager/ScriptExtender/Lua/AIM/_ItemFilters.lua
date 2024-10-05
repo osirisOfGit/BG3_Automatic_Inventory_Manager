@@ -15,7 +15,7 @@ ItemFilters.ItemFields.PreFilters = {
 ItemFilters.FilterFields = {}
 
 --- Used by Compare Filters to determine whether a higher or lower value is considered the "winner"
-ItemFilters.FilterFields.CompareStategy = {
+ItemFilters.FilterFields.CompareStrategy = {
 	LOWER = "LOWER",
 	HIGHER = "HIGHER"
 }
@@ -204,7 +204,10 @@ function ItemFilters:LoadItemFilterPresets()
 							presetName,
 							filterTableName)
 
-						AddItemFilterMaps({ [filterTableName] = Ext.Json.Parse(filterTable) },
+						filterTable = Ext.Json.Parse(filterTable)
+						Upgrade:StategySpellingFix(filterTable, filterTableFilePath)
+
+						AddItemFilterMaps({ [filterTableName] = filterTable },
 							false,
 							false,
 							false)
@@ -280,13 +283,14 @@ end
 
 local function GetItemFiltersFromMap(itemFilterMap, key, filtersTable)
 	if itemFilterMap then
-		key = string.upper(type(key) == "string" and key or tostring(key))
-		if itemFilterMap[key] then
-			table.insert(filtersTable, itemFilterMap[key])
+		local foundFilter = itemFilterMap[string.upper(type(key) == "string" and key or tostring(key))]
+		if foundFilter then
+			table.insert(filtersTable, foundFilter)
 		end
 
-		if itemFilterMap[ItemFilters.ItemKeys.WILDCARD] then
-			table.insert(filtersTable, itemFilterMap[ItemFilters.ItemKeys.WILDCARD])
+		local foundFilterAll = itemFilterMap[ItemFilters.ItemKeys.WILDCARD]
+		if foundFilterAll then
+			table.insert(filtersTable, foundFilterAll)
 		end
 	end
 end
@@ -297,8 +301,9 @@ local function GetItemFiltersByRoot(itemFilterMaps, root, _, _)
 	GetItemFiltersFromMap(itemFilterMaps.Roots, root, filters)
 
 	if itemFilterMaps["RootPartial"] then
+		root = string.upper(root)
 		for key, filter in pairs(itemFilterMaps.RootPartial) do
-			if string.find(string.upper(root), key) then
+			if string.find(root, key) then
 				table.insert(filters, filter)
 			end
 		end
@@ -312,7 +317,9 @@ local function GetItemFiltersByEquipmentType(itemFilterMaps, root, item, _)
 	if (itemFilterMaps["Equipment"] or itemFilterMaps["Weapons"]) and Osi.IsEquipable(item) == 1 then
 		if entity.ServerItem.Template.EquipmentTypeID ~= "00000000-0000-0000-0000-000000000000" then
 			local equipmentType = tostring(Ext.StaticData.Get(entity.ServerItem.Template.EquipmentTypeID, "EquipmentType")["Name"])
+
 			GetItemFiltersFromMap(itemFilterMaps.Equipment, equipmentType, filters)
+
 			if Osi.IsWeapon(item) == 1 then
 				GetItemFiltersFromMap(itemFilterMaps.Weapons, equipmentType, filters)
 			end

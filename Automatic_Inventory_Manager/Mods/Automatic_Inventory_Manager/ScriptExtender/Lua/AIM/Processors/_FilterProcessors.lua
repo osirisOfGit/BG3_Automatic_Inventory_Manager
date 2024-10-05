@@ -7,7 +7,7 @@ local StatFunctions = {
 	[targetStats.HEALTH_PERCENTAGE] = function(partyMember, paramMap)
 		paramMap.winners, paramMap.winningVal = ProcessorUtils:SetWinningVal_ByCompareResult(paramMap.winningVal,
 			Osi.GetHitpointsPercentage(partyMember),
-			paramMap.filter.CompareStategy,
+			paramMap.filter.CompareStrategy,
 			paramMap.winners,
 			partyMember)
 	end,
@@ -15,7 +15,7 @@ local StatFunctions = {
 	[targetStats.ARMOR_CLASS] = function(partyMember, paramMap)
 		paramMap.winners, paramMap.winningVal = ProcessorUtils:SetWinningVal_ByCompareResult(paramMap.winningVal,
 			Ext.Entity.Get(partyMember).Health.AC,
-			paramMap.filter.CompareStategy,
+			paramMap.filter.CompareStrategy,
 			paramMap.winners,
 			partyMember)
 	end,
@@ -30,7 +30,7 @@ local StatFunctions = {
 
 		paramMap.winners, paramMap.winningVal = ProcessorUtils:SetWinningVal_ByCompareResult(paramMap.winningVal,
 			totalFutureStackSize,
-			paramMap.filter.CompareStategy,
+			paramMap.filter.CompareStrategy,
 			paramMap.winners,
 			partyMember)
 	end,
@@ -40,7 +40,7 @@ local StatFunctions = {
 
 		paramMap.winners, paramMap.winningVal = ProcessorUtils:SetWinningVal_ByCompareResult(paramMap.winningVal,
 			Osi.CalculatePassiveSkill(partyMember, skillName),
-			paramMap.filter.CompareStategy,
+			paramMap.filter.CompareStrategy,
 			paramMap.winners,
 			partyMember)
 	end,
@@ -48,7 +48,7 @@ local StatFunctions = {
 	[targetStats.ABILITY_STAT] = function(partyMember, paramMap)
 		paramMap.winners, paramMap.winningVal = ProcessorUtils:SetWinningVal_ByCompareResult(paramMap.winningVal,
 			Osi.GetAbility(partyMember, paramMap.filter.TargetSubStat),
-			paramMap.filter.CompareStategy,
+			paramMap.filter.CompareStrategy,
 			paramMap.winners,
 			partyMember)
 	end,
@@ -62,7 +62,7 @@ local StatFunctions = {
 		local weaponScore = Osi.GetWeaponScoreForCharacter(paramMap.item, partyMember)
 		paramMap.winners, paramMap.winningVal = ProcessorUtils:SetWinningVal_ByCompareResult(paramMap.winningVal,
 			weaponScore,
-			paramMap.filter.CompareStategy,
+			paramMap.filter.CompareStrategy,
 			paramMap.winners,
 			partyMember)
 	end,
@@ -73,7 +73,7 @@ local StatFunctions = {
 		Logger:BasicTrace("Weapon uses %s, %s has a score of %s", weaponAbility, partyMember, partyMemberAbilityScore)
 		paramMap.winners, paramMap.winningVal = ProcessorUtils:SetWinningVal_ByCompareResult(paramMap.winningVal,
 			partyMemberAbilityScore,
-			paramMap.filter.CompareStategy,
+			paramMap.filter.CompareStrategy,
 			paramMap.winners,
 			partyMember)
 	end,
