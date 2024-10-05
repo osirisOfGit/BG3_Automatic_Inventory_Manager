@@ -92,7 +92,7 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(root, item, 
 			Logger:BasicWarning("Item %s, supposedly held by %s, doesn't exist!", item, inventoryHolder)
 			return
 		elseif Osi.IsEquipped(item) ~= 0 then
-			Logger:BasicInfo("Item %s is currently equipped - likely due to some transmog or weapon summoning shenanigans. Marking as tagged and moving on")
+			Logger:BasicInfo("Item %s is currently equipped. Marking as tagged and moving on", item)
 			Osi.SetTag(item, TAG_AIM_PROCESSED)
 			return
 		end
