@@ -203,8 +203,11 @@ function ItemFilters:LoadItemFilterPresets()
 							"Merging %s/%s.json into active itemFilterMaps",
 							presetName,
 							filterTableName)
-
-						AddItemFilterMaps({ [filterTableName] = Ext.Json.Parse(filterTable) },
+						
+						filterTable = Ext.Json.Parse(filterTable)
+						Upgrade:StategySpellingFix(filterTable, filterTableFilePath)
+							
+						AddItemFilterMaps({ [filterTableName] = filterTable },
 							false,
 							false,
 							false)
