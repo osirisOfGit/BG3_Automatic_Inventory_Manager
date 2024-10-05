@@ -12,7 +12,7 @@ local function Compare(baseValue, challengerValue, comparator)
 	end
 
 	local compareResult
-	if comparator == ItemFilters.FilterFields.CompareStategy.HIGHER then
+	if comparator == ItemFilters.FilterFields.CompareStrategy.HIGHER then
 		compareResult = baseValue > challengerValue
 	else
 		compareResult = baseValue < challengerValue

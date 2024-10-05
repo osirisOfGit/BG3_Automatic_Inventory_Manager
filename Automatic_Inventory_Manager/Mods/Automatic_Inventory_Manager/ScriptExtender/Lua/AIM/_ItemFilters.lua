@@ -15,7 +15,7 @@ ItemFilters.ItemFields.PreFilters = {
 ItemFilters.FilterFields = {}
 
 --- Used by Compare Filters to determine whether a higher or lower value is considered the "winner"
-ItemFilters.FilterFields.CompareStategy = {
+ItemFilters.FilterFields.CompareStrategy = {
 	LOWER = "LOWER",
 	HIGHER = "HIGHER"
 }

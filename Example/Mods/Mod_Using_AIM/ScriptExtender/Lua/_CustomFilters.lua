@@ -5,7 +5,7 @@ local newItemFilterMap = {
 				-- https://osirisofgit.github.io/BG3_Automatic_Inventory_Manager/modules/ItemFilters.html
 				[1] = {
 					TargetStat = "STACK_AMOUNT",
-					CompareStategy = "HIGHER",
+					CompareStrategy = "HIGHER",
 					CalculateStackUsing = {
 						["CUSTOM_KEY"] = "I'M CUSTOM!"
 					},

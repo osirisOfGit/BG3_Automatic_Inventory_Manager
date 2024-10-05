@@ -5,7 +5,7 @@ campgoldbooks.Roots = {
 		Filters = {
 			[1] = {
 				TargetStat = ItemFilters.FilterFields.TargetStat.STACK_AMOUNT,
-				CompareStategy = ItemFilters.FilterFields.CompareStategy.HIGHER
+				CompareStrategy = ItemFilters.FilterFields.CompareStrategy.HIGHER
 			}
 		}
 	}
