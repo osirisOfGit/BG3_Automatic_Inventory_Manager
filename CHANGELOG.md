@@ -28,6 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Tweaked some debug logs 
 - Preventing sorting from triggering if a template is added to the char's inventory, but is also equipped - fixes transmog behavior and manifested weapons
 - Case-insensitive ItemFilter lookups - e.g. `Tool` tag will now match `TOOL` and `tool` and `tOOl` in the Tags.json
+- Case-insensitive Blacklist lookups
 
 #### Fixed
 - `CompareStategy` to `CompareStrategy` - AIM will automatically fix this for you, no manual changes needed
