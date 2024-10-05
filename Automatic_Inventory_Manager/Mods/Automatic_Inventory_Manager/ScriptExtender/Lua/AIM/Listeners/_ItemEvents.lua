@@ -82,7 +82,7 @@ Ext.Osiris.RegisterListener("DroppedBy", 2, "after", function(object, _)
 end)
 
 -- Includes moving from container to other inventories etc...
-Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(root, item, inventoryHolder, _)
+Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "before", function(root, item, inventoryHolder, _)
 	if Config.AIM.ENABLED == 1 then
 		-- Will be nil if inventoryHolder isn't a character
 		if Osi.IsPlayer(inventoryHolder) ~= 1 then

@@ -33,10 +33,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Added
 - `ProcessorUtils:RegisterCustomStackCalculator` method to allow adding new ways of calculating stack size
 
-### Internal
-#### Changed
-- Running `"TemplateAddedTo"` event listener on `after` instead of `before`
-
 ## [2.2.1]
 ### Mod Users
 #### Changed
