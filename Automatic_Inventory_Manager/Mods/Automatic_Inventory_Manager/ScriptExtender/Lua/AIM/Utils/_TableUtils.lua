@@ -46,7 +46,6 @@ function TableUtils:MakeImmutableTableCopy(myTable)
 	return copy(myTable, nil, true)
 end
 
-
 ---Compare two lists
 ---@param first
 ---@param second

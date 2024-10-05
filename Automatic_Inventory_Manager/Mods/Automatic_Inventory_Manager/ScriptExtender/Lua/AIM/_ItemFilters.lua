@@ -238,6 +238,7 @@ function ItemFilters:LoadItemFilterPresets()
 	end
 
 	ItemFilters:UpdateItemFilterMapsClone()
+
 	if Logger:IsLogLevelEnabled(Logger.PrintTypes.DEBUG) then
 		Logger:BasicDebug("Finished loading in presets - finalized item maps are:")
 		for itemFilterMap, itemFilterMapContent in pairs(ItemFilters.itemFilterMaps) do
@@ -256,24 +257,30 @@ end
 --- immutable clone of the itemFilterMaps - can be forceably synced using UpdateItemFilterMapsClone, but we'll do it on each update we know about
 ItemFilters.itemFilterMaps = TableUtils:MakeImmutableTableCopy(itemFilterMaps)
 
---- Updates ItemFilters.itemFilterMaps
+--- Updates ItemFilters.itemFilterMaps with all upper-cased item keys, and makes it immutable
+--- Also updates the TargetStat enum with all now-known TargetStat values, in case new ones were added
 function ItemFilters:UpdateItemFilterMapsClone()
-	ItemFilters.itemFilterMaps = TableUtils:MakeImmutableTableCopy(itemFilterMaps)
-
 	-- Update the TargetStat enum with new fields for use by FilterProcessors
-	for _, itemFilterMap in pairs(ItemFilters.itemFilterMaps) do
-		for _, itemFilter in pairs(itemFilterMap) do
+	for _, itemFilterMap in pairs(itemFilterMaps) do
+		for itemKey, itemFilter in pairs(itemFilterMap) do
 			for _, filter in pairs(itemFilter.Filters) do
 				if filter.TargetStat and not ItemFilters.FilterFields.TargetStat[filter.TargetStat] then
 					ItemFilters.FilterFields.TargetStat[filter.TargetStat] = filter.TargetStat
 				end
 			end
+			if itemKey ~= string.upper(itemKey) then
+				-- Case-insensitive lookups in lua - who needs metatables?
+				itemFilterMap[string.upper(itemKey)] = itemFilter
+				itemFilterMap[itemKey] = nil
+			end
 		end
 	end
+	ItemFilters.itemFilterMaps = TableUtils:MakeImmutableTableCopy(itemFilterMaps)
 end
 
 local function GetItemFiltersFromMap(itemFilterMap, key, filtersTable)
 	if itemFilterMap then
+		key = string.upper(type(key) == "string" and key or tostring(key))
 		if itemFilterMap[key] then
 			table.insert(filtersTable, itemFilterMap[key])
 		end
@@ -291,7 +298,7 @@ local function GetItemFiltersByRoot(itemFilterMaps, root, _, _)
 
 	if itemFilterMaps["RootPartial"] then
 		for key, filter in pairs(itemFilterMaps.RootPartial) do
-			if string.find(root, key) then
+			if string.find(string.upper(root), key) then
 				table.insert(filters, filter)
 			end
 		end
