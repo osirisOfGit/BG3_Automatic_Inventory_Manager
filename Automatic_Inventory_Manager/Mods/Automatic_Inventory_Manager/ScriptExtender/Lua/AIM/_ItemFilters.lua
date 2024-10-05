@@ -203,10 +203,10 @@ function ItemFilters:LoadItemFilterPresets()
 							"Merging %s/%s.json into active itemFilterMaps",
 							presetName,
 							filterTableName)
-						
+
 						filterTable = Ext.Json.Parse(filterTable)
 						Upgrade:StategySpellingFix(filterTable, filterTableFilePath)
-							
+
 						AddItemFilterMaps({ [filterTableName] = filterTable },
 							false,
 							false,
@@ -285,7 +285,7 @@ local function GetItemFiltersFromMap(itemFilterMap, key, filtersTable)
 	if itemFilterMap then
 		local foundFilter = itemFilterMap[string.upper(type(key) == "string" and key or tostring(key))]
 		if foundFilter then
-			table.insert(filtersTable,foundFilter)
+			table.insert(filtersTable, foundFilter)
 		end
 
 		local foundFilterAll = itemFilterMap[ItemFilters.ItemKeys.WILDCARD]
@@ -317,7 +317,7 @@ local function GetItemFiltersByEquipmentType(itemFilterMaps, root, item, _)
 	if (itemFilterMaps["Equipment"] or itemFilterMaps["Weapons"]) and Osi.IsEquipable(item) == 1 then
 		if entity.ServerItem.Template.EquipmentTypeID ~= "00000000-0000-0000-0000-000000000000" then
 			local equipmentType = tostring(Ext.StaticData.Get(entity.ServerItem.Template.EquipmentTypeID, "EquipmentType")["Name"])
-			
+
 			GetItemFiltersFromMap(itemFilterMaps.Equipment, equipmentType, filters)
 
 			if Osi.IsWeapon(item) == 1 then
