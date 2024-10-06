@@ -5,11 +5,14 @@ ItemBlackList = {}
 local blackListTable = {
 	Items = {},
 	RootTemplates = {
-		"FOCUSLODESTONES",
-		"TMOG"
+		"FOCUSLODESTONES", -- Lodestones - https://www.nexusmods.com/baldursgate3/mods/7417
+		"TMOG",      -- Transmog enhanced - https://www.nexusmods.com/baldursgate3/mods/2922
+		"FallenStar_Wifi_" -- Wifi Potions - https://www.nexusmods.com/baldursgate3/mods/5080
 	},
 	Tags = {},
-	ContainerRoots = {}
+	ContainerRoots = {
+		"CONT_ISF_Container" -- ItemShipmentFramework - https://www.nexusmods.com/baldursgate3/mods/8295
+	}
 }
 
 local fileName = "ItemBlackList"
@@ -164,6 +167,7 @@ end
 
 --- Checks the given item to see if it's a container and in the dedicated blacklist - if it isn't, will recursively check its DirectInventoryOwner
 ---@param item GUIDSTRING
+---@return rootTemplate GUIDSTRING that was found in the blacklist
 function ItemBlackList:IsContainerInBlacklist(item)
 	if Osi.IsContainer(item) == 1 then
 		local rootTemplate = Osi.GetTemplate(item)
@@ -172,14 +176,13 @@ function ItemBlackList:IsContainerInBlacklist(item)
 		for _, rootUUID in pairs(blackListTable.ContainerRoots) do
 			rootUUID = string.upper(rootUUID)
 			if upperTemplate == rootUUID or string.find(upperTemplate, rootUUID) then
-				Logger:BasicInfo("Container %s with root %s was found in the container blacklist!", string.sub(rootTemplate, 0, -36) .. item, rootTemplate)
-				return true
+				Logger:BasicDebug("Container %s with root %s was found in the container blacklist!", string.sub(rootTemplate, 0, -36) .. item, rootTemplate)
+				return rootTemplate
 			end
 		end
 
-		Logger:BasicDebug("Container %s with root %s was not found in the container blacklist - checking parent %s", string.sub(rootTemplate, 0, -36) .. item, rootTemplate, Osi.GetDirectInventoryOwner(item))
+		Logger:BasicDebug("Container %s with root %s was not found in the container blacklist - checking parent %s", string.sub(rootTemplate, 0, -36) .. item, rootTemplate,
+		Osi.GetDirectInventoryOwner(item))
 		return ItemBlackList:IsContainerInBlacklist(Osi.GetDirectInventoryOwner(item))
 	end
-
-	return false
 end

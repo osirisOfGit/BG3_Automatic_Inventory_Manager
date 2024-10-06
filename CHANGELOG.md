@@ -13,8 +13,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New optional `CalculateStackUsing` option for `STACK_AMOUNT` filters, accepting any combination of `ROOTS`, `TAGS`, and `EQUIPMENT_TYPES` (contrary to the name, this only applies to weapons - armor uses ArmorType, which isn't supported currently cuz it seems useless) - values are array of strings or single string (Use [EntityPropertyRecorder](https://github.com/osirisOfGit/BG3_Automatic_Inventory_Manager/wiki/Configurations#entity-property-recorder))
 - Run sorting automatically on characters that just joined the party (tagging their equipped items as already processed)
 - Ability to blacklist items by TAG
-- ContainerRoots (partial or full, case-insensitive) to ItemBlackList, which controls whether items present in that container should be sorted. Runs recursively.
+- ContainerRoots to ItemBlackList, which controls whether items present in that container should be sorted. Runs recursively.
 	- Now runs these checks when processing a newly added or existing item in character inventory
+- Following entries to ItemBlackList by default:
+	- Roots
+		- "FallenStar_Wifi_" -- Wifi Potions - https://www.nexusmods.com/baldursgate3/mods/5080
+	- ContainerRoots
+		- "CONT_ISF_Container" -- ItemShipmentFramework - https://www.nexusmods.com/baldursgate3/mods/8295
 
 #### Changed
 - ALL_DEFAULTS preset
