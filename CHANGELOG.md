@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Mod Users
 #### Added
 - New optional `CalculateStackUsing` option for `STACK_AMOUNT` filters, accepting any combination of `ROOTS`, `TAGS`, `ARMOR_TYPES`, and `EQUIPMENT_TYPES` - values are array of strings or single string (Use [EntityPropertyRecorder](https://github.com/osirisOfGit/BG3_Automatic_Inventory_Manager/wiki/Configurations#entity-property-recorder))
-	- See [Wiki Entry])https://github.com/osirisOfGit/BG3_Automatic_Inventory_Manager/wiki/Customizing-AIM's-Behavior#customizing-how-stack_amount-is-calculated)
+	- See [Wiki Entry](https://github.com/osirisOfGit/BG3_Automatic_Inventory_Manager/wiki/Customizing-AIM's-Behavior#customizing-how-stack_amount-is-calculated)
 - Ability to blacklist items by TAG
 - ContainerRoots to ItemBlackList, which controls whether items present in that container should be sorted. Runs recursively.
 	- See [Wiki Entry](https://github.com/osirisOfGit/BG3_Automatic_Inventory_Manager/wiki/Configurations#blacklisting-items) 
