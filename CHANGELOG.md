@@ -28,7 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 		- ARROWS, COATINGS, GRENADES, HEALING_POTIONS, and SCROLLS use the new `CalculateStackUsing` option to find the character with the most
 		amount of items with the respective tag, if a winner could not be chosen based on template alone
  	- Equipment.json
-		- Moved the `HAS_TYPE_EQUIPPED` filter from Weapons.json to Equipment.json, making it the highest priority filter.
+		- Moved the `HAS_TYPE_EQUIPPED` filter from Weapons.json to Equipment.json, making it the highest priority filter (all weapons are equipment, not all equipment are weapons)
 		- All equipable items use the new `CalculateStackUsing` option `EQUIPMENT_TYPES` and `ARMOR_TYPES` to go to the char with the most amount of identical equipment/armor types (Javelins now go to the character with different kinds of javelins, and scaleMail goes to character with scaleMail in their inventory!)
 	- Roots.json
 		- Increased stack_limit size for Barkskin potions to 2 (why do i even have this?)
