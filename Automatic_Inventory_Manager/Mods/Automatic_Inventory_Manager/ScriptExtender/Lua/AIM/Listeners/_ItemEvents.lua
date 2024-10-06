@@ -102,7 +102,7 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "before", function(root, item,
 		end
 
 		local blacklistedContainer = ItemBlackList:IsContainerInBlacklist(Osi.GetDirectInventoryOwner(item))
-		if  blacklistedContainer then
+		if blacklistedContainer then
 			Logger:BasicInfo("Item %s is contained in %s, which is in the container blacklist - marking as processed and moving on", item, blacklistedContainer)
 			Osi.SetTag(item, TAG_AIM_PROCESSED)
 			return
