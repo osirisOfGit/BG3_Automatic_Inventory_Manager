@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.3.0]
 ### Mod Users
 #### Added
-- New optional `CalculateStackUsing` option for `STACK_AMOUNT` filters, accepting any combination of `ROOTS`, `TAGS`, and `EQUIPMENT_TYPES` (contrary to the name, this only applies to weapons - armor uses ArmorType, which isn't supported currently cuz it seems useless) - values are array of strings or single string (Use [EntityPropertyRecorder](https://github.com/osirisOfGit/BG3_Automatic_Inventory_Manager/wiki/Configurations#entity-property-recorder))
+- New optional `CalculateStackUsing` option for `STACK_AMOUNT` filters, accepting any combination of `ROOTS`, `TAGS`, `ARMOR_TYPES`, and `EQUIPMENT_TYPES` - values are array of strings or single string (Use [EntityPropertyRecorder](https://github.com/osirisOfGit/BG3_Automatic_Inventory_Manager/wiki/Configurations#entity-property-recorder))
 - Run sorting automatically on characters that just joined the party (tagging their equipped items as already processed)
 - Ability to blacklist items by TAG
 - ContainerRoots to ItemBlackList, which controls whether items present in that container should be sorted. Runs recursively.
@@ -27,8 +27,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 	- Tags.json
 		- ARROWS, COATINGS, GRENADES, HEALING_POTIONS, and SCROLLS use the new `CalculateStackUsing` option to find the character with the most
 		amount of items with the respective tag, if a winner could not be chosen based on template alone
- 	- Weapons.json
-		- All weapons use the new `CalculateStackUsing` option `EQUIPMENT_TYPES` to go to the char with the most amount of identical weapon types (Javelins now go to the character with differnt kinds of javelins!)
+ 	- Equipment.json
+		- Moved the `HAS_TYPE_EQUIPPED` filter from Weapons.json to Equipment.json, making it the highest priority filter (all weapons are equipment, not all equipment are weapons)
+		- All equipable items use the new `CalculateStackUsing` option `EQUIPMENT_TYPES` and `ARMOR_TYPES` to go to the char with the most amount of identical equipment/armor types (Javelins now go to the character with different kinds of javelins, and scaleMail goes to character with scaleMail in their inventory!)
 	- Roots.json
 		- Increased stack_limit size for Barkskin potions to 2 (why do i even have this?)
 - Tweaked some debug logs 

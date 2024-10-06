@@ -128,7 +128,7 @@ end
 ---@treturn boolean true if the item or rootTemplate is in the blacklist
 function ItemBlackList:IsItemOrTemplateInBlacklist(item, rootTemplate)
 	if item then
-		local itemUpper = string.upper(item)
+		local itemUpper = string.upper(type(item) == "string" and item or tostring(item))
 		for _, itemUUID in pairs(blackListTable.Items) do
 			if itemUpper == itemUUID or string.find(itemUpper, itemUUID) then
 				Logger:BasicInfo("Item %s was found in the blacklist!", item)

@@ -2,16 +2,8 @@ local all_defaults = {}
 all_defaults.Weapons = {
 	[ItemFilters.ItemKeys.WILDCARD] = {
 		Filters = {
-			[51] = {
-				TargetStat = ItemFilters.FilterFields.TargetStat.STACK_AMOUNT,
-				CompareStrategy = ItemFilters.FilterFields.CompareStrategy.HIGHER,
-				CalculateStackUsing = {
-					["EQUIPMENT_TYPES"] = { "SELF" }
-				},
-			},
-			[90] = { TargetStat = ItemFilters.FilterFields.TargetStat.HAS_TYPE_EQUIPPED },
-			[91] = { TargetStat = ItemFilters.FilterFields.TargetStat.WEAPON_ABILITY, CompareStrategy = ItemFilters.FilterFields.CompareStrategy.HIGHER },
-			[92] = { TargetStat = ItemFilters.FilterFields.TargetStat.WEAPON_SCORE, CompareStrategy = ItemFilters.FilterFields.CompareStrategy.HIGHER },
+			[90] = { TargetStat = ItemFilters.FilterFields.TargetStat.WEAPON_ABILITY, CompareStrategy = ItemFilters.FilterFields.CompareStrategy.HIGHER },
+			[91] = { TargetStat = ItemFilters.FilterFields.TargetStat.WEAPON_SCORE, CompareStrategy = ItemFilters.FilterFields.CompareStrategy.HIGHER },
 		}
 	}
 }
@@ -19,11 +11,20 @@ all_defaults.Weapons = {
 all_defaults.Equipment = {
 	[ItemFilters.ItemKeys.WILDCARD] = {
 		Filters = {
-			[50] = {
+			[50] = { TargetStat = ItemFilters.FilterFields.TargetStat.HAS_TYPE_EQUIPPED },
+			[51] = {
 				TargetStat = ItemFilters.FilterFields.TargetStat.STACK_AMOUNT,
 				CompareStrategy = ItemFilters.FilterFields.CompareStrategy.HIGHER,
 			},
-			[52] = { TargetStat = ItemFilters.FilterFields.TargetStat.PROFICIENCY },
+			[52] = {
+				TargetStat = ItemFilters.FilterFields.TargetStat.STACK_AMOUNT,
+				CompareStrategy = ItemFilters.FilterFields.CompareStrategy.HIGHER,
+				CalculateStackUsing = {
+					["EQUIPMENT_TYPES"] = { "SELF" },
+					["ARMOR_TYPES"] = { "SELF" }
+				},
+			},
+			[53] = { TargetStat = ItemFilters.FilterFields.TargetStat.PROFICIENCY },
 		}
 	}
 }

@@ -114,7 +114,7 @@ registeredPropertyRecorders[ModUtils:GetAIMModInfo().Name] = {
 			if entityEntry.Armor then
 				recordedEquipment["Armor.ArmorType"] = EntityPropertyRecorder:BuildInitialRecordEntry({ "Equipment" },
 					{ EntityPropertyRecorder.Filters },
-					{ EntityPropertyRecorder.Key }
+					{ EntityPropertyRecorder.Key, EntityPropertyRecorder.CalculateStackUsing }
 				)
 
 				recordedEquipment["Armor.ArmorType"][EntityPropertyRecorder.Value] =
