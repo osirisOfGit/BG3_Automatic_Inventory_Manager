@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### API
 #### Added
 - `ProcessorUtils:RegisterCustomStackCalculator` method to allow adding new ways of calculating stack size
+- `ItemBlackList:IsContainerInBlacklist`
 
 ## [2.2.1]
 ### Mod Users
