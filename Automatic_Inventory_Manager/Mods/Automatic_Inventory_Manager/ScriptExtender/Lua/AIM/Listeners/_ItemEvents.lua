@@ -89,7 +89,10 @@ end)
 Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "before", function(root, item, inventoryHolder, _)
 	if Config.AIM.ENABLED == 1 then
 		-- Will be nil if inventoryHolder isn't a character
-		if Osi.IsPlayer(inventoryHolder) ~= 1 then
+		if Osi.IsTagged(item, TAG_AIM_PROCESSED) == 1 then
+			Logger:BasicDebug("Item %s was already processed, skipping!", item)
+			return
+		elseif Osi.IsPlayer(inventoryHolder) ~= 1 then
 			Logger:BasicDebug("inventoryHolder %s is not a player (for item %s)", inventoryHolder, item)
 			return
 		elseif Osi.Exists(item) ~= 1 then

@@ -11,10 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Mod Users
 #### Added
 - New optional `CalculateStackUsing` option for `STACK_AMOUNT` filters, accepting any combination of `ROOTS`, `TAGS`, `ARMOR_TYPES`, and `EQUIPMENT_TYPES` - values are array of strings or single string (Use [EntityPropertyRecorder](https://github.com/osirisOfGit/BG3_Automatic_Inventory_Manager/wiki/Configurations#entity-property-recorder))
-- Run sorting automatically on characters that just joined the party (tagging their equipped items as already processed)
 - Ability to blacklist items by TAG
 - ContainerRoots to ItemBlackList, which controls whether items present in that container should be sorted. Runs recursively.
-	- Now runs these checks when processing a newly added or existing item in character inventory
 - Following entries to ItemBlackList by default:
 	- Roots
 		- "FallenStar_Wifi_" -- Wifi Potions - https://www.nexusmods.com/baldursgate3/mods/5080
@@ -32,12 +30,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 		- All equipable items use the new `CalculateStackUsing` option `EQUIPMENT_TYPES` and `ARMOR_TYPES` to go to the char with the most amount of identical equipment/armor types (Javelins now go to the character with different kinds of javelins, and scaleMail goes to character with scaleMail in their inventory!)
 	- Roots.json
 		- Increased stack_limit size for Barkskin potions to 2 (why do i even have this?)
-- Tweaked some debug logs 
+- Tweaked some debug logs
 - Case-insensitive ItemFilter lookups - e.g. `Tool` tag will now match `TOOL` and `tool` and `tOOl` in the Tags.json
 - Case-insensitive Blacklist lookups
 
 #### Fixed
-- Sorting triggering if a template is added to the char's inventory, but is also equipped - fixes transmog behavior and manifested weapons
 - `CompareStategy` to `CompareStrategy` - AIM will automatically fix this for you, no manual changes needed
 
 #### Removed
@@ -47,6 +44,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Added
 - `ProcessorUtils:RegisterCustomStackCalculator` method to allow adding new ways of calculating stack size
 - `ItemBlackList:IsContainerInBlacklist`
+
+### Internal Only
+#### Added
+- Run sorting automatically on characters when they join the party (tagging their equipped items as already processed)
+- Check for AIM_PROCESSED tag on TemplateAddedTo event
+- Check if the item is in a blacklisted container when processing a newly added or existing item in character inventory
+
+#### Fixed
+- Sorting triggering if a template is added to the char's inventory, but is also equipped - fixes transmog behavior and manifested weapons
 
 ## [2.2.1]
 ### Mod Users
