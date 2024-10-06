@@ -26,7 +26,7 @@ end
 ---@param baseValue number|nil
 ---@param challengerValue number
 ---@param comparator CompareStrategy
----@param winnersTable table  
+---@param winnersTable table
 ---@param targetPartyMember GUIDSTRING
 ---@return table of winners - will either append the targetPartyMember if the values were equal, or replace the table with just targetPartyMember if the challenger won
 ---@return number that won in the compare, or baseValue if both were equal
@@ -88,17 +88,47 @@ local validStackCriteriaKeys = {
 	end,
 	["EQUIPMENT_TYPES"] = function(item, equipmentToCompareList, originalItem)
 		if Osi.IsEquipable(item) == 1 then
-			for _, equipmentToCompare in pairs(equipmentToCompareList) do
-				equipmentToCompare = string.upper(equipmentToCompare)
-				local equipType = Ext.StaticData.Get(Ext.Entity.Get(item).ServerItem.Template.EquipmentTypeID, "EquipmentType")
-				if equipType then
-					equipType = string.upper(equipType["Name"])
-					if equipmentToCompare == "SELF" then
-						local originalItemEquipType = Ext.StaticData.Get(Ext.Entity.Get(originalItem).ServerItem.Template.EquipmentTypeID, "EquipmentType")["Name"]
-						if originalItemEquipType and string.upper(originalItemEquipType) == equipType then
+			local equipTypeId = Ext.Entity.Get(item).ServerItem.Template.EquipmentTypeID
+			if equipTypeId ~= "00000000-0000-0000-0000-000000000000" then
+				local equipType = Ext.StaticData.Get(equipTypeId, "EquipmentType")
+				for _, equipmentToCompare in pairs(equipmentToCompareList) do
+					equipmentToCompare = string.upper(equipmentToCompare)
+					if equipType then
+						equipType = string.upper(equipType["Name"])
+						if equipmentToCompare == "SELF" then
+							local originalItemEquipTypeId = Ext.Entity.Get(originalItem).ServerItem.Template.EquipmentTypeID
+							if Osi.IsEquipable(originalItem) and originalItemEquipTypeId ~= "00000000-0000-0000-0000-000000000000" then
+								local originalItemEquipType = Ext.StaticData.Get(originalItemEquipTypeId, "EquipmentType")["Name"]
+								if originalItemEquipType and string.upper(originalItemEquipType) == equipType then
+									return true
+								end
+							end
+						elseif equipmentToCompare == equipType then
 							return true
 						end
-					elseif equipmentToCompare == equipType then
+					end
+				end
+			end
+		end
+	end,
+
+	["ARMOR_TYPES"] = function(item, armorToCompareList, originalItem)
+		local itemArmor = Ext.Entity.Get(item).Armor
+		if itemArmor then
+			for _, armorToCompare in pairs(armorToCompareList) do
+				armorToCompare = string.upper(armorToCompare)
+				local armorType = tostring(Ext.Enums.ArmorType[itemArmor.ArmorType])
+				if armorType then
+					armorType = string.upper(tostring(armorType))
+					if armorToCompare == "SELF" then
+						local originalItemArmor = Ext.Entity.Get(originalItem).Armor
+						if originalItemArmor then
+							local originalArmorType = tostring(Ext.Enums.ArmorType[originalItemArmor.ArmorType])
+							if originalArmorType and string.upper(originalArmorType) == armorType then
+								return true
+							end
+						end
+					elseif armorToCompare == armorType then
 						return true
 					end
 				end
