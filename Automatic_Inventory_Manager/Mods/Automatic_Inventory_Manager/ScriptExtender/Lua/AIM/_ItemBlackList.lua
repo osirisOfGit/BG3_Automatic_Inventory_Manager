@@ -11,7 +11,8 @@ local blackListTable = {
 	},
 	Tags = {},
 	ContainerRoots = {
-		"CONT_ISF_Container" -- ItemShipmentFramework - https://www.nexusmods.com/baldursgate3/mods/8295
+		"CONT_ISF_Container", -- ItemShipmentFramework - https://www.nexusmods.com/baldursgate3/mods/8295
+		"TUT_Chest_Potions" -- Pretty sure this is the tutorial chest
 	}
 }
 

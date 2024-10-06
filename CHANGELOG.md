@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 		- "FallenStar_Wifi_" -- Wifi Potions - https://www.nexusmods.com/baldursgate3/mods/5080
 	- ContainerRoots
 		- "CONT_ISF_Container" -- ItemShipmentFramework - https://www.nexusmods.com/baldursgate3/mods/8295
+		- "TUT_Chest_Potions" -- Pretty sure this is the tutorial chest
 
 #### Changed
 - ALL_DEFAULTS preset
