@@ -35,6 +35,9 @@ local function AddBlacklistTables(blackList)
 		if #blackListTable.Items > 0 then
 			AddNonDuplicateEntries(blackListTable.Items, blackList.Items)
 		else
+			for index, item in pairs(blackList.Items) do
+				blackList.Items[index] = string.upper(item)
+			end
 			blackListTable.Items = blackList.Items
 		end
 	end
@@ -43,6 +46,9 @@ local function AddBlacklistTables(blackList)
 		if #blackListTable.RootTemplates > 0 then
 			AddNonDuplicateEntries(blackListTable.RootTemplates, blackList.RootTemplates)
 		else
+			for index, root in pairs(blackList.RootTemplates) do
+				blackList.RootTemplates[index] = string.upper(root)
+			end
 			blackListTable.RootTemplates = blackList.RootTemplates
 		end
 	end
@@ -51,6 +57,9 @@ local function AddBlacklistTables(blackList)
 		if #blackListTable.ContainerRoots > 0 then
 			AddNonDuplicateEntries(blackListTable.ContainerRoots, blackList.ContainerRoots)
 		else
+			for index, root in pairs(blackList.ContainerRoots) do
+				blackList.ContainerRoots[index] = string.upper(root)
+			end
 			blackListTable.ContainerRoots = blackList.ContainerRoots
 		end
 	end
@@ -115,8 +124,9 @@ end
 ---@treturn boolean true if the item or rootTemplate is in the blacklist
 function ItemBlackList:IsItemOrTemplateInBlacklist(item, rootTemplate)
 	if item then
+		local itemUpper = string.upper(item)
 		for _, itemUUID in pairs(blackListTable.Items) do
-			if item == itemUUID or string.find(item, itemUUID) then
+			if itemUpper == itemUUID or string.find(itemUpper, itemUUID) then
 				Logger:BasicInfo("Item %s was found in the blacklist!", item)
 				return true
 			end
@@ -128,6 +138,7 @@ function ItemBlackList:IsItemOrTemplateInBlacklist(item, rootTemplate)
 				if tagTable then
 					for _, tagToCompare in pairs(blackListTable.Tags) do
 						if tagToCompare == string.upper(tagTable["Name"]) then
+							Logger:BasicInfo("Item %s was found in the blacklist via Tag %s", item, tagToCompare)
 							return true
 						end
 					end
@@ -137,8 +148,9 @@ function ItemBlackList:IsItemOrTemplateInBlacklist(item, rootTemplate)
 	end
 
 	if rootTemplate then
+		local rootTemplateUpper = string.upper(rootTemplate)
 		for _, rootUUID in pairs(blackListTable.RootTemplates) do
-			if rootTemplate == rootUUID or string.find(rootTemplate, rootUUID) then
+			if rootTemplateUpper == rootUUID or string.find(rootTemplateUpper, rootUUID) then
 				Logger:BasicInfo("RootTemplate %s was found in the blacklist!", rootTemplate)
 				return true
 			end
