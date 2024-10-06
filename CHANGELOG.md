@@ -32,11 +32,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 	- Roots.json
 		- Increased stack_limit size for Barkskin potions to 2 (why do i even have this?)
 - Tweaked some debug logs 
-- Preventing sorting from triggering if a template is added to the char's inventory, but is also equipped - fixes transmog behavior and manifested weapons
 - Case-insensitive ItemFilter lookups - e.g. `Tool` tag will now match `TOOL` and `tool` and `tOOl` in the Tags.json
 - Case-insensitive Blacklist lookups
 
 #### Fixed
+- Sorting triggering if a template is added to the char's inventory, but is also equipped - fixes transmog behavior and manifested weapons
 - `CompareStategy` to `CompareStrategy` - AIM will automatically fix this for you, no manual changes needed
 
 #### Removed
