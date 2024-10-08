@@ -12,7 +12,12 @@ local blackListTable = {
 	Tags = {},
 	ContainerRoots = {
 		"CONT_ISF_Container", -- ItemShipmentFramework - https://www.nexusmods.com/baldursgate3/mods/8295
-		"TUT_Chest_Potions" -- Pretty sure this is the tutorial chest
+		"TUT_Chest_Potions", -- Pretty sure this is the tutorial chest,
+		-- Stuff below is from Trade with Withers Addon - Containers - https://www.nexusmods.com/baldursgate3/mods/9397
+		"DIQ_OBJ_Important_Container",
+		"DIQ_OBJ_Clothing_Container",
+		"DIQ_OBJ_Dye_Container",
+		"DIQ_OBJ_Weapon_Container",
 	}
 }
 
