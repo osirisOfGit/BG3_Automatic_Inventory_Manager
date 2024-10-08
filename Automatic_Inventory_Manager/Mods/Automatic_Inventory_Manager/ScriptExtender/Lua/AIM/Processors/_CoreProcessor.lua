@@ -118,19 +118,34 @@ function Processor:ProcessFiltersForItemAgainstParty(item, root, inventoryHolder
 				if #eligiblePartyMembers > 0 then
 					target = #eligiblePartyMembers == 1 and eligiblePartyMembers[1] or
 						eligiblePartyMembers[Osi.Random(#eligiblePartyMembers) + 1]
+
+					if Logger:IsLogLevelEnabled(Logger.PrintTypes.DEBUG) then
+						if #eligiblePartyMembers == 1 then
+							Logger:BasicDebug("%s won the item as they're the sole remaining character, new winners table is:\n%s",
+								target,
+								Ext.Json.Stringify(targetsWithAmountWon))
+						else
+							Logger:BasicDebug(
+								"%s was randomly chosen to win the item due to multiple potential winners after exhausting all Filters. Eligible winners were:\n%s\nNew winners table is:\n%s",
+								target,
+								Ext.Json.Stringify(eligiblePartyMembers),
+								Ext.Json.Stringify(targetsWithAmountWon))
+						end
+					end
 				else
 					target = targetsWithAmountWon[Osi.Random(#targetsWithAmountWon) + 1]
+					if Logger:IsLogLevelEnabled(Logger.PrintTypes.DEBUG) then
+						Logger:BasicDebug(
+							"%s was randomly chosen to win the item as nobody was eligible to win after exhausting all Filters, new winners table is:\n%s",
+							target,
+							Ext.Json.Stringify(targetsWithAmountWon))
+					end
 				end
 
 				TableUtils:AddItemToTable_AddingToExistingAmount(targetsWithAmountWon, target, 1)
-				if Logger:IsLogLevelEnabled(Logger.PrintTypes.DEBUG) then
-					Logger:BasicDebug("Chose winner %s, new winners table is:\n%s",
-						target,
-						Ext.Json.Stringify(targetsWithAmountWon))
-				end
 
-				if Logger:IsLogLevelEnabled(Logger.PrintTypes.TRACE) then
-					Logger:BasicTrace("Winning command: %s", Ext.Json.Stringify(filter))
+				if Logger:IsLogLevelEnabled(Logger.PrintTypes.DEBUG) then
+					Logger:BasicDebug("Winning command was: %s", Ext.Json.Stringify(filter))
 				end
 				break
 			end
