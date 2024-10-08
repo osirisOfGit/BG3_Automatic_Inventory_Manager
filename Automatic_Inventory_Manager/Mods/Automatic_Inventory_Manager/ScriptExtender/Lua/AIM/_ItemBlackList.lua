@@ -7,7 +7,7 @@ local blackListTable = {
 	RootTemplates = {
 		"FOCUSLODESTONES", -- Lodestones - https://www.nexusmods.com/baldursgate3/mods/7417
 		"TMOG",      -- Transmog enhanced - https://www.nexusmods.com/baldursgate3/mods/2922
-		"FallenStar_Wifi_" -- Wifi Potions - https://www.nexusmods.com/baldursgate3/mods/5080
+		"FallenStar_Cons_Wifi" -- Wifi Potions - https://www.nexusmods.com/baldursgate3/mods/5080
 	},
 	Tags = {},
 	ContainerRoots = {

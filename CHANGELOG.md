@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 **Mod Users** - to review any changes more in-depth, check the relevant sections of [the wiki](https://github.com/osirisOfGit/BG3_Automatic_Inventory_Manager/wiki)
 
+## [2.x.x] (Unreleased)
+### Mod Users
+#### Fixed
+- `FallenStar_Cons_Wifi` Root Blacklist
+
 ## [2.3.1]
 ### Mod Users
 ### Added
