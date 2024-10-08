@@ -88,10 +88,11 @@ end)
 -- Includes moving from container to other inventories etc...
 Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "before", function(root, item, inventoryHolder, _)
 	if Config.AIM.ENABLED == 1 then
-		-- Will be nil if inventoryHolder isn't a character
 		if Osi.IsTagged(item, TAG_AIM_PROCESSED) == 1 then
+			RemoveItemFromTracker_IfAlreadySorted(root, item, inventoryHolder)
 			Logger:BasicDebug("Item %s was already processed, skipping!", item)
 			return
+		-- Will be nil if inventoryHolder isn't a character
 		elseif Osi.IsPlayer(inventoryHolder) ~= 1 then
 			Logger:BasicDebug("inventoryHolder %s is not a player (for item %s)", inventoryHolder, item)
 			return
