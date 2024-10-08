@@ -121,15 +121,12 @@ function Processor:ProcessFiltersForItemAgainstParty(item, root, inventoryHolder
 
 					if Logger:IsLogLevelEnabled(Logger.PrintTypes.DEBUG) then
 						if #eligiblePartyMembers == 1 then
-							Logger:BasicDebug("%s won the item as they're the sole remaining character, new winners table is:\n%s",
-								target,
-								Ext.Json.Stringify(targetsWithAmountWon))
+							Logger:BasicDebug("%s won the item as they're the sole remaining character", target)
 						else
 							Logger:BasicDebug(
-								"%s was randomly chosen to win the item due to multiple potential winners after exhausting all Filters. Eligible winners were:\n%s\nNew winners table is:\n%s",
+								"%s was randomly chosen to win the item due to multiple potential winners after exhausting all Filters. Eligible winners were:\n%s",
 								target,
-								Ext.Json.Stringify(eligiblePartyMembers),
-								Ext.Json.Stringify(targetsWithAmountWon))
+								Ext.Json.Stringify(eligiblePartyMembers))
 						end
 					end
 				else
@@ -145,7 +142,7 @@ function Processor:ProcessFiltersForItemAgainstParty(item, root, inventoryHolder
 				TableUtils:AddItemToTable_AddingToExistingAmount(targetsWithAmountWon, target, 1)
 
 				if Logger:IsLogLevelEnabled(Logger.PrintTypes.DEBUG) then
-					Logger:BasicDebug("Winning command was: %s", Ext.Json.Stringify(filter))
+					Logger:BasicDebug("Winning command was:\n%s\nNew winners table is:\n%s", Ext.Json.Stringify(filter), Ext.Json.Stringify(targetsWithAmountWon))
 				end
 				break
 			end

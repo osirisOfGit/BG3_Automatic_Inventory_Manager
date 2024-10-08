@@ -9,8 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.3.1]
 ### Internal Only
+#### Changed
+- Tweaking Logs - Debug logs are more generally helpful and generally less noisy now
 #### Fixed
-- ItemTracker not clearing an already-distributed item  
+- ItemTracker not clearing an already-distributed item
 
 ## [2.3.0]
 ### Mod Users

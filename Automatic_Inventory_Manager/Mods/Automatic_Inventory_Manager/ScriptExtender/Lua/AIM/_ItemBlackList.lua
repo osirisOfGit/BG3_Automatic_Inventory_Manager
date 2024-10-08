@@ -131,7 +131,7 @@ function ItemBlackList:IsItemOrTemplateInBlacklist(item, rootTemplate)
 		local itemUpper = string.upper(type(item) == "string" and item or tostring(item))
 		for _, itemUUID in pairs(blackListTable.Items) do
 			if itemUpper == itemUUID or string.find(itemUpper, itemUUID) then
-				Logger:BasicInfo("Item %s was found in the blacklist!", item)
+				Logger:BasicTrace("Item %s was found in the blacklist!", item)
 				return true
 			end
 		end
@@ -142,7 +142,7 @@ function ItemBlackList:IsItemOrTemplateInBlacklist(item, rootTemplate)
 				if tagTable then
 					for _, tagToCompare in pairs(blackListTable.Tags) do
 						if tagToCompare == string.upper(tagTable["Name"]) then
-							Logger:BasicInfo("Item %s was found in the blacklist via Tag %s", item, tagToCompare)
+							Logger:BasicTrace("Item %s was found in the blacklist via Tag %s", item, tagToCompare)
 							return true
 						end
 					end
@@ -155,7 +155,7 @@ function ItemBlackList:IsItemOrTemplateInBlacklist(item, rootTemplate)
 		local rootTemplateUpper = string.upper(rootTemplate)
 		for _, rootUUID in pairs(blackListTable.RootTemplates) do
 			if rootTemplateUpper == rootUUID or string.find(rootTemplateUpper, rootUUID) then
-				Logger:BasicInfo("RootTemplate %s was found in the blacklist!", rootTemplate)
+				Logger:BasicTrace("RootTemplate %s was found in the blacklist!", rootTemplate)
 				return true
 			end
 		end
@@ -168,7 +168,7 @@ end
 
 --- Checks the given item to see if it's a container and in the dedicated blacklist - if it isn't, will recursively check its DirectInventoryOwner
 ---@param item GUIDSTRING
----@return rootTemplate GUIDSTRING that was found in the blacklist
+---@treturn rootTemplate GUIDSTRING that was found in the blacklist, or nil if it wasn't
 function ItemBlackList:IsContainerInBlacklist(item)
 	if Osi.IsContainer(item) == 1 then
 		local rootTemplate = Osi.GetTemplate(item)
@@ -177,13 +177,14 @@ function ItemBlackList:IsContainerInBlacklist(item)
 		for _, rootUUID in pairs(blackListTable.ContainerRoots) do
 			rootUUID = string.upper(rootUUID)
 			if upperTemplate == rootUUID or string.find(upperTemplate, rootUUID) then
-				Logger:BasicDebug("Container %s with root %s was found in the container blacklist!", string.sub(rootTemplate, 0, -36) .. item, rootTemplate)
+				Logger:BasicTrace("Container %s with root %s was found in the container blacklist!", string.sub(rootTemplate, 0, -36) .. item, rootTemplate)
 				return rootTemplate
 			end
 		end
 
-		Logger:BasicDebug("Container %s with root %s was not found in the container blacklist - checking parent %s", string.sub(rootTemplate, 0, -36) .. item, rootTemplate,
-		Osi.GetDirectInventoryOwner(item))
+		Logger:BasicTrace("Container %s with root %s was not found in the container blacklist - checking parent %s", string.sub(rootTemplate, 0, -36) .. item, rootTemplate,
+			Osi.GetDirectInventoryOwner(item))
 		return ItemBlackList:IsContainerInBlacklist(Osi.GetDirectInventoryOwner(item))
 	end
+	return nil
 end
