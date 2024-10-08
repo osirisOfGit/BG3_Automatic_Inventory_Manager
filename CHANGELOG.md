@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 **Mod Users** - to review any changes more in-depth, check the relevant sections of [the wiki](https://github.com/osirisOfGit/BG3_Automatic_Inventory_Manager/wiki)
 
+## [2.3.1]
+### Mod Users
+### Added
+- All containers from [Trade with Withers Addon - Containers](https://www.nexusmods.com/baldursgate3/mods/9397) to the ContainerBlacklist
+
+### Changed
+- Tags.json
+	- TOOL now uses [CalculateStackingUsing](https://github.com/osirisOfGit/BG3_Automatic_Inventory_Manager/wiki/Customizing-AIM's-Behavior#customizing-how-stack_amount-is-calculated) for the Tool tag
+
+### Internal Only
+#### Changed
+- Tweaking Logs - Debug logs are more generally helpful and generally less noisy now
+#### Fixed
+- ItemTracker not clearing an already-distributed item
+- Tags ItemFilterLookups not being case-insensitive
+
 ## [2.3.0]
 ### Mod Users
 #### Added
