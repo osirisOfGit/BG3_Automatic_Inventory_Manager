@@ -203,7 +203,7 @@ local function DeepIterateInventory(container, calculateStackUsing, originalItem
 			end
 			if validStackCriteriaKeys[string.upper(key)](uuid, value, originalItem) then
 				itemAmount = itemAmount + totalAmount
-				Logger:BasicTrace("Item %s had its stack amount of %d added due to %s predicate passing", string.sub(rootTemplate, 0, -36) .. uuid, totalAmount, key, value)
+				Logger:BasicDebug("Item %s had its stack amount of %d added due to %s predicate passing", string.sub(rootTemplate, 0, -36) .. uuid, totalAmount, key, value)
 				break
 			end
 			::continue::

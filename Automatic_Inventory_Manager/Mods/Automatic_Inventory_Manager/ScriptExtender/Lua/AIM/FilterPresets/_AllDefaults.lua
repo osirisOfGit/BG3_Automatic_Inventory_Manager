@@ -75,7 +75,10 @@ all_defaults.Tags = {
 			[1] = { TargetStat = ItemFilters.FilterFields.TargetStat.SKILL_TYPE, TargetSubStat = "SleightOfHand", CompareStrategy = ItemFilters.FilterFields.CompareStrategy.HIGHER, },
 			[2] = {
 				TargetStat = ItemFilters.FilterFields.TargetStat.STACK_AMOUNT,
-				CompareStrategy = ItemFilters.FilterFields.CompareStrategy.HIGHER
+				CompareStrategy = ItemFilters.FilterFields.CompareStrategy.HIGHER,
+				CalculateStackUsing = {
+					["TAGS"] = { "TOOL" }
+				}
 			}
 		},
 	},

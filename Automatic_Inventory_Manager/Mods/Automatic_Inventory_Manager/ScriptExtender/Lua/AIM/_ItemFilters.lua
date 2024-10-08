@@ -364,7 +364,7 @@ local function GetItemFilterByTag(itemFilterMaps, _, item, _)
 		for _, tagUUID in pairs(Ext.Entity.Get(item).Tag.Tags) do
 			local tagTable = Ext.StaticData.Get(tagUUID, "Tag")
 			if tagTable then
-				local tagFilter = itemFilterMaps.Tags[tagTable["Name"]]
+				local tagFilter = itemFilterMaps.Tags[string.upper(tagTable["Name"])]
 				if tagFilter then
 					table.insert(filters, tagFilter)
 				end
