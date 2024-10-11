@@ -264,7 +264,7 @@ function ProcessorUtils:CalculateTotalItemCount(targetsWithAmountWon,
 
 	if TEMPLATES_BEING_TRANSFERRED[root] and TEMPLATES_BEING_TRANSFERRED[root][targetChar] then
 		totalFutureStackSize = totalFutureStackSize + TEMPLATES_BEING_TRANSFERRED[root][targetChar]
-		Logger:BasicTrace(
+		Logger:BasicDebug(
 			"Found %d of the item currently being transferred to %s, adding to the stack size",
 			TEMPLATES_BEING_TRANSFERRED[root][targetChar],
 			targetChar)
@@ -272,7 +272,7 @@ function ProcessorUtils:CalculateTotalItemCount(targetsWithAmountWon,
 
 	if targetChar == inventoryHolder then
 		local amountToRemove = Osi.GetStackAmount(item)
-		Logger:BasicTrace(
+		Logger:BasicDebug(
 			"Brought down %s's, the inventoryHolder of the item, total item count of %d by %d", inventoryHolder,
 			totalFutureStackSize, amountToRemove)
 		totalFutureStackSize = totalFutureStackSize - amountToRemove
