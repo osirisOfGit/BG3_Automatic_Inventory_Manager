@@ -9,8 +9,7 @@
         <node id="ModuleInfo">
           <attribute id="Author" type="LSWString" value="OsirisOfInternet" />
           <attribute id="CharacterCreationLevelName" type="FixedString" value="" />
-          <attribute id="Description" type="LSWString"
-            value="Extensible, customizable Inventory Manager that redistributes items on pickup to their best fit, if AIM knows how! Able to send items to party members, the camp chest, or custom containers, using character and items stats." />
+          <attribute id="Description" type="LSWString" value="Extensible, customizable Inventory Manager that redistributes items on pickup to their best fit, if AIM knows how! Able to send items to party members, the camp chest, or custom containers, using character and items stats. Check out https://tinyurl.com/aim-quickstart" />
           <attribute id="Folder" type="LSWString" value="Automatic_Inventory_Manager" />
           <attribute id="GMTemplate" type="FixedString" value="" />
           <attribute id="LobbyLevelName" type="FixedString" value="" />
