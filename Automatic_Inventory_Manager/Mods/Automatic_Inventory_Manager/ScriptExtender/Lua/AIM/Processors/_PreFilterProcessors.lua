@@ -117,10 +117,12 @@ function PreFilterProcessors:ProcessPerStackPreFilters(prefilters,
 		inventoryHolder = inventoryHolder,
 	}
 
+	
 	local survivors = { table.unpack(partyMembers) }
 	local prefilterResult
 	for prefilterKey, prefilterValue in pairs(prefilters) do
 		if perStackPreFilterProcessors[prefilterKey] then
+			Logger:BasicTrace("Processing per-stack PreFilter %s", prefilterKey)
 			prefilterResult = perStackPreFilterProcessors[prefilterKey](prefilterValue, PreFilterProcessors.ParamMap)
 
 			if not prefilterResult or #prefilterResult == 0 then
@@ -245,11 +247,13 @@ function PreFilterProcessors:ProcessPerItemPreFilters(prefilters,
 		inventoryHolder = inventoryHolder,
 	}
 
+	
 	local survivors = { table.unpack(partyMembers) }
 	local prefilterResult
 	for prefilterKey, prefilterValue in pairs(prefilters) do
 		PreFilterProcessors.ParamMap.eligiblePartyMembers = { table.unpack(survivors) }
 		if perItemPreFilterProcessors[prefilterKey] then
+			Logger:BasicTrace("Processing Per-Item PreFilter %s", prefilterKey)
 			prefilterResult = perItemPreFilterProcessors[prefilterKey](prefilterValue, PreFilterProcessors.ParamMap)
 
 			if not prefilterResult or #prefilterResult == 0 then

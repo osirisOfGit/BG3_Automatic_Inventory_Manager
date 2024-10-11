@@ -15,7 +15,7 @@ ItemFilters.ItemFields.PreFilters = {
 ItemFilters.FilterFields = {}
 
 --- Used by Compare Filters to determine whether a higher or lower value is considered the "winner"
-ItemFilters.FilterFields.CompareStategy = {
+ItemFilters.FilterFields.CompareStrategy = {
 	LOWER = "LOWER",
 	HIGHER = "HIGHER"
 }
@@ -204,7 +204,10 @@ function ItemFilters:LoadItemFilterPresets()
 							presetName,
 							filterTableName)
 
-						AddItemFilterMaps({ [filterTableName] = Ext.Json.Parse(filterTable) },
+						filterTable = Ext.Json.Parse(filterTable)
+						Upgrade:StategySpellingFix(filterTable, filterTableFilePath)
+
+						AddItemFilterMaps({ [filterTableName] = filterTable },
 							false,
 							false,
 							false)
@@ -238,6 +241,7 @@ function ItemFilters:LoadItemFilterPresets()
 	end
 
 	ItemFilters:UpdateItemFilterMapsClone()
+
 	if Logger:IsLogLevelEnabled(Logger.PrintTypes.DEBUG) then
 		Logger:BasicDebug("Finished loading in presets - finalized item maps are:")
 		for itemFilterMap, itemFilterMapContent in pairs(ItemFilters.itemFilterMaps) do
@@ -256,30 +260,37 @@ end
 --- immutable clone of the itemFilterMaps - can be forceably synced using UpdateItemFilterMapsClone, but we'll do it on each update we know about
 ItemFilters.itemFilterMaps = TableUtils:MakeImmutableTableCopy(itemFilterMaps)
 
---- Updates ItemFilters.itemFilterMaps
+--- Updates ItemFilters.itemFilterMaps with all upper-cased item keys, and makes it immutable
+--- Also updates the TargetStat enum with all now-known TargetStat values, in case new ones were added
 function ItemFilters:UpdateItemFilterMapsClone()
-	ItemFilters.itemFilterMaps = TableUtils:MakeImmutableTableCopy(itemFilterMaps)
-
 	-- Update the TargetStat enum with new fields for use by FilterProcessors
-	for _, itemFilterMap in pairs(ItemFilters.itemFilterMaps) do
-		for _, itemFilter in pairs(itemFilterMap) do
+	for _, itemFilterMap in pairs(itemFilterMaps) do
+		for itemKey, itemFilter in pairs(itemFilterMap) do
 			for _, filter in pairs(itemFilter.Filters) do
 				if filter.TargetStat and not ItemFilters.FilterFields.TargetStat[filter.TargetStat] then
 					ItemFilters.FilterFields.TargetStat[filter.TargetStat] = filter.TargetStat
 				end
 			end
+			if itemKey ~= string.upper(itemKey) then
+				-- Case-insensitive lookups in lua - who needs metatables?
+				itemFilterMap[string.upper(itemKey)] = itemFilter
+				itemFilterMap[itemKey] = nil
+			end
 		end
 	end
+	ItemFilters.itemFilterMaps = TableUtils:MakeImmutableTableCopy(itemFilterMaps)
 end
 
 local function GetItemFiltersFromMap(itemFilterMap, key, filtersTable)
 	if itemFilterMap then
-		if itemFilterMap[key] then
-			table.insert(filtersTable, itemFilterMap[key])
+		local foundFilter = itemFilterMap[string.upper(type(key) == "string" and key or tostring(key))]
+		if foundFilter then
+			table.insert(filtersTable, foundFilter)
 		end
 
-		if itemFilterMap[ItemFilters.ItemKeys.WILDCARD] then
-			table.insert(filtersTable, itemFilterMap[ItemFilters.ItemKeys.WILDCARD])
+		local foundFilterAll = itemFilterMap[ItemFilters.ItemKeys.WILDCARD]
+		if foundFilterAll then
+			table.insert(filtersTable, foundFilterAll)
 		end
 	end
 end
@@ -290,6 +301,7 @@ local function GetItemFiltersByRoot(itemFilterMaps, root, _, _)
 	GetItemFiltersFromMap(itemFilterMaps.Roots, root, filters)
 
 	if itemFilterMaps["RootPartial"] then
+		root = string.upper(root)
 		for key, filter in pairs(itemFilterMaps.RootPartial) do
 			if string.find(root, key) then
 				table.insert(filters, filter)
@@ -305,7 +317,9 @@ local function GetItemFiltersByEquipmentType(itemFilterMaps, root, item, _)
 	if (itemFilterMaps["Equipment"] or itemFilterMaps["Weapons"]) and Osi.IsEquipable(item) == 1 then
 		if entity.ServerItem.Template.EquipmentTypeID ~= "00000000-0000-0000-0000-000000000000" then
 			local equipmentType = tostring(Ext.StaticData.Get(entity.ServerItem.Template.EquipmentTypeID, "EquipmentType")["Name"])
+
 			GetItemFiltersFromMap(itemFilterMaps.Equipment, equipmentType, filters)
+
 			if Osi.IsWeapon(item) == 1 then
 				GetItemFiltersFromMap(itemFilterMaps.Weapons, equipmentType, filters)
 			end
@@ -350,7 +364,7 @@ local function GetItemFilterByTag(itemFilterMaps, _, item, _)
 		for _, tagUUID in pairs(Ext.Entity.Get(item).Tag.Tags) do
 			local tagTable = Ext.StaticData.Get(tagUUID, "Tag")
 			if tagTable then
-				local tagFilter = itemFilterMaps.Tags[tagTable["Name"]]
+				local tagFilter = itemFilterMaps.Tags[string.upper(tagTable["Name"])]
 				if tagFilter then
 					table.insert(filters, tagFilter)
 				end

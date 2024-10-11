@@ -1,7 +1,8 @@
 local function RemoveItemFromTracker_IfAlreadySorted(root, item, inventoryHolder)
 	local originalOwner = Osi.GetOriginalOwner(item)
 	if originalOwner and not (originalOwner == Osi.GetUUID(inventoryHolder)) and Osi.IsPlayer(inventoryHolder) == 1 then
-		Logger:BasicDebug("|OriginalOwner| = %s\n\t|DirectInventoryOwner| = %s\n\t|Owner| = %s",
+		Logger:BasicDebug("|Item| = %s\n\t|OriginalOwner| = %s\n\t|DirectInventoryOwner| = %s\n\t|Owner| = %s",
+			item,
 			Osi.GetDirectInventoryOwner(item),
 			Osi.GetOwner(item),
 			Osi.GetOriginalOwner(item)
@@ -54,10 +55,13 @@ local function DetermineAndExecuteFiltersForItem(root, item, inventoryHolder, ig
 
 			if Logger:IsLogLevelEnabled(Logger.PrintTypes.DEBUG) then
 				Logger:BasicDebug(
-					"\n\t|item| = %s\n\t|root| = %s\n\t|inventoryHolder| = %s\n\t|itemStackSize| = %s\n\t|templateStackSize| = %s\n\t|computedItemFilter| = \n%s",
+					"\n\t|item| = %s\n\t|root| = %s\n\t|inventoryHolder| = %s\n\t|owner| = %s\n\t|originalOwner| = %s\n\t|directInventoryOwner| = %s\n\t|itemStackSize| = %s\n\t|templateStackSize| = %s\n\t|computedItemFilter| = \n%s",
 					item,
 					root,
 					inventoryHolder,
+					Osi.GetOwner(item),
+					Osi.GetOriginalOwner(item),
+					Osi.GetDirectInventoryOwner(item),
 					itemStack,
 					templateStack,
 					Ext.Json.Stringify(applicableItemFilter))
@@ -84,12 +88,31 @@ end)
 -- Includes moving from container to other inventories etc...
 Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "before", function(root, item, inventoryHolder, _)
 	if Config.AIM.ENABLED == 1 then
+		if Osi.IsTagged(item, TAG_AIM_PROCESSED) == 1 then
+			RemoveItemFromTracker_IfAlreadySorted(root, item, inventoryHolder)
+			Logger:BasicDebug("Item %s was already processed, skipping!", item)
+			return
+		elseif string.find(string.upper(inventoryHolder), string.upper("S_GLO_CharacterCreationDummy")) then
+			Logger:BasicDebug("InventoryHolder for %s is either the Transmog tool, or we're in Character Creation - either way, marking as processed and moving on!", item)
+			Osi.SetTag(item, TAG_AIM_PROCESSED)
+			return
 		-- Will be nil if inventoryHolder isn't a character
-		if Osi.IsPlayer(inventoryHolder) ~= 1 then
+		elseif Osi.IsPlayer(inventoryHolder) ~= 1 then
 			Logger:BasicDebug("inventoryHolder %s is not a player (for item %s)", inventoryHolder, item)
 			return
 		elseif Osi.Exists(item) ~= 1 then
 			Logger:BasicWarning("Item %s, supposedly held by %s, doesn't exist!", item, inventoryHolder)
+			return
+		elseif Osi.IsEquipped(item) ~= 0 then
+			Logger:BasicInfo("Item %s is currently equipped. Marking as processed and moving on", item)
+			Osi.SetTag(item, TAG_AIM_PROCESSED)
+			return
+		end
+
+		local blacklistedContainer = ItemBlackList:IsContainerInBlacklist(Osi.GetDirectInventoryOwner(item))
+		if blacklistedContainer then
+			Logger:BasicInfo("Item %s is contained in %s, which is in the container blacklist - marking as processed and moving on", item, blacklistedContainer)
+			Osi.SetTag(item, TAG_AIM_PROCESSED)
 			return
 		end
 
@@ -131,8 +154,40 @@ Ext.Osiris.RegisterListener("EntityEvent", 2, "before", function(guid, event)
 	if Config.AIM.ENABLED == 1 then
 		if string.find(event, EVENT_ITERATE_ITEMS_TO_RESORT_THEM_START) then
 			extractCharAndSortItem(guid, event, EVENT_ITERATE_ITEMS_TO_RESORT_THEM_START, false)
+
+			if Osi.IsContainer(guid) and not ItemBlackList:IsContainerInBlacklist(guid) then
+				Osi.IterateInventory(guid,
+					EVENT_ITERATE_ITEMS_TO_RESORT_THEM_START .. guid,
+					EVENT_ITERATE_ITEMS_TO_RESORT_THEM_END .. guid)
+			end
 		elseif string.find(event, EVENT_RESORT_CONSUMABLE_START) then
 			extractCharAndSortItem(guid, event, EVENT_RESORT_CONSUMABLE_START, true)
 		end
 	end
+end)
+
+Ext.Osiris.RegisterListener("CharacterJoinedParty", 1, "after", function(character)
+	Logger:BasicInfo("Marking equipped items as sorted, then sorting items on %s", character)
+	for _, itemSlot in ipairs(Ext.Enums.ItemSlot) do
+		itemSlot = tostring(itemSlot)
+		-- Getting this aligned with Osi.EQUIPMENTSLOTNAME, because, what the heck Larian (╯°□°）╯︵ ┻━┻
+		if itemSlot == Ext.Enums.StatsItemSlot[Ext.Enums.StatsItemSlot.MeleeMainHand] then
+			itemSlot = "Melee Main Weapon"
+		elseif itemSlot == Ext.Enums.StatsItemSlot[Ext.Enums.StatsItemSlot.MeleeOffHand] then
+			itemSlot = "Melee Offhand Weapon"
+		elseif itemSlot == Ext.Enums.StatsItemSlot[Ext.Enums.StatsItemSlot.RangedMainHand] then
+			itemSlot = "Ranged Main Weapon"
+		elseif itemSlot == Ext.Enums.StatsItemSlot[Ext.Enums.StatsItemSlot.RangedOffHand] then
+			itemSlot = "Ranged Offhand Weapon"
+		end
+
+		local equippedItem = Osi.GetEquippedItem(character, itemSlot)
+		if equippedItem then
+			Osi.SetTag(equippedItem, TAG_AIM_PROCESSED)
+		end
+	end
+
+	Osi.IterateInventory(character,
+		EVENT_ITERATE_ITEMS_TO_RESORT_THEM_START .. character,
+		EVENT_ITERATE_ITEMS_TO_RESORT_THEM_END .. character)
 end)

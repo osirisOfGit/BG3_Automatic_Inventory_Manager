@@ -7,6 +7,80 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 **Mod Users** - to review any changes more in-depth, check the relevant sections of [the wiki](https://github.com/osirisOfGit/BG3_Automatic_Inventory_Manager/wiki)
 
+## [2.x.x] (Unreleased)
+### Mod Users
+#### Fixed
+- `FallenStar_Cons_Wifi` Root Blacklist
+
+### Internal Only
+#### Fixed
+- Actual fix for items processed by TransmogEnhanced
+
+## [2.3.1]
+### Mod Users
+### Added
+- All containers from [Trade with Withers Addon - Containers](https://www.nexusmods.com/baldursgate3/mods/9397) to the ContainerBlacklist
+
+### Changed
+- Tags.json
+	- TOOL now uses [CalculateStackingUsing](https://github.com/osirisOfGit/BG3_Automatic_Inventory_Manager/wiki/Customizing-AIM's-Behavior#customizing-how-stack_amount-is-calculated) for the Tool tag
+
+### Internal Only
+#### Changed
+- Tweaking Logs - Debug logs are more generally helpful and generally less noisy now
+#### Fixed
+- ItemTracker not clearing an already-distributed item
+- Tags ItemFilterLookups not being case-insensitive
+
+## [2.3.0]
+### Mod Users
+#### Added
+- New optional `CalculateStackUsing` option for `STACK_AMOUNT` filters, accepting any combination of `ROOTS`, `TAGS`, `ARMOR_TYPES`, and `EQUIPMENT_TYPES` - values are array of strings or single string (Use [EntityPropertyRecorder](https://github.com/osirisOfGit/BG3_Automatic_Inventory_Manager/wiki/Configurations#entity-property-recorder))
+	- See [Wiki Entry](https://github.com/osirisOfGit/BG3_Automatic_Inventory_Manager/wiki/Customizing-AIM's-Behavior#customizing-how-stack_amount-is-calculated)
+- Ability to blacklist items by TAG
+- ContainerRoots to ItemBlackList, which controls whether items present in that container should be sorted. Runs recursively.
+	- See [Wiki Entry](https://github.com/osirisOfGit/BG3_Automatic_Inventory_Manager/wiki/Configurations#blacklisting-items) 
+- Following entries to ItemBlackList by default:
+	- Roots
+		- "FallenStar_Wifi_" -- Wifi Potions - https://www.nexusmods.com/baldursgate3/mods/5080
+	- ContainerRoots
+		- "CONT_ISF_Container" -- ItemShipmentFramework - https://www.nexusmods.com/baldursgate3/mods/8295
+		- "TUT_Chest_Potions" -- Pretty sure this is the tutorial chest
+
+#### Changed
+- ALL_DEFAULTS preset
+	- Tags.json
+		- ARROWS, COATINGS, GRENADES, HEALING_POTIONS, and SCROLLS use the new `CalculateStackUsing` option to find the character with the most
+		amount of items with the respective tag, if a winner could not be chosen based on template alone
+ 	- Equipment.json
+		- Moved the `HAS_TYPE_EQUIPPED` filter from Weapons.json to Equipment.json, making it the highest priority filter (all weapons are equipment, not all equipment are weapons)
+		- All equipable items use the new `CalculateStackUsing` option `EQUIPMENT_TYPES` and `ARMOR_TYPES` to go to the char with the most amount of identical equipment/armor types (Javelins now go to the character with different kinds of javelins, and scaleMail goes to character with scaleMail in their inventory!)
+	- Roots.json
+		- Increased stack_limit size for Barkskin potions to 2 (why do i even have this?)
+- Tweaked some debug logs
+- Case-insensitive ItemFilter lookups - e.g. `Tool` tag will now match `TOOL` and `tool` and `tOOl` in the Tags.json
+- Case-insensitive Blacklist lookups
+
+#### Fixed
+- `CompareStategy` to `CompareStrategy` - AIM will automatically fix this for you, no manual changes needed
+
+#### Removed
+- Upgrade Utilities designed for the 1.x to 2.x migration - if you're still somehow using a 1.x version of this mod, nuke your AIM config folder and just reinstall it
+
+### API
+#### Added
+- `ProcessorUtils:RegisterCustomStackCalculator` method to allow adding new ways of calculating stack size
+- `ItemBlackList:IsContainerInBlacklist`
+
+### Internal Only
+#### Added
+- Run sorting automatically on characters when they join the party (tagging their equipped items as already processed)
+- Check for AIM_PROCESSED tag on TemplateAddedTo event
+- Check if the item is in a blacklisted container when processing a newly added or existing item in character inventory
+
+#### Fixed
+- Sorting triggering if a template is added to the char's inventory, but is also equipped - fixes transmog behavior and manifested weapons
+
 ## [2.2.1]
 ### Mod Users
 #### Changed

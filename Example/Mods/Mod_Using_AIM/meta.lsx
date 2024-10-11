@@ -4,7 +4,19 @@
   <region id="Config">
     <node id="root">
       <children>
-        <node id="Dependencies" />
+        <node id="Dependencies">
+          <children>
+            <node id="ModuleShortDesc">
+              <attribute id="Folder" type="LSWString" value="Automatic_Inventory_Manager" />
+              <attribute id="MD5" type="LSString" value="" />
+              <attribute id="Name" type="FixedString" value="Automatic_Inventory_Manager" />
+              <attribute id="UUID" type="FixedString" value="23bdda0c-a671-498f-89f5-a69e8d3a4b52" />
+              <attribute id="Version64" type="int64" value="72339071162122240" />
+            </node>
+            <!-- You can add more <node id="ModuleShortDesc"> entries here for additional
+            dependencies, if needed -->
+          </children>
+        </node>
         <node id="ModuleInfo">
           <attribute id="Author" type="LSString" value="OsirisOfInternet" />
           <attribute id="CharacterCreationLevelName" type="FixedString" value="" />
