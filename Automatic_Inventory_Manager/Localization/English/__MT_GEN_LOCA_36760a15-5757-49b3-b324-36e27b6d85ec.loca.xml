@@ -1,4 +1,32 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <contentList>
 	<content contentuid="h79ca8ab7g6126g4b56g8f78g36657727f93d" version="1">Sorted</content>
+	
+	<content contentuid="hbc239a7626ea43878f0c7f4254f755330370" version="1">General</content>
+	
+	<content contentuid="h4435d24a3c884c089d3e201215ac069f69c6" version="1">General settings</content>
+	
+	<content contentuid="hb3f61aa110af4b5dadb9ea533b894899e8gg" version="1">Enable mod</content>
+    <content contentuid="h05a2ca94ae814f2f98146f1bc80eeb9c03af" version="1">Toggle the mod on/off without uninstalling it.</content>
+    
+	<content contentuid="hf9d4692e909044b18270735d0f67d1e012d9" version="1">Logging/Utilities</content>
+	<content contentuid="hf654ed7f4eb8482cb3ce05fffc6ecb8096d4" version="1">Log level</content>
+    <content contentuid="h8aa1fbeae90c4a36a63a623eec45605a450a" version="1">0 = Off, 1 = Error, 2 = Warn, 3 = Info, 4 = Debug, 5 = Trace (Debug and Trace can be extremely performance intensive under certain circumstances - use info unless debugging something)</content>
+
+	<content contentuid="h8cefeed5aee1469dbb734aca931e1a1ec199" version="1">Record Applicable Entity Properties</content>
+    <content contentuid="h87dacdf298f24e3eb4318469cfb784eba933" version="1">Whether to enable Entity Property Recorder, which records the properties that AIM can use in its ItemFilters when items are picked up or characters join the party/are in it on activation/level load. Can be performance intensive when processing a lot of items in a short period of time!</content>
+
+	<content contentuid="h9bb53701065a489d993d43256413f93c0624" version="1">Features</content>
+	
+	<content contentuid="h107c17c9aa9a4d92b79c19611ed9bdca77d6" version="1">Item Distribution</content>
+
+	<content contentuid="h812b8a46378b4145a0d4334cfceefd3ec996" version="1">Redistribute Consumables On Use During Combat</content>
+    <content contentuid="h87dacdf298f24e3eb4318469cfb784eba933" version="1">Whether to allow AIM to re-distribute the party's consumable items when they're used - i.e. drinking a small healing potion will redistribute all small healing potions</content>
+	
+	<content contentuid="ha93ed0fdbfc44e53b9657f9395f995aa4a6a" version="1">Distribute Items If Picked Up During Combat</content>
+    <content contentuid="h9dd90b0779504335a32a60c6f82786b40b4g" version="1">Whether to allow AIM to process a picked-up item during combat - i.e. if Heat Metal forced you to drop your sword, you would want it to just go to the person who picked it up</content>
+	
+	<content contentuid="h5e927d6107744a1ba9b6490fc27dfd0ee02f" version="1">Distribute Items On First Load</content>
+    <content contentuid="he54739a7dc7147388593d5a0742c662e7cdb" version="1">Whether to allow AIM to process the party's inventory on level load - only matters to existing saves that added AIM mid-way</content>
+	
 </contentList>

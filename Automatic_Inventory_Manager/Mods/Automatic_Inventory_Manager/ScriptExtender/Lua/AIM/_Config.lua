@@ -66,6 +66,8 @@ function Config.SyncConfigsAndFilters()
 
 	Config.AIM = config
 
+	AIM_MCM_API:SyncAllConfigsOnLoad()
+
 	InitializeFilterPresets()
 
 	ItemFilters:LoadItemFilterPresets()

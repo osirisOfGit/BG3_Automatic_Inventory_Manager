@@ -1,0 +1,122 @@
+{
+	"SchemaVersion": 1,
+	"Optional": true,
+	"ModName": "Automatic Inventory Manager (AIM)",
+	"Tabs": [
+		{
+			"TabName": "General",
+			"TabId": "general",
+			"Handles": {
+				"NameHandle": "hbc239a7626ea43878f0c7f4254f755330370"
+			},
+			"Sections": [
+				{
+					"SectionId": "general_settings",
+					"SectionName": "General settings",
+					"Handles": {
+						"NameHandle": "h4435d24a3c884c089d3e201215ac069f69c6"
+					},
+					"Settings": [
+						{
+							"Id": "mod_enabled",
+							"Name": "Enable mod",
+							"Handles": {
+								"NameHandle": "hb3f61aa110af4b5dadb9ea533b894899e8gg",
+								"DescriptionHandle": "h05a2ca94ae814f2f98146f1bc80eeb9c03af"
+							},
+							"Type": "checkbox",
+							"Default": true,
+							"Description": "Toggle the mod on/off without uninstalling it."
+						}
+					]
+				},
+				{
+					"SectionId": "logging_and_utils",
+					"SectionName": "Logging/Utilities",
+					"Handles": {
+						"NameHandle": "hf9d4692e909044b18270735d0f67d1e012d9"
+					},
+					"Settings": [
+						{
+							"Id": "log_level",
+							"Name": "Log level",
+							"Handles": {
+								"NameHandle": "hf654ed7f4eb8482cb3ce05fffc6ecb8096d4",
+								"DescriptionHandle": "h8aa1fbeae90c4a36a63a623eec45605a450a"
+							},
+							"Type": "slider_int",
+							"Default": 3,
+							"Description": "0 = Off, 1 = Error, 2 = Warn, 3 = Info, 4 = Debug, 5 = Trace (Debug and Trace can be extremely performance intensive under certain circumstances - use info unless debugging something)",
+							"Options": {
+								"Min": 0,
+								"Max": 5
+							}
+						},
+						{
+							"Id": "enable_epr",
+							"Name": "Record Applicable Entity Properties",
+							"Handles": {
+								"NameHandle": "h8cefeed5aee1469dbb734aca931e1a1ec199",
+								"DescriptionHandle": "h87dacdf298f24e3eb4318469cfb784eba933"
+							},
+							"Type": "checkbox",
+							"Default": false,
+							"Description": "Whether to enable Entity Property Recorder, which records the properties that AIM can use in its ItemFilters when items are picked up or characters join the party/are in it on activation/level load. Can be performance intensive when processing a lot of items in a short period of time!"
+						}
+					]
+				}
+			]
+		},
+		{
+			"TabId": "features",
+			"TabName": "Features",
+			"Handles": {
+				"NameHandle": "h9bb53701065a489d993d43256413f93c0624"
+			},
+			"Sections": [
+				{
+					"SectionId": "item_distribution",
+					"SectionName": "Item Distribution",
+					"Handles": {
+						"NameHandle": "h107c17c9aa9a4d92b79c19611ed9bdca77d6"
+					},
+					"Settings": [
+						{
+							"Id": "redistribute_consumables_in_combat",
+							"Name": "Redistribute Consumables On Use During Combat",
+							"Handles": {
+								"NameHandle": "h812b8a46378b4145a0d4334cfceefd3ec996",
+								"DescriptionHandle": "h049431835a9641ada311d8a1b71155da75g2"
+							},
+							"Type": "checkbox",
+							"Default": false,
+							"Description": "Whether to allow AIM to re-distribute the party's consumable items when they're used - i.e. drinking a small healing potion will redistribute all small healing potions"
+						},
+						{
+							"Id": "distribute_items_in_combat",
+							"Name": "Distribute Items If Picked Up During Combat",
+							"Handles": {
+								"NameHandle": "ha93ed0fdbfc44e53b9657f9395f995aa4a6a",
+								"DescriptionHandle": "h9dd90b0779504335a32a60c6f82786b40b4g"
+							},
+							"Type": "checkbox",
+							"Default": false,
+							"Description": "Whether to allow AIM to process a picked-up item during combat - i.e. if Heat Metal forced you to drop your sword, you would want it to just go to the person who picked it up"
+						},
+						{
+							"Id": "distribute_items_on_first_load",
+							"Name": "Distribute Items On First Load",
+							"Handles": {
+								"NameHandle": "h5e927d6107744a1ba9b6490fc27dfd0ee02f",
+								"DescriptionHandle": "he54739a7dc7147388593d5a0742c662e7cdb"
+							},
+							"Type": "checkbox",
+							"Default": false,
+							"Description": "Whether to allow AIM to process the party's inventory on level load - only matters to existing saves that added AIM mid-way"
+						}
+					]
+				}
+			]
+		}
+	]
+}
