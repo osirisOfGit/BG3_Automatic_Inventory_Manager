@@ -37,7 +37,7 @@
 							},
 							"Type": "slider_int",
 							"Default": 3,
-							"Description": "0 = OFF, 1 = ERROR, 2 = WARN, 3 = INFO, 4 = DEBUG, 5 = TRACE (DEBUG AND TRACE CAN BE EXTREMELY PERFORMANCE INTENSIVE UNDER CERTAIN CIRCUMSTANCES - USE INFO UNLESS DEBUGGING SOMETHING)",
+							"Description": "0 = Off, 1 = Error, 2 = Warn, 3 = Info, 4 = Debug, 5 = Trace (Debug and Trace can be extremely performance intensive under certain circumstances - use info unless debugging something)",
 							"Options": {
 								"Min": 0,
 								"Max": 5
@@ -52,7 +52,7 @@
 							},
 							"Type": "checkbox",
 							"Default": false,
-							"Description": "Whether to enable Entity Property Recorder, which records the properties that AIM can use in its ItemFilters when items are picked up or characters join the party/are in it on level load. Turn off when not using!"
+							"Description": "Whether to enable Entity Property Recorder, which records the properties that AIM can use in its ItemFilters when items are picked up or characters join the party/are in it on activation/level load. Turn off when not using!"
 						}
 					]
 				}

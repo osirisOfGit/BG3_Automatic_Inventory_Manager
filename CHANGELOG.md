@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.x.x] (Unreleased)
 ### Mod Users
+#### Added
+- Optional MCM Integration
+	- Important Info: This release only supports the non-preset options, as those are natively supported by MCM; presets are dynamic, hierarchal, and unpredictable, and thus require more than just flat values, so i'll look into that at a later date. Due to this, MCM integration is optional, as the config.json is still actively supported and synced with MCM - any changes you make to either will be copied over to the other. 
+		- HOWEVER, since AIM's config.json requires a re-load/SE reset to take effect, this means that the config.json is copied over into MCM on session load - if you make any changes to the relevant settings.json under MCM directly, they will be overwritten by AIM on load. This should really only matter to anyone creating pre-defined MCM Profiles, not typical MCM users.
+
 #### Fixed
 - `FallenStar_Cons_Wifi` Root Blacklist
 

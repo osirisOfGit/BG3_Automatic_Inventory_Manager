@@ -44,7 +44,7 @@ function Config.SyncConfigsAndFilters()
 	local startTime = Ext.Utils.MonotonicTime()
 	Logger:ClearLogFile()
 	Logger:BasicInfo("AIM has begun initialization!")
-
+ 
 	local config = FileUtils:LoadTableFile("config.json")
 
 	if not config or config.RESET_CONFIGS == 1 then
@@ -65,6 +65,8 @@ function Config.SyncConfigsAndFilters()
 	end
 
 	Config.AIM = config
+
+	AIM_MCM_API:SyncAllConfigsOnLoad()
 
 	InitializeFilterPresets()
 
