@@ -1,11 +1,109 @@
 {
 	"SchemaVersion": 1,
+	"Optional": true,
+	"ModName": "Automatic Inventory Manager (AIM)",
 	"Tabs": [
 		{
-			"TabName": "Profiles",
-			"TabId": "profiles",
+			"TabName": "General",
+			"TabId": "general",
 			"Sections": [
-				
+				{
+					"SectionId": "general_settings",
+					"SectionName": "General settings",
+					"Settings": [
+						{
+							"Id": "mod_enabled",
+							"Name": "Enable mod",
+							"Handles": {
+								"NameHandle": "",
+								"DescriptionHandle": ""
+							},
+							"Type": "checkbox",
+							"Default": true,
+							"Description": "Toggle the mod on/off without uninstalling it."
+						}
+					]
+				},
+				{
+					"SectionId": "logging_and_utils",
+					"SectionName": "Logging/Utilities",
+					"Settings": [
+						{
+							"Id": "log_level",
+							"Name": "Log level",
+							"Handles": {
+								"NameHandle": "",
+								"DescriptionHandle": ""
+							},
+							"Type": "slider_int",
+							"Default": 3,
+							"Description": "0 = OFF, 1 = ERROR, 2 = WARN, 3 = INFO, 4 = DEBUG, 5 = TRACE (DEBUG AND TRACE CAN BE EXTREMELY PERFORMANCE INTENSIVE UNDER CERTAIN CIRCUMSTANCES - USE INFO UNLESS DEBUGGING SOMETHING)",
+							"Options": {
+								"Min": 0,
+								"Max": 5
+							}
+						},
+						{
+							"Id": "enable_epr",
+							"Name": "Record Applicable Entity Properties",
+							"Handles": {
+								"NameHandle": "",
+								"DescriptionHandle": ""
+							},
+							"Type": "checkbox",
+							"Default": false,
+							"Description": "Whether to enable Entity Property Recorder, which records the properties that AIM can use in its ItemFilters when items are picked up or characters join the party/are in it on level load. Turn off when not using!"
+						}
+					]
+				}
+			]
+		},
+		{
+			"TabId": "features",
+			"TabName": "Features",
+			"Sections": [
+				{
+					"SectionId": "item_distribution",
+					"SectionName": "Item Distribution",
+					"Handles": {
+						"NameHandle": ""
+					},
+					"Settings": [
+						{
+							"Id": "redistribute_consumables_in_combat",
+							"Name": "Redistribute Consumables On Use During Combat",
+							"Handles": {
+								"NameHandle": "",
+								"DescriptionHandle": ""
+							},
+							"Type": "checkbox",
+							"Default": false,
+							"Description": "Whether to allow AIM to re-distribute the party's consumable items when they're used - i.e. drinking a small healing potion will redistribute all small healing potions"
+						},
+						{
+							"Id": "distribute_items_in_combat",
+							"Name": "Distribute Items If Picked Up During Combat",
+							"Handles": {
+								"NameHandle": "",
+								"DescriptionHandle": ""
+							},
+							"Type": "checkbox",
+							"Default": false,
+							"Description": "Whether to allow AIM to process a picked-up item during combat - i.e. if Heat Metal forced you to drop your sword, you would want it to just go to the person who picked it up"
+						},
+						{
+							"Id": "distribute_items_on_first_load",
+							"Name": "Distribute Items On First Load",
+							"Handles": {
+								"NameHandle": "",
+								"DescriptionHandle": ""
+							},
+							"Type": "checkbox",
+							"Default": false,
+							"Description": "Whether to allow AIM to process the party's inventory on level load - only matters to existing saves that added AIM mid-way"
+						}
+					]
+				}
 			]
 		}
 	]
