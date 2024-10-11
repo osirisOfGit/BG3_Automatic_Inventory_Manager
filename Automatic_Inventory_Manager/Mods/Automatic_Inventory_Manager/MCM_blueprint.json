@@ -6,10 +6,16 @@
 		{
 			"TabName": "General",
 			"TabId": "general",
+			"Handles": {
+				"NameHandle": "hbc239a7626ea43878f0c7f4254f755330370"
+			},
 			"Sections": [
 				{
 					"SectionId": "general_settings",
 					"SectionName": "General settings",
+					"Handles": {
+						"NameHandle": "h4435d24a3c884c089d3e201215ac069f69c6"
+					},
 					"Settings": [
 						{
 							"Id": "mod_enabled",
@@ -27,6 +33,9 @@
 				{
 					"SectionId": "logging_and_utils",
 					"SectionName": "Logging/Utilities",
+					"Handles": {
+						"NameHandle": "hf9d4692e909044b18270735d0f67d1e012d9"
+					},
 					"Settings": [
 						{
 							"Id": "log_level",
@@ -52,7 +61,7 @@
 							},
 							"Type": "checkbox",
 							"Default": false,
-							"Description": "Whether to enable Entity Property Recorder, which records the properties that AIM can use in its ItemFilters when items are picked up or characters join the party/are in it on activation/level load. Turn off when not using!"
+							"Description": "Whether to enable Entity Property Recorder, which records the properties that AIM can use in its ItemFilters when items are picked up or characters join the party/are in it on activation/level load. Can be performance intensive when processing a lot of items in a short period of time!"
 						}
 					]
 				}
@@ -61,6 +70,9 @@
 		{
 			"TabId": "features",
 			"TabName": "Features",
+			"Handles": {
+				"NameHandle": "h9bb53701065a489d993d43256413f93c0624"
+			},
 			"Sections": [
 				{
 					"SectionId": "item_distribution",
