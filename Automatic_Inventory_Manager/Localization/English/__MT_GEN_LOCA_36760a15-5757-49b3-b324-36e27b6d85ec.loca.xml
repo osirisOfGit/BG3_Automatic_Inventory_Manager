@@ -24,7 +24,7 @@
     <content contentuid="h9dcd9a91550f459187bdc33e38d7ccee09ca" version="1">Whether to respect the containerRoots section of the ItemBlackList when processing STACK_AMOUNT filters using calculateStackUsing. You probably want this enabled if you keep your Transmog reference items on you, or some similar context.</content>
 	
 	<content contentuid="h812b8a46378b4145a0d4334cfceefd3ec996" version="1">Redistribute Consumables On Use During Combat</content>
-    <content contentuid="h87dacdf298f24e3eb4318469cfb784eba933" version="1">Whether to allow AIM to re-distribute the party's consumable items when they're used - i.e. drinking a small healing potion will redistribute all small healing potions</content>
+    <content contentuid="h87dacdf298f24e3eb4318469cfb784eba933" version="1">Whether to allow AIM to re-distribute the party's consumable items when they're used during combat - i.e. drinking a small healing potion will redistribute all small healing potions</content>
 	
 	<content contentuid="ha93ed0fdbfc44e53b9657f9395f995aa4a6a" version="1">Distribute Items If Picked Up During Combat</content>
     <content contentuid="h9dd90b0779504335a32a60c6f82786b40b4g" version="1">Whether to allow AIM to process a picked-up item during combat - i.e. if Heat Metal forced you to drop your sword, you would want it to just go to the person who picked it up</content>

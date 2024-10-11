@@ -101,7 +101,7 @@
 							},
 							"Type": "checkbox",
 							"Default": false,
-							"Description": "Whether to allow AIM to re-distribute the party's consumable items when they're used - i.e. drinking a small healing potion will redistribute all small healing potions"
+							"Description": "Whether to allow AIM to re-distribute the party's consumable items when they're used during combat - i.e. drinking a small healing potion will redistribute all small healing potions"
 						},
 						{
 							"Id": "distribute_items_in_combat",
