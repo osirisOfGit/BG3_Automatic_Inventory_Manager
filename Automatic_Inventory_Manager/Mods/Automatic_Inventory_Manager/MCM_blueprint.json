@@ -82,6 +82,17 @@
 					},
 					"Settings": [
 						{
+							"Id": "respect_container_blacklist_in_stack_calcs",
+							"Name": "Respect Container Blacklist during Custom Stack Amount calculations",
+							"Handles": {
+								"NameHandle": "h9bad91eff09f47108237e8846c771113a82g",
+								"DescriptionHandle": "h9dcd9a91550f459187bdc33e38d7ccee09ca"
+							},
+							"Type": "checkbox",
+							"Default": false,
+							"Description": "Whether to respect the containerRoots section of the ItemBlackList when processing STACK_AMOUNT filters using calculateStackUsing. You probably want this enabled if you keep your Transmog reference items on you, or some similar context."
+						},
+						{
 							"Id": "redistribute_consumables_in_combat",
 							"Name": "Redistribute Consumables On Use During Combat",
 							"Handles": {

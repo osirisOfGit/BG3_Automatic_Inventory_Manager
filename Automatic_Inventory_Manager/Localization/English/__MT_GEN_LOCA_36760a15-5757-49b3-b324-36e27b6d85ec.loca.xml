@@ -20,6 +20,9 @@
 	
 	<content contentuid="h107c17c9aa9a4d92b79c19611ed9bdca77d6" version="1">Item Distribution</content>
 
+	<content contentuid="h9bad91eff09f47108237e8846c771113a82g" version="1">Respect Container Blacklist during CustomStackUsing calculations</content>
+    <content contentuid="h9dcd9a91550f459187bdc33e38d7ccee09ca" version="1">Whether to respect the containerRoots section of the ItemBlackList when processing STACK_AMOUNT filters using calculateStackUsing. You probably want this enabled if you keep your Transmog reference items on you, or some similar context.</content>
+	
 	<content contentuid="h812b8a46378b4145a0d4334cfceefd3ec996" version="1">Redistribute Consumables On Use During Combat</content>
     <content contentuid="h87dacdf298f24e3eb4318469cfb784eba933" version="1">Whether to allow AIM to re-distribute the party's consumable items when they're used - i.e. drinking a small healing potion will redistribute all small healing potions</content>
 	

@@ -7,6 +7,7 @@ if Ext.Mod.IsModLoaded("755a8a72-407f-4f0d-9a33-274ac0f0b53d") then
 		["mod_enabled"] = "ENABLED",
 		["log_level"] = "LOG_LEVEL",
 		["enable_epr"] = "RECORD_APPLICABLE_ENTITY_PROPS",
+		["respect_container_blacklist_in_stack_calcs"] = "RESPECT_CONTAINER_BLACKLIST_FOR_CUSTOM_STACK_CALCULATIONS",
 		["redistribute_consumables_in_combat"] = "SORT_CONSUMABLE_ITEMS_ON_USE_DURING_COMBAT",
 		["distribute_items_in_combat"] = "SORT_ITEMS_DURING_COMBAT",
 		["distribute_items_on_first_load"] = "SORT_ITEMS_ON_FIRST_LOAD",
