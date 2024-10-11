@@ -19,7 +19,7 @@ if Ext.Mod.IsModLoaded("755a8a72-407f-4f0d-9a33-274ac0f0b53d") then
 			local config_val = Config.AIM[config_key]
 			if config_val then
 				if config_key ~= "LOG_LEVEL" then
-					-- config_val == 0 and true or false
+					-- config_val == 0 and false or true
 					-- ... i can't find the words to explain why the above does what it does, but it doesn't do the below
 					if config_val == 0 then
 						config_val = false
