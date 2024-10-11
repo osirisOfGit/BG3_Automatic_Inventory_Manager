@@ -13,6 +13,17 @@ if Ext.Mod.IsModLoaded("755a8a72-407f-4f0d-9a33-274ac0f0b53d") then
 		["distribute_items_on_first_load"] = "SORT_ITEMS_ON_FIRST_LOAD",
 	}
 
+	function AIM_MCM_API:InitializeConfigsFromMCM()
+		for mcm_key, config_key in pairs(configMap) do
+			local mcm_val = MCM.Get(mcm_key)
+			if mcm_val then
+				mcm_val = type(mcm_val) == "boolean" and (mcm_val == false and 0 or 1) or mcm_val
+				Logger:BasicInfo("Copying Configuration property %s from MCM", config_key)
+				Config.AIM[config_key] = mcm_val
+			end
+		end
+	end
+
 	function AIM_MCM_API:SyncAllConfigsOnLoad()
 		Logger:BasicInfo("MCM is detected - enabling integration")
 
@@ -54,5 +65,9 @@ else
 	function AIM_MCM_API:SyncAllConfigsOnLoad()
 		Logger:BasicWarning(
 			"Mod Configuration Menu wasn't loaded in time! If you're not using it, you can safely ignore this warning - if you are using it, ensure your load order places AIM after MCM")
+	end
+
+	function AIM_MCM_API:InitializeConfigsFromMCM()
+
 	end
 end

@@ -24,7 +24,12 @@ Config.AIM = {
 local function InitializeConfigurations()
 	Logger:BasicInfo(
 		"Initializing configs - will completely remove any customizations to config.json, including custom presets (custom preset directories will be unaffected)")
-	Config.AIM.RESET_CONFIGS = 0
+
+	if Config.AIM.RESET_CONFIGS == 0 then
+		AIM_MCM_API:InitializeConfigsFromMCM()
+	else
+		Config.AIM.RESET_CONFIGS = 0
+	end
 
 	FileUtils:SaveTableToFile("config.json", Config.AIM)
 end
