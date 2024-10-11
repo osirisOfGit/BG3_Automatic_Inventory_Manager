@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Fixed
 - `FallenStar_Cons_Wifi` Root Blacklist
 
+### Internal Only
+#### Fixed
+- Actual fix for items processed by TransmogEnhanced
+
 ## [2.3.1]
 ### Mod Users
 ### Added

@@ -7,17 +7,17 @@ local blackListTable = {
 	RootTemplates = {
 		"FOCUSLODESTONES", -- Lodestones - https://www.nexusmods.com/baldursgate3/mods/7417
 		"TMOG",      -- Transmog enhanced - https://www.nexusmods.com/baldursgate3/mods/2922
-		"FallenStar_Cons_Wifi" -- Wifi Potions - https://www.nexusmods.com/baldursgate3/mods/5080
+		"FALLENSTAR_CONS_WIFI" -- Wifi Potions - https://www.nexusmods.com/baldursgate3/mods/5080
 	},
 	Tags = {},
 	ContainerRoots = {
-		"CONT_ISF_Container", -- ItemShipmentFramework - https://www.nexusmods.com/baldursgate3/mods/8295
-		"TUT_Chest_Potions", -- Pretty sure this is the tutorial chest,
+		"CONT_ISF_CONTAINER", -- ItemShipmentFramework - https://www.nexusmods.com/baldursgate3/mods/8295
+		"TUT_CHEST_POTIONS", -- Pretty sure this is the tutorial chest,
 		-- Stuff below is from Trade with Withers Addon - Containers - https://www.nexusmods.com/baldursgate3/mods/9397
-		"DIQ_OBJ_Important_Container",
-		"DIQ_OBJ_Clothing_Container",
-		"DIQ_OBJ_Dye_Container",
-		"DIQ_OBJ_Weapon_Container",
+		"DIQ_OBJ_IMPORTANT_CONTAINER",
+		"DIQ_OBJ_CLOTHING_CONTAINER",
+		"DIQ_OBJ_DYE_CONTAINER",
+		"DIQ_OBJ_WEAPON_CONTAINER",
 	}
 }
 
@@ -180,7 +180,6 @@ function ItemBlackList:IsContainerInBlacklist(item)
 		local upperTemplate = string.upper(rootTemplate)
 
 		for _, rootUUID in pairs(blackListTable.ContainerRoots) do
-			rootUUID = string.upper(rootUUID)
 			if upperTemplate == rootUUID or string.find(upperTemplate, rootUUID) then
 				Logger:BasicTrace("Container %s with root %s was found in the container blacklist!", string.sub(rootTemplate, 0, -36) .. item, rootTemplate)
 				return rootTemplate

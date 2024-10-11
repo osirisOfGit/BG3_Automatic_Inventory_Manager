@@ -92,6 +92,10 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "before", function(root, item,
 			RemoveItemFromTracker_IfAlreadySorted(root, item, inventoryHolder)
 			Logger:BasicDebug("Item %s was already processed, skipping!", item)
 			return
+		elseif string.find(string.upper(inventoryHolder), string.upper("S_GLO_CharacterCreationDummy")) then
+			Logger:BasicDebug("InventoryHolder for %s is either the Transmog tool, or we're in Character Creation - either way, marking as processed and moving on!", item)
+			Osi.SetTag(item, TAG_AIM_PROCESSED)
+			return
 		-- Will be nil if inventoryHolder isn't a character
 		elseif Osi.IsPlayer(inventoryHolder) ~= 1 then
 			Logger:BasicDebug("inventoryHolder %s is not a player (for item %s)", inventoryHolder, item)
