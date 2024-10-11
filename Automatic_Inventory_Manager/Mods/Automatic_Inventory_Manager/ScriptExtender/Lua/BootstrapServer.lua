@@ -10,8 +10,8 @@ Ext.Require("AIM/_ItemFilters.lua")
 Ext.Require("AIM/_ItemBlackList.lua")
 Ext.Require("AIM/_EntityPropertyRecorder.lua")
 
-Ext.Require("AIM/_Config.lua")
 Ext.Require("AIM/MCM/_MCMAPI.lua")
+Ext.Require("AIM/_Config.lua")
 
 
 -- CORE LOGIC
