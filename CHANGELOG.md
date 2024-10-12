@@ -23,6 +23,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Fixed
 - Actual fix for items processed by TransmogEnhanced
 
+#### Changed
+- Tweaked debug logs again, mainly around STACK_AMOUNT calculation
+
 ## [2.3.1]
 ### Mod Users
 ### Added
