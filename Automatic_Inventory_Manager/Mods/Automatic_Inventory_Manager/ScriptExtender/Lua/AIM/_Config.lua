@@ -55,7 +55,6 @@ function Config.SyncConfigsAndFilters()
 
 	if not config or config.RESET_CONFIGS == 1 then
 		InitializeConfigurations()
-		Logger:BasicInfo("Initializing all the configs!")
 
 		config = Config.AIM
 	end

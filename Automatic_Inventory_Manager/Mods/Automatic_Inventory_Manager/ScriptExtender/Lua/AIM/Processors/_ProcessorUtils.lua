@@ -272,10 +272,10 @@ function ProcessorUtils:CalculateTotalItemCount(targetsWithAmountWon,
 
 	if targetChar == inventoryHolder then
 		local amountToRemove = Osi.GetStackAmount(item)
-		Logger:BasicDebug(
-			"Brought down %s's, the inventoryHolder of the item, total item count of %d by %d", inventoryHolder,
-			totalFutureStackSize, amountToRemove)
 		totalFutureStackSize = totalFutureStackSize - amountToRemove
+		Logger:BasicDebug(
+			"Brought down the total item count for %s (the inventoryHolder of the item) down to %d, since they picked up %d", inventoryHolder,
+			totalFutureStackSize, amountToRemove)
 	end
 
 	Logger:BasicDebug("Total item count for %s is %d", targetChar, totalFutureStackSize)
