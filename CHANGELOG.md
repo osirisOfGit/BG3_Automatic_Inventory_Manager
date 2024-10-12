@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 		- HOWEVER, since AIM's config.json requires a re-load/SE reset to take effect, this means that the config.json is copied over into MCM on session load - if you make any changes to the relevant settings.json under MCM directly, without using the MCM UI, they will be overwritten by AIM on load.
 		- If the config.json doesn't exist on save load, but the MCM configs do, the MCM values will be copied into the config.json, and any missing configs will be generated and set to their defaults
 - `RESPECT_CONTAINER_BLACKLIST_FOR_CUSTOM_STACK_CALCULATIONS` config option
+  - See [Wiki Section](https://github.com/osirisOfGit/BG3_Automatic_Inventory_Manager/wiki/Customizing-AIM's-Behavior#customizing-how-stack_amount-is-calculated) 
 
 #### Fixed
 - `FallenStar_Cons_Wifi` Root Blacklist
