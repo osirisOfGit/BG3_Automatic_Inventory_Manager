@@ -9,6 +9,7 @@ Config.AIM = {
 	ENABLED = 1,
 	RESET_CONFIGS = 0,
 	LOG_LEVEL = 3,
+	RESPECT_CONTAINER_BLACKLIST_FOR_CUSTOM_STACK_CALCULATIONS = 0,
 	SORT_ITEMS_ON_FIRST_LOAD = 1,
 	SORT_ITEMS_DURING_COMBAT = 0,
 	SORT_CONSUMABLE_ITEMS_ON_USE_DURING_COMBAT = 0,
@@ -23,7 +24,12 @@ Config.AIM = {
 local function InitializeConfigurations()
 	Logger:BasicInfo(
 		"Initializing configs - will completely remove any customizations to config.json, including custom presets (custom preset directories will be unaffected)")
-	Config.AIM.RESET_CONFIGS = 0
+
+	if Config.AIM.RESET_CONFIGS == 0 then
+		AIM_MCM_API:InitializeConfigsFromMCM()
+	else
+		Config.AIM.RESET_CONFIGS = 0
+	end
 
 	FileUtils:SaveTableToFile("config.json", Config.AIM)
 end
@@ -49,7 +55,6 @@ function Config.SyncConfigsAndFilters()
 
 	if not config or config.RESET_CONFIGS == 1 then
 		InitializeConfigurations()
-		Logger:BasicInfo("Initializing all the configs!")
 
 		config = Config.AIM
 	end

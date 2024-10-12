@@ -184,14 +184,14 @@ local function DeepIterateInventory(container, calculateStackUsing, originalItem
 	for _, item in pairs(primaryInventory.InventoryContainer.Items) do
 		local uuid = item.Item.Uuid.EntityUuid
 		local rootTemplate = Osi.GetTemplate(uuid)
+		local isContainer = Osi.IsContainer(uuid)
 
 		if ItemBlackList:IsItemOrTemplateInBlacklist(item, rootTemplate) then
-			Logger:BasicTrace("Item %s is in the blacklist - skipping", string.sub(rootTemplate, 0, -36) .. uuid)
+			Logger:BasicTrace("Item %s is in the blacklist - excluding from Stack calculation", string.sub(rootTemplate, 0, -36) .. uuid)
 			goto continueItemLoop
 		end
 
 		local _, totalAmount = Osi.GetStackAmount(uuid)
-		local isContainer = Osi.IsContainer(uuid)
 
 		for key, value in pairs(calculateStackUsing) do
 			if not validStackCriteriaKeys[string.upper(key)] then
@@ -210,7 +210,11 @@ local function DeepIterateInventory(container, calculateStackUsing, originalItem
 		end
 
 		if isContainer == 1 then
-			itemAmount = DeepIterateInventory(uuid, calculateStackUsing, originalItem, itemAmount, depth + 1)
+			if Config.AIM.RESPECT_CONTAINER_BLACKLIST_FOR_CUSTOM_STACK_CALCULATIONS == 1 and ItemBlackList:IsContainerInBlacklist(uuid) then
+				Logger:BasicTrace("Container %s is in the blacklist - will exclude all of its items from stack amount calculation", uuid)
+			else
+				itemAmount = DeepIterateInventory(uuid, calculateStackUsing, originalItem, itemAmount, depth + 1)
+			end
 		end
 
 		::continueItemLoop::
@@ -260,7 +264,7 @@ function ProcessorUtils:CalculateTotalItemCount(targetsWithAmountWon,
 
 	if TEMPLATES_BEING_TRANSFERRED[root] and TEMPLATES_BEING_TRANSFERRED[root][targetChar] then
 		totalFutureStackSize = totalFutureStackSize + TEMPLATES_BEING_TRANSFERRED[root][targetChar]
-		Logger:BasicTrace(
+		Logger:BasicDebug(
 			"Found %d of the item currently being transferred to %s, adding to the stack size",
 			TEMPLATES_BEING_TRANSFERRED[root][targetChar],
 			targetChar)
@@ -268,10 +272,10 @@ function ProcessorUtils:CalculateTotalItemCount(targetsWithAmountWon,
 
 	if targetChar == inventoryHolder then
 		local amountToRemove = Osi.GetStackAmount(item)
-		Logger:BasicTrace(
-			"Brought down %s's, the inventoryHolder of the item, total item count of %d by %d", inventoryHolder,
-			totalFutureStackSize, amountToRemove)
 		totalFutureStackSize = totalFutureStackSize - amountToRemove
+		Logger:BasicDebug(
+			"Brought down the total item count for %s (the inventoryHolder of the item) down to %d, since they picked up %d", inventoryHolder,
+			totalFutureStackSize, amountToRemove)
 	end
 
 	Logger:BasicDebug("Total item count for %s is %d", targetChar, totalFutureStackSize)
