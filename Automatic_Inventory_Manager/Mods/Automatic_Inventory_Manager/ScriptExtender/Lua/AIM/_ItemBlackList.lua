@@ -7,12 +7,15 @@ local blackListTable = {
 	RootTemplates = {
 		"FOCUSLODESTONES", -- Lodestones - https://www.nexusmods.com/baldursgate3/mods/7417
 		"TMOG",      -- Transmog enhanced - https://www.nexusmods.com/baldursgate3/mods/2922
-		"FALLENSTAR_CONS_WIFI" -- Wifi Potions - https://www.nexusmods.com/baldursgate3/mods/5080
+		"FALLENSTAR_CONS_WIFI", -- Wifi Potions - https://www.nexusmods.com/baldursgate3/mods/5080
+		"U_AUTOLOOTTOGGLE", -- Customizable Auto Loot Aura - https://www.nexusmods.com/baldursgate3/mods/2342
 	},
 	Tags = {},
 	ContainerRoots = {
 		"CONT_ISF_CONTAINER", -- ItemShipmentFramework - https://www.nexusmods.com/baldursgate3/mods/8295
 		"TUT_CHEST_POTIONS", -- Pretty sure this is the tutorial chest,
+		"TCP_OBJ_TUTORIALCHEST", -- Another tutorial chest, possibly specific to Tutorial Chest Summoning https://www.nexusmods.com/baldursgate3/mods/457
+		"SYR_OBJ_", -- Immersive Tutorial Chest Spawning and more - https://www.nexusmods.com/baldursgate3/mods/4687
 		-- Stuff below is from Trade with Withers Addon - Containers - https://www.nexusmods.com/baldursgate3/mods/9397
 		"DIQ_OBJ_IMPORTANT_CONTAINER",
 		"DIQ_OBJ_CLOTHING_CONTAINER",

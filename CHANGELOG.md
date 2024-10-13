@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 **Mod Users** - to review any changes more in-depth, check the relevant sections of [the wiki](https://github.com/osirisOfGit/BG3_Automatic_Inventory_Manager/wiki)
 
+## [2.4.1] (Unreleased)
+### Mod Users
+#### Changed
+- ItemsBlackList
+  - Added to container roots:
+	- `"TCP_OBJ_TUTORIALCHEST"` -- Another tutorial chest, possibly specific to Tutorial Chest Summoning <https://www.nexusmods.com/baldursgate3/mods/457>
+	- `"SYR_OBJ_"` -- Immersive Tutorial Chest Spawning and more - <https://www.nexusmods.com/baldursgate3/mods/4687>
+  - Added to RootTemplates:
+	- `"U_AUTOLOOTTOGGLE"` -- Customizable Auto Loot Aura - <https://www.nexusmods.com/baldursgate3/mods/2342>
+
 ## [2.4.0]
 ### Mod Users
 #### Added
